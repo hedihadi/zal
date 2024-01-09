@@ -1,0 +1,7 @@
+{
+  "dart.lineLength": 150,
+  "dart.flutterAdditionalArgs": [],
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit"
+  }
+}
