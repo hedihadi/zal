@@ -29,7 +29,8 @@ final userProvider = FutureProvider<User?>((ref) async {
   final auth = FirebaseAuth.instance;
   ref.watch(_userStreamProvider);
   try {
-    return await auth.getUser();
+    final user = await auth.getUser();
+    return user;
   } on SignedOutException {
     return null;
   }

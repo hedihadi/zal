@@ -21,7 +21,7 @@ class SettingsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.read(screenViewProvider("settings"));
-    final settings = ref.watch(settingsProvider).value;
+    final settings = ref.watch(settingsProvider).valueOrNull;
     return Scaffold(
       appBar: AppBar(),
       body: ListView(
@@ -56,17 +56,17 @@ class SettingsScreen extends ConsumerWidget {
               ),
             ],
           ),
-          ref.watch(socketProvider).value == null
+          ref.watch(socketProvider).valueOrNull == null
               ? Container()
               : SectionSettingUi(children: [
                   Text("Select your primary GPU", style: Theme.of(context).textTheme.titleLarge),
                   GridView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    itemCount: ref.watch(socketProvider).value!.gpus.length,
+                    itemCount: ref.watch(socketProvider).valueOrNull!.gpus.length,
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 3),
                     itemBuilder: (context, index) {
-                      final gpu = ref.read(socketProvider).value!.gpus[index];
+                      final gpu = ref.read(socketProvider).valueOrNull!.gpus[index];
                       return GestureDetector(
                         onTap: () {
                           ref.read(settingsProvider.notifier).updatePrimaryGpuName(gpu.name);
@@ -102,8 +102,8 @@ class SettingsScreen extends ConsumerWidget {
               TextButton.icon(onPressed: () => FirebaseAuth.instance.signOut(), icon: const Icon(Icons.logout), label: const Text("Sign out")),
               TextButton.icon(
                   onPressed: () async {
-                    final response =
-                        await showConfirmDialog("Delete Account", "your account will be permanently deleted, you cannot undo this!", context);
+                    final response = await showConfirmDialog(
+                        "Delete Account", "you want to proceed? your account will be permanently deleted, you cannot undo this!", context);
                     if (response == true) {
                       AlertDialog alert = AlertDialog(
                         title: const Text("enter your Password"),

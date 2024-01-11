@@ -25,6 +25,7 @@ class ServerSocketNotifier extends AsyncNotifier<ServerSocketData> {
         isConnected = true;
       } else if (streamData.type == ServerStreamDataType.disconnected) {
         isConnected = false;
+       
       } else if (streamData.type == ServerStreamDataType.roomClients) {
         isMobileConnected = (streamData.data as List).contains(1);
         if (isMobileConnected) {

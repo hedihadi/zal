@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sizer/sizer.dart';
 import 'package:zal/Functions/models.dart';
 import 'package:zal/Screens/HomeScreen/Widgets/battery_widget.dart';
 import 'package:zal/Screens/HomeScreen/Widgets/cpu_widget.dart';
@@ -54,11 +55,6 @@ class HomeScreen extends ConsumerWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 const Text("your PC is offline, make sure Zal is running on your Computer.", textAlign: TextAlign.center),
-                ElevatedButton(
-                    onPressed: () {
-                      ref.read(socketObjectProvider)?.socket.connect();
-                    },
-                    child: const Text("Reconect")),
                 TextButton(
                     onPressed: () {
                       launchUrl(Uri.parse("https://zalapp.com/info#connect"));
@@ -68,7 +64,14 @@ class HomeScreen extends ConsumerWidget {
             );
           }
           if (error.runtimeType == TooEarlyToReturnError) {
-            return Container();
+            return Center(
+                child: SizedBox(
+              height: 10.h,
+              width: 10.h,
+              child: const CircularProgressIndicator(
+                strokeWidth: 15,
+              ),
+            ));
           }
           if (error.runtimeType == NotConnectedToSocketException) {
             return const Text("not connected to server, make sure you have internet connection", textAlign: TextAlign.center);
@@ -82,7 +85,14 @@ class HomeScreen extends ConsumerWidget {
             return Text("$error");
           }
         },
-        loading: () => const CircularProgressIndicator(),
+        loading: () => Center(
+            child: SizedBox(
+          height: 10.h,
+          width: 10.h,
+          child: const CircularProgressIndicator(
+            strokeWidth: 15,
+          ),
+        )),
       ),
     );
   }

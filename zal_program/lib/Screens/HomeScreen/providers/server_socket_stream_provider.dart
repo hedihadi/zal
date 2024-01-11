@@ -33,9 +33,27 @@ final serverSocketStreamProvider = StreamProvider<ServerStreamData>((ref) async*
   });
 
   socket.socket.onDisconnect((data) {
+    Future.delayed(const Duration(milliseconds: 1000), () {
+      if (ref.read(serverSocketObjectProvider).value?.socket.disconnected ?? false) {
+        ref.read(serverSocketObjectProvider).value?.socket.connect();
+      }
+    });
     stream.add(ServerStreamData(type: ServerStreamDataType.disconnected, data: data));
   });
-
+  socket.socket.onReconnectFailed((data) {
+    Future.delayed(const Duration(milliseconds: 1000), () {
+      if (ref.read(serverSocketObjectProvider).value?.socket.disconnected ?? false) {
+        ref.read(serverSocketObjectProvider).value?.socket.connect();
+      }
+    });
+  });
+  socket.socket.onReconnectError((data) {
+    Future.delayed(const Duration(milliseconds: 1000), () {
+      if (ref.read(serverSocketObjectProvider).value?.socket.disconnected ?? false) {
+        ref.read(serverSocketObjectProvider).value?.socket.connect();
+      }
+    });
+  });
   await for (final value in stream.stream) {
     if (value != null) {
       yield value as ServerStreamData;
