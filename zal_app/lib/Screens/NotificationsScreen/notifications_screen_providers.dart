@@ -101,6 +101,14 @@ class NotificationsNotifier extends AsyncNotifier<List<NotificationData>> {
     }
     return notifications;
   }
+
+  ///this function is used as a fake effect to delete notifications.
+  ///because the notifications are saved on the computer app, we have to
+  ///send data to the computer, the computer deletes the notification and sends the data back.
+  ///so we delete the notification from showing up on the phone and send data to the computer to delete the notification.
+  deleteNotification(NotificationData notification) {
+    state = AsyncData(state.value!.where((element) => element.key != notification.key).toList());
+  }
 }
 
 final notificationsProvider = AsyncNotifierProvider<NotificationsNotifier, List<NotificationData>>(() {

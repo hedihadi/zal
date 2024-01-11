@@ -27,12 +27,15 @@ class _MainScreenState extends ConsumerState<MainScreen> with WindowListener, Tr
   @override
   Widget build(BuildContext context) {
     ref.read(executableProvider);
-    final user = ref.watch(userProvider).value;
+    final user = ref.watch(userProvider);
     WidgetsBinding.instance.addPostFrameCallback((_) => runStartupCode(ref, context));
+    if (user.hasValue == false) {
+      return const Scaffold();
+    }
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 1.w),
-        child: user == null ? const MainLoginScreen() : const AuthorizedScreen(),
+        child: user.valueOrNull == null ? const MainLoginScreen() : const AuthorizedScreen(),
       ),
     );
   }
@@ -112,6 +115,5 @@ class _MainScreenState extends ConsumerState<MainScreen> with WindowListener, Tr
         label: 'Quit',
       ),
     ]));
-  
   }
 }

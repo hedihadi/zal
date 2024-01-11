@@ -13,6 +13,21 @@ class LocalDatabaseManager {
     return null;
   }
 
+  ///used in notifications provider to set the basic notifications.
+  static Future<bool> loadIsFirstRun() async {
+    final box = Hive.box("data");
+    if (box.containsKey('isFirstRun')) {
+      return false;
+    }
+    return true;
+  }
+
+  ///used in notifications provider to set the basic notifications.
+  static Future<void> saveIsFirstRun() async {
+    final box = Hive.box("data");
+    await box.put('isFirstRun', false);
+  }
+
   static Future<void> saveComputerSpecs(ComputerSpecs computerSpecs) async {
     final box = Hive.box("data");
     await box.put('computerSpecs', computerSpecs.toJson());

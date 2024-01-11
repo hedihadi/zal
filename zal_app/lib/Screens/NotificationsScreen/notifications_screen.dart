@@ -100,6 +100,7 @@ class NotificationsScreen extends ConsumerWidget {
                                             'data': {'type': 'delete', 'notification': notification},
                                           },
                                         );
+                                        ref.read(notificationsProvider.notifier).deleteNotification(notification);
                                       },
                                       icon: Icon(
                                         FontAwesomeIcons.trash,

@@ -16,9 +16,47 @@ class NotificationsNotifier extends AsyncNotifier<List<NotificationData>> {
   @override
   Future<List<NotificationData>> build() async {
     final notifications = await LocalDatabaseManager.loadNotifications();
+    Future.delayed(const Duration(milliseconds: 500), () => setBasicNotifications());
     if (notifications != null) return notifications;
 
     return [];
+  }
+
+  Future<void> setBasicNotifications() async {
+    final isFirstRun = await LocalDatabaseManager.loadIsFirstRun();
+    if (isFirstRun) {
+      addNewNotification(
+        NotificationData(
+          key: NewNotificationKey.Cpu,
+          childKey: NotificationKeyWithUnit(keyName: 'temperature', unit: 'C'),
+          factorType: NewNotificationFactorType.Higher,
+          factorValue: 65,
+          secondsThreshold: 5,
+          suspended: false,
+        ),
+      );
+      addNewNotification(
+        NotificationData(
+          key: NewNotificationKey.Gpu,
+          childKey: NotificationKeyWithUnit(keyName: 'temperature', unit: 'C'),
+          factorType: NewNotificationFactorType.Higher,
+          factorValue: 65,
+          secondsThreshold: 5,
+          suspended: false,
+        ),
+      );
+      addNewNotification(
+        NotificationData(
+          key: NewNotificationKey.Ram,
+          childKey: NotificationKeyWithUnit(keyName: 'memoryUsedPercentage', unit: '%'),
+          factorType: NewNotificationFactorType.Higher,
+          factorValue: 95,
+          secondsThreshold: 5,
+          suspended: false,
+        ),
+      );
+      await LocalDatabaseManager.saveIsFirstRun();
+    }
   }
 
   Future<void> checkNotifications(ComputerData data) async {
@@ -109,8 +147,12 @@ class NotificationsNotifier extends AsyncNotifier<List<NotificationData>> {
     return bytes / gigabyte;
   }
 
-  addNewNotification(String rawNotification) {
+  addNewRawNotification(String rawNotification) {
     final notification = NotificationData.fromJson(rawNotification);
+    addNewNotification(notification);
+  }
+
+  addNewNotification(NotificationData notification) {
     state = AsyncData([...state.value!, notification]);
     LocalDatabaseManager.saveNotifications(state.value!);
     broadcastNotificationsToMobile();

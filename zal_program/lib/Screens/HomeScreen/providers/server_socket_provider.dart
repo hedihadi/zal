@@ -42,7 +42,7 @@ class ServerSocketNotifier extends AsyncNotifier<ServerSocketData> {
         socket?.emit("change_primary_network", streamData.data.toString());
       } else if (streamData.type == ServerStreamDataType.newNotification) {
         Future.delayed(const Duration(milliseconds: 1), () {
-          ref.read(notificationsProvider.notifier).addNewNotification(streamData.data);
+          ref.read(notificationsProvider.notifier).addNewRawNotification(streamData.data);
         });
       } else if (streamData.type == ServerStreamDataType.editNotification) {
         Future.delayed(const Duration(milliseconds: 1), () {
