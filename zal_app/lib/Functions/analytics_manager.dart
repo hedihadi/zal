@@ -56,8 +56,10 @@ class AnalyticsManager {
         .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
     const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
+    const DarwinInitializationSettings initializationSettingsDarwin = DarwinInitializationSettings();
 
-    const InitializationSettings initializationSettings = InitializationSettings(android: initializationSettingsAndroid);
+    const InitializationSettings initializationSettings =
+        InitializationSettings(android: initializationSettingsAndroid, iOS: initializationSettingsDarwin);
 
     await flutterLocalNotificationsPlugin.initialize(initializationSettings);
 
@@ -85,11 +87,12 @@ class AnalyticsManager {
             message.notification!.body, // Notification body
 
             const NotificationDetails(
+                iOS: DarwinNotificationDetails(),
                 android: AndroidNotificationDetails(
-              pcNotificationChannelId,
-              pcNotificationChannelName,
-              sound: UriAndroidNotificationSound('beep'),
-            )));
+                  pcNotificationChannelId,
+                  pcNotificationChannelName,
+                  sound: UriAndroidNotificationSound('beep'),
+                )));
       }
     });
   }
