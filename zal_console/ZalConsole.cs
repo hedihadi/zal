@@ -27,6 +27,7 @@ namespace ZalConsole
 
         static async Task Main(string[] args)
         {
+            Logger.ResetLog();
             if (args.Length != 0)
             {
                 if (args[0] == "1")

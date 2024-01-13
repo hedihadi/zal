@@ -58,7 +58,7 @@ class NetworkSpeedWidget extends ConsumerWidget {
       error: (error, stackTrace) {
         print(error);
         print(stackTrace);
-        return const Text("error");
+        return const Text("");
       },
       loading: () {
         return Container();

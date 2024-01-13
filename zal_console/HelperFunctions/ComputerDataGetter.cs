@@ -109,6 +109,7 @@ namespace Zal.HelperFunctions
             }
             foreach (IHardware hardware in computer.Hardware)
             {
+                var gpuTypes = new HardwareType[] { HardwareType.GpuAmd, HardwareType.GpuNvidia, HardwareType.GpuIntel };
                 if (hardware.HardwareType == HardwareType.Cpu)
                 {
                     try
@@ -121,7 +122,7 @@ namespace Zal.HelperFunctions
                     }
                    
                 }
-                else if (hardware.HardwareType.ToString().ToLower().Contains("gpu"))
+                else if (gpuTypes.Contains(hardware.HardwareType))
                 {
                     try
                     {

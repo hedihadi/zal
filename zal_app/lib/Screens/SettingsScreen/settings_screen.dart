@@ -12,6 +12,7 @@ import 'package:zal/Screens/HomeScreen/home_screen_providers.dart';
 import 'package:zal/Screens/LoginScreen/login_providers.dart';
 import 'package:zal/Screens/SettingsScreen/settings_providers.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:zal/Widgets/staggered_gridview.dart';
 
 final revenueCatIdProvider = FutureProvider((ref) => Purchases.appUserID);
 
@@ -60,32 +61,27 @@ class SettingsScreen extends ConsumerWidget {
               ? Container()
               : SectionSettingUi(children: [
                   Text("Select your primary GPU", style: Theme.of(context).textTheme.titleLarge),
-                  GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: ref.watch(socketProvider).valueOrNull!.gpus.length,
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 3),
-                    itemBuilder: (context, index) {
-                      final gpu = ref.read(socketProvider).valueOrNull!.gpus[index];
-                      return GestureDetector(
-                        onTap: () {
-                          ref.read(settingsProvider.notifier).updatePrimaryGpuName(gpu.name);
-                        },
-                        child: Card(
-                          color: (settings?.primaryGpuName ?? "") == gpu.name ? Theme.of(context).primaryColor : Theme.of(context).cardColor,
-                          elevation: 5,
-                          shadowColor: Colors.transparent,
-                          child: Center(
-                            child: Text(
-                              gpu.name,
-                              maxLines: 2,
-                              style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Theme.of(context).cardColor),
-                            ),
+                  StaggeredGridview(
+                      children: ref.watch(socketProvider).valueOrNull!.gpus.map((e) {
+                    final gpu = e;
+                    return GestureDetector(
+                      onTap: () {
+                        ref.read(settingsProvider.notifier).updatePrimaryGpuName(gpu.name);
+                      },
+                      child: Card(
+                        color: (settings?.primaryGpuName ?? "") == gpu.name ? Theme.of(context).primaryColor : Theme.of(context).cardColor,
+                        elevation: 5,
+                        shadowColor: Colors.transparent,
+                        child: Center(
+                          child: Text(
+                            gpu.name,
+                            maxLines: 2,
+                            style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Theme.of(context).cardColor),
                           ),
                         ),
-                      );
-                    },
-                  ),
+                      ),
+                    );
+                  }).toList()),
                   Align(
                       alignment: Alignment.centerRight,
                       child: TextButton.icon(

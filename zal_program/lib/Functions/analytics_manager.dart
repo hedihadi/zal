@@ -6,7 +6,7 @@ import 'package:zal/Functions/utils.dart';
 
 class AnalyticsManager {
   //static String databaseUrl = "https://zalapp.com/api/";
-  static String databaseUrl = dotenv.env['SERVER'] == 'production' ? "https://zalapp.com/api" : "http://192.168.0.102:8000/api";
+  static String databaseUrl = dotenv.env['SERVER'] == 'production' ? "https://zalapp.com/api" : "http://127.0.0.1:8000/api";
 
   static sendAlertToMobile(NotificationData notification, double value) async {
     String displayName = notification.childKey.displayName ?? "${notification.key.name}'s ${convertCamelToReadable(notification.childKey.keyName)}";

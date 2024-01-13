@@ -4,6 +4,7 @@ import 'package:sizer/sizer.dart';
 import 'package:zal/Screens/HomeScreen/Widgets/battery_widget.dart';
 import 'package:zal/Screens/HomeScreen/Widgets/first_row_widget.dart';
 import 'package:zal/Screens/HomeScreen/Widgets/network_speed_widget.dart';
+import 'package:zal/Screens/HomeScreen/Widgets/report_error_widget.dart';
 import 'package:zal/Screens/HomeScreen/Widgets/storages_widget.dart';
 
 final sidebarSelectedIndexProvider = StateProvider<int>((ref) => 0);
@@ -17,6 +18,8 @@ class HomeScreen extends ConsumerWidget {
       shrinkWrap: true,
       children: [
         const SizedBox(height: 5),
+        const ReportErrorWidget(),
+
         const FirstRowWidget(),
         SizedBox(height: 2.h),
         const Row(

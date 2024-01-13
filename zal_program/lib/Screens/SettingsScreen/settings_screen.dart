@@ -1,8 +1,13 @@
+import 'dart:io';
+
 import 'package:firedart/auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:sizer/sizer.dart';
+import 'package:zal/Functions/analytics_manager.dart';
 import 'package:zal/Widgets/SettingsUI/section_setting_ui.dart';
 import 'package:zal/Widgets/SettingsUI/switch_setting_ui.dart';
 import 'package:zal/Functions/programs_runner.dart';
@@ -209,7 +214,9 @@ class SettingsScreen extends ConsumerWidget {
                   TableCell(
                     child: Padding(
                       padding: const EdgeInsets.only(left: 5),
-                      child: ElevatedButton(onPressed: () => ProgramsRunner.runZalConsole(ref.read(settingsProvider).valueOrNull?.runAsAdmin ?? false), child: const Text("Restart zal-console.exe")),
+                      child: ElevatedButton(
+                          onPressed: () => ProgramsRunner.runZalConsole(ref.read(settingsProvider).valueOrNull?.runAsAdmin ?? false),
+                          child: const Text("Restart zal-console.exe")),
                     ),
                   ),
                 ]),
@@ -290,11 +297,39 @@ class SettingsScreen extends ConsumerWidget {
               ],
             ),
             const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () async {
-                await Clipboard.setData(ClipboardData(text: "${ref.read(localSocketProvider).value?.parsedData}"));
-              },
-              child: const Text("copy backend data"),
+            Row(
+              children: [
+                ElevatedButton(
+                  onPressed: () async {
+                    await Clipboard.setData(ClipboardData(text: "${ref.read(localSocketProvider.notifier).rawData}"));
+                  },
+                  child: const Text("copy backend data"),
+                ),
+                SizedBox(width: 3.w),
+                ElevatedButton(
+                  onPressed: () async {
+                    final backendData = ref.read(localSocketProvider.notifier).rawData;
+                    Directory tempDir = await getTemporaryDirectory();
+                    String logData = '';
+                    try {
+                      final File logFile = File("${tempDir.path}/zal_log.txt");
+                      logData = await logFile.readAsString();
+                    } catch (c) {
+                      showSnackbar('failed to read log: $c', context);
+                    }
+                    showSnackbar('sending...', context);
+                    await AnalyticsManager.sendDataToDatabase(
+                      'error',
+                      data: {
+                        'data': backendData,
+                        'log': logData,
+                      },
+                    );
+                    showSnackbar('sent!', context);
+                  },
+                  child: const Text("report backend data"),
+                ),
+              ],
             ),
           ],
         ),
