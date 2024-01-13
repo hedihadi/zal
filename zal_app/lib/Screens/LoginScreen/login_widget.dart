@@ -19,13 +19,12 @@ class ManualLoginNotifier extends AsyncNotifier {
     try {
       if ([email, password].contains('')) {
         state = AsyncError('Email or Password is empty', StackTrace.current);
-        return;
       }
       await auth.signInWithEmailAndPassword(email: email, password: password);
       await Purchases.setEmail(email);
+      state = const AsyncData(true);
     } on FirebaseAuthException catch (c) {
       state = AsyncError(c.message.toString(), StackTrace.current);
-      return;
     }
   }
 }

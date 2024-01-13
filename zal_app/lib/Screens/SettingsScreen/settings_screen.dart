@@ -99,7 +99,13 @@ class SettingsScreen extends ConsumerWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              TextButton.icon(onPressed: () => FirebaseAuth.instance.signOut(), icon: const Icon(Icons.logout), label: const Text("Sign out")),
+              TextButton.icon(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    FirebaseAuth.instance.signOut();
+                  },
+                  icon: const Icon(Icons.logout),
+                  label: const Text("Sign out")),
               TextButton.icon(
                   onPressed: () async {
                     final response = await showConfirmDialog(
@@ -150,6 +156,7 @@ class SettingsScreen extends ConsumerWidget {
                         await FirebaseAuth.instance.currentUser?.delete();
                         await FirebaseAuth.instance.signOut();
                         ref.invalidate(authProvider);
+                        Navigator.of(context).pop();
                       }
                     }
                   },
@@ -160,7 +167,7 @@ class SettingsScreen extends ConsumerWidget {
           SectionSettingUi(
             children: [
               Text("Purchases ID:\n${ref.watch(revenueCatIdProvider).value}"),
-              Text("UID:\n${ref.watch(authProvider).value!.uid}"),
+              Text("UID:\n${ref.watch(authProvider).value?.uid}"),
             ],
           ),
           Row(
