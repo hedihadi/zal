@@ -36,9 +36,17 @@ namespace Zal
         }
         public static void ResetLog()
         {
-            var logFilePath = GetLogFilePath();
-            var lines = File.ReadAllLines(logFilePath);
-            File.WriteAllLines(logFilePath, lines.Take(200).ToArray());
+            try
+            {
+                var logFilePath = GetLogFilePath();
+                var lines = File.ReadAllLines(logFilePath);
+                File.WriteAllLines(logFilePath, []);
+            }
+            catch
+            {
+
+            }
+          
         }
 
         static void WriteToLog(string logMessage, string logFilePath)

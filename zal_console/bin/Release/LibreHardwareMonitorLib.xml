@@ -108,10 +108,7 @@
             Support for the NZXT GRID+ V3 devices.
             </summary>
         </member>
-        <member name="T:LibreHardwareMonitor.Hardware.Controller.Nzxt.KrakenX3">
-            Support for the Kraken X3 devices from NZXT
-        </member>
-        <member name="T:LibreHardwareMonitor.Hardware.Controller.Nzxt.KrakenZ">
+        <member name="T:LibreHardwareMonitor.Hardware.Controller.Nzxt.KrakenV3">
             Support for the KrakenZ devices from NZXT
         </member>
         <member name="M:LibreHardwareMonitor.Hardware.Cpu.CpuId.#ctor(System.Int32,System.Int32,LibreHardwareMonitor.Hardware.GroupAffinity)">
@@ -938,6 +935,16 @@
         <member name="M:LibreHardwareMonitor.Hardware.Motherboard.Motherboard.Close">
             <summary>
             Closes <see cref="P:LibreHardwareMonitor.Hardware.Motherboard.Motherboard.SubHardware" /> using <see cref="M:LibreHardwareMonitor.Hardware.Hardware.Close" />.
+            </summary>
+        </member>
+        <member name="M:LibreHardwareMonitor.Hardware.Mutexes.Open">
+            <summary>
+            Opens the mutexes.
+            </summary>
+        </member>
+        <member name="M:LibreHardwareMonitor.Hardware.Mutexes.Close">
+            <summary>
+            Closes the mutexes.
             </summary>
         </member>
         <member name="T:LibreHardwareMonitor.Hardware.ParameterDescription">
