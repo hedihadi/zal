@@ -15,7 +15,7 @@ class AnalyticsManager {
     AnalyticsManager.sendDataToDatabase('pc_message', data: {'title': 'ALERT!', 'body': body});
   }
 
-  static sendDataToDatabase(String route, {Map<String, dynamic> data = const {}}) async {
+  static Future<http.Response> sendDataToDatabase(String route, {Map<String, dynamic> data = const {}}) async {
     final idToken = ((await HiveStore.create())..read()).idToken;
 
     final url = Uri.parse("$databaseUrl/$route");

@@ -121,8 +121,13 @@ namespace Zal.Constants.Models
 }
 public class partitionInfo
 {
+    private string _label;
     public string driveLetter { get; set; }
-    public string label {  get; set; }
+    public string label
+    {
+        get => _label;
+        set => _label = value?.Replace("'", "").Replace("\"","");
+    }
     public long size { get; set; }
     public long freeSpace { get; set; }
 }

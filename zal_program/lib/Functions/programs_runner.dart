@@ -17,6 +17,10 @@ class ProgramsRunner {
     }
   }
 
+  static Future<void> openFileFromPath(String path) async {
+    Process.run('start', ['notepad.exe', path], runInShell: true);
+  }
+
   static Future<void> runServer() async {
     await Process.run('taskkill', ['/F', '/IM', 'zal-server.exe']);
 

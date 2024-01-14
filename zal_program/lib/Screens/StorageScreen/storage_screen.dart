@@ -164,15 +164,17 @@ class StorageScreen extends ConsumerWidget {
             const SizedBox(height: 15),
             const Divider(),
             const SizedBox(height: 15),
-            Padding(
-              padding: const EdgeInsets.only(left: 5),
-              child: Text(
-                "S.M.A.R.T Data",
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-            ),
+            storage.smartAttributes.isEmpty
+                ? Container()
+                : Padding(
+                    padding: const EdgeInsets.only(left: 5),
+                    child: Text(
+                      "S.M.A.R.T Data",
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                  ),
             const SizedBox(height: 10),
-            SmartDataTableWidget(storage: storage),
+            storage.smartAttributes.isEmpty ? Container() : SmartDataTableWidget(storage: storage),
           ],
         ),
       ),

@@ -36,17 +36,37 @@ namespace ZalConsole
                 }
 
             }
+            computerDataGetter? computerDataGetter=null;
             SocketIOClient.SocketIO client = new SocketIOClient.SocketIO($"http://localhost:3000/");
-            computerDataGetter computerDataGetter = new computerDataGetter(client);
+            try
+            {
+                 computerDataGetter = new computerDataGetter(client);
+            }
+            catch (Exception c)
+            {
+                Logger.LogError("error initializing computerDataGetter", c);
+            }
 
             client.On("get_data", async response =>
             {
-               
-                var serializedData = Newtonsoft.Json.JsonConvert.SerializeObject(computerDataGetter.getcomputerData());
-                //System.Diagnostics.Debug.WriteLine($"computer_data {serializedData}");
-                //Console.WriteLine($"computer_data {serializedData}");
-                // Do something with the serialized data, for example, send it back to the client
-                await client.EmitAsync("computer_data", serializedData);
+                if (computerDataGetter != null) {
+
+                    try
+                    {
+                        var serializedData = Newtonsoft.Json.JsonConvert.SerializeObject(computerDataGetter.getcomputerData());
+                        //System.Diagnostics.Debug.WriteLine($"computer_data {serializedData}");
+                        //Console.WriteLine($"computer_data {serializedData}");
+                        // Do something with the serialized data, for example, send it back to the client
+                        await client.EmitAsync("computer_data", serializedData);
+                    }
+                    catch (Exception c)
+                    {
+                        Logger.LogError("error getting computerData", c);
+                    }
+                   
+                }
+                
+
             });
             client.On("restart_admin", async response =>
             {

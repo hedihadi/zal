@@ -42,14 +42,18 @@ class ReportErrorWidget extends ConsumerWidget {
                   showSnackbar('failed to read log: $c', context);
                 }
                 showSnackbar('sending...', context);
-                await AnalyticsManager.sendDataToDatabase(
+                final response = await AnalyticsManager.sendDataToDatabase(
                   'error',
                   data: {
-                    'data': backendData,
+                    'data': backendData ?? '',
                     'log': logData,
                   },
                 );
-                showSnackbar('sent!', context);
+                if (response.statusCode == 200) {
+                  showSnackbar('sent!', context);
+                } else {
+                  showSnackbar('error sending data, server returned ${response.statusCode}', context);
+                }
               },
               child: const Text("report error"),
             ),

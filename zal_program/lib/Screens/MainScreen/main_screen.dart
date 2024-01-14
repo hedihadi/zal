@@ -86,17 +86,25 @@ class _MainScreenState extends ConsumerState<MainScreen> with WindowListener, Tr
 
   runStartupCode(WidgetRef ref, BuildContext context) async {
     //setup system tray
-    await trayManager.setIcon('assets/images/app_icon.ico');
-    await trayManager.setContextMenu(Menu(items: [
-      MenuItem(
-        key: 'show_window',
-        label: 'Show',
-      ),
-      MenuItem(
-        key: 'quit_app',
-        label: 'Quit',
-      ),
-    ]));
+    try {
+      await trayManager.setIcon('assets/images/app_icon.ico');
+    } catch (c) {
+      showSnackbar('error setting up tray: $c', context);
+    }
+    try {
+      await trayManager.setContextMenu(Menu(items: [
+        MenuItem(
+          key: 'show_window',
+          label: 'Show',
+        ),
+        MenuItem(
+          key: 'quit_app',
+          label: 'Quit',
+        ),
+      ]));
+    } catch (c) {
+      showSnackbar('error setting up tray: $c', context);
+    }
 
     if (ref.read(didRunStartupCodeProvider) == true) {
       return;

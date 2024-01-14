@@ -16,128 +16,134 @@ class FirstRowWidget extends ConsumerWidget {
       skipLoadingOnReload: true,
       data: (data) {
         final primaryGpu = ref.read(localSocketProvider.notifier).getPrimaryGpu();
-        if (primaryGpu == null || data == null) return Container();
+        if (data == null) return Container();
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Expanded(
-              child: Card(
-                elevation: 1,
-                child: SizedBox(
-                  height: 205,
-                  child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 1.h),
-                      child: Stack(
-                        alignment: Alignment.topRight,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "GPU",
-                                    style: Theme.of(context).textTheme.displayMedium!.copyWith(fontSize: 40),
-                                  ),
-                                  Row(
-                                    children: [
-                                      SizedBox(
-                                        height: 13.h,
-                                        child: AspectRatio(
-                                          aspectRatio: 1,
-                                          child: SfRadialGauge(
-                                            axes: <RadialAxis>[
-                                              RadialAxis(
-                                                  canScaleToFit: false,
-                                                  startAngle: 0,
-                                                  endAngle: 360,
-                                                  showTicks: false,
-                                                  showLabels: false,
-                                                  axisLineStyle: const AxisLineStyle(thickness: 10),
-                                                  pointers: <GaugePointer>[
-                                                    RangePointer(
-                                                      value: primaryGpu.corePercentage,
-                                                      width: 10,
-                                                      color: Theme.of(context).primaryColor,
-                                                      enableAnimation: false,
-                                                    )
-                                                  ],
-                                                  annotations: <GaugeAnnotation>[
-                                                    GaugeAnnotation(
-                                                        widget: Text(
-                                                          "${primaryGpu.corePercentage.round()}%",
-                                                          style:
-                                                              Theme.of(context).textTheme.titleLarge!.copyWith(color: Theme.of(context).primaryColor),
-                                                        ),
-                                                        angle: 270,
-                                                        positionFactor: 0.1),
-                                                  ])
-                                            ],
-                                          ),
+            primaryGpu == null
+                ? Container()
+                : Expanded(
+                    child: Card(
+                      elevation: 1,
+                      child: SizedBox(
+                        height: 205,
+                        child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 1.h),
+                            child: Stack(
+                              alignment: Alignment.topRight,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "GPU",
+                                          style: Theme.of(context).textTheme.displayMedium!.copyWith(fontSize: 40),
                                         ),
-                                      ),
-                                      Table(
-                                        defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                                        columnWidths: const {
-                                          0: IntrinsicColumnWidth(flex: 2),
-                                          1: IntrinsicColumnWidth(flex: 2),
-                                        },
-                                        children: <TableRow>[
-                                          //librehardware sends a wrong dedicated memory value, will hide this until it's fixed.
-                                          //tableRow(
-                                          //  context,
-                                          //  "Dedicated Memory",
-                                          //  FontAwesomeIcons.memory,
-                                          //  ((primaryGpu.dedicatedMemoryUsed * 1000 * 1000).toSize()).toString(),
-                                          //  addSpacing: true,
-                                          //),
+                                        Row(
+                                          children: [
+                                            SizedBox(
+                                              height: 13.h,
+                                              child: AspectRatio(
+                                                aspectRatio: 1,
+                                                child: SfRadialGauge(
+                                                  axes: <RadialAxis>[
+                                                    RadialAxis(
+                                                        canScaleToFit: false,
+                                                        startAngle: 0,
+                                                        endAngle: 360,
+                                                        showTicks: false,
+                                                        showLabels: false,
+                                                        axisLineStyle: const AxisLineStyle(thickness: 10),
+                                                        pointers: <GaugePointer>[
+                                                          RangePointer(
+                                                            value: primaryGpu.corePercentage,
+                                                            width: 10,
+                                                            color: Theme.of(context).primaryColor,
+                                                            enableAnimation: false,
+                                                          )
+                                                        ],
+                                                        annotations: <GaugeAnnotation>[
+                                                          GaugeAnnotation(
+                                                              widget: Text(
+                                                                "${primaryGpu.corePercentage.round()}%",
+                                                                style: Theme.of(context)
+                                                                    .textTheme
+                                                                    .titleLarge!
+                                                                    .copyWith(color: Theme.of(context).primaryColor),
+                                                              ),
+                                                              angle: 270,
+                                                              positionFactor: 0.1),
+                                                        ])
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                            Table(
+                                              defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                                              columnWidths: const {
+                                                0: IntrinsicColumnWidth(flex: 2),
+                                                1: IntrinsicColumnWidth(flex: 2),
+                                              },
+                                              children: <TableRow>[
+                                                //librehardware sends a wrong dedicated memory value, will hide this until it's fixed.
+                                                //tableRow(
+                                                //  context,
+                                                //  "Dedicated Memory",
+                                                //  FontAwesomeIcons.memory,
+                                                //  ((primaryGpu.dedicatedMemoryUsed * 1000 * 1000).toSize()).toString(),
+                                                //  addSpacing: true,
+                                                //),
 
-                                          tableRow(
-                                            context,
-                                            "Core Clock",
-                                            Icons.power,
-                                            "${primaryGpu.coreSpeed.round()}Mhz",
-                                          ),
-                                          tableRow(
-                                            context,
-                                            "Fan Speed",
-                                            FontAwesomeIcons.fan,
-                                            "${primaryGpu.fanSpeedPercentage.round()}%",
-                                          ),
-                                          tableRow(
-                                            context,
-                                            "Memory",
-                                            Icons.power,
-                                            "${primaryGpu.memorySpeed.round()}Mhz",
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                  //SizedBox(
-                                  //    height: 10.h,
-                                  //    child: SfSparkAreaChart(
-                                  //      axisLineWidth: 0,
-                                  //      borderWidth: 2,
-                                  //      trackball: const SparkChartTrackball(shouldAlwaysShow: true),
-                                  //      color: Theme.of(context).primaryColor,
-                                  //      data: data.chartData['gpu.corePercentage'] ?? [],
-                                  //    )),
-                                ],
-                              ),
-                            ],
-                          ),
-                          Text(
-                            getTemperatureText(primaryGpu.temperature, ref),
-                            style:
-                                Theme.of(context).textTheme.labelLarge!.copyWith(color: getTemperatureColor(primaryGpu.temperature), fontSize: 12.sp),
-                          ),
-                        ],
-                      )),
-                ),
-              ),
-            ),
+                                                tableRow(
+                                                  context,
+                                                  "Core Clock",
+                                                  Icons.power,
+                                                  "${primaryGpu.coreSpeed.round()}Mhz",
+                                                ),
+                                                tableRow(
+                                                  context,
+                                                  "Fan Speed",
+                                                  FontAwesomeIcons.fan,
+                                                  "${primaryGpu.fanSpeedPercentage.round()}%",
+                                                ),
+                                                tableRow(
+                                                  context,
+                                                  "Memory",
+                                                  Icons.power,
+                                                  "${primaryGpu.memorySpeed.round()}Mhz",
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        //SizedBox(
+                                        //    height: 10.h,
+                                        //    child: SfSparkAreaChart(
+                                        //      axisLineWidth: 0,
+                                        //      borderWidth: 2,
+                                        //      trackball: const SparkChartTrackball(shouldAlwaysShow: true),
+                                        //      color: Theme.of(context).primaryColor,
+                                        //      data: data.chartData['gpu.corePercentage'] ?? [],
+                                        //    )),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                Text(
+                                  getTemperatureText(primaryGpu.temperature, ref),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelLarge!
+                                      .copyWith(color: getTemperatureColor(primaryGpu.temperature), fontSize: 12.sp),
+                                ),
+                              ],
+                            )),
+                      ),
+                    ),
+                  ),
             Expanded(
               child: Card(
                 elevation: 1,

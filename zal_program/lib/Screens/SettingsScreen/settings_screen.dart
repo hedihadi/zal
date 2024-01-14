@@ -305,7 +305,20 @@ class SettingsScreen extends ConsumerWidget {
                   },
                   child: const Text("copy backend data"),
                 ),
-                SizedBox(width: 3.w),
+                SizedBox(width: 2.w),
+                ElevatedButton(
+                  onPressed: () async {
+                    Directory tempDir = await getTemporaryDirectory();
+                    try {
+                      final File logFile = File("${tempDir.path}\\zal_log.txt");
+                      ProgramsRunner.openFileFromPath(logFile.path);
+                    } catch (c) {
+                      showSnackbar('failed to read log: $c', context);
+                    }
+                  },
+                  child: const Text("open log file"),
+                ),
+                SizedBox(width: 2.w),
                 ElevatedButton(
                   onPressed: () async {
                     final backendData = ref.read(localSocketProvider.notifier).rawData;
@@ -318,14 +331,18 @@ class SettingsScreen extends ConsumerWidget {
                       showSnackbar('failed to read log: $c', context);
                     }
                     showSnackbar('sending...', context);
-                    await AnalyticsManager.sendDataToDatabase(
+                    final response = await AnalyticsManager.sendDataToDatabase(
                       'error',
                       data: {
-                        'data': backendData,
+                        'data': backendData ?? '',
                         'log': logData,
                       },
                     );
-                    showSnackbar('sent!', context);
+                    if (response.statusCode == 200) {
+                      showSnackbar('sent!', context);
+                    } else {
+                      showSnackbar('error sending data, server returned ${response.statusCode}', context);
+                    }
                   },
                   child: const Text("report backend data"),
                 ),
