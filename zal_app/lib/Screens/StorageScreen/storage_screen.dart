@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:zal/Functions/utils.dart';
-import 'package:zal/Screens/HomeScreen/home_screen_providers.dart';
+import 'package:zal/Screens/HomeScreen/Providers/computer_data_provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:zal/Screens/StorageScreen/Widgets/smart_data_widget.dart';
@@ -15,14 +15,15 @@ import '../../Widgets/inline_ad.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class StorageScreen extends ConsumerWidget {
-  StorageScreen({super.key, required this.diskNumber});
-  int diskNumber;
+  const StorageScreen({super.key, required this.diskNumber});
+  final int diskNumber;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.read(screenViewProvider("storage"));
-    final computerSocket = ref.watch(socketProvider);
-    final storages = computerSocket.value!.storages;
+    final computerData = ref.watch(computerDataProvider).value;
+    if (computerData == null) return Container();
+    final storages = computerData.storages;
     final foundStorages = storages.where((element) => element.diskNumber == diskNumber).toList();
     if (foundStorages.isEmpty) return const Text("storage doesn't exist anymore :o where did it go?");
     final storage = foundStorages.first;

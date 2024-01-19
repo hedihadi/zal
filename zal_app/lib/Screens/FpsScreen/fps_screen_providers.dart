@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zal/Functions/utils.dart';
-import 'package:zal/Screens/HomeScreen/home_screen_providers.dart';
+import 'package:zal/Screens/HomeScreen/Providers/home_screen_providers.dart';
 import '../../Functions/models.dart';
 
 class FpsDataNotifier extends AutoDisposeAsyncNotifier<FpsData> {
@@ -62,9 +62,9 @@ class FpsDataNotifier extends AutoDisposeAsyncNotifier<FpsData> {
           fps001Low: 0,
         );
 
-    if (isFpsPaused == false && streamData?.type == StreamDataType.FPS) {
-      return _fetchData(fpsData, streamData!.data);
-    }
+    //if (isFpsPaused == false && streamData?.type == StreamDataType.FPS) {
+    //  return _fetchData(fpsData, streamData!.data);
+    //}
     return state.value ?? fpsData;
   }
 }

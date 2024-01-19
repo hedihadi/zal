@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:zal/Functions/interstitial_ad.dart';
 import 'package:zal/Functions/utils.dart';
-import 'package:zal/Screens/HomeScreen/home_screen_providers.dart';
+import 'package:zal/Screens/HomeScreen/Providers/home_screen_providers.dart';
 
 import '../Functions/analytics_manager.dart';
 
@@ -14,7 +14,7 @@ class StressTestButton extends ConsumerWidget {
   const StressTestButton({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isConnected = ref.watch(isConnectedProvider);
+    final isConnected = ref.watch(isConnectedToServerProvider);
     ref.read(screenViewProvider("stress-test"));
     if (isConnected == false) {
       return Container();
@@ -54,7 +54,7 @@ class StressTestButton extends ConsumerWidget {
           content: Text("Now stress testing your ${ref.read(chosenTypeProvider)}"),
           // margin: EdgeInsets.all(10.sp),
         ));
-        ref.read(socketProvider.notifier).stressTest(ref.read(chosenTypeProvider).toLowerCase(), ref.read(secondsProvider));
+        //ref.read(computerDataProvider.notifier).stressTest(ref.read(chosenTypeProvider).toLowerCase(), ref.read(secondsProvider));
         AnalyticsManager.logEvent("stress-test", options: {'type': ref.read(chosenTypeProvider).toLowerCase()});
       },
       icon: const FaIcon(FontAwesomeIcons.bolt),

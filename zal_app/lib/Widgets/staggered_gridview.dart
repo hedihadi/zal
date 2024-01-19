@@ -12,10 +12,11 @@ class StaggeredGridview extends ConsumerWidget {
     final List<Widget> filteredChildren = List<Widget>.from(children.where((element) => element != null).toList());
 
     for (int i = 0; i < filteredChildren.length; i++) {
+      final child = filteredChildren[i];
       if (i % 2 == 0) {
-        evenIndexes.add(filteredChildren[i]);
+        evenIndexes.add(child);
       } else {
-        oddIndexes.add(filteredChildren[i]);
+        oddIndexes.add(child);
       }
     }
     return Row(

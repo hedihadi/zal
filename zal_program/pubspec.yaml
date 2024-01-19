@@ -52,6 +52,8 @@ dependencies:
   launch_at_startup: ^0.2.2
   msix: ^3.16.7
   hive: ^2.2.3
+  flutter_webrtc: ^0.9.47
+  logger: ^2.0.2+1
 dev_dependencies:
   flutter_test:
     sdk: flutter

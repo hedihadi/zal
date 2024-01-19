@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:zal/Functions/utils.dart';
-import 'package:zal/Screens/HomeScreen/home_screen_providers.dart';
+import 'package:zal/Screens/HomeScreen/Providers/computer_data_provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:zal/Screens/SettingsScreen/settings_providers.dart';
@@ -20,9 +20,10 @@ class GpuScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final computerSocket = ref.watch(socketProvider);
+    final computerData = ref.watch(computerDataProvider).value;
+    if (computerData == null) return Container();
     ref.read(screenViewProvider("gpu"));
-    final gpu = computerSocket.value!.gpus.firstWhereOrNull((element) => element.name == gpuName);
+    final gpu = computerData.gpus.firstWhereOrNull((element) => element.name == gpuName);
     if (gpu == null) return const Text("gpu doesn't exist");
     return Scaffold(
       appBar: AppBar(title: const Text("GPU")),
@@ -157,20 +158,20 @@ class GpuScreen extends ConsumerWidget {
             ),
           ),
           ChartWidget(
-            data: computerSocket.valueOrNull?.charts['gpuLoad'] ?? [],
+            data: computerData.charts['gpuLoad'] ?? [],
             title: "Load",
             maxYAxisNumber: 100,
             yAxisLabel: '%',
           ),
           ChartWidget(
-            data: computerSocket.valueOrNull?.charts['gpuTemperature'] ?? [],
+            data: computerData.charts['gpuTemperature'] ?? [],
             title: "Temperature",
             maxYAxisNumber: 100,
             minYAxisNumber: 0,
             yAxisLabel: (ref.read(settingsProvider).valueOrNull?.useCelcius ?? false) ? 'c' : 'f',
           ),
           ChartWidget(
-            data: computerSocket.valueOrNull?.charts['gpuPower'] ?? [],
+            data: computerData.charts['gpuPower'] ?? [],
             title: "Power",
             maxYAxisNumber: 100,
             yAxisLabel: 'W',

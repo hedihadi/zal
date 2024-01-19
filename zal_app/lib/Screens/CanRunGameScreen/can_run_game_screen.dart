@@ -6,7 +6,8 @@ import 'package:assorted_layout_widgets/assorted_layout_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zal/Screens/CanRunGameScreen/Widgets/search_game_widget.dart';
-import 'package:zal/Screens/HomeScreen/home_screen_providers.dart';
+import 'package:zal/Screens/HomeScreen/Providers/computer_data_provider.dart';
+import 'package:zal/Screens/HomeScreen/Providers/home_screen_providers.dart';
 import 'package:sizer/sizer.dart';
 import 'package:zal/Widgets/inline_ad.dart';
 import '../../Functions/analytics_manager.dart';
@@ -36,10 +37,10 @@ class CanRunGameScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final socket = ref.watch(socketProvider);
+    final computerData = ref.watch(computerDataProvider);
     ref.read(streamProvider);
     ref.read(screenViewProvider("can-run-game"));
-    return socket.when(
+    return computerData.when(
       skipLoadingOnRefresh: true,
       skipLoadingOnReload: true,
       data: (data) {
@@ -78,14 +79,14 @@ class ProceedButton extends ConsumerWidget {
         : ElevatedButton(
             onPressed: () {
               if (isStreamLoading) return;
-              final data = ref.read(socketProvider).value!;
+              final data = ref.read(computerDataProvider).value!;
               ref.invalidate(streamProvider);
 
               ref.read(socketObjectProvider.notifier).state!.sendData(
                   'can_i_run_game',
                   jsonEncode({
                     'game': selectedGame,
-                    'gpu': ref.read(socketProvider.notifier).getPrimaryGpu()?.name,
+                    'gpu': ref.read(computerDataProvider.notifier).getPrimaryGpu()?.name,
                     'cpu': data.cpu.name,
                     'ram': "${(data.ram.memoryAvailable + data.ram.memoryUsed).round()}GB ${data.ram.ramPieces.firstOrNull?.clockSpeed}"
                   }));

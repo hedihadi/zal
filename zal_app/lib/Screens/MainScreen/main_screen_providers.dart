@@ -5,12 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:logger/logger.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zal/Functions/theme.dart';
 import '../../Functions/analytics_manager.dart';
-import '../HomeScreen/home_screen_providers.dart';
+import '../HomeScreen/Providers/home_screen_providers.dart';
 
 class IsUserPremiumNotifier extends StateNotifier<bool> {
   bool didSendUserData = false;
@@ -28,8 +29,12 @@ class IsUserPremiumNotifier extends StateNotifier<bool> {
         state = false;
       }
       if (didSendUserData == false) {
-        await AnalyticsManager.sendUserDataToDatabase(state);
-        didSendUserData = true;
+        try {
+          await AnalyticsManager.sendUserDataToDatabase(state);
+          didSendUserData = true;
+        } catch (c) {
+          Logger().i("failed sending data to database");
+        }
       }
     });
   }

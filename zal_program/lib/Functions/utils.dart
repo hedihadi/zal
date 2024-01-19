@@ -12,9 +12,25 @@ import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:sizer/sizer.dart';
+import 'package:zal/Functions/Models/models.dart';
 import 'package:zal/Functions/theme.dart';
 import 'package:zal/Screens/SettingsScreen/settings_provider.dart';
 import 'package:http/http.dart' as http;
+
+WebrtcDataType convertStringToWebrtcDataType(String input) {
+  switch (input) {
+    case "restart_admin":
+      return WebrtcDataType.restartAdmin;
+    case "edit_notification":
+      return WebrtcDataType.editNotification;
+    case "new_notification":
+      return WebrtcDataType.newNotification;
+    case "kill_process":
+      return WebrtcDataType.killProcess;
+    default:
+      throw throw Exception("Invalid input");
+  }
+}
 
 ///this function calls zalapp.com/version and compares it to the local version. if the versions don't match, the function will return true.
 Future<bool> isUpdateAvailable() async {

@@ -16,7 +16,7 @@ class MainScreen extends ConsumerWidget {
     final auth = ref.watch(authProvider);
     final shouldShowOnboarding = ref.watch(shouldShowOnboardingProvider);
     WidgetsBinding.instance.addPostFrameCallback((_) => ref.read(contextProvider.notifier).state = context);
-    if (auth.hasValue == false || shouldShowOnboarding.hasValue == false) {
+    if (auth.hasValue == false) {
       return const LoadingScreen();
     }
     if (shouldShowOnboarding.valueOrNull == true) return const OnboardingScreen();

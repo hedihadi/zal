@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:firedart/generated/google/protobuf/timestamp.pb.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zal/Functions/Models/computer_data_models.dart';
@@ -6,7 +8,7 @@ import 'package:zal/Functions/analytics_manager.dart';
 import 'package:zal/Functions/local_database_manager.dart';
 import 'package:zal/Functions/utils.dart';
 import 'package:zal/Screens/HomeScreen/providers/local_socket_provider.dart';
-import 'package:zal/Screens/HomeScreen/providers/server_socket_stream_provider.dart';
+import 'package:zal/Screens/HomeScreen/providers/webrtc_provider.dart';
 
 class NotificationsNotifier extends AsyncNotifier<List<NotificationData>> {
   NotificationsNotifier();
@@ -79,10 +81,10 @@ class NotificationsNotifier extends AsyncNotifier<List<NotificationData>> {
             .forceDouble();
       } else if (notification.key == NewNotificationKey.Cpu) {
         id = 'cpuData.${notification.childKey.keyName}';
-        currentValue = (data.parsedData['cpuData'][notification.childKey.keyName] as int).forceDouble();
+        currentValue = (data.parsedData['cpuData'][notification.childKey.keyName] as num).forceDouble();
       } else if (notification.key == NewNotificationKey.Ram) {
         id = 'ramData.${notification.childKey.keyName}';
-        currentValue = (data.parsedData['ramData'][notification.childKey.keyName] as int).forceDouble();
+        currentValue = (data.parsedData['ramData'][notification.childKey.keyName] as num).forceDouble();
       } else if (notification.key == NewNotificationKey.Storage) {
         id = 'storagesData.${notification.childKey.keyName}';
         currentValue = ((List<dynamic>.from(data.parsedData['storagesData']))
@@ -158,8 +160,10 @@ class NotificationsNotifier extends AsyncNotifier<List<NotificationData>> {
     broadcastNotificationsToMobile();
   }
 
-  editNotification(Map<String, dynamic> data) {
-    NotificationData notification = NotificationData.fromJson(data['notification']);
+  editNotification(String rawData) {
+    final data = jsonDecode(rawData);
+    final notificationData = jsonDecode(data['notification']);
+    NotificationData notification = NotificationData.fromMap(notificationData);
     String type = data['type'];
     if (state.value == null) return;
     if (type == 'delete') {
@@ -183,11 +187,14 @@ class NotificationsNotifier extends AsyncNotifier<List<NotificationData>> {
   broadcastNotificationsToMobile() async {
     //keep trying until you send notifications to the phone.
     while (true) {
-      if (ref.read(serverSocketObjectProvider).valueOrNull != null && state.value != null) {
-        ref.read(serverSocketObjectProvider).valueOrNull?.socket.emit('notifications', {'data': state.value!.map((e) => e.toJson()).toList()});
+      if (ref.read(webrtcProvider).isConnected && state.value != null) {
+        final data = jsonEncode(state.value!.map((e) => e.toJson()).toList());
+        //for some reason, without this delay the mobile app won't receive the notifications.
+        await Future.delayed(const Duration(seconds: 2));
+        ref.read(webrtcProvider.notifier).sendMessage('notifications', data);
         break;
       }
-      await Future.delayed(const Duration(seconds: 1));
+      await Future.delayed(const Duration(seconds: 2));
     }
   }
 }

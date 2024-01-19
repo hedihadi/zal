@@ -9,7 +9,7 @@ import 'package:zal/Screens/FpsScreen/Widgets/fps_help_widget.dart';
 import 'package:zal/Screens/FpsScreen/Widgets/fps_records_widget.dart';
 import 'package:zal/Screens/FpsScreen/Widgets/save_fps_widget.dart';
 import 'package:zal/Screens/FpsScreen/fps_screen_providers.dart';
-import 'package:zal/Screens/HomeScreen/home_screen_providers.dart';
+import 'package:zal/Screens/HomeScreen/Providers/home_screen_providers.dart';
 import 'package:sizer/sizer.dart';
 import 'package:zal/Widgets/inline_ad.dart';
 

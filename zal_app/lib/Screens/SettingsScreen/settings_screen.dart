@@ -3,12 +3,12 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:zal/Screens/HomeScreen/Providers/computer_data_provider.dart';
 import 'package:zal/Screens/SettingsScreen/Widgets/select_primary_network_screen.dart';
 import 'package:zal/Widgets/SettingsUI/section_setting_ui.dart';
 import 'package:zal/Widgets/SettingsUI/switch_setting_ui.dart';
 import 'package:zal/Functions/analytics_manager.dart';
 import 'package:zal/Functions/utils.dart';
-import 'package:zal/Screens/HomeScreen/home_screen_providers.dart';
 import 'package:zal/Screens/LoginScreen/login_providers.dart';
 import 'package:zal/Screens/SettingsScreen/settings_providers.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -57,12 +57,12 @@ class SettingsScreen extends ConsumerWidget {
               ),
             ],
           ),
-          ref.watch(socketProvider).valueOrNull == null
+          ref.watch(computerDataProvider).valueOrNull == null
               ? Container()
               : SectionSettingUi(children: [
                   Text("Select your primary GPU", style: Theme.of(context).textTheme.titleLarge),
                   StaggeredGridview(
-                      children: ref.watch(socketProvider).valueOrNull!.gpus.map((e) {
+                      children: ref.watch(computerDataProvider).valueOrNull!.gpus.map((e) {
                     final gpu = e;
                     return GestureDetector(
                       onTap: () {

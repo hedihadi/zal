@@ -6,20 +6,49 @@ import 'package:socket_io_client/socket_io_client.dart';
 
 enum StreamDataType { FPS, DATA }
 
+enum WebrtcDataType {
+  restartAdmin,
+  changePrimaryNetwork,
+  newNotification,
+  editNotification,
+  killProcess,
+}
+
 enum ServerStreamDataType {
   roomClients,
   connected,
   disconnected,
-  changePrimaryNetwork,
-  killProcess,
-  restartAdmin,
-  newNotification,
-  editNotification,
 }
 
 enum NewNotificationKey { Gpu, Cpu, Ram, Storage, Network }
 
 enum NewNotificationFactorType { Higher, Lower }
+
+class WebrtcData {
+  WebrtcDataType type;
+  String data;
+  WebrtcData({
+    required this.data,
+    required this.type,
+  });
+}
+
+class WebrtcProviderModel {
+  final bool isConnected;
+  final WebrtcData? data;
+
+  WebrtcProviderModel({
+    required this.isConnected,
+    this.data,
+  });
+}
+
+class WebrtcConnectionModel {
+  final bool isConnected;
+  WebrtcConnectionModel({
+    required this.isConnected,
+  });
+}
 
 class NotificationWithTimestamp {
   final String id;
@@ -202,9 +231,9 @@ class LocalSocketio {
 
 class ServerSocketio {
   late Socket socket;
-  ServerSocketio(String uid, String idToken) {
+  ServerSocketio(String uid, String idToken, String computerName) {
     socket = io(
-      dotenv.env['SERVER'] == 'production' ? 'https://api.zalapp.com' : 'http://192.168.0.109:5000',
+      dotenv.env['SERVER'] == 'production' ? 'https://api.zalapp.com' : 'http://192.168.1.104:5000',
       <String, dynamic>{
         'transports': ['websocket'],
         'query': {
@@ -213,6 +242,7 @@ class ServerSocketio {
           'idToken': idToken,
           'type': 0,
           'version': 1,
+          'computerName': computerName,
         },
       },
     );
@@ -305,6 +335,7 @@ class FpsData {
 }
 
 class Settings {
+  final String computerName;
   final bool personalizedAds;
   final bool useCelcius;
   final bool sendAnalaytics;
@@ -314,6 +345,7 @@ class Settings {
   final bool runInBackground;
   final bool runAsAdmin;
   Settings({
+    required this.computerName,
     required this.personalizedAds,
     required this.useCelcius,
     required this.sendAnalaytics,
@@ -326,6 +358,7 @@ class Settings {
 
   Map<String, dynamic> toMap() {
     final result = <String, dynamic>{};
+    result.addAll({'computerName': computerName});
 
     result.addAll({'personalizedAds': personalizedAds});
     result.addAll({'useCelcius': useCelcius});
@@ -343,6 +376,7 @@ class Settings {
 
   factory Settings.fromMap(Map<String, dynamic> map) {
     return Settings(
+      computerName: map['computerName'] ?? 'Personal PC',
       personalizedAds: map['personalizedAds'] ?? false,
       useCelcius: map['useCelcius'] ?? true,
       sendAnalaytics: map['sendAnalaytics'] ?? false,
@@ -359,6 +393,7 @@ class Settings {
   factory Settings.fromJson(String source) => Settings.fromMap(json.decode(source));
 
   Settings copyWith({
+    String? computerName,
     bool? personalizedAds,
     bool? useCelcius,
     bool? sendAnalaytics,
@@ -369,6 +404,7 @@ class Settings {
     bool? runAsAdmin,
   }) {
     return Settings(
+      computerName: computerName ?? this.computerName,
       personalizedAds: personalizedAds ?? this.personalizedAds,
       useCelcius: useCelcius ?? this.useCelcius,
       sendAnalaytics: sendAnalaytics ?? this.sendAnalaytics,

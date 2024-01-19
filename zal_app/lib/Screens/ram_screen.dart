@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:zal/Functions/utils.dart';
-import 'package:zal/Screens/HomeScreen/home_screen_providers.dart';
+import 'package:zal/Screens/HomeScreen/Providers/computer_data_provider.dart';
 import 'package:zal/Widgets/chart_widget.dart';
 import 'package:zal/Widgets/inline_ad.dart';
 import 'package:zal/Widgets/staggered_gridview.dart';
@@ -19,9 +19,10 @@ class RamScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final computerSocket = ref.watch(socketProvider);
+    final computerData = ref.watch(computerDataProvider).value;
+    if (computerData == null) return Container();
     ref.read(screenViewProvider("ram"));
-    final ram = computerSocket.value!.ram;
+    final ram = computerData.ram;
     return Scaffold(
       appBar: AppBar(title: const Text("RAM")),
       body: ListView(
@@ -157,7 +158,7 @@ class RamScreen extends ConsumerWidget {
           ),
           const Divider(),
           ChartWidget(
-            data: computerSocket.valueOrNull?.charts['ramPercentage'] ?? [],
+            data: computerData.charts['ramPercentage'] ?? [],
             title: "Percentage",
             maxYAxisNumber: 100,
             minYAxisNumber: 0,

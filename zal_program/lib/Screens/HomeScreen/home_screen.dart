@@ -6,6 +6,7 @@ import 'package:zal/Screens/HomeScreen/Widgets/first_row_widget.dart';
 import 'package:zal/Screens/HomeScreen/Widgets/network_speed_widget.dart';
 import 'package:zal/Screens/HomeScreen/Widgets/report_error_widget.dart';
 import 'package:zal/Screens/HomeScreen/Widgets/storages_widget.dart';
+import 'package:zal/Screens/HomeScreen/providers/webrtc_provider.dart';
 
 final sidebarSelectedIndexProvider = StateProvider<int>((ref) => 0);
 
@@ -19,7 +20,11 @@ class HomeScreen extends ConsumerWidget {
       children: [
         const SizedBox(height: 5),
         const ReportErrorWidget(),
-
+        ElevatedButton(
+            onPressed: () {
+              final data = ref.read(webrtcProvider.notifier).webrtc.sendMessage('hiii');
+            },
+            child: const Text("send")),
         const FirstRowWidget(),
         SizedBox(height: 2.h),
         const Row(

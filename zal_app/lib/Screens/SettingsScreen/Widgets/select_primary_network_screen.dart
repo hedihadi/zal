@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:zal/Functions/utils.dart';
-import 'package:zal/Screens/HomeScreen/home_screen_providers.dart';
+import 'package:zal/Screens/HomeScreen/Providers/computer_data_provider.dart';
+import 'package:zal/Screens/HomeScreen/Providers/home_screen_providers.dart';
 import 'package:zal/Widgets/card_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -11,7 +12,7 @@ class SelectPrimaryNetworkScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final computerData = ref.watch(socketProvider).valueOrNull;
+    final computerData = ref.watch(computerDataProvider).valueOrNull;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Change Primary network"),

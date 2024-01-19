@@ -5,7 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sizer/sizer.dart';
 import 'package:zal/Functions/models.dart';
 import 'package:zal/Functions/utils.dart';
-import 'package:zal/Screens/HomeScreen/home_screen_providers.dart';
+import 'package:zal/Screens/HomeScreen/Providers/computer_data_provider.dart';
+import 'package:zal/Screens/HomeScreen/Providers/webrtc_provider.dart';
 import 'package:zal/Screens/NotificationsScreen/notifications_screen_providers.dart';
 import 'package:zal/Widgets/inline_ad.dart';
 
@@ -16,7 +17,7 @@ class NewNotificationScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final parsedData = ref.read(socketProvider).valueOrNull?.rawData;
+    final parsedData = ref.read(computerDataProvider).valueOrNull?.rawData;
     final notificationData = ref.watch(newNotificationDataProvider);
 
     return Scaffold(
@@ -182,7 +183,7 @@ class NewNotificationScreen extends ConsumerWidget {
             ),
             ElevatedButton(
                 onPressed: () {
-                  ref.read(socketObjectProvider.notifier).state?.socket.emit('new_notification', {'data': notificationData.toJson()});
+                  ref.read(webrtcProvider.notifier).sendMessage('new_notification', notificationData.toJson());
                   Navigator.of(context).pop();
                 },
                 child: const Text("Proceed")),

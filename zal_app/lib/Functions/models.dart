@@ -18,11 +18,32 @@ enum SortBy { Name, Memory, Cpu }
 
 enum DataType { Hardwares, TaskManager }
 
-enum StreamDataType { FPS, DATA, RoomClients, Notifications }
+enum StreamDataType { RoomClients }
+
+enum WebrtcDataType { pcData, notifications }
 
 enum NewNotificationKey { Gpu, Cpu, Ram, Storage, Network }
 
 enum NewNotificationFactorType { Higher, Lower }
+
+class WebrtcData {
+  WebrtcDataType type;
+  String data;
+  WebrtcData({
+    required this.data,
+    required this.type,
+  });
+}
+
+class WebrtcProviderModel {
+  final bool isConnected;
+  final WebrtcData? data;
+
+  WebrtcProviderModel({
+    required this.isConnected,
+    this.data,
+  });
+}
 
 ///used for creating new notification, this object holds the key's children with the unit of measurement.
 class NotificationKeyWithUnit {
@@ -223,7 +244,7 @@ class SocketObject {
   Timer? timer;
   SocketObject(String uid, String idToken) {
     socket = io(
-      dotenv.env['SERVER'] == 'production' ? 'https://api.zalapp.com' : 'http://192.168.0.109:5000',
+      dotenv.env['SERVER'] == 'production' ? 'https://api.zalapp.com' : 'http://192.168.1.104:5000',
       <String, dynamic>{
         'transports': ['websocket'],
         'query': {

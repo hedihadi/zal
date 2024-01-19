@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zal/Functions/models.dart';
 import 'package:zal/Screens/FpsScreen/fps_screen.dart';
-import 'package:zal/Screens/HomeScreen/home_screen_providers.dart';
+import 'package:zal/Screens/HomeScreen/Providers/computer_data_provider.dart';
+import 'package:zal/Screens/HomeScreen/Providers/home_screen_providers.dart';
 import 'package:zal/Widgets/card_widget.dart';
 
 class FpsWidget extends ConsumerWidget {
@@ -11,8 +12,8 @@ class FpsWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final computerSocket = ref.watch(socketProvider);
-    return computerSocket.when(
+    final computerData = ref.watch(computerDataProvider);
+    return computerData.when(
         skipLoadingOnReload: true,
         data: (data) {
           final Gpu? gpu = data.gpus.firstWhereOrNull((element) => element.fps != -1);

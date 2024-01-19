@@ -15,13 +15,13 @@ class SettingsNotifier extends AsyncNotifier<Settings> {
   Future<Settings> _fetchData() async {
     final settings = await LocalDatabaseManager.loadSettings();
     if (isStartup) {
-    Future.delayed(const Duration(microseconds: 1), () async {
-          try {
-            await ProgramsRunner.runZalConsole(settings.runAsAdmin);
-          } on PathAccessException {
-            showSnackbar("couldn't extract zal-console.zip, it's being used by another process", ref.read(contextProvider)!);
-          }
-        });
+      Future.delayed(const Duration(microseconds: 1), () async {
+        try {
+          await ProgramsRunner.runZalConsole(settings.runAsAdmin);
+        } on PathAccessException {
+          showSnackbar("couldn't extract zal-console.zip, it's being used by another process", ref.read(contextProvider)!);
+        }
+      });
       if (settings.startMinimized && settings.runInBackground) {
         windowManager.hide();
       }
@@ -39,6 +39,11 @@ class SettingsNotifier extends AsyncNotifier<Settings> {
 
   updatePersonalizedAds(bool value) {
     state = AsyncData(state.value!.copyWith(personalizedAds: value));
+    saveSettings();
+  }
+
+  updateComputerName(String value) {
+    state = AsyncData(state.value!.copyWith(computerName: value));
     saveSettings();
   }
 

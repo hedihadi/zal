@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zal/Functions/models.dart';
-import 'package:zal/Screens/HomeScreen/home_screen_providers.dart';
+import 'package:zal/Screens/HomeScreen/Providers/computer_data_provider.dart';
+import 'package:zal/Screens/HomeScreen/Providers/webrtc_provider.dart';
 import 'package:zal/Screens/SettingsScreen/settings_providers.dart';
 
 class NewNotificationsDataNotifier extends StateNotifier<NotificationData> {
@@ -30,12 +33,12 @@ class NewNotificationsDataNotifier extends StateNotifier<NotificationData> {
   }
 
   List<NotificationKeyWithUnit> getChildrenForSelectedKey() {
-    final parsedData = ref.read(socketProvider).valueOrNull?.rawData;
-    final computerData = ref.read(socketProvider).valueOrNull;
+    final parsedData = ref.read(computerDataProvider).valueOrNull?.rawData;
+    final computerData = ref.read(computerDataProvider).valueOrNull;
     final isCelcius = ref.read(settingsProvider).valueOrNull?.useCelcius ?? true;
     if (parsedData == null) return [];
     if (state.key == NewNotificationKey.Gpu) {
-      final primaryGpu = ref.read(socketProvider.notifier).getPrimaryGpu();
+      final primaryGpu = ref.read(computerDataProvider.notifier).getPrimaryGpu();
       if (primaryGpu == null) return [];
       List<NotificationKeyWithUnit> notificationKeys = [];
       notificationKeys.add(NotificationKeyWithUnit(keyName: 'temperature', unit: isCelcius ? 'C' : 'F'));
@@ -92,11 +95,10 @@ class NotificationsNotifier extends AsyncNotifier<List<NotificationData>> {
 
   @override
   Future<List<NotificationData>> build() async {
-    final data = ref.watch(_notificationsDataProvider).valueOrNull;
-    if (data == null) return [];
-
+    final data = await ref.watch(_notificationsDataProvider.future);
+    final parsedData = jsonDecode(data.data);
     List<NotificationData> notifications = [];
-    for (final rawNotification in data.data) {
+    for (final rawNotification in parsedData) {
       notifications.add(NotificationData.fromJson(rawNotification));
     }
     return notifications;
@@ -116,10 +118,10 @@ final notificationsProvider = AsyncNotifierProvider<NotificationsNotifier, List<
 });
 
 ///this provider only updates if the data type is [StreamDataType.Notifications]
-final _notificationsDataProvider = FutureProvider<StreamData>((ref) {
-  final sub = ref.listen(computerSocketStreamProvider, (prev, cur) {
-    if (cur.value?.type == StreamDataType.Notifications) {
-      ref.state = cur;
+final _notificationsDataProvider = FutureProvider<WebrtcData>((ref) {
+  final sub = ref.listen(webrtcProvider, (prev, cur) {
+    if (cur.data?.type == WebrtcDataType.notifications) {
+      ref.state = AsyncData(cur.data!);
     } else {}
   });
   ref.onDispose(() => sub.close());

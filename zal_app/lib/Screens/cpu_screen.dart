@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:zal/Functions/utils.dart';
-import 'package:zal/Screens/HomeScreen/home_screen_providers.dart';
+import 'package:zal/Screens/HomeScreen/Providers/computer_data_provider.dart';
 import 'package:zal/Screens/SettingsScreen/settings_providers.dart';
 import 'package:zal/Widgets/chart_widget.dart';
 import 'package:zal/Widgets/inline_ad.dart';
@@ -19,9 +19,10 @@ class CpuScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final computerSocket = ref.watch(socketProvider);
+    final computerData = ref.watch(computerDataProvider).value;
+    if (computerData == null) return Container();
     ref.read(screenViewProvider("cpu"));
-    final cpu = computerSocket.value!.cpu;
+    final cpu = computerData.cpu;
     return Scaffold(
       appBar: AppBar(title: const Text("CPU")),
       body: ListView(
@@ -174,9 +175,9 @@ class CpuScreen extends ConsumerWidget {
             ),
           ),
           const Divider(),
-          ChartWidget(data: computerSocket.valueOrNull?.charts['cpuLoad'] ?? [], title: "Load", maxYAxisNumber: 100, yAxisLabel: '%'),
+          ChartWidget(data: computerData.charts['cpuLoad'] ?? [], title: "Load", maxYAxisNumber: 100, yAxisLabel: '%'),
           ChartWidget(
-            data: computerSocket.valueOrNull?.charts['cpuTemperature'] ?? [],
+            data: computerData.charts['cpuTemperature'] ?? [],
             title: "Temperature",
             maxYAxisNumber: 100,
             minYAxisNumber: 0,

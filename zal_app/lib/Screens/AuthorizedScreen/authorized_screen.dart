@@ -8,8 +8,9 @@ import 'package:zal/Screens/AboutScreen/about_screen.dart';
 import 'package:zal/Screens/AccountScreen/account_screen.dart';
 import 'package:zal/Screens/AuthorizedScreen/Widgets/buy_premium_widget.dart';
 import 'package:zal/Screens/CanRunGameScreen/can_run_game_screen.dart';
+import 'package:zal/Screens/HomeScreen/Providers/computer_data_provider.dart';
+import 'package:zal/Screens/HomeScreen/Providers/webrtc_provider.dart';
 import 'package:zal/Screens/HomeScreen/home_screen.dart';
-import 'package:zal/Screens/HomeScreen/home_screen_providers.dart';
 import 'package:zal/Screens/NotificationsScreen/notifications_screen.dart';
 import 'package:zal/Screens/NotificationsScreen/notifications_screen_providers.dart';
 import 'package:zal/Screens/SettingsScreen/settings_screen.dart';
@@ -77,15 +78,13 @@ class ConnectionStateWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.watch(socketProvider);
-    final isConnected = ref.watch(socketProvider.notifier).isConnected;
-    final isComputerConnected = ref.watch(socketProvider.notifier).isComputerConnected;
+    final isComputerConnected = ref.watch(webrtcProvider).isConnected;
     return Container(
       height: 10,
       width: 10,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: (isConnected && isComputerConnected) ? Colors.green : Colors.red,
+        color: (isComputerConnected) ? Colors.green : Colors.red,
       ),
     );
   }
@@ -152,8 +151,7 @@ class TaskmanagerButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.watch(socketProvider);
-    if (ref.read(socketProvider).valueOrNull?.isRunningAsAdminstrator ?? false) {
+    if (ref.watch(computerDataProvider).valueOrNull?.isRunningAsAdminstrator ?? false) {
       return IconButton(
           onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(builder: (context) => const TaskManagerScreen()));
@@ -169,8 +167,7 @@ class NotificationsButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.watch(socketProvider);
-    if (ref.read(socketProvider).valueOrNull != null) {
+    if (ref.watch(computerDataProvider).valueOrNull != null) {
       return IconButton(
           onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(builder: (context) => const NotificationsScreen()));

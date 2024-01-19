@@ -7,14 +7,15 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sizer/sizer.dart';
 import 'package:zal/Functions/models.dart';
 import 'package:zal/Functions/utils.dart';
-import 'package:zal/Screens/HomeScreen/home_screen_providers.dart';
+import 'package:zal/Screens/HomeScreen/Providers/computer_data_provider.dart';
+import 'package:zal/Screens/HomeScreen/Providers/webrtc_provider.dart';
 
 //this provider holds the data
 final _processIconProvider = StateProvider<Map<String, Uint8List>>((ref) => {});
 
 //this provider subscribes to new data
 final processIconProvider = StateProvider<Map<String, Uint8List>>((ref) {
-  final socket = ref.watch(socketProvider);
+  final socket = ref.watch(computerDataProvider);
   final oldData = ref.read(_processIconProvider);
 
   if (socket.hasValue == false) return oldData;
@@ -104,7 +105,7 @@ class TaskmanagerTableWidget extends ConsumerWidget {
                         bool response =
                             await showConfirmDialog('are you sure?', '${process.name} will be killed, destroyed, absolutely annihilated.', context);
                         if (response == false) return;
-                        ref.read(socketObjectProvider.notifier).state!.sendData('kill_process', jsonEncode(process.pids));
+                        ref.read(webrtcProvider.notifier).sendMessage('kill_process', jsonEncode(process.pids));
                       },
                       icon: Icon(
                         FontAwesomeIcons.xmark,

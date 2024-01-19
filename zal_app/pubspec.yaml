@@ -64,6 +64,8 @@ dependencies:
   flutter_local_notifications: ^16.3.0
   fl_chart: ^0.65.0
   introduction_screen: ^3.1.12
+  peerdart: ^0.5.2
+  logger: ^2.0.2+1
 dev_dependencies:
   flutter_lints: ^2.0.3
   flutter_test:

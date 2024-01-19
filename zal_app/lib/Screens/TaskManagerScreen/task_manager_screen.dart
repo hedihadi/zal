@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sizer/sizer.dart';
 import 'package:zal/Functions/models.dart';
-import 'package:zal/Screens/HomeScreen/home_screen_providers.dart';
+import 'package:zal/Screens/HomeScreen/Providers/computer_data_provider.dart';
+import 'package:zal/Screens/HomeScreen/Providers/home_screen_providers.dart';
 import 'package:zal/Screens/TaskManagerScreen/Widgets/taskmanager_table_widget.dart';
 import 'package:zal/Widgets/inline_ad.dart';
 
@@ -15,7 +16,7 @@ class TaskManagerScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final taskProcesses = ref.watch(socketProvider).value?.taskmanagerProcesses ?? [];
+    final taskProcesses = ref.watch(computerDataProvider).value?.taskmanagerProcesses ?? [];
     final sortBy = ref.watch(selectedSortByProvider);
     final sortedTaskProcesses = getSortedTaskProcesses(taskProcesses, sortBy);
     return Scaffold(

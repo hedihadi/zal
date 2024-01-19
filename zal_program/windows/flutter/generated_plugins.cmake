@@ -3,6 +3,7 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  flutter_webrtc
   screen_retriever
   system_tray
   tray_manager

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:zal/Functions/utils.dart';
-import 'package:zal/Screens/HomeScreen/home_screen_providers.dart';
+import 'package:zal/Screens/HomeScreen/Providers/computer_data_provider.dart';
+import 'package:zal/Screens/HomeScreen/Providers/home_screen_providers.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../Functions/analytics_manager.dart';
@@ -12,7 +13,7 @@ class SpecsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.read(screenViewProvider("specs"));
-    final socket = ref.watch(socketProvider);
+    final socket = ref.watch(computerDataProvider);
     return socket.when(
       skipLoadingOnRefresh: true,
       skipLoadingOnReload: true,
@@ -43,7 +44,7 @@ class SpecsScreen extends ConsumerWidget {
                 height: 25,
               ),
               Icons.power,
-              "${ref.read(socketProvider.notifier).getPrimaryGpu()?.name}",
+              "${ref.read(computerDataProvider.notifier).getPrimaryGpu()?.name}",
               addSpacing: true,
             ),
             tableRow(

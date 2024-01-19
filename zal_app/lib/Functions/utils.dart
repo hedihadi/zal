@@ -6,8 +6,21 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sizer/sizer.dart';
+import 'package:zal/Functions/models.dart';
 import 'package:zal/Functions/theme.dart';
 import 'package:zal/Screens/SettingsScreen/settings_providers.dart';
+
+WebrtcDataType convertStringToWebrtcDataType(String input) {
+  switch (input) {
+    case "pc_data":
+      return WebrtcDataType.pcData;
+    case "notifications":
+      return WebrtcDataType.notifications;
+
+    default:
+      throw throw Exception("Invalid input");
+  }
+}
 
 String truncateString(String text, length) {
   return (text.length <= length) ? text : '${text.substring(0, length)}...';

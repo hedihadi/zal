@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zal/Functions/models.dart';
-import 'package:zal/Screens/HomeScreen/home_screen_providers.dart';
+import 'package:zal/Screens/HomeScreen/Providers/computer_data_provider.dart';
+import 'package:zal/Screens/HomeScreen/Providers/home_screen_providers.dart';
 import 'package:zal/Screens/TaskManagerScreen/Widgets/taskmanager_table_widget.dart';
 
 class HeavyProcessesWidget extends ConsumerWidget {
@@ -10,7 +11,7 @@ class HeavyProcessesWidget extends ConsumerWidget {
   final SortBy sortBy;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final taskProcesses = ref.watch(socketProvider).value?.taskmanagerProcesses ?? [];
+    final taskProcesses = ref.watch(computerDataProvider).value?.taskmanagerProcesses ?? [];
     final sortedProcesses = getSortedTaskProcesses(taskProcesses, sortBy, 5);
     if (sortedProcesses.isEmpty) return Container();
     return Column(

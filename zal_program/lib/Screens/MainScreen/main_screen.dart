@@ -12,7 +12,6 @@ import 'package:zal/Functions/utils.dart';
 import 'package:zal/Screens/LoginScreen/main_login_screen.dart';
 import 'package:zal/Screens/MainScreen/main_screen_providers.dart';
 import 'package:zal/Screens/authorized_screen.dart';
-import 'package:flutter/material.dart' hide MenuItem;
 
 final didRunStartupCodeProvider = StateProvider<bool>((ref) => false);
 
