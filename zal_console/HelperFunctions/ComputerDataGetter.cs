@@ -128,7 +128,7 @@ namespace Zal.HelperFunctions
                 {
                     try
                     {
-                        Console.WriteLine($"gpu found:{hardware.Name}");
+                        //Console.WriteLine($"gpu found:{hardware.Name}");
                         var gpu = new gpuData(hardware);
                        computerData.gpuData.Add(gpu);
                     }
