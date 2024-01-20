@@ -109,7 +109,8 @@ namespace Zal.HelperFunctions
             }
             foreach (IHardware hardware in computer.Hardware)
             {
-                var gpuTypes = new HardwareType[] { HardwareType.GpuAmd, HardwareType.GpuNvidia, HardwareType.GpuIntel };
+                //Console.WriteLine($"name:{hardware.Name},type:{hardware.HardwareType}");
+                var gpuTypes = new HardwareType[] { HardwareType.GpuNvidia, HardwareType.GpuIntel,HardwareType.GpuAmd };
                 if (hardware.HardwareType == HardwareType.Cpu)
                 {
                     try
@@ -122,10 +123,12 @@ namespace Zal.HelperFunctions
                     }
                    
                 }
-                else if (gpuTypes.Contains(hardware.HardwareType))
+                else if(hardware.HardwareType.ToString().ToLower().Contains("gpu"))
+                //else if (gpuTypes.Contains(hardware.HardwareType))
                 {
                     try
                     {
+                        Console.WriteLine($"gpu found:{hardware.Name}");
                         var gpu = new gpuData(hardware);
                        computerData.gpuData.Add(gpu);
                     }

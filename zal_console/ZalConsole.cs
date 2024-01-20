@@ -46,7 +46,7 @@ namespace ZalConsole
             {
                 Logger.LogError("error initializing computerDataGetter", c);
             }
-
+            var serializedData = Newtonsoft.Json.JsonConvert.SerializeObject(computerDataGetter.getcomputerData());
             client.On("get_data", async response =>
             {
                 if (computerDataGetter != null) {
