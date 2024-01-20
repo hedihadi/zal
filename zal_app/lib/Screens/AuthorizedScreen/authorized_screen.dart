@@ -39,7 +39,7 @@ class AuthorizedScreen extends ConsumerWidget {
       appBar: AppBar(
         title: const Row(
           children: [
-            ConnectionStateWidget(),
+            //onnectionStateWidget(),
             PremiumButton(),
           ],
         ),

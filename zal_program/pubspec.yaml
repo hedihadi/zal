@@ -54,6 +54,7 @@ dependencies:
   hive: ^2.2.3
   flutter_webrtc: ^0.9.47
   logger: ^2.0.2+1
+  color_print: ^1.0.3
 dev_dependencies:
   flutter_test:
     sdk: flutter

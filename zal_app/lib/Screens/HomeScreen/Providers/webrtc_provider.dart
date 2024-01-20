@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:color_print/color_print.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:logger/logger.dart';
@@ -10,6 +11,9 @@ import 'package:zal/Functions/webrtcModel.dart';
 import 'package:zal/Screens/HomeScreen/Providers/home_screen_providers.dart';
 
 class WebRtcNotifier extends StateNotifier<WebrtcProviderModel> {
+  ///this list keeps track of all the offers, we send offers one by one to PC until one of the offers manage to work.
+  List<RTCSessionDescription> sdpOffers = [];
+  bool isWaitingForOfferResponse = false;
   StateNotifierProviderRef<Object?, Object?> ref;
   late WebrtcModel webrtc;
   WebRtcNotifier(this.ref) : super(WebrtcProviderModel(isConnected: false)) {
@@ -22,20 +26,40 @@ class WebRtcNotifier extends StateNotifier<WebrtcProviderModel> {
 
   initiateConnection() {
     webrtc.offerConnection();
-    Future.delayed(const Duration(milliseconds: 1000), () {
-      if (state.isConnected == false) {
-        webrtc.offerConnection();
-      }
-    });
+  }
+
+  ///this function will be called from the PC, when the PC fails to connect with the offer we sent, we'll send another offer.
+  offerFailed() {
+    if (sdpOffers.isEmpty) {
+      initiateConnection();
+      return;
+    }
+    final sdp = sdpOffers.first;
+    sdpOffers.removeAt(0);
+    _sendSdpToPc(sdp);
+    isWaitingForOfferResponse = true;
   }
 
   sdpChanged(RTCSessionDescription? sdp) {
     if (sdp == null) return;
     if (sdp.type == 'offer') {
-      ref.read(socketObjectProvider)?.socket.emit('offer_sdp', sdp.toMap());
+      logWarning("$isWaitingForOfferResponse");
+      if (isWaitingForOfferResponse == false) {
+        _sendSdpToPc(sdp);
+        isWaitingForOfferResponse = true;
+      } else {
+        sdpOffers.add(sdp);
+      }
     }
   }
 
+  _sendSdpToPc(RTCSessionDescription sdp) {
+    ref.read(socketObjectProvider)?.socket.emit('offer_sdp', sdp.toMap());
+    logWarning("sent");
+  }
+
+  ///this function will be called from the PC, when the PC receives offer and creates and answer message,
+  ///it sends the answerMessage, which then we accept it.
   acceptAnswer(Map<String, dynamic> data) {
     RTCSessionDescription offer = RTCSessionDescription(
       data["sdp"],
@@ -48,10 +72,12 @@ class WebRtcNotifier extends StateNotifier<WebrtcProviderModel> {
     }
   }
 
-  stateChanged(RTCDataChannelState channelState) {
-    if (channelState == RTCDataChannelState.RTCDataChannelOpen) {
+  stateChanged(RTCPeerConnectionState channelState) {
+    if (channelState == RTCPeerConnectionState.RTCPeerConnectionStateConnected) {
       state = WebrtcProviderModel(isConnected: true);
-    } else {
+      isWaitingForOfferResponse = false;
+      logError('reset');
+    } else if (channelState == RTCPeerConnectionState.RTCPeerConnectionStateDisconnected) {
       state = WebrtcProviderModel(isConnected: false);
     }
   }

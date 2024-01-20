@@ -24,8 +24,7 @@ class ComputerDataNotifier extends AsyncNotifier<ComputerData> {
   }
 
   @override
-  Future<ComputerData> build() async {
-    final webrtcProviderModel = await ref.watch(_computerDataProvider.future);
+  Future<ComputerData> build() async {    final webrtcProviderModel = await ref.watch(_computerDataProvider.future);
     final data = await _fetchData(webrtcProviderModel.data?.data ?? '');
     if (data.isRunningAsAdminstrator) {
       Future.delayed(const Duration(milliseconds: 100), () {

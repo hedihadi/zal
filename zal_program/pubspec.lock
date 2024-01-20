@@ -65,6 +65,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.17.1"
+  color_print:
+    dependency: "direct main"
+    description:
+      name: color_print
+      sha256: "1043a88643e1b966d46677574b538a41b7e2599819d2180763b660a0b0e7f273"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.3"
   console:
     dependency: transitive
     description:

@@ -26,6 +26,7 @@ class WebrtcModel {
     connection = await _createPeerConnection();
     connection?.onConnectionState = (state) {
       print(state);
+      ref.read(webrtcProvider.notifier).stateChanged(state);
     };
     await _createDataChannel();
     RTCSessionDescription? offer = await connection?.createOffer(offerAnswerConstraints);
@@ -80,7 +81,7 @@ class WebrtcModel {
       ref.read(webrtcProvider.notifier).messageReceived(data);
     };
     _dataChannel?.onDataChannelState = (state) {
-      ref.read(webrtcProvider.notifier).stateChanged(state);
+      //ref.read(webrtcProvider.notifier).stateChanged(state);
     };
   }
 }

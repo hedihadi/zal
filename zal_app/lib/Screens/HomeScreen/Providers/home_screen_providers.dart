@@ -37,6 +37,9 @@ final computerSocketStreamProvider = StreamProvider<StreamData>((ref) async* {
     socket.socket.on('accept_answer', (data) {
       ref.read(webrtcProvider.notifier).acceptAnswer(data);
     });
+    socket.socket.on('offer_failed', (data) {
+      ref.read(webrtcProvider.notifier).offerFailed();
+    });
     socket.socket.on('room_clients', (data) {
       stream.add(StreamData(type: StreamDataType.RoomClients, data: data));
     });

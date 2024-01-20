@@ -26,7 +26,7 @@ Future<void> main() async {
   await Hive.openBox("data");
   FirebaseAuth.initialize("AIzaSyDeYt8paN1Q8T-Rz_NfdLGgqWUbAM6AJA8", await HiveStore.create());
   await windowManager.ensureInitialized();
-  windowManager.setSize(const Size(900, 700));
+  windowManager.setSize(const Size(600, 400));
   windowManager.setResizable(false);
   windowManager.waitUntilReadyToShow().then((_) async {
     await windowManager.setTitle('Zal');

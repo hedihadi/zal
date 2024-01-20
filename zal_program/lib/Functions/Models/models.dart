@@ -14,11 +14,6 @@ enum WebrtcDataType {
   killProcess,
 }
 
-enum ServerStreamDataType {
-  roomClients,
-  connected,
-  disconnected,
-}
 
 enum NewNotificationKey { Gpu, Cpu, Ram, Storage, Network }
 
@@ -189,24 +184,7 @@ class NotificationData {
   }
 }
 
-class ServerStreamData {
-  ServerStreamDataType type;
-  dynamic data;
-  ServerStreamData({
-    required this.type,
-    required this.data,
-  });
 
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is StreamData && other.data == data;
-  }
-
-  @override
-  int get hashCode => data.hashCode;
-}
 
 class LocalSocketio {
   late Socket socket;

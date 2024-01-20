@@ -6,8 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:sizer/sizer.dart';
-import 'package:zal/Functions/analytics_manager.dart';
 import 'package:zal/Screens/HomeScreen/providers/webrtc_provider.dart';
 import 'package:zal/Widgets/SettingsUI/section_setting_ui.dart';
 import 'package:zal/Widgets/SettingsUI/switch_setting_ui.dart';
@@ -18,7 +16,6 @@ import 'package:zal/Screens/HomeScreen/providers/server_socket_stream_provider.d
 import 'package:zal/Screens/MainScreen/main_screen_providers.dart';
 import 'package:zal/Screens/SettingsScreen/settings_provider.dart';
 import 'package:zal/Screens/StorageScreen/Widgets/text_with_link_icon.dart';
-import 'package:zal/Widgets/SettingsUI/text_setting_ui.dart';
 
 class SettingsScreen extends ConsumerWidget {
   SettingsScreen({super.key});
@@ -65,18 +62,18 @@ class SettingsScreen extends ConsumerWidget {
             ),
             SwitchSettingUi(
               title: "Run as Admin on Startup",
-              subtitle: "the Program will automatically ask for admin privileges when you run Zal.",
+              subtitle: "the Program will automatically ask \nfor admin privileges when you run Zal.",
               value: settings?.runAsAdmin ?? true,
               onChanged: (value) => ref.read(settingsProvider.notifier).updateRunAsAdmin(value),
               icon: const Icon(FontAwesomeIcons.windowMaximize),
             ),
-            TextSettingUi(
-              title: "Computer Name",
-              subtitle: "you can give this PC a personal name to identify it on the mobile App.",
-              value: settings?.computerName ?? '',
-              onChanged: (value) => ref.read(settingsProvider.notifier).updateComputerName(value),
-              icon: const Icon(FontAwesomeIcons.windowMaximize),
-            ),
+            //TextSettingUi(
+            //  title: "Computer Name",
+            //  subtitle: "you can give this PC a personal name to identify it on the mobile App.",
+            //  value: settings?.computerName ?? '',
+            //  onChanged: (value) => ref.read(settingsProvider.notifier).updateComputerName(value),
+            //  icon: const Icon(FontAwesomeIcons.windowMaximize),
+            //),
           ],
         ),
         ref.watch(localSocketProvider).value == null
@@ -87,7 +84,7 @@ class SettingsScreen extends ConsumerWidget {
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: ref.watch(localSocketProvider).value!.gpus.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4, childAspectRatio: 4),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, childAspectRatio: 3),
                   itemBuilder: (context, index) {
                     final gpu = ref.read(localSocketProvider).value!.gpus[index];
                     return GestureDetector(
@@ -172,11 +169,12 @@ class SettingsScreen extends ConsumerWidget {
                 label: const Text("Delete Account")),
           ],
         ),
-        SectionSettingUi(
-          children: [
-            SelectableText("UID: ${ref.watch(userProvider).value?.id}"),
-          ],
-        ),
+        const SizedBox(height: 10),
+        //SectionSettingUi(
+        //  children: [
+        //    SelectableText("UID: ${ref.watch(userProvider).value?.id}"),
+        //  ],
+        //),
         SectionSettingUi(
           children: [
             Text(
@@ -271,7 +269,9 @@ class SettingsScreen extends ConsumerWidget {
               ],
             ),
             const SizedBox(height: 20),
-            Row(
+            Wrap(
+              spacing: 10,
+              runSpacing: 10,
               children: [
                 ElevatedButton(
                   onPressed: () async {
@@ -279,7 +279,6 @@ class SettingsScreen extends ConsumerWidget {
                   },
                   child: const Text("copy backend data"),
                 ),
-                SizedBox(width: 2.w),
                 ElevatedButton(
                   onPressed: () async {
                     Directory tempDir = await getTemporaryDirectory();
@@ -292,114 +291,37 @@ class SettingsScreen extends ConsumerWidget {
                   },
                   child: const Text("open log file"),
                 ),
-                SizedBox(width: 2.w),
-                ElevatedButton(
-                  onPressed: () async {
-                    final backendData = ref.read(localSocketProvider.notifier).rawData;
-                    Directory tempDir = await getTemporaryDirectory();
-                    String logData = '';
-                    try {
-                      final File logFile = File("${tempDir.path}/zal_log.txt");
-                      logData = await logFile.readAsString();
-                    } catch (c) {
-                      showSnackbar('failed to read log: $c', context);
-                    }
-                    showSnackbar('sending...', context);
-                    final response = await AnalyticsManager.sendDataToDatabase(
-                      'error',
-                      data: {
-                        'data': backendData ?? '',
-                        'log': logData,
-                      },
-                    );
-                    if (response.statusCode == 200) {
-                      showSnackbar('sent!', context);
-                    } else {
-                      showSnackbar('error sending data, server returned ${response.statusCode}', context);
-                    }
-                  },
-                  child: const Text("report backend data"),
-                ),
+                //ElevatedButton(
+                //  onPressed: () async {
+                //    final backendData = ref.read(localSocketProvider.notifier).rawData;
+                //    Directory tempDir = await getTemporaryDirectory();
+                //    String logData = '';
+                //    try {
+                //      final File logFile = File("${tempDir.path}/zal_log.txt");
+                //      logData = await logFile.readAsString();
+                //    } catch (c) {
+                //      showSnackbar('failed to read log: $c', context);
+                //    }
+                //    showSnackbar('sending...', context);
+                //    final response = await AnalyticsManager.sendDataToDatabase(
+                //      'error',
+                //      data: {
+                //        'data': backendData ?? '',
+                //        'log': logData,
+                //      },
+                //    );
+                //    if (response.statusCode == 200) {
+                //      showSnackbar('sent!', context);
+                //    } else {
+                //      showSnackbar('error sending data, server returned ${response.statusCode}', context);
+                //    }
+                //  },
+                //  child: const Text("report backend data"),
+                //),
               ],
             ),
             const Divider(),
-            Table(
-              defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-              columnWidths: const {
-                0: IntrinsicColumnWidth(),
-                1: IntrinsicColumnWidth(),
-                2: IntrinsicColumnWidth(),
-                3: IntrinsicColumnWidth(),
-                4: FlexColumnWidth(),
-              },
-              children: <TableRow>[
-                TableRow(children: [
-                  TableCell(
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 20),
-                      child: Text(
-                        "Zal Server",
-                        style: Theme.of(context).textTheme.titleSmall,
-                      ),
-                    ),
-                  ),
-                  TableCell(
-                    child: Container(
-                      width: 10, // Change the size of the circle here
-                      height: 10, // Change the size of the circle here
-                      decoration: BoxDecoration(
-                        color: (ref.watch(serverSocketObjectProvider).value?.socket.connected ?? false) ? Colors.green : Colors.red,
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                  ),
-                  TableCell(
-                    child: Padding(
-                        padding: const EdgeInsets.only(left: 5),
-                        child: Text((ref.watch(serverSocketObjectProvider).value?.socket.connected ?? false) ? "Connected" : "Not connected")),
-                  ),
-                  TableCell(
-                    child: Container(),
-                  ),
-                ]),
-                TableRow(children: [
-                  TableCell(child: Container(height: 30)),
-                  TableCell(child: Container()),
-                  TableCell(child: Container()),
-                  TableCell(child: Container()),
-                ]),
-                TableRow(children: [
-                  TableCell(
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 20),
-                      child: Text(
-                        "Mobile p2p connection",
-                        style: Theme.of(context).textTheme.titleSmall,
-                      ),
-                    ),
-                  ),
-                  TableCell(
-                    child: Container(
-                      width: 10, // Change the size of the circle here
-                      height: 10, // Change the size of the circle here
-                      decoration: BoxDecoration(
-                        color: (ref.watch(webrtcProvider).isConnected) ? Colors.green : Colors.red,
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                  ),
-                  TableCell(
-                    child: Padding(
-                        padding: const EdgeInsets.only(left: 5),
-                        child: Text((ref.watch(serverSocketObjectProvider).value?.socket.connected ?? false) ? "Connected" : "Not connected")),
-                  ),
-                  TableCell(
-                    child: Container(),
-                  ),
-                ]),
-              ],
-            ),
-          ],
+           ],
         ),
       ],
     );

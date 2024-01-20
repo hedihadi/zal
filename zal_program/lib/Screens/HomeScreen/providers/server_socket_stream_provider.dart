@@ -3,24 +3,25 @@ import 'package:socket_io_client/socket_io_client.dart';
 import 'dart:async';
 import 'package:zal/Functions/Models/models.dart';
 import 'package:zal/Functions/utils.dart';
+import 'package:zal/Screens/HomeScreen/providers/log_list_provider.dart';
 import 'package:zal/Screens/HomeScreen/providers/webrtc_provider.dart';
 import 'package:zal/Screens/MainScreen/main_screen_providers.dart';
 import 'package:zal/Screens/SettingsScreen/settings_provider.dart';
 
-final serverSocketStreamProvider = StreamProvider<ServerStreamData>((ref) async* {
+final serverSocketStreamProvider = StreamProvider<void>((ref) async* {
   StreamController stream = StreamController();
 
   final socket = ref.watch(serverSocketObjectProvider).value;
   if (socket == null) return;
   socket.socket.on('room_clients', (data) {
-    stream.add(ServerStreamData(type: ServerStreamDataType.roomClients, data: data));
+    ref.read(logListProvider.notifier).addElement('received room_clients from server: ${data.toString()}');
   });
   socket.socket.on('offer_sdp', (data) {
     ref.read(webrtcProvider.notifier).answerConnection(data);
   });
 
   socket.socket.onConnect((data) {
-    stream.add(ServerStreamData(type: ServerStreamDataType.connected, data: data));
+    ref.read(logListProvider.notifier).addElement('connected to server');
   });
 
   socket.socket.onDisconnect((data) {
@@ -29,7 +30,7 @@ final serverSocketStreamProvider = StreamProvider<ServerStreamData>((ref) async*
         ref.read(serverSocketObjectProvider).value?.socket.connect();
       }
     });
-    stream.add(ServerStreamData(type: ServerStreamDataType.disconnected, data: data));
+    ref.read(logListProvider.notifier).addElement('disconnected from server');
   });
   socket.socket.onReconnectFailed((data) {
     Future.delayed(const Duration(milliseconds: 1000), () {
@@ -45,11 +46,11 @@ final serverSocketStreamProvider = StreamProvider<ServerStreamData>((ref) async*
       }
     });
   });
-  await for (final value in stream.stream) {
-    if (value != null) {
-      yield value as ServerStreamData;
-    }
-  }
+  //await for (final value in stream.stream) {
+  //  if (value != null) {
+  //    yield value as ServerStreamData;
+  //  }
+  //}
 });
 
 final serverSocketObjectProvider = FutureProvider<ServerSocketio?>((ref) async {
