@@ -12,8 +12,14 @@ enum WebrtcDataType {
   newNotification,
   editNotification,
   killProcess,
+  getDirectory,
+  getFile,
+  getFileMissingChunks,
+  runFile,
+  moveFile,
+  copyFile,
+  deleteFile,
 }
-
 
 enum NewNotificationKey { Gpu, Cpu, Ram, Storage, Network }
 
@@ -183,8 +189,6 @@ class NotificationData {
     return key.hashCode ^ childKey.hashCode ^ factorType.hashCode ^ factorValue.hashCode ^ secondsThreshold.hashCode ^ suspended.hashCode;
   }
 }
-
-
 
 class LocalSocketio {
   late Socket socket;

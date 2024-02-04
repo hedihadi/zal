@@ -20,6 +20,8 @@ class ReportErrorWidget extends ConsumerWidget {
         return Container();
       },
       error: (error, stackTrace) {
+        print(error);
+        print(stackTrace);
         return Column(
           children: [
             Text(

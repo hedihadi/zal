@@ -14,7 +14,7 @@ using Zal.HelperFunctions.SpecificFunctions;
 
 namespace Zal.HelperFunctions
 {
-    public class fpsDataGetter
+    public class FpsDataGetter
     {
         SocketIOClient.SocketIO client;
         private Process? presentmonProcess;
@@ -23,7 +23,7 @@ namespace Zal.HelperFunctions
         private bool isDisposed = false;
         public event EventHandler<fpsData> fpsDataAdded;
         private Timer presentmonTimer;
-        public fpsDataGetter(SocketIOClient.SocketIO client)
+        public FpsDataGetter(SocketIOClient.SocketIO client)
         {
         this.client=client;
             //run presentmon and refresh every 30 secs to avoid memory leak.

@@ -7,6 +7,7 @@ import 'package:zal/Screens/MainScreen/Widgets/phone_widget.dart';
 import 'package:zal/Screens/NotificationsScreen/notifications_screen_providers.dart';
 import 'package:zal/Screens/SettingsScreen/settings_screen.dart';
 import 'package:zal/Screens/computer_screen.dart';
+final sidebarSelectedIndexProvider = StateProvider<int>((ref) => 0);
 
 class AuthorizedScreen extends ConsumerWidget {
   const AuthorizedScreen({super.key});

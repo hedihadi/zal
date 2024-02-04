@@ -20,11 +20,114 @@ enum DataType { Hardwares, TaskManager }
 
 enum StreamDataType { RoomClients }
 
-enum WebrtcDataType { pcData, notifications }
+enum WebrtcDataType { pcData, notifications, drives, directory, file, informationText, fileComplete }
 
 enum NewNotificationKey { Gpu, Cpu, Ram, Storage, Network }
 
 enum NewNotificationFactorType { Higher, Lower }
+
+enum FileType { file, folder }
+
+enum FileProviderState { downloading, rebuilding, complete }
+
+enum MoveFileType { move, copy }
+
+enum SortFilesBy {
+  nameAscending,
+  nameDescending,
+  sizeAscending,
+  sizeDescending,
+  dateModifiedAscending,
+  dateModifiedDescending,
+  dateCreatedAscending,
+  dateCreatedDescending,
+}
+
+class MoveFileModel {
+  final FileData file;
+  final MoveFileType moveType;
+  MoveFileModel({
+    required this.file,
+    required this.moveType,
+  });
+}
+
+class FileProviderModel {
+  FileData? file;
+  int lastBiggestByte;
+  FileProviderState fileProviderState;
+  FileProviderModel({
+    required this.file,
+    required this.lastBiggestByte,
+    required this.fileProviderState,
+  });
+
+  FileProviderModel copyWith({
+    FileData? file,
+    int? lastBiggestByte,
+    FileProviderState? fileProviderState,
+  }) {
+    return FileProviderModel(
+      file: file ?? this.file,
+      lastBiggestByte: lastBiggestByte ?? this.lastBiggestByte,
+      fileProviderState: fileProviderState ?? this.fileProviderState,
+    );
+  }
+}
+
+class FileData {
+  final String name;
+
+  final String? extension;
+  final String directory;
+
+  ///in bytes
+  final int size;
+  FileType fileType;
+  final DateTime dateCreated;
+  final DateTime dateModified;
+  FileData({
+    required this.name,
+    this.extension,
+    required this.directory,
+    required this.size,
+    required this.fileType,
+    required this.dateCreated,
+    required this.dateModified,
+  });
+
+  Map<String, dynamic> toMap() {
+    final result = <String, dynamic>{};
+
+    result.addAll({'name': name});
+    if (extension != null) {
+      result.addAll({'extension': extension});
+    }
+    result.addAll({'directory': directory});
+    result.addAll({'size': size});
+    result.addAll({'fileType': fileType.name});
+    result.addAll({'dateCreated': dateCreated.millisecondsSinceEpoch});
+    result.addAll({'dateModified': dateModified.millisecondsSinceEpoch});
+
+    return result;
+  }
+
+  factory FileData.fromMap(Map<String, dynamic> map) {
+    return FileData(
+      name: map['name'] ?? '',
+      extension: map['extension'],
+      directory: map['directory'] ?? '',
+      size: map['size']?.toInt() ?? 0,
+      fileType: FileType.values.byName(map['fileType']),
+      dateCreated: map['dateCreated'] != null ? DateTime.fromMillisecondsSinceEpoch(map['dateCreated']) : DateTime.fromMillisecondsSinceEpoch(0),
+      dateModified: map['dateModified'] != null ? DateTime.fromMillisecondsSinceEpoch(map['dateModified']) : DateTime.fromMillisecondsSinceEpoch(0),
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory FileData.fromJson(String source) => FileData.fromMap(json.decode(source));
+}
 
 class WebrtcData {
   WebrtcDataType type;
@@ -677,7 +780,7 @@ class ComputerData {
   ComputerData.construct(String data) {
     final parsedData = jsonDecode(data.replaceAll("'", '"'));
     rawData = parsedData;
-    charts = Map<String, List<dynamic>>.from(parsedData['charts']);
+    charts = parsedData.containsKey("charts") ? Map<String, List<dynamic>>.from(parsedData['charts']) : {};
     final computerData = parsedData['computerData'];
     isRunningAsAdminstrator = computerData['isAdminstrator'];
     processesGpuUsage = computerData["processesGpuUsage"] == null
@@ -1002,7 +1105,10 @@ class Monitor {
 }
 
 class Ram {
+  ///in gigabytes
   final double memoryUsed;
+
+  ///in gigabytes
   final double memoryAvailable;
   final int memoryUsedPercentage;
   final List<RamPiece> ramPieces;
@@ -1116,7 +1222,8 @@ class NotConnectedToSocketException implements Exception {
 
 class ErrorParsingComputerData implements Exception {
   final String data;
-  ErrorParsingComputerData(this.data);
+  final Object error;
+  ErrorParsingComputerData(this.data, this.error);
 }
 
 class TooEarlyToReturnError implements Exception {

@@ -7,7 +7,7 @@ import 'package:sizer/sizer.dart';
 import 'package:zal/Screens/AboutScreen/about_screen.dart';
 import 'package:zal/Screens/AccountScreen/account_screen.dart';
 import 'package:zal/Screens/AuthorizedScreen/Widgets/buy_premium_widget.dart';
-import 'package:zal/Screens/CanRunGameScreen/can_run_game_screen.dart';
+import 'package:zal/Screens/FilesScreen/files_screen.dart';
 import 'package:zal/Screens/HomeScreen/Providers/computer_data_provider.dart';
 import 'package:zal/Screens/HomeScreen/Providers/webrtc_provider.dart';
 import 'package:zal/Screens/HomeScreen/home_screen.dart';
@@ -25,7 +25,9 @@ class AuthorizedScreen extends ConsumerWidget {
   AuthorizedScreen({super.key});
   final List<Widget> widgets = [
     const HomeScreen(),
-    const CanRunGameScreen(),
+    const TaskManagerScreen(),
+    const FilesScreen(),
+    //const CanRunGameScreen(),
     const AccountScreen(),
   ];
   @override
@@ -36,6 +38,8 @@ class AuthorizedScreen extends ConsumerWidget {
     final index = ref.watch(bottomNavigationbarIndexProvider);
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      //drawer: index == 1
+      //    ? SidebarWidget(): null,
       appBar: AppBar(
         title: const Row(
           children: [
@@ -45,12 +49,19 @@ class AuthorizedScreen extends ConsumerWidget {
         ),
         actions: const [
           //StressTestButton(),
-          TaskmanagerButton(),
           NotificationsButton(),
         ],
       ),
-      body: widgets[index],
+      body: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(child: widgets[index]),
+        ],
+      ),
+
       bottomNavigationBar: BottomNavigationBar(
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
         type: BottomNavigationBarType.fixed,
         currentIndex: index,
         items: const [
@@ -59,9 +70,17 @@ class AuthorizedScreen extends ConsumerWidget {
             label: 'home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(FontAwesomeIcons.gamepad),
-            label: 'Can i run it?',
+            icon: Icon(FontAwesomeIcons.server),
+            label: 'Task manager',
           ),
+          BottomNavigationBarItem(
+            icon: Icon(FontAwesomeIcons.folder),
+            label: 'Files',
+          ),
+          //BottomNavigationBarItem(
+          //  icon: Icon(FontAwesomeIcons.gamepad),
+          //  label: 'Can i run it?',
+          //),
           BottomNavigationBarItem(
             icon: Icon(FontAwesomeIcons.user),
             label: 'Account',

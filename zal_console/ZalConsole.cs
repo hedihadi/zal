@@ -19,6 +19,7 @@ using ZalConsole.HelperFunctions.SpecificFunctions;
 using Zal;
 using System.Diagnostics;
 using Zal.HelperFunctions.SpecificFunctions;
+using ZalConsole.HelperFunctions;
 
 namespace ZalConsole
 {
@@ -37,7 +38,9 @@ namespace ZalConsole
 
             }
             computerDataGetter? computerDataGetter=null;
+            
             SocketIOClient.SocketIO client = new SocketIOClient.SocketIO($"http://localhost:3000/");
+            FilesGetter fileGetter = new FilesGetter(client);
             try
             {
                  computerDataGetter = new computerDataGetter(client);
@@ -122,15 +125,6 @@ namespace ZalConsole
                 Thread.Sleep(1000);
             }
 
-
-            // The rest of your code
-
-            // While loop example (uncomment if needed)
-            // while (true)
-            // {
-            //     Console.WriteLine(a.getcomputerData());
-            //     Thread.Sleep(1000);
-            // }
         }
         private static void restartAsAdmin()
         {

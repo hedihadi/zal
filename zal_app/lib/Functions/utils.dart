@@ -11,15 +11,15 @@ import 'package:zal/Functions/theme.dart';
 import 'package:zal/Screens/SettingsScreen/settings_providers.dart';
 
 WebrtcDataType convertStringToWebrtcDataType(String input) {
-  switch (input) {
-    case "pc_data":
-      return WebrtcDataType.pcData;
-    case "notifications":
-      return WebrtcDataType.notifications;
+  //first convert camel_case to camelCase
+  List<String> parts = input.split('_');
+  String result = parts[0];
 
-    default:
-      throw throw Exception("Invalid input");
+  for (int i = 1; i < parts.length; i++) {
+    result += parts[i][0].toUpperCase() + parts[i].substring(1);
   }
+  //then get the data type from it
+  return WebrtcDataType.values.byName(result);
 }
 
 String truncateString(String text, length) {
@@ -326,8 +326,11 @@ void showSnackbar(String text, BuildContext context) {
     ..hideCurrentSnackBar()
     ..showSnackBar(
       SnackBar(
-        content: Text(text),
+        content: Text(
+          text,
+        ),
         showCloseIcon: true,
+        // backgroundColor: Theme.of(context).cardColor,
         behavior: SnackBarBehavior.floating,
       ),
     );

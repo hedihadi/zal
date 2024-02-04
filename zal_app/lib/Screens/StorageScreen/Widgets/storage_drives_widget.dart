@@ -11,6 +11,7 @@ class StorageDrivesWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return ListView.builder(
       shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
       itemCount: storage.partitions?.length,
       itemBuilder: (context, index) {
         final partition = storage.partitions![index];

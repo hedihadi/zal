@@ -12,8 +12,6 @@ import 'package:zal/Screens/HomeScreen/providers/server_socket_stream_provider.d
 import 'package:zal/Screens/HomeScreen/providers/webrtc_provider.dart';
 import 'package:zal/Screens/NotificationsScreen/notifications_screen_providers.dart';
 
-final sidebarSelectedIndexProvider = StateProvider<int>((ref) => 0);
-
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 

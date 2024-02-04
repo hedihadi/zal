@@ -18,18 +18,15 @@ import 'package:zal/Screens/SettingsScreen/settings_provider.dart';
 import 'package:http/http.dart' as http;
 
 WebrtcDataType convertStringToWebrtcDataType(String input) {
-  switch (input) {
-    case "restart_admin":
-      return WebrtcDataType.restartAdmin;
-    case "edit_notification":
-      return WebrtcDataType.editNotification;
-    case "new_notification":
-      return WebrtcDataType.newNotification;
-    case "kill_process":
-      return WebrtcDataType.killProcess;
-    default:
-      throw throw Exception("Invalid input");
+  //first convert camel_case to camelCase
+  List<String> parts = input.split('_');
+  String result = parts[0];
+
+  for (int i = 1; i < parts.length; i++) {
+    result += parts[i][0].toUpperCase() + parts[i].substring(1);
   }
+  //then get the data type from it
+  return WebrtcDataType.values.byName(result);
 }
 
 ///this function calls zalapp.com/version and compares it to the local version. if the versions don't match, the function will return true.

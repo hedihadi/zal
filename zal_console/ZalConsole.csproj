@@ -153,6 +153,7 @@
     <Compile Include="Constants\Models\CpuData.cs" />
     <Compile Include="Constants\Models\CpuInfo.cs" />
     <Compile Include="Constants\Models\CrystalDiskInfo.cs" />
+    <Compile Include="Constants\Models\FilesGetterModels.cs" />
     <Compile Include="Constants\Models\FpsData.cs" />
     <Compile Include="Constants\Models\GpuData.cs" />
     <Compile Include="Constants\Models\MonitorData.cs" />
@@ -162,6 +163,7 @@
     <Compile Include="Constants\Models\RamPieceData.cs" />
     <Compile Include="Constants\Models\StorageData.cs" />
     <Compile Include="HelperFunctions\ComputerDataGetter.cs" />
+    <Compile Include="HelperFunctions\FilesGetter.cs" />
     <Compile Include="HelperFunctions\FpsDataGetter.cs" />
     <Compile Include="HelperFunctions\GlobalClass.cs" />
     <Compile Include="HelperFunctions\Logger.cs" />

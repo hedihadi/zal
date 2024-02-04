@@ -20,19 +20,19 @@ class WebRtcNotifier extends StateNotifier<WebrtcProviderModel> {
     webrtc = WebrtcModel(ref);
   }
 
-  sendMessage(
+  Future<void> sendMessage(
     ///the name of the message, ie. key.
     String name,
     //the data to be sent
     String data,
-  ) {
+  ) async {
     final compressedData = jsonEncode(
       {
         'name': name,
         'data': data,
       },
     );
-    webrtc.sendMessage(compressedData);
+    await webrtc.sendMessage(compressedData);
   }
 
   sdpChanged(RTCSessionDescription? sdp) {
@@ -97,6 +97,20 @@ class WebRtcNotifier extends StateNotifier<WebrtcProviderModel> {
       for (final processId in processes) {
         await Process.run('taskkill', ['/F', '/PID', processId.toString()]);
       }
+    } else if (state.data?.type == WebrtcDataType.getDirectory) {
+      ref.read(localSocketObjectProvider)?.socket.emit('get_directory', state.data!.data);
+    } else if (state.data?.type == WebrtcDataType.getFile) {
+      ref.read(localSocketObjectProvider)?.socket.emit('get_file', state.data!.data);
+    } else if (state.data?.type == WebrtcDataType.getFileMissingChunks) {
+      ref.read(localSocketObjectProvider)?.socket.emit('get_file_missing_chunks', state.data!.data);
+    } else if (state.data?.type == WebrtcDataType.runFile) {
+      ref.read(localSocketObjectProvider)?.socket.emit('run_file', state.data!.data);
+    } else if (state.data?.type == WebrtcDataType.moveFile) {
+      ref.read(localSocketObjectProvider)?.socket.emit('move_file', state.data!.data);
+    } else if (state.data?.type == WebrtcDataType.copyFile) {
+      ref.read(localSocketObjectProvider)?.socket.emit('copy_file', state.data!.data);
+    } else if (state.data?.type == WebrtcDataType.deleteFile) {
+      ref.read(localSocketObjectProvider)?.socket.emit('delete_file', state.data!.data);
     }
   }
 }

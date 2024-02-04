@@ -70,7 +70,10 @@ class WebrtcModel {
   }
 
   Future<void> _createDataChannel() async {
-    RTCDataChannelInit dataChannelDict = RTCDataChannelInit();
+    RTCDataChannelInit dataChannelDict = RTCDataChannelInit()
+      ..maxRetransmits = 1000
+      ..maxRetransmitTime = 100
+      ..ordered = true;
     RTCDataChannel? channel = await connection?.createDataChannel("textchat-chan", dataChannelDict);
     if (channel != null) _addDataChannel(channel);
   }

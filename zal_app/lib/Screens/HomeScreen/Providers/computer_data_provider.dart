@@ -18,14 +18,20 @@ class ComputerDataNotifier extends AsyncNotifier<ComputerData> {
     List<int> utf8Bytes = utf8.encode(data);
     // Get the length of the byte array
     int sizeInBytes = utf8Bytes.length;
-    print("payload size: ${sizeInBytes.toSize()}");
+    //print("payload size: ${sizeInBytes.toSize()}");
     final computerData = ComputerData.construct(decompressGzip(data));
     return computerData;
   }
 
   @override
-  Future<ComputerData> build() async {    final webrtcProviderModel = await ref.watch(_computerDataProvider.future);
-    final data = await _fetchData(webrtcProviderModel.data?.data ?? '');
+  Future<ComputerData> build() async {
+    final webrtcProviderModel = await ref.watch(_computerDataProvider.future);
+    late ComputerData data;
+    try {
+      data = await _fetchData(webrtcProviderModel.data?.data ?? '');
+    } catch (c) {
+      throw ErrorParsingComputerData(webrtcProviderModel.data?.data ?? '', c);
+    }
     if (data.isRunningAsAdminstrator) {
       Future.delayed(const Duration(milliseconds: 100), () {
         ref.read(computerSpecsProvider.notifier).saveSettings(data);

@@ -271,14 +271,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="zal-console.exe" size="36106712">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="zal-console.exe" size="36121048">
       <assemblyIdentity name="zal-console" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>V4m8AwHv5qEzqAfkDQMyY5PoMLlA9jhE9hzWMkAIIJ0=</dsig:DigestValue>
+        <dsig:DigestValue>a8OPJAMyVAPeaugCm10zd1SnvB32KcuwyfKIrZ/mt8U=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
