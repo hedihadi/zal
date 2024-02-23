@@ -10,6 +10,7 @@ import 'package:zal/Functions/models.dart';
 import 'package:zal/Functions/utils.dart';
 import 'package:zal/Screens/HomeScreen/Providers/computer_data_provider.dart';
 import 'package:zal/Screens/HomeScreen/Providers/webrtc_provider.dart';
+import 'package:zal/Screens/TaskManagerScreen/Widgets/taskmanager_table_widget.dart';
 import 'package:zal/Widgets/inline_ad.dart';
 
 final selectedSortByProvider = StateProvider<SortBy>((ref) => SortBy.Memory);
@@ -68,6 +69,16 @@ class TaskManagerScreen extends ConsumerWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
+                          Padding(
+                            padding: EdgeInsets.only(left: 2.w),
+                            child: ref.read(processIconProvider)[process.name] != null
+                                ? Image.memory(
+                                    ref.read(processIconProvider)[process.name]!,
+                                    gaplessPlayback: true,
+                                    scale: 0.5,
+                                  )
+                                : const Icon(FontAwesomeIcons.question),
+                          ),
                           Expanded(
                             child: Text(
                               process.name,
@@ -82,9 +93,12 @@ class TaskManagerScreen extends ConsumerWidget {
                                 if (response == false) return;
                                 ref.read(webrtcProvider.notifier).sendMessage('kill_process', jsonEncode(process.pids));
                               },
-                              child: Icon(
-                                FontAwesomeIcons.xmark,
-                                color: Theme.of(context).colorScheme.error,
+                              child: Padding(
+                                padding: const EdgeInsets.all(5),
+                                child: Icon(
+                                  FontAwesomeIcons.xmark,
+                                  color: Theme.of(context).colorScheme.error,
+                                ),
                               ))
                         ],
                       ),

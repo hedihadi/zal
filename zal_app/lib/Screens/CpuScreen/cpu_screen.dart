@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:zal/Functions/utils.dart';
+import 'package:zal/Screens/CpuScreen/Widgets/cpu_data_list_widget.dart';
 import 'package:zal/Screens/HomeScreen/Providers/computer_data_provider.dart';
 import 'package:zal/Screens/SettingsScreen/settings_providers.dart';
 import 'package:zal/Widgets/chart_widget.dart';
@@ -12,7 +13,7 @@ import 'package:zal/Widgets/staggered_gridview.dart';
 import 'package:sizer/sizer.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
-import '../Functions/analytics_manager.dart';
+import '../../Functions/analytics_manager.dart';
 
 class CpuScreen extends ConsumerWidget {
   const CpuScreen({super.key});
@@ -77,31 +78,10 @@ class CpuScreen extends ConsumerWidget {
                       Expanded(
                         flex: 2,
                         child: Padding(
-                          padding: EdgeInsets.only(left: 5.w),
-                          child: Table(
-                            defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                            children: <TableRow>[
-                              tableRow(
-                                context,
-                                "Power",
-                                FontAwesomeIcons.plug,
-                                "${cpu.power.round()}W",
-                              ),
-                              tableRow(
-                                context,
-                                "Temperature",
-                                FontAwesomeIcons.temperatureFull,
-                                getTemperatureText(cpu.temperature, ref),
-                              ),
-                              tableRow(
-                                context,
-                                "Load",
-                                Icons.scale,
-                                "${cpu.load.round()}%",
-                              ),
-                            ],
-                          ),
-                        ),
+                            padding: EdgeInsets.only(left: 5.w),
+                            child: CpuDataListWidget(
+                              cpu: cpu,
+                            )),
                       ),
                     ],
                   ),
@@ -181,7 +161,7 @@ class CpuScreen extends ConsumerWidget {
             title: "Temperature",
             maxYAxisNumber: 100,
             minYAxisNumber: 0,
-            yAxisLabel: (ref.read(settingsProvider).valueOrNull?.useCelcius ?? false) ? 'c' : 'f',
+            yAxisLabel: (ref.read(settingsProvider).valueOrNull?['useCelcius'] ?? false) ? 'c' : 'f',
           ),
 
           //const HeavyProcessesWidget(title:"these processes have the heavest load",sortBy: SortBy.Cpu),

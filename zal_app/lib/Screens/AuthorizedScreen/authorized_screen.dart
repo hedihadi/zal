@@ -7,8 +7,11 @@ import 'package:sizer/sizer.dart';
 import 'package:zal/Screens/AboutScreen/about_screen.dart';
 import 'package:zal/Screens/AccountScreen/account_screen.dart';
 import 'package:zal/Screens/AuthorizedScreen/Widgets/buy_premium_widget.dart';
+import 'package:zal/Screens/CanRunGameScreen/can_run_game_screen.dart';
 import 'package:zal/Screens/FilesScreen/files_screen.dart';
 import 'package:zal/Screens/HomeScreen/Providers/computer_data_provider.dart';
+import 'package:zal/Screens/HomeScreen/Providers/consumer_times_provider.dart';
+import 'package:zal/Screens/ProgramsTimeScreen/programs_time_provider.dart';
 import 'package:zal/Screens/HomeScreen/Providers/webrtc_provider.dart';
 import 'package:zal/Screens/HomeScreen/home_screen.dart';
 import 'package:zal/Screens/NotificationsScreen/notifications_screen.dart';
@@ -16,6 +19,8 @@ import 'package:zal/Screens/NotificationsScreen/notifications_screen_providers.d
 import 'package:zal/Screens/SettingsScreen/settings_screen.dart';
 import 'package:zal/Screens/TaskManagerScreen/task_manager_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:zal/Screens/storages_screen.dart';
+import 'package:zal/Widgets/wait_for_connection_widget.dart';
 
 import '../../Functions/analytics_manager.dart';
 
@@ -24,10 +29,12 @@ final bottomNavigationbarIndexProvider = StateProvider((ref) => 0);
 class AuthorizedScreen extends ConsumerWidget {
   AuthorizedScreen({super.key});
   final List<Widget> widgets = [
-    const HomeScreen(),
-    const TaskManagerScreen(),
-    const FilesScreen(),
-    //const CanRunGameScreen(),
+    const WaitForConnectionWidget(child: HomeScreen()),
+    const WaitForConnectionWidget(child: StoragesScreen()),
+
+    const WaitForConnectionWidget(child: TaskManagerScreen()),
+    //const WaitForConnectionWidget(child: FilesScreen()),
+    const CanRunGameScreen(),
     const AccountScreen(),
   ];
   @override
@@ -35,6 +42,8 @@ class AuthorizedScreen extends ConsumerWidget {
     ref.read(interstitialAdProvider);
     ref.read(screenViewProvider("authorized"));
     ref.read(notificationsProvider);
+    ref.read(todayConsumerTimeProvider);
+    ref.read(programIconsProvider);
     final index = ref.watch(bottomNavigationbarIndexProvider);
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -70,17 +79,21 @@ class AuthorizedScreen extends ConsumerWidget {
             label: 'home',
           ),
           BottomNavigationBarItem(
+            icon: Icon(FontAwesomeIcons.box),
+            label: 'Storage',
+          ),
+          BottomNavigationBarItem(
             icon: Icon(FontAwesomeIcons.server),
             label: 'Task manager',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(FontAwesomeIcons.folder),
-            label: 'Files',
-          ),
           //BottomNavigationBarItem(
-          //  icon: Icon(FontAwesomeIcons.gamepad),
-          //  label: 'Can i run it?',
+          //  icon: Icon(FontAwesomeIcons.folder),
+          //  label: 'Files',
           //),
+          BottomNavigationBarItem(
+            icon: Icon(FontAwesomeIcons.gamepad),
+            label: 'Can i run it?',
+          ),
           BottomNavigationBarItem(
             icon: Icon(FontAwesomeIcons.user),
             label: 'Account',

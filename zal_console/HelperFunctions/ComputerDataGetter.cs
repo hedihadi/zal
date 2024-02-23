@@ -86,17 +86,10 @@ namespace Zal.HelperFunctions
             {
                 Logger.LogError("error getting crystalDiskData", ex);
             }
-            Timer getProcessesGpuUsageTimer = new Timer();
-            getProcessesGpuUsageTimer.Tick += new EventHandler(getProcessesGpuUsage);
-            getProcessesGpuUsageTimer.Interval = 2000;
-            getProcessesGpuUsageTimer.Start();
+
 
         }
-        public void getProcessesGpuUsage(object sender, EventArgs e)
-        {
-            var processesGpuUsage = GpuUtilizationGetter.getProcessesGpuUsage();
-            this.processesGpuUsage = processesGpuUsage;
-        }
+
             public computerData getcomputerData()
         {
             computerData computerData=new computerData();

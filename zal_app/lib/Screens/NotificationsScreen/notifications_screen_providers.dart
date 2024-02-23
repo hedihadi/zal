@@ -35,7 +35,7 @@ class NewNotificationsDataNotifier extends StateNotifier<NotificationData> {
   List<NotificationKeyWithUnit> getChildrenForSelectedKey() {
     final parsedData = ref.read(computerDataProvider).valueOrNull?.rawData;
     final computerData = ref.read(computerDataProvider).valueOrNull;
-    final isCelcius = ref.read(settingsProvider).valueOrNull?.useCelcius ?? true;
+    final isCelcius = ref.read(settingsProvider).valueOrNull?['useCelcius'] ?? true;
     if (parsedData == null) return [];
     if (state.key == NewNotificationKey.Gpu) {
       final primaryGpu = ref.read(computerDataProvider.notifier).getPrimaryGpu();

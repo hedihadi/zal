@@ -190,3 +190,6 @@ G:\Projects\Zal\github-zal\zal_console\obj\Debug\zal-console.application
 G:\Projects\Zal\github-zal\zal_console\obj\Debug\ZalConsole.csproj.CopyComplete
 G:\Projects\Zal\github-zal\zal_console\obj\Debug\zal-console.exe
 G:\Projects\Zal\github-zal\zal_console\obj\Debug\zal-console.pdb
+G:\Projects\Zal\github-zal\zal_console\bin\Debug\Resources\task_manager.exe
+G:\Projects\Zal\github-zal\zal_console\bin\Debug\Resources\Processes.json
+G:\Projects\Zal\github-zal\zal_console\bin\Debug\Resources\get_process_icon.exe

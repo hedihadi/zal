@@ -16,39 +16,67 @@ namespace Zal.HelperFunctions
 {
     public class FpsDataGetter
     {
-        SocketIOClient.SocketIO client;
         private Process? presentmonProcess;
-        //private IList<int>? currentFocusedProcessId;
         private System.Threading.Tasks.Task fpsTask;
         private bool isDisposed = false;
-        public event EventHandler<fpsData> fpsDataAdded;
-        private Timer presentmonTimer;
-        public FpsDataGetter(SocketIOClient.SocketIO client)
+        public event EventHandler<dynamic> sendFpsData;
+        private List<double> fpsDatas = [];
+        Stopwatch stopwatch = new Stopwatch();
+        public FpsDataGetter()
         {
-        this.client=client;
+            stopwatch.Start();
             //run presentmon and refresh every 30 secs to avoid memory leak.
-            presentmonTimer = new Timer(_ =>
-            {
-                // Call your method directly inside the timer
-                startPresentmon();
-            }, null, 0, 30000);
+            //presentmonTimer = new Timer(_ =>
+            //  {
+            // Call your method directly inside the timer
+            //      startPresentmon();
+            //  }, null, 0, 30000);
+
+            //send fpsdata to mobile every n seconds
+
         }
-        public void startPresentmon()
+
+        public  double calculatePercentile(IEnumerable<double> seq, double percentile)
         {
-            //kill any task_manager process that might be running
+            var elements = seq.ToArray();
+            Array.Sort(elements);
+            double realIndex = percentile * (elements.Length - 1);
+            int index = (int)realIndex;
+            double frac = realIndex - index;
+            if (index + 1 < elements.Length)
+                return elements[index] * (1 - frac) + elements[index + 1] * frac;
+            else
+                return elements[index];
+        }
+        public void disposeIt()
+        {
+            isDisposed = true;
+            stopPresentmon();
+        }
+        private void stopPresentmon()
+        {
+
             foreach (var process in Process.GetProcessesByName("presentmon"))
             {
                 process.Kill();
                 process.WaitForExit();
                 process.Dispose();
-                
+
             }
-            if (presentmonProcess != null )
+            if (presentmonProcess != null)
             {
-                try { presentmonProcess.Kill(); }   catch { }
+                try { presentmonProcess.Kill(); } catch { }
                 presentmonProcess.Dispose();
                 presentmonProcess = null;
             }
+
+        }
+        public async void startPresentmon(int processId)
+        {
+            
+            //startFpsTimer();
+            //kill any presentmon process that might be running
+
             string path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "presentmon.exe");
             try
             {
@@ -56,7 +84,7 @@ namespace Zal.HelperFunctions
             }
             catch (Exception ex)
             {
-                Logger.LogError($"error writing presentmon",ex);
+                Logger.LogError($"error moving presentmon to temp folder", ex);
             }
 
             ProcessStartInfo startInfo = new ProcessStartInfo
@@ -65,19 +93,19 @@ namespace Zal.HelperFunctions
                 RedirectStandardOutput = true,
                 UseShellExecute = false,
                 CreateNoWindow = true,
-                Arguments = $"-output_stdout -stop_existing_session",
+                Arguments = $"-output_stdout -stop_existing_session -process_id {processId} -terminate_on_proc_exit",
             };
             presentmonProcess = new Process { StartInfo = startInfo };
             try
             {
-                
+
                 presentmonProcess.Start();
             }
             catch (Exception ex)
             {
                 Logger.LogError($"error running presentmon", ex);
             }
-            parseIncomingPresentmonData();
+            Task.Run(async () => { await parseIncomingPresentmonData(); });
         }
         private static String getTimestamp()
         {
@@ -92,7 +120,7 @@ namespace Zal.HelperFunctions
             while (!reader.EndOfStream)
             {
 
-               
+
                 if (isDisposed) break;
                 Thread.Sleep(30);
                 string line = reader.ReadLine();
@@ -117,24 +145,62 @@ namespace Zal.HelperFunctions
 
                 }
                 if (processName == "<error>") continue;
-                //System.Diagnostics.Debug.WriteLine($"p: {processId} - {processName}");
+
                 if (processId != null)
                 {
                     var time = getTimestamp();
                     if (msBetweenPresents.Any(char.IsDigit))
                     {
-                        fpsData fpsData = new fpsData();
-                        fpsData.processId = processId;
-                        fpsData.msBetweenPresents = double.Parse(msBetweenPresents);
-                        fpsData.processName = processName;
-                        try
-                        {
-                            client.EmitAsync("fps_data", fpsData);
-                        }
-                        catch
-                        {
+                        //fpsData fpsData = new fpsData();
+                        //fpsData.processId = processId;
+                        var doubledMsBetweenPresents = double.Parse(msBetweenPresents);
+                        //fpsData.processName = processName;
+                        fpsDatas.Add((1000 / doubledMsBetweenPresents));
 
+
+                        if(fpsDatas.Count > 10)
+                        {
+                            try
+                            {
+                                sendFpsData.Invoke(null, fpsDatas);
+                            }
+                            catch
+                            {
+
+                            }
+                            fpsDatas.Clear();
                         }
+                        continue;
+                        if (stopwatch.ElapsedMilliseconds >199)
+                        {
+                          
+                            try
+                            {
+                                System.Diagnostics.Debug.WriteLine($"p: {processId} - {processName}");
+                                List<double> copyOfFpsDatas = fpsDatas.ToList();
+                                var percentile01 = calculatePercentile(copyOfFpsDatas, 0.01);
+                                var percentile001 = calculatePercentile(copyOfFpsDatas, 0.001);
+                                var averageFps = copyOfFpsDatas.Average();
+                                var dataToSend = new Dictionary<String, dynamic>();
+                                dataToSend["percentile01"] = percentile01;
+                                dataToSend["percentile001"] = percentile001;
+                                dataToSend["averageFps"] = averageFps;
+                                dataToSend["data"] = copyOfFpsDatas;
+                                sendFpsData.Invoke(null, dataToSend);
+                                if(fpsDatas.Count > 500)
+                                {
+                                    fpsDatas.RemoveAt(0);
+                                } 
+                                stopwatch.Restart();
+                            }
+                            catch
+                            {
+
+                            }
+                           
+                        }
+
+
                     }
                 }
             }

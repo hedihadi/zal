@@ -64,6 +64,7 @@ class WebRtcNotifier extends StateNotifier<WebrtcProviderModel> {
       ref.read(logListProvider.notifier).addElement('p2p connection established.');
     } else if (channelState == RTCPeerConnectionState.RTCPeerConnectionStateDisconnected) {
       state = WebrtcProviderModel(isConnected: false);
+      ref.read(localSocketObjectProvider)?.socket.emit("stop_fps", "");
       ref.read(taskmanagerProvider.notifier).reset();
     }
   }
@@ -111,6 +112,17 @@ class WebRtcNotifier extends StateNotifier<WebrtcProviderModel> {
       ref.read(localSocketObjectProvider)?.socket.emit('copy_file', state.data!.data);
     } else if (state.data?.type == WebrtcDataType.deleteFile) {
       ref.read(localSocketObjectProvider)?.socket.emit('delete_file', state.data!.data);
+    } else if (state.data?.type == WebrtcDataType.getGpuProcesses) {
+      ref.read(localSocketObjectProvider)?.socket.emit('get_gpu_processes', state.data!.data);
+    } else if (state.data?.type == WebrtcDataType.startFps) {
+      ref.read(localSocketObjectProvider)?.socket.emit('start_fps', state.data!.data);
+    } else if (state.data?.type == WebrtcDataType.getProcessIcon) {
+      ref.read(localSocketObjectProvider)?.socket.emit('get_process_icon', state.data!.data);
+    } else if (state.data?.type == WebrtcDataType.launchApp) {
+      ref.read(localSocketObjectProvider)?.socket.emit('launch_app', state.data!.data);
+    } else if (state.data?.type == WebrtcDataType.stopFps) {
+      final socket = ref.read(localSocketObjectProvider)?.socket;
+      socket?.emit('stop_fps', "");
     }
   }
 }

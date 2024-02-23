@@ -49,7 +49,6 @@ class ComputerDataNotifier extends AsyncNotifier<ComputerData> {
     if (state.value != null) {
       return state.value!;
     }
-
     throw ifNull;
   }
 
@@ -61,16 +60,16 @@ class ComputerDataNotifier extends AsyncNotifier<ComputerData> {
       final settings = ref.read(settingsProvider).value;
       final gpus = state.value?.gpus;
       if ([settings, gpus].contains(null) || gpus!.isEmpty) return null;
-      String? primaryGpuName = settings!.primaryGpuName;
+      String? primaryGpuName = settings!['primaryGpuName'];
       if (primaryGpuName == null) {
         //assign the first gpu as primary
-        ref.read(settingsProvider.notifier).updatePrimaryGpuName(gpus.first.name);
+        ref.read(settingsProvider.notifier).updateSettings("primaryGpuName",gpus.first.name);
         primaryGpuName = gpus.first.name;
       }
       //try to find the primary gpu. if we fail, we'll assign the first gpu as primary
       final primaryGpu = gpus.firstWhereOrNull((element) => element.name == primaryGpuName);
       if (primaryGpu == null) {
-        ref.read(settingsProvider.notifier).updatePrimaryGpuName(gpus.first.name);
+        ref.read(settingsProvider.notifier).updateSettings("primaryGpuName",gpus.first.name);
         return gpus.first;
       } else {
         return primaryGpu;

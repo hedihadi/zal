@@ -20,14 +20,23 @@ using Zal;
 using System.Diagnostics;
 using Zal.HelperFunctions.SpecificFunctions;
 using ZalConsole.HelperFunctions;
+using Zal.Constants.Models;
+using System.IO;
+using Newtonsoft.Json;
+using System.Management.Automation.Host;
 
 namespace ZalConsole
 {
     internal class ZalConsole
     {
-
+       
         static async Task Main(string[] args)
         {
+
+            
+
+
+
             Logger.ResetLog();
             if (args.Length != 0)
             {
@@ -40,7 +49,10 @@ namespace ZalConsole
             computerDataGetter? computerDataGetter=null;
             
             SocketIOClient.SocketIO client = new SocketIOClient.SocketIO($"http://localhost:3000/");
+            var runningProgramsTracker = new RunningProgramsTracker(client);
+            FpsDataGetter? fpsDataGetter = new FpsDataGetter();
             FilesGetter fileGetter = new FilesGetter(client);
+
             try
             {
                  computerDataGetter = new computerDataGetter(client);
@@ -49,7 +61,65 @@ namespace ZalConsole
             {
                 Logger.LogError("error initializing computerDataGetter", c);
             }
+            client.On("start_fps", async response =>
+            {
+
+                var pid = int.Parse(response.GetValue<String>());
+                _ = Task.Run(async () =>
+                {
+                    fpsDataGetter.startPresentmon(pid);
+                    fpsDataGetter.sendFpsData += (sender, fpsData) =>
+                    {
+                        var data = Newtonsoft.Json.JsonConvert.SerializeObject(fpsData);
+                        client.EmitAsync("fps_data", data);
+                    };
+                });
+               
+            });
+            client.On("stop_fps", response =>
+            {
+                foreach (var process in Process.GetProcessesByName("presentmon"))
+                {
+                    process.Kill();
+                }
+            });
+
             var serializedData = Newtonsoft.Json.JsonConvert.SerializeObject(computerDataGetter.getcomputerData());
+            client.On("get_process_icon", async response =>
+            {
+                var name = response.GetValue<String>();
+                string? processPath = ProcesspathGetter.load(name);
+                if(processPath != null)
+                {
+                  var icon=GlobalClass.Instance.getFileIcon(processPath);
+                    if (icon == "") return;
+                    
+                    var data = JsonConvert.SerializeObject(new Dictionary<string, string>() { { "name", name }, { "icon", icon } });
+                     await client.EmitAsync("process_icon",data);
+
+                }
+            });
+            client.On("launch_app", async response =>
+            {
+                var name = response.GetValue<String>();
+                string? processPath = ProcesspathGetter.load(name);
+                if (processPath != null)
+                {
+                    System.Diagnostics.Process.Start(processPath);
+                    await client.EmitAsync("information_text", $"{name} launched!");
+
+                }
+                else
+                {
+                    await client.EmitAsync("information_text", "failed to run application, you may have cleared temp folder.");
+                }
+            });
+            client.On("get_gpu_processes", async response =>
+            {
+                var gpuProcesses = GpuUtilizationGetter.getProcessesGpuUsage();
+                var serializedData = Newtonsoft.Json.JsonConvert.SerializeObject(gpuProcesses);
+                await client.EmitAsync("gpu_processes", serializedData);
+            });
             client.On("get_data", async response =>
             {
                 if (computerDataGetter != null) {
@@ -100,6 +170,7 @@ namespace ZalConsole
                 }
                 Environment.Exit(0);
             });
+            
             client.OnError += async (sender, e) =>
             {
                 Console.WriteLine($"err {e}");
@@ -122,7 +193,9 @@ namespace ZalConsole
             }
             while (true)
             {
+
                 Thread.Sleep(1000);
+
             }
 
         }

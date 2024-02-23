@@ -22,6 +22,25 @@ WebrtcDataType convertStringToWebrtcDataType(String input) {
   return WebrtcDataType.values.byName(result);
 }
 
+///converts minutes to hours and minutes,
+///example: 40 -> 40 minutes, 75 -> 1 hour 15 minutes
+String convertMinutesToHoursAndMinutes(int totalMinutes) {
+  if (totalMinutes < 0) {
+    return "$totalMinutes minutes";
+  }
+
+  int hours = totalMinutes ~/ 60; // Get the whole number of hours
+  int minutes = totalMinutes % 60; // Get the remaining minutes
+
+  if (hours > 0 && minutes > 0) {
+    return ('$hours hours and $minutes minutes');
+  } else if (hours > 0) {
+    return ('$hours hours');
+  } else {
+    return ('$minutes minutes');
+  }
+}
+
 String truncateString(String text, length) {
   return (text.length <= length) ? text : '${text.substring(0, length)}...';
 }
@@ -266,8 +285,15 @@ String secondsToWrittenTime(int seconds) {
 }
 
 TableRow tableRow(BuildContext context, String title, IconData icon, String text,
-    {bool addSpacing = false, bool colorTitle = true, bool showIcon = true, Widget? customIcon, Widget? suffixIcon}) {
+    {bool addSpacing = false,
+    bool colorTitle = true,
+    bool showIcon = true,
+    Widget? customIcon,
+    Widget? suffixIcon,
+    Color? textColor,
+    bool wrapValueInExpanded = false}) {
   final paddingHeight = 1.h;
+  final value = Text(title, style: Theme.of(context).textTheme.labelMedium!.copyWith(color: colorTitle ? Theme.of(context).primaryColor : null));
   return TableRow(
     children: <Widget>[
       TableCell(
@@ -278,7 +304,7 @@ TableRow tableRow(BuildContext context, String title, IconData icon, String text
             children: [
               showIcon ? (customIcon ?? Icon(icon, size: 2.h, color: colorTitle ? Theme.of(context).primaryColor : null)) : Container(),
               SizedBox(width: 2.w),
-              Text(title, style: Theme.of(context).textTheme.labelMedium!.copyWith(color: colorTitle ? Theme.of(context).primaryColor : null)),
+              wrapValueInExpanded ? Expanded(child: value) : value,
               suffixIcon ?? Container(),
             ],
           ),
@@ -290,7 +316,7 @@ TableRow tableRow(BuildContext context, String title, IconData icon, String text
           padding: EdgeInsets.only(top: paddingHeight / 2, bottom: paddingHeight / 2),
           child: Text(
             text,
-            style: Theme.of(context).textTheme.labelMedium,
+            style: Theme.of(context).textTheme.labelMedium!.copyWith(color: textColor),
           ),
         ),
       ),
@@ -303,7 +329,7 @@ String getTemperatureText(double? tempCelcius, WidgetRef ref, {bool round = true
   if (tempCelcius == null) {
     return '';
   }
-  if (ref.read(settingsProvider).value?.useCelcius ?? true) {
+  if (ref.read(settingsProvider).value?['useCelcius'] ?? true) {
     return "${round ? tempCelcius.round() : tempCelcius.toStringAsFixed(2)}°C";
   }
 

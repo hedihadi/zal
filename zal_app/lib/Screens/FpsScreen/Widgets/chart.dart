@@ -1,3 +1,4 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:zal/Functions/utils.dart';
@@ -27,6 +28,133 @@ class LineZoneChartWidget extends StatelessWidget {
   late List<ChartSampleData> chartData;
   @override
   Widget build(BuildContext context) {
+    return RotatedBox(
+      quarterTurns: 1,
+      child: BarChart(
+        BarChartData(
+          maxY: fpsData.fps,
+          barTouchData: BarTouchData(
+            mouseCursorResolver: (event, response) {
+              return response == null || response.spot == null ? MouseCursor.defer : SystemMouseCursors.click;
+            },
+            enabled: true,
+            handleBuiltInTouches: false,
+            touchTooltipData: BarTouchTooltipData(
+              tooltipBgColor: Theme.of(context).appBarTheme.backgroundColor,
+            ),
+          ),
+          titlesData: FlTitlesData(
+            show: true,
+            bottomTitles: AxisTitles(
+              sideTitles: SideTitles(
+                reservedSize: 25.w,
+                showTitles: true,
+                getTitlesWidget: (value, meta) {
+                  String text = "";
+                  Color color = Colors.white;
+                  double fps = 0.0;
+                  switch (value) {
+                    case 1:
+                      text = "avg Fps";
+                      color = Colors.red;
+                      fps = fpsData.fps;
+                      break;
+                    case 2:
+                      text = "1% Fps";
+                      color = Colors.blue;
+                      fps = fpsData.fps01Low;
+                      break;
+                    case 3:
+                      text = "0.1% Fps";
+                      color = Colors.green;
+                      fps = fpsData.fps001Low;
+                      break;
+                  }
+                  return RotatedBox(
+                    quarterTurns: -1,
+                    child: RichText(
+                      text: TextSpan(
+                        text: fps.toStringAsFixed(1),
+                        style: TextStyle(color: color),
+                        children: <TextSpan>[
+                          TextSpan(text: ' $text', style: const TextStyle(color: Color(0xff7589a2), fontSize: 11)),
+                        ],
+                      ),
+                    ),
+                  );
+                  return RotatedBox(quarterTurns: -1, child: Text("${value.round()} $text"));
+                },
+              ),
+            ),
+            leftTitles: AxisTitles(
+              sideTitles: SideTitles(
+                showTitles: false,
+                getTitlesWidget: (value, meta) {
+                  return Text("$value");
+                },
+              ),
+            ),
+            rightTitles: const AxisTitles(
+              sideTitles: SideTitles(showTitles: false),
+            ),
+            topTitles: const AxisTitles(
+              sideTitles: SideTitles(showTitles: false),
+            ),
+          ),
+          borderData: FlBorderData(
+            show: false,
+          ),
+          barGroups: [
+            BarChartGroupData(
+              x: 1,
+              barRods: [
+                BarChartRodData(
+                  backDrawRodData: BackgroundBarChartRodData(
+                    show: true,
+                    color: Theme.of(context).cardTheme.color,
+                    toY: fpsData.fps,
+                  ),
+                  toY: fpsData.fps,
+                  color: Colors.red[400],
+                  width: 10,
+                ),
+              ],
+            ),
+            BarChartGroupData(
+              x: 2,
+              barRods: [
+                BarChartRodData(
+                  backDrawRodData: BackgroundBarChartRodData(
+                    show: true,
+                    color: Theme.of(context).cardTheme.color,
+                    toY: fpsData.fps,
+                  ),
+                  toY: fpsData.fps01Low,
+                  color: Colors.blue,
+                  width: 10,
+                ),
+              ],
+            ),
+            BarChartGroupData(
+              x: 3,
+              barRods: [
+                BarChartRodData(
+                  backDrawRodData: BackgroundBarChartRodData(
+                    show: true,
+                    color: Theme.of(context).cardTheme.color,
+                    toY: fpsData.fps,
+                  ),
+                  toY: fpsData.fps001Low,
+                  color: Colors.green,
+                  width: 10,
+                ),
+              ],
+            )
+          ],
+          gridData: const FlGridData(show: false),
+        ),
+      ),
+    );
     return SizedBox(
       height: 15.h,
       child: SfCartesianChart(
@@ -70,5 +198,19 @@ class LineZoneChartWidget extends StatelessWidget {
           yValueMapper: (ChartSampleData sales, _) => sales.firstSeriesYValue,
           name: 'FPS'),
     ];
+  }
+
+  Widget leftTitles(double value, TitleMeta meta, List<int> numbersList) {
+    if (numbersList.contains(value.toInt()) == false) return Container();
+    const style = TextStyle(
+      color: Color(0xff7589a2),
+      fontWeight: FontWeight.bold,
+      fontSize: 14,
+    );
+    return SideTitleWidget(
+      axisSide: meta.axisSide,
+      space: 0,
+      child: Text("${(value / 60).round()}hrs", style: style),
+    );
   }
 }

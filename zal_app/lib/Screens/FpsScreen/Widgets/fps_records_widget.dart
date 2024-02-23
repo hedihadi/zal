@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sizer/sizer.dart';
 import 'package:zal/Screens/FpsScreen/Widgets/chart.dart';
+import 'package:zal/Screens/FpsScreen/Widgets/fps_data_widget.dart';
 import 'package:zal/Screens/FpsScreen/fps_screen_providers.dart';
 import 'package:zal/Widgets/card_widget.dart';
 
-class FpsPresetsWidget extends ConsumerWidget {
-  const FpsPresetsWidget({super.key});
+class FpsRecordsWidget extends ConsumerWidget {
+  const FpsRecordsWidget({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final fpsPresets = ref.watch(fpsRecordsProvider);
-    return ListView.builder(
+    //  return const Text("aa");
+
+    return SliverList.builder(
       itemCount: fpsPresets.length,
-      physics: const NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
       itemBuilder: (context, index) {
         final fpsPreset = fpsPresets[index];
         return CardWidget(
@@ -35,13 +37,17 @@ class FpsPresetsWidget extends ConsumerWidget {
             ),
           ),
           child: Column(
-            mainAxisSize: MainAxisSize.min,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [fpsPreset.note == null ? Container() : Text(fpsPreset.note!), Text(fpsPreset.presetDuration)],
               ),
-              LineZoneChartWidget(fpsData: fpsPreset.fpsData),
+              SizedBox(
+                height: 10.h,
+                child: LineZoneChartWidget(
+                  fpsData: fpsPreset.fpsData,
+                ),
+              ),
             ],
           ),
         );

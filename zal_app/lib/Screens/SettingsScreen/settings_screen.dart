@@ -32,8 +32,8 @@ class SettingsScreen extends ConsumerWidget {
               SwitchSettingUi(
                 title: "Use Celcius",
                 subtitle: "switch between Celcius and Fahreneit",
-                value: settings?.useCelcius ?? true,
-                onChanged: (value) => ref.read(settingsProvider.notifier).updateUseCelcius(value),
+                value: settings?['useCelcius'] ?? true,
+                onChanged: (value) => ref.read(settingsProvider.notifier).updateSettings('useCelcius',value),
                 icon: const Icon(FontAwesomeIcons.temperatureHalf),
               ),
             ],
@@ -44,15 +44,15 @@ class SettingsScreen extends ConsumerWidget {
                 title: "Send Analytics",
                 subtitle:
                     "your data will be used to see how the App\nbehaves on different PC Specs,this is \nextremely helpful to me, please leave it ON.",
-                value: settings?.sendAnalaytics ?? true,
-                onChanged: (value) => ref.read(settingsProvider.notifier).updateSendAnalytics(value),
+                value: settings?['sendAnalaytics'] ?? true,
+                onChanged: (value) => ref.read(settingsProvider.notifier).updateSettings('sendAnalaytics',value),
                 icon: const Icon(FontAwesomeIcons.paintRoller),
               ),
               SwitchSettingUi(
                 title: "Personalized Ads",
                 subtitle: "",
-                value: settings?.personalizedAds ?? true,
-                onChanged: (value) => ref.read(settingsProvider.notifier).updatePersonalizedAds(value),
+                value: settings?['personalizedAds'] ?? true,
+                onChanged: (value) => ref.read(settingsProvider.notifier).updateSettings('personalizedAds',value),
                 icon: const Icon(FontAwesomeIcons.paintRoller),
               ),
             ],
@@ -66,10 +66,10 @@ class SettingsScreen extends ConsumerWidget {
                     final gpu = e;
                     return GestureDetector(
                       onTap: () {
-                        ref.read(settingsProvider.notifier).updatePrimaryGpuName(gpu.name);
+                        ref.read(settingsProvider.notifier).updateSettings('primaryGpuName',gpu.name);
                       },
                       child: Card(
-                        color: (settings?.primaryGpuName ?? "") == gpu.name ? Theme.of(context).primaryColor : Theme.of(context).cardColor,
+                        color: (settings?['primaryGpuName'] ?? "") == gpu.name ? Theme.of(context).primaryColor : Theme.of(context).cardColor,
                         elevation: 5,
                         shadowColor: Colors.transparent,
                         child: Center(

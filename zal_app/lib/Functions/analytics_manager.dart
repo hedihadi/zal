@@ -6,11 +6,12 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:http/http.dart';
 import 'package:zal/Functions/utils.dart';
 import 'package:http/http.dart' as http;
 
 class AnalyticsManager {
-  static String databaseUrl = dotenv.env['SERVER'] == 'production' ? "https://zalapp.com/api" : "http://192.168.0.102:8000/api";
+  static String databaseUrl = dotenv.env['SERVER'] == 'production' ? "https://zalapp.com/api" : "http://192.168.0.120:5555/api";
   static const String pcNotificationChannelId = 'pc_notifications_channel';
   static const String pcNotificationChannelName = 'PC Notifications';
   static Future<void> sendUserDataToDatabase(bool isPremium) async {
@@ -24,6 +25,19 @@ class AnalyticsManager {
       'isPremium': "$isPremium",
       'firebaseMessagingId': firebaseMessagingId,
     });
+  }
+
+  static Future<Response> getDataFromDatabase(String route, {Map<String, dynamic> queries = const {}}) async {
+    final idToken = await FirebaseAuth.instance.currentUser?.getIdToken() ?? '';
+
+    final url = Uri.parse("$databaseUrl/$route").replace(queryParameters: queries.map((key, value) => MapEntry(key, value.toString())));
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $idToken',
+    };
+
+    final response = await http.get(url, headers: headers);
+    return response;
   }
 
   static sendDataToDatabase(String route, {Map<String, dynamic> data = const {}}) async {

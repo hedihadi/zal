@@ -121,6 +121,9 @@
   <data name="diskInfo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\diskInfo.zip;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="presentmon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\presentmon.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="task_manager" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\task_manager.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>

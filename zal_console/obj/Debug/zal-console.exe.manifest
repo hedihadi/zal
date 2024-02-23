@@ -271,14 +271,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="zal-console.exe" size="36127192">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="zal-console.exe" size="67581400">
       <assemblyIdentity name="zal-console" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>JZYvNRitH6B5x3Xc97A5N/O/dq+AwlwO5U/ftnRgZGY=</dsig:DigestValue>
+        <dsig:DigestValue>Vt1d5MbEm4QnascKXXODAfH4Y6ltXHYM6vJaCsyWyYA=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -289,6 +289,15 @@
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
       <dsig:DigestValue>xegyxfonzs2giU17pgzwJqS0SGmwT2UQkt3sa/wzvOk=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Resources\get_process_icon.exe" size="30986857">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>QedY6B1lKvlaTty4FcoIQVAlVY6BuG2Vw6490zrTbn0=</dsig:DigestValue>
     </hash>
   </file>
   <file name="zal logo circle.ico" size="131650">

@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sidebarx/sidebarx.dart';
 import 'package:zal/Screens/HomeScreen/home_screen.dart';
 import 'package:zal/Screens/MainScreen/Widgets/phone_widget.dart';
+import 'package:zal/Screens/MainScreen/main_screen_providers.dart';
 import 'package:zal/Screens/NotificationsScreen/notifications_screen_providers.dart';
 import 'package:zal/Screens/SettingsScreen/settings_screen.dart';
 import 'package:zal/Screens/computer_screen.dart';
@@ -14,6 +15,7 @@ class AuthorizedScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final sidebarSelectedIndex = ref.watch(sidebarSelectedIndexProvider);
+    ref.read(consumerTimerProvider);
     ref.read(notificationsProvider);
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,

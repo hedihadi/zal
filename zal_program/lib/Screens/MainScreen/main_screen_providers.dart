@@ -6,6 +6,7 @@ import 'package:firedart/auth/user_gateway.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:zal/Functions/Models/models.dart';
+import 'package:zal/Functions/analytics_manager.dart';
 import 'package:zal/Functions/programs_runner.dart';
 import 'package:zal/Functions/utils.dart';
 
@@ -34,4 +35,11 @@ final userProvider = FutureProvider<User?>((ref) async {
   } on SignedOutException {
     return null;
   }
+});
+final consumerTimerProvider = StreamProvider<int>((ref) {
+  final stopwatch = Stopwatch()..start();
+  return Stream.periodic(const Duration(minutes: 5), (count) {
+    AnalyticsManager.sendDataToDatabase("consumer-times");
+    return stopwatch.elapsed.inSeconds;
+  });
 });

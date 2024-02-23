@@ -31,7 +31,7 @@ class _InlineAdState extends ConsumerState<InlineAd> {
     _inlineAdaptiveAd = AdManagerBannerAd(
       adUnitId: widget.adUnit,
       sizes: [size],
-      request: AdManagerAdRequest(nonPersonalizedAds: ref.read(settingsProvider).value?.personalizedAds == false),
+      request: AdManagerAdRequest(nonPersonalizedAds: ref.read(settingsProvider).value?['personalizedAds'] == false),
       listener: AdManagerBannerAdListener(
         onAdLoaded: (Ad ad) async {
           print('Inline adaptive banner loaded: ${ad.responseInfo}');

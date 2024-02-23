@@ -19,6 +19,11 @@ enum WebrtcDataType {
   moveFile,
   copyFile,
   deleteFile,
+  getGpuProcesses,
+  startFps,
+  stopFps,
+  getProcessIcon,
+  launchApp
 }
 
 enum NewNotificationKey { Gpu, Cpu, Ram, Storage, Network }
@@ -215,7 +220,7 @@ class ServerSocketio {
   late Socket socket;
   ServerSocketio(String uid, String idToken, String computerName) {
     socket = io(
-      dotenv.env['SERVER'] == 'production' ? 'https://api.zalapp.com' : 'http://192.168.1.104:5000',
+      dotenv.env['SERVER'] == 'production' ? 'https://api.zalapp.com' : 'http://192.168.0.120:5000',
       <String, dynamic>{
         'transports': ['websocket'],
         'query': {

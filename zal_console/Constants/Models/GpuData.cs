@@ -18,6 +18,7 @@ namespace Zal.Constants.Models
         public ulong dedicatedMemoryUsed { get; set; }
         public uint voltage { get; set; }
         public uint temperature { get; set; }
+        public int fps { get;set; }
         public gpuData(IHardware hardware)
         {
              
@@ -52,6 +53,12 @@ namespace Zal.Constants.Models
                 if (sensor.SensorType == SensorType.Voltage)
                 {
                     this.voltage = (uint)sensor.Value;
+
+
+                }
+                if (sensor.Name.Contains("FPS"))
+                {
+                    this.fps = (int)sensor.Value;
 
 
                 }

@@ -6,9 +6,16 @@ import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:intl/intl.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
 import 'package:zal/Functions/utils.dart';
+
+enum AmdOrNvidia { amd, nvidia }
+
+enum RyzenOrIntel { ryzen, intel }
+
+enum ProgramTimesTimeframe { today, yesterday }
 
 enum StorageType { SSD, HDD }
 
@@ -20,7 +27,7 @@ enum DataType { Hardwares, TaskManager }
 
 enum StreamDataType { RoomClients }
 
-enum WebrtcDataType { pcData, notifications, drives, directory, file, informationText, fileComplete }
+enum WebrtcDataType { pcData, notifications, drives, directory, file, informationText, fileComplete, gpuProcesses, fpsData, processIcon }
 
 enum NewNotificationKey { Gpu, Cpu, Ram, Storage, Network }
 
@@ -41,6 +48,42 @@ enum SortFilesBy {
   dateModifiedDescending,
   dateCreatedAscending,
   dateCreatedDescending,
+}
+
+class GpuProcess {
+  final int pid;
+  final String? icon;
+  final int usage;
+  final String name;
+  GpuProcess({
+    required this.pid,
+    required this.icon,
+    required this.usage,
+    required this.name,
+  });
+
+  factory GpuProcess.fromMap(MapEntry<String, dynamic> map) {
+    return GpuProcess(
+      pid: map.value['pid']?.toInt() ?? 0,
+      icon: (map.value['icon'] as String?),
+      usage: map.value['usage']?.toInt() ?? 0,
+      name: map.key,
+    );
+  }
+
+  factory GpuProcess.fromJson(String source) => GpuProcess.fromMap(json.decode(source));
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is GpuProcess && other.pid == pid;
+  }
+
+  @override
+  int get hashCode {
+    return pid.hashCode ^ icon.hashCode ^ usage.hashCode ^ name.hashCode;
+  }
 }
 
 class MoveFileModel {
@@ -285,13 +328,45 @@ class StreamData {
 }
 
 class FpsData {
-  String? processName;
   List<double> fpsList;
   double fps;
   double fps01Low;
   double fps001Low;
+
+  calculateFps() {
+    final sortedFps = List<double>.from(fpsList);
+    sortedFps.sort((a, b) => a.compareTo(b));
+    fps01Low = calculatePercentile(sortedFps, 0.01).toPrecision(2);
+    fps001Low = calculatePercentile(sortedFps, 0.001).toPrecision(2);
+    //double totalFPS = sortedFps.reduce((a, b) => a + b);
+    // fps = totalFPS / fpsList.length;
+    List<double> last10Records;
+    if (fpsList.length >= 10) {
+      // Get the last 10 records using sublist
+      last10Records = fpsList.sublist(fpsList.length - 10);
+    } else {
+      last10Records = List<double>.from(fpsList);
+    }
+    double totalFPS = last10Records.reduce((a, b) => a + b);
+    fps = totalFPS / last10Records.length;
+  }
+
+  addFps(double fps) {
+    fpsList.add(fps);
+  }
+
+  double calculatePercentile(List<double> data, double percentile) {
+    double realIndex = (percentile) * (data.length - 1);
+    int index = realIndex.toInt();
+    double frac = realIndex - index;
+    if (index + 1 < data.length) {
+      return data[index] * (1 - frac) + data[index + 1] * frac;
+    } else {
+      return data[index];
+    }
+  }
+
   FpsData({
-    required this.processName,
     required this.fpsList,
     required this.fps,
     required this.fps01Low,
@@ -299,7 +374,6 @@ class FpsData {
   });
 
   FpsData copyWith({
-    String? processName,
     List<double>? fpsList,
     double? fps,
     double? fps01Low,
@@ -307,13 +381,22 @@ class FpsData {
     DateTime? date,
   }) {
     return FpsData(
-      processName: processName ?? this.processName,
       fpsList: fpsList ?? this.fpsList,
       fps: fps ?? this.fps,
       fps01Low: fps01Low ?? this.fps01Low,
       fps001Low: fps001Low ?? this.fps001Low,
     );
   }
+}
+
+///used to keep track of highest values in fps screen
+class FpsComputerData {
+  final ComputerData computerData;
+  final Map<String, num> highestValues;
+  FpsComputerData({
+    required this.computerData,
+    required this.highestValues,
+  });
 }
 
 class FpsRecord {
@@ -342,12 +425,64 @@ class FpsTime {
   });
 }
 
+class ProgramTimeScreenData {
+  Map<DateTime, int> dates;
+  int totalYear;
+  ProgramTimeScreenData({
+    required this.dates,
+    required this.totalYear,
+  });
+
+  factory ProgramTimeScreenData.fromMap(Map<String, dynamic> map) {
+    Map<DateTime, int> result = {};
+    for (final data in map['dates'].entries) {
+      DateTime dateTime = DateFormat("yyyy-MM-dd").parse(data.key);
+      result[dateTime] = data.value;
+    }
+    return ProgramTimeScreenData(
+      dates: result,
+      totalYear: map['total_year']?.toInt() ?? 0,
+    );
+  }
+
+  factory ProgramTimeScreenData.fromJson(String source) => ProgramTimeScreenData.fromMap(json.decode(source));
+}
+
+class ProgramTime {
+  final String name;
+  final int minutes;
+  ProgramTime({
+    required this.name,
+    required this.minutes,
+  });
+
+  Map<String, dynamic> toMap() {
+    final result = <String, dynamic>{};
+
+    result.addAll({'name': name});
+    result.addAll({'total_minutes': minutes});
+
+    return result;
+  }
+
+  factory ProgramTime.fromMap(Map<String, dynamic> map) {
+    return ProgramTime(
+      name: map['name'] ?? '',
+      minutes: map['minutes'] ?? 0,
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory ProgramTime.fromJson(String source) => ProgramTime.fromMap(json.decode(source));
+}
+
 class SocketObject {
   late Socket socket;
   Timer? timer;
   SocketObject(String uid, String idToken) {
     socket = io(
-      dotenv.env['SERVER'] == 'production' ? 'https://api.zalapp.com' : 'http://192.168.1.104:5000',
+      dotenv.env['SERVER'] == 'production' ? 'https://api.zalapp.com' : 'http://192.168.0.120:5000',
       <String, dynamic>{
         'transports': ['websocket'],
         'query': {
@@ -391,55 +526,6 @@ class SocketObject {
   //     });
   //   }
   // }
-}
-
-class Settings {
-  bool personalizedAds;
-  bool useCelcius;
-  bool sendAnalaytics;
-  String? primaryGpuName;
-  Settings({
-    required this.personalizedAds,
-    required this.useCelcius,
-    required this.sendAnalaytics,
-    required this.primaryGpuName,
-  });
-
-  Map<String, dynamic> toMap() {
-    final result = <String, dynamic>{};
-    result.addAll({'sendAnalaytics': sendAnalaytics});
-    result.addAll({'personalizedAds': personalizedAds});
-    result.addAll({'useCelcius': useCelcius});
-    result.addAll({'primaryGpuName': primaryGpuName});
-
-    return result;
-  }
-
-  factory Settings.fromMap(Map<String, dynamic> map) {
-    return Settings(
-      personalizedAds: map['personalizedAds'] ?? true,
-      useCelcius: map['useCelcius'] ?? true,
-      sendAnalaytics: map['sendAnalaytics'] ?? true,
-      primaryGpuName: map['primaryGpuName'],
-    );
-  }
-
-  String toJson() => json.encode(toMap());
-
-  factory Settings.fromJson(String source) => Settings.fromMap(json.decode(source));
-
-  Settings copyWith({bool? personalizedAds, bool? useCelcius, bool? sendAnalaytics, String? primaryGpuName}) {
-    return Settings(
-      personalizedAds: personalizedAds ?? this.personalizedAds,
-      useCelcius: useCelcius ?? this.useCelcius,
-      sendAnalaytics: sendAnalaytics ?? this.sendAnalaytics,
-      primaryGpuName: primaryGpuName ?? this.primaryGpuName,
-    );
-  }
-
-  factory Settings.defaultSettings() {
-    return Settings.fromMap({});
-  }
 }
 
 class Cpu {
@@ -812,6 +898,7 @@ class ComputerData {
     } else {
       battery = Battery.nullData();
     }
+    battery = Battery(isCharging: true, batteryPercentage: 60, lifeRemaining: 94, hasBattery: true);
     if (computerData['storagesData'] != null) {
       storages = List<Map<String, dynamic>>.from(computerData['storagesData']).map((e) => Storage.fromMap(e)).toList();
     } else {
