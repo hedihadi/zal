@@ -15,6 +15,7 @@ using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Runtime.InteropServices;
 using Zal.HelperFunctions.SpecificFunctions;
+using ZalConsole.Constants.Models;
 
 namespace ZalConsole.HelperFunctions.SpecificFunctions
 {
@@ -22,7 +23,7 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
     {
         //this function is based on this https://github.com/GameTechDev/PresentMon/issues/189
         //and some modifications to make the data to be parsed easier from c# side.
-        public static Dictionary<String, Dictionary<string, dynamic>> getProcessesGpuUsage()
+        public static Dictionary<String, Dictionary<string, dynamic>> getProcessesGpuUsage(bool skipBlackListedProcesses=true)
         {
             Dictionary<String, Dictionary<string, dynamic>> result = new Dictionary<String, Dictionary<string, dynamic>>();
             var rawData = getRawDataFromPowershell();
@@ -39,25 +40,46 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
                 var p = Process.GetProcessById(pid);
                 try
                 {
-                    var icon = GlobalClass.Instance.getFileIcon(p.MainModule.FileName);
+                    var file = p.MainModule.FileName;
+                    var icon = GlobalClass.Instance.getFileIcon(file);
                     data["icon"] = icon;
                 }
-                catch { }
+                catch(Exception c) {
+                    Console.WriteLine(c.Message);
+                }
 
                 data["pid"] = pid;
                 data["name"] = p.ProcessName;
                 data["usage"] = usage;
-                
-                var foundProcessInfo = processInfos.Where((a) => a.name == p.ProcessName).ToList().FirstOrDefault();
+                ProcessInfo foundProcessInfo;
+                try
+                {
+                    foundProcessInfo = processInfos.Where((a) => a.name == p.ProcessName).ToList().FirstOrDefault();
+                }
+                catch
+                {
+                    foundProcessInfo = null;
+                }
                 if (foundProcessInfo != null)
                 {
-
-                    if (foundProcessInfo.isBlacklisted == true) continue;
+                    if (skipBlackListedProcesses)
+                    {
+                        if (foundProcessInfo.isBlacklisted == true) continue;
+                    }
+                    
 
                     if (foundProcessInfo.displayName != null) { data["name"] = foundProcessInfo.displayName; }
                 }
-                ProcesspathGetter.save(p.ProcessName, p.MainModule.FileName);
-                 result[p.ProcessName] = data;
+              
+                try
+                {
+                    ProcesspathGetter.save(p.ProcessName, p.MainModule.FileName);
+                }
+                catch {
+
+                    
+                }
+                result[p.ProcessName] = data;
             }
             return result;
         }

@@ -26,7 +26,6 @@ class AnalyticsManager {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $idToken',
     };
-    print(idToken);
     final response = await http.post(url, body: body, headers: headers);
     return response;
   }

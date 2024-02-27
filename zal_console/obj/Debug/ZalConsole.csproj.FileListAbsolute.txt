@@ -141,9 +141,10 @@ E:\Projects\Zal\github-zal\zal_console\obj\Debug\zal-console.application
 E:\Projects\Zal\github-zal\zal_console\obj\Debug\ZalConsole.csproj.CopyComplete
 E:\Projects\Zal\github-zal\zal_console\obj\Debug\zal-console.exe
 E:\Projects\Zal\github-zal\zal_console\obj\Debug\zal-console.pdb
+G:\Projects\Zal\github-zal\zal_console\bin\Debug\Resources\get_process_icon.exe
+G:\Projects\Zal\github-zal\zal_console\bin\Debug\Resources\Processes.json
+G:\Projects\Zal\github-zal\zal_console\bin\Debug\Resources\task_manager.exe
 G:\Projects\Zal\github-zal\zal_console\bin\Debug\zal-console.exe.config
-G:\Projects\Zal\github-zal\zal_console\bin\Debug\zal-console.exe.manifest
-G:\Projects\Zal\github-zal\zal_console\bin\Debug\zal-console.application
 G:\Projects\Zal\github-zal\zal_console\bin\Debug\zal-console.exe
 G:\Projects\Zal\github-zal\zal_console\bin\Debug\zal-console.pdb
 G:\Projects\Zal\github-zal\zal_console\bin\Debug\HidSharp.dll
@@ -185,11 +186,6 @@ G:\Projects\Zal\github-zal\zal_console\obj\Debug\ZalConsole.csproj.AssemblyRefer
 G:\Projects\Zal\github-zal\zal_console\obj\Debug\ZalConsole.Resources.resources
 G:\Projects\Zal\github-zal\zal_console\obj\Debug\ZalConsole.csproj.GenerateResource.cache
 G:\Projects\Zal\github-zal\zal_console\obj\Debug\ZalConsole.csproj.CoreCompileInputs.cache
-G:\Projects\Zal\github-zal\zal_console\obj\Debug\zal-console.exe.manifest
-G:\Projects\Zal\github-zal\zal_console\obj\Debug\zal-console.application
 G:\Projects\Zal\github-zal\zal_console\obj\Debug\ZalConsole.csproj.CopyComplete
 G:\Projects\Zal\github-zal\zal_console\obj\Debug\zal-console.exe
 G:\Projects\Zal\github-zal\zal_console\obj\Debug\zal-console.pdb
-G:\Projects\Zal\github-zal\zal_console\bin\Debug\Resources\task_manager.exe
-G:\Projects\Zal\github-zal\zal_console\bin\Debug\Resources\Processes.json
-G:\Projects\Zal\github-zal\zal_console\bin\Debug\Resources\get_process_icon.exe

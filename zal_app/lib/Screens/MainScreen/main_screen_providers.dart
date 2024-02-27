@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:firebase_database/firebase_database.dart';
@@ -9,7 +10,10 @@ import 'package:logger/logger.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:zal/Functions/models.dart';
 import 'package:zal/Functions/theme.dart';
+import 'package:zal/Screens/HomeScreen/Providers/webrtc_provider.dart';
+import 'package:zal/Screens/MainScreen/process_not_running_widget.dart';
 import '../../Functions/analytics_manager.dart';
 import '../HomeScreen/Providers/home_screen_providers.dart';
 
@@ -79,4 +83,32 @@ final shouldShowUpdateDialogProvider = FutureProvider((ref) async {
     );
   }
   return true;
+});
+
+final isDialogShownProvider = StateProvider<bool>((ref) => false);
+
+final areProcessesRunningProvider = FutureProvider<Map<String, bool>>((ref) {
+  final sub = ref.listen(webrtcProvider, (prev, cur) async {
+    if (cur.data?.type == WebrtcDataType.runningProcesses) {
+      final parsedData = Map<String, bool>.from(jsonDecode(cur.data!.data));
+      ref.state = AsyncData(parsedData);
+      if (parsedData.values.contains(false)) {
+        if (ref.read(isDialogShownProvider.notifier).state == false) {
+          ref.read(isDialogShownProvider.notifier).state = true;
+          await showDialog(
+            barrierDismissible: false,
+            context: ref.read(contextProvider)!,
+            builder: (BuildContext context) {
+              return const AlertDialog(
+                content: ProcessNotRunningWidget(),
+              );
+            },
+          );
+          ref.read(isDialogShownProvider.notifier).state = false;
+        }
+      }
+    }
+  });
+  ref.onDispose(() => sub.close());
+  return ref.future;
 });

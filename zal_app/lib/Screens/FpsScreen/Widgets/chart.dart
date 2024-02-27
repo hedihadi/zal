@@ -21,7 +21,7 @@ class ChartSampleData {
 
 class LineZoneChartWidget extends StatelessWidget {
   LineZoneChartWidget({super.key, required this.fpsData}) {
-    chartData = [ChartSampleData(firstSeriesYValue: fpsData.fps, secondSeriesYValue: fpsData.fps01Low, thirdSeriesYValue: fpsData.fps001Low)];
+    chartData = [ChartSampleData(firstSeriesYValue: fpsData.averageFps, secondSeriesYValue: fpsData.fps01Low, thirdSeriesYValue: fpsData.fps001Low)];
   }
   final FpsData fpsData;
 
@@ -32,7 +32,7 @@ class LineZoneChartWidget extends StatelessWidget {
       quarterTurns: 1,
       child: BarChart(
         BarChartData(
-          maxY: fpsData.fps,
+          maxY: fpsData.averageFps,
           barTouchData: BarTouchData(
             mouseCursorResolver: (event, response) {
               return response == null || response.spot == null ? MouseCursor.defer : SystemMouseCursors.click;
@@ -57,7 +57,7 @@ class LineZoneChartWidget extends StatelessWidget {
                     case 1:
                       text = "avg Fps";
                       color = Colors.red;
-                      fps = fpsData.fps;
+                      fps = fpsData.averageFps;
                       break;
                     case 2:
                       text = "1% Fps";
@@ -112,9 +112,9 @@ class LineZoneChartWidget extends StatelessWidget {
                   backDrawRodData: BackgroundBarChartRodData(
                     show: true,
                     color: Theme.of(context).cardTheme.color,
-                    toY: fpsData.fps,
+                    toY: fpsData.averageFps,
                   ),
-                  toY: fpsData.fps,
+                  toY: fpsData.averageFps,
                   color: Colors.red[400],
                   width: 10,
                 ),
@@ -127,7 +127,7 @@ class LineZoneChartWidget extends StatelessWidget {
                   backDrawRodData: BackgroundBarChartRodData(
                     show: true,
                     color: Theme.of(context).cardTheme.color,
-                    toY: fpsData.fps,
+                    toY: fpsData.averageFps,
                   ),
                   toY: fpsData.fps01Low,
                   color: Colors.blue,
@@ -142,7 +142,7 @@ class LineZoneChartWidget extends StatelessWidget {
                   backDrawRodData: BackgroundBarChartRodData(
                     show: true,
                     color: Theme.of(context).cardTheme.color,
-                    toY: fpsData.fps,
+                    toY: fpsData.averageFps,
                   ),
                   toY: fpsData.fps001Low,
                   color: Colors.green,

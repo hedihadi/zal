@@ -13,45 +13,40 @@ import 'package:zal/Screens/MainScreen/main_screen_providers.dart';
 import '../../Functions/models.dart';
 
 class FpsDataNotifier extends AutoDisposeAsyncNotifier<FpsData> {
+  Stopwatch stopwatch = Stopwatch()..start();
   Future<FpsData> _fetchData(FpsData fpsData, String data) async {
-    final parsedData = jsonDecode(data);
-    //return FpsData(
-    //    fpsList: List<double>.from(parsedData['data']),
-    //    fps: parsedData['averageFps'],
-    //    fps01Low: parsedData['percentile01'],
-    //    fps001Low: parsedData['percentile001']);
+    final List<double> parsedData = List<double>.from(jsonDecode(data));
+    final average = parsedData.reduce((value, element) => element + value);
+    final currentFps = average / parsedData.length;
     for (final data in parsedData) {
-      //final fps = (1000 / data);
-      try {
-        final a = ref.read(aProvider);
-        ref.read(aProvider.notifier).state = [...ref.read(aProvider), data];
-        if (a.length > 150) {
-          ref.read(aProvider.notifier).state.removeAt(0);
-        }
-      } catch (c) {
-        print(c);
-      }
+      //try {
+      //  final a = ref.read(aProvider);
+      //  ref.read(aProvider.notifier).state = [...ref.read(aProvider), data];
+      //  if (a.length > 150) {
+      //    ref.read(aProvider.notifier).state.removeAt(0);
+      //  }
+      //} catch (c) {
+      //  print(c);
+      //}
       fpsData.addFps(data);
     }
     fpsData.calculateFps();
+    fpsData.currentFps = currentFps;
+    ref.read(fpsChartProvider.notifier).addList(parsedData, stopwatch.elapsedMilliseconds);
+    stopwatch.reset();
     return fpsData;
   }
 
-  double getCurrentFps() {
-    final data = ref.read(aProvider);
-    final result = data.reduce((value, element) => value + element) / data.length;
-    return result;
-  }
-
-  void reset() {
+  void reset() async {
     ref.read(fpsTimeElapsedProvider.notifier).stopwatch = Stopwatch()..start();
     ref.invalidate(fpsComputerDataProvider);
     ref.invalidate(_fpsComputerDataProvider);
-
-    state = AsyncData(FpsData(fpsList: [], fps: 0, fps001Low: 0, fps01Low: 0));
+    state = AsyncData(FpsData(fpsList: [], currentFps: 0, averageFps: 0, fps001Low: 0, fps01Low: 0));
   }
 
   Future<void> showChooseGameDialog({bool dismissible = true}) async {
+    ref.read(webrtcProvider.notifier).sendMessage("get_gpu_processes", "");
+    // ref.invalidate(gpuProcessesProvider);
     final context = ref.read(contextProvider);
     AlertDialog alert = const AlertDialog(
       content: SelectGpuProcessWidget(),
@@ -73,7 +68,8 @@ class FpsDataNotifier extends AutoDisposeAsyncNotifier<FpsData> {
     final FpsData fpsData = state.value ??
         FpsData(
           fpsList: [],
-          fps: 0,
+          currentFps: 0,
+          averageFps: 0,
           fps01Low: 0,
           fps001Low: 0,
         );
@@ -85,7 +81,6 @@ class FpsDataNotifier extends AutoDisposeAsyncNotifier<FpsData> {
   }
 }
 
-final aProvider = StateProvider<List<double>>((ref) => []);
 final _fpsDataProvider = FutureProvider<String>((ref) {
   final sub = ref.listen(webrtcProvider, (prev, cur) {
     if (cur.data?.type == WebrtcDataType.fpsData) {
@@ -103,7 +98,8 @@ class FpsRecordsNotifier extends StateNotifier<List<FpsRecord>> {
   dynamic ref;
   FpsRecordsNotifier({required this.ref}) : super([]);
   void addPreset(FpsData fpsData, String presetName, String? note) {
-    fpsData = FpsData(fpsList: [], fps: fpsData.fps, fps01Low: fpsData.fps01Low, fps001Low: fpsData.fps001Low);
+    fpsData = FpsData(
+        fpsList: [], averageFps: fpsData.averageFps, currentFps: fpsData.currentFps, fps01Low: fpsData.fps01Low, fps001Low: fpsData.fps001Low);
     state = [
       FpsRecord(fpsData: fpsData, presetDuration: formatTime((ref.read(fpsTimeElapsedProvider)).value), presetName: presetName, note: note),
       ...state,
@@ -142,8 +138,6 @@ final fpsTimeElapsedProvider = AsyncNotifierProvider.autoDispose<FpsTimeElapsedN
 });
 
 final gpuProcessesProvider = FutureProvider<List<GpuProcess>>((ref) {
-  ref.read(webrtcProvider.notifier).sendMessage("get_gpu_processes", "");
-
   final sub = ref.listen(webrtcProvider, (prev, cur) {
     if (cur.data?.type == WebrtcDataType.gpuProcesses) {
       final parsedData = Map<String, dynamic>.from(jsonDecode(cur.data!.data));
@@ -166,7 +160,7 @@ final _fpsComputerDataProvider = StateProvider<Map<String, num>>((ref) => {});
 final fpsComputerDataProvider = StateProvider<FpsComputerData>((ref) {
   final oldData = ref.watch(_fpsComputerDataProvider);
   final computerData = ref.watch(computerDataProvider).value!;
-  final gpu = ref.read(computerDataProvider.notifier).getPrimaryGpu()!;
+  final gpu = ref.watch(primaryGpuProvider)!;
   final cpu = computerData.cpu;
   if (gpu.coreSpeed > (oldData['gpu.coreSpeed'] ?? 0)) {
     oldData['gpu.coreSpeed'] = gpu.coreSpeed;
@@ -203,4 +197,23 @@ final fpsComputerDataProvider = StateProvider<FpsComputerData>((ref) {
   }
   ref.read(_fpsComputerDataProvider.notifier).state = oldData;
   return FpsComputerData(computerData: computerData, highestValues: oldData);
+});
+
+class FpsChartNotifier extends StateNotifier<List<double>> {
+  dynamic ref;
+  FpsChartNotifier({required this.ref}) : super([]);
+  Future<void> addList(List<double> fpsList, int timeFromLastData) async {
+    final delay = timeFromLastData / fpsList.length;
+    for (final fps in fpsList) {
+      state = [...state, fps];
+      if (state.length > 150) {
+        state.removeAt(0);
+      }
+      await Future.delayed(Duration(milliseconds: delay.toInt()));
+    }
+  }
+}
+
+final fpsChartProvider = StateNotifierProvider<FpsChartNotifier, List<double>>((ref) {
+  return FpsChartNotifier(ref: ref);
 });

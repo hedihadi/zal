@@ -14,7 +14,8 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
     {
         public networkSpeed primaryNetworkSpeed;
         private Timer networkInterfaceTimer;
-        public List<networkInterfaceData> networkInterfaces;
+        public List<networkInterfaceData> networkInterfaceDatas;
+        private List<NetworkInterface> networkInterfaces;
         public NetworkSpeedGetter()
         {
             networkSpeed s =new networkSpeed(0,0);
@@ -25,7 +26,7 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
             {
                 // Call your method directly inside the timer
                 var result = getNetworkInterfaces();
-                this.networkInterfaces = result;
+                this.networkInterfaceDatas = result;
             }, null, 0, 5000);
 
             //run code that periodically gets the primary network speed
@@ -40,10 +41,15 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
           
         }
        private void getPrimaryNetworkSpeed() {
-            var nics = System.Net.NetworkInformation.NetworkInterface.GetAllNetworkInterfaces();
+            //var nics = networkInterfaces();
+            if (networkInterfaces == null)
+            {
+                 networkInterfaces = System.Net.NetworkInformation.NetworkInterface.GetAllNetworkInterfaces().ToList();
+            }
+           
             // Select desired NIC
             var a = Settings.Default.primaryNetwork;
-            var nic = nics.SingleOrDefault(n => n.Name == Settings.Default.primaryNetwork);
+            var nic = networkInterfaces.SingleOrDefault(n => n.Name == Settings.Default.primaryNetwork);
             if (nic == null)
             {
                 return;

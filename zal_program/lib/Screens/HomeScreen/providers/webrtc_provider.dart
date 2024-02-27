@@ -4,12 +4,14 @@ import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:zal/Functions/Models/models.dart';
+import 'package:zal/Functions/programs_runner.dart';
 import 'package:zal/Functions/webrtcModel.dart';
 import 'package:zal/Screens/HomeScreen/providers/log_list_provider.dart';
 import 'package:zal/Screens/HomeScreen/providers/server_socket_stream_provider.dart';
 import 'package:zal/Screens/HomeScreen/providers/task_manager_provider.dart';
 import 'package:zal/Screens/MainScreen/main_screen_providers.dart';
 import 'package:zal/Screens/NotificationsScreen/notifications_screen_providers.dart';
+import 'package:zal/Screens/SettingsScreen/settings_provider.dart';
 
 import '../../../Functions/utils.dart';
 
@@ -120,6 +122,13 @@ class WebRtcNotifier extends StateNotifier<WebrtcProviderModel> {
       ref.read(localSocketObjectProvider)?.socket.emit('get_process_icon', state.data!.data);
     } else if (state.data?.type == WebrtcDataType.launchApp) {
       ref.read(localSocketObjectProvider)?.socket.emit('launch_app', state.data!.data);
+    } else if (state.data?.type == WebrtcDataType.runProcess) {
+      if (state.data!.data == "zal-console.exe") {
+        ProgramsRunner.runZalConsole(ref.read(settingsProvider).value?.runAsAdmin ?? true);
+      }
+      if (state.data!.data == "zal-server.exe") {
+        ProgramsRunner.runServer();
+      }
     } else if (state.data?.type == WebrtcDataType.stopFps) {
       final socket = ref.read(localSocketObjectProvider)?.socket;
       socket?.emit('stop_fps', "");

@@ -76,37 +76,37 @@ class SettingsScreen extends ConsumerWidget {
             //),
           ],
         ),
-        ref.watch(localSocketProvider).value == null
-            ? Container()
-            : SectionSettingUi(children: [
-                const Text("Select your primary GPU"),
-                GridView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: ref.watch(localSocketProvider).value!.gpus.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, childAspectRatio: 3),
-                  itemBuilder: (context, index) {
-                    final gpu = ref.read(localSocketProvider).value!.gpus[index];
-                    return GestureDetector(
-                      onTap: () {
-                        ref.read(settingsProvider.notifier).updatePrimaryGpuName(gpu.name);
-                      },
-                      child: Card(
-                        color: (settings?.primaryGpuName ?? "") == gpu.name ? Theme.of(context).primaryColor : Theme.of(context).cardColor,
-                        elevation: 5,
-                        shadowColor: Colors.transparent,
-                        child: Center(
-                          child: Text(
-                            gpu.name,
-                            maxLines: 2,
-                            style: Theme.of(context).textTheme.titleLarge,
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ]),
+        // ref.watch(localSocketProvider).value == null
+        //     ? Container()
+        //     : SectionSettingUi(children: [
+        //         const Text("Select your primary GPU"),
+        //         GridView.builder(
+        //           shrinkWrap: true,
+        //           physics: const NeverScrollableScrollPhysics(),
+        //           itemCount: ref.watch(localSocketProvider).value!.gpus.length,
+        //           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, childAspectRatio: 3),
+        //           itemBuilder: (context, index) {
+        //             final gpu = ref.read(localSocketProvider).value!.gpus[index];
+        //             return GestureDetector(
+        //               onTap: () {
+        //                 ref.read(settingsProvider.notifier).updatePrimaryGpuName(gpu.name);
+        //               },
+        //               child: Card(
+        //                 color: (settings?.primaryGpuName ?? "") == gpu.name ? Theme.of(context).primaryColor : Theme.of(context).cardColor,
+        //                 elevation: 5,
+        //                 shadowColor: Colors.transparent,
+        //                 child: Center(
+        //                   child: Text(
+        //                     gpu.name,
+        //                     maxLines: 2,
+        //                     style: Theme.of(context).textTheme.titleLarge,
+        //                   ),
+        //                 ),
+        //               ),
+        //             );
+        //           },
+        //         ),
+        //       ]),
         //MISC
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -321,7 +321,7 @@ class SettingsScreen extends ConsumerWidget {
               ],
             ),
             const Divider(),
-           ],
+          ],
         ),
       ],
     );

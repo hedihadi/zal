@@ -29,7 +29,7 @@ class ProgramTimesNotifier extends AsyncNotifier<List<ProgramTime>?> {
     //}
     final programTimesFromNetwork = await getProgramTimesFromNetwork();
     programTimesFromNetwork?.sort((b, a) => a.minutes.compareTo(b.minutes));
-        return programTimesFromNetwork;
+    return programTimesFromNetwork;
   }
 
   Future<void> getNewDataFromNetwork() async {

@@ -40,7 +40,7 @@ class NotificationsScreen extends ConsumerWidget {
                   itemBuilder: (context, index) {
                     final notification = notifications[index];
                     return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 2.5, vertical: 10),
+                      padding: const EdgeInsets.symmetric(horizontal: 2.5, vertical: 2),
                       child: Card(
                         color: notification.suspended ? Theme.of(context).colorScheme.errorContainer : null,
                         child: Padding(

@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:color_print/color_print.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
 import 'package:launch_at_startup/launch_at_startup.dart';
@@ -7,25 +9,32 @@ import 'package:zal/Functions/Models/models.dart';
 import 'package:zal/Functions/local_database_manager.dart';
 import 'package:zal/Functions/programs_runner.dart';
 import 'package:zal/Functions/utils.dart';
+import 'package:zal/Screens/HomeScreen/providers/webrtc_provider.dart';
 import 'package:zal/Screens/MainScreen/main_screen_providers.dart';
 import 'package:window_manager/window_manager.dart';
 
 class SettingsNotifier extends AsyncNotifier<Settings> {
-  bool isStartup = true;
+  bool isFirstUpdate = true;
   Future<Settings> _fetchData() async {
-    final settings = await LocalDatabaseManager.loadSettings();
-    if (isStartup) {
-      Future.delayed(const Duration(microseconds: 1), () async {
-        try {
-          await ProgramsRunner.runZalConsole(settings.runAsAdmin);
-        } on PathAccessException {
-          showSnackbar("couldn't extract zal-console.zip, it's being used by another process", ref.read(contextProvider)!);
-        }
+    Settings? settings = await LocalDatabaseManager.loadSettings();
+    bool isFirstRun = false;
+    if (settings == null) {
+      isFirstRun = true;
+      settings = Settings.defaultSettings();
+      saveSettings();
+    }
+    if (isFirstUpdate) {
+      Future.delayed(const Duration(milliseconds: 500), () async {
+        await ProgramsRunner.runZalConsole(settings!.runAsAdmin).catchError(
+          (e) {
+            showSnackbar("failed to run zal-console.exe", ref.read(contextProvider)!);
+          },
+        );
       });
-      if (settings.startMinimized && settings.runInBackground) {
-        windowManager.hide();
+      if (settings.startMinimized && settings.runInBackground && isFirstRun == false) {
+        Future.delayed(const Duration(seconds: 1), () => windowManager.hide());
       }
-      isStartup = false;
+      isFirstUpdate = false;
     }
 
     return settings;
@@ -34,7 +43,6 @@ class SettingsNotifier extends AsyncNotifier<Settings> {
   Future<void> saveSettings() async {
     final box = Hive.box("data");
     box.put("settings", state.value!.toJson());
-    ref.invalidate(settingsProvider);
   }
 
   updatePersonalizedAds(bool value) {
@@ -99,7 +107,7 @@ final settingsProvider = AsyncNotifierProvider<SettingsNotifier, Settings>(() {
 
 final settingsTimerProvider = StreamProvider<int>((ref) {
   final stopwatch = Stopwatch()..start();
-  return Stream.periodic(const Duration(seconds: 1), (count) {
+  return Stream.periodic(const Duration(seconds: 5), (count) {
     return stopwatch.elapsed.inSeconds;
   });
 });
@@ -107,8 +115,14 @@ final settingsTimerProvider = StreamProvider<int>((ref) {
 final runningProcessesProvider = FutureProvider<Map<String, bool>>((ref) async {
   ref.watch(settingsTimerProvider);
   final String result = (await Process.run('tasklist', [])).stdout;
-  return {
+  final data = {
     "zal-console.exe": result.contains("zal-console.exe"),
     "zal-server.exe": result.contains("zal-server.exe"),
   };
+  try {
+    ref.read(webrtcProvider.notifier).sendMessage("running_processes", jsonEncode(data));
+  } catch (c) {
+    logError(c);
+  }
+  return data;
 });

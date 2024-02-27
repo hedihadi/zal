@@ -45,9 +45,7 @@ class HomeScreen extends ConsumerWidget {
               height: 1.h,
             ),
             const IsProgramAdminstratorWidget(),
-            const WeekChart(),
             const SizedBox(height: 10),
-            Divider(color: HexColor("#1c2023"), thickness: 5),
             if (data.battery.hasBattery)
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
@@ -276,6 +274,7 @@ class HomeScreen extends ConsumerWidget {
               ),
             ),
             InlineAd(adUnit: Platform.isAndroid ? "ca-app-pub-5545344389727160/4695435315" : "ca-app-pub-5545344389727160/5860639295"),
+            Divider(color: HexColor("#1c2023"), thickness: 5),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 3),
               child: Card(
@@ -304,6 +303,10 @@ class HomeScreen extends ConsumerWidget {
                   ),
                 ),
               ),
+            ),
+            Divider(color: HexColor("#1c2023"), thickness: 5),
+            const Card(
+              child: WeekChart(),
             ),
           ],
         );

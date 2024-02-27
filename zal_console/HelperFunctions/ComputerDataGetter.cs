@@ -207,7 +207,7 @@ namespace Zal.HelperFunctions
             }
             try
             {
-                computerData.networkInterfaces = this.networkSpeedGetter.networkInterfaces;
+                computerData.networkInterfaces = this.networkSpeedGetter.networkInterfaceDatas;
             }
             catch (Exception ex)
             {

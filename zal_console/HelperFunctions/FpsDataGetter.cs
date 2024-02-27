@@ -21,7 +21,9 @@ namespace Zal.HelperFunctions
         private bool isDisposed = false;
         public event EventHandler<dynamic> sendFpsData;
         private List<double> fpsDatas = [];
+        private int processId;
         Stopwatch stopwatch = new Stopwatch();
+        private List<double> lastSecondFpsDatas = [];
         public FpsDataGetter()
         {
             stopwatch.Start();
@@ -53,30 +55,19 @@ namespace Zal.HelperFunctions
             isDisposed = true;
             stopPresentmon();
         }
-        private void stopPresentmon()
+        public void stopPresentmon()
         {
-
             foreach (var process in Process.GetProcessesByName("presentmon"))
             {
                 process.Kill();
-                process.WaitForExit();
-                process.Dispose();
-
             }
-            if (presentmonProcess != null)
-            {
-                try { presentmonProcess.Kill(); } catch { }
-                presentmonProcess.Dispose();
-                presentmonProcess = null;
-            }
-
         }
         public async void startPresentmon(int processId)
         {
             
             //startFpsTimer();
             //kill any presentmon process that might be running
-
+            this.processId= processId;
             string path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "presentmon.exe");
             try
             {
@@ -119,10 +110,8 @@ namespace Zal.HelperFunctions
 
             while (!reader.EndOfStream)
             {
-
-
                 if (isDisposed) break;
-                Thread.Sleep(30);
+                //Thread.Sleep(30);
                 string line = reader.ReadLine();
                 var msBetweenPresents = "";
                 try
@@ -151,14 +140,11 @@ namespace Zal.HelperFunctions
                     var time = getTimestamp();
                     if (msBetweenPresents.Any(char.IsDigit))
                     {
-                        //fpsData fpsData = new fpsData();
-                        //fpsData.processId = processId;
                         var doubledMsBetweenPresents = double.Parse(msBetweenPresents);
-                        //fpsData.processName = processName;
                         fpsDatas.Add((1000 / doubledMsBetweenPresents));
 
 
-                        if(fpsDatas.Count > 10)
+                        if (fpsDatas.Count > 10)
                         {
                             try
                             {
@@ -171,11 +157,18 @@ namespace Zal.HelperFunctions
                             fpsDatas.Clear();
                         }
                         continue;
-                        if (stopwatch.ElapsedMilliseconds >199)
+                        lastSecondFpsDatas.Add((1000 / doubledMsBetweenPresents));
+                        if (stopwatch.ElapsedMilliseconds > 100)
                         {
-                          
+
+                        }
+
+                            //lastSecondFpsDatas.Add((1000 / doubledMsBetweenPresents));
+                            if (stopwatch.ElapsedMilliseconds >100)
+                        {
                             try
                             {
+
                                 System.Diagnostics.Debug.WriteLine($"p: {processId} - {processName}");
                                 List<double> copyOfFpsDatas = fpsDatas.ToList();
                                 var percentile01 = calculatePercentile(copyOfFpsDatas, 0.01);
@@ -185,11 +178,16 @@ namespace Zal.HelperFunctions
                                 dataToSend["percentile01"] = percentile01;
                                 dataToSend["percentile001"] = percentile001;
                                 dataToSend["averageFps"] = averageFps;
-                                dataToSend["data"] = copyOfFpsDatas;
+                                dataToSend["currentFps"] = lastSecondFpsDatas.Average();
+                                //dataToSend["data"] = copyOfFpsDatas;
                                 sendFpsData.Invoke(null, dataToSend);
-                                if(fpsDatas.Count > 500)
+                                
+                                lastSecondFpsDatas.Clear();
+                                GC.Collect(GC.GetGeneration(lastSecondFpsDatas), GCCollectionMode.Forced);
+                                if (fpsDatas.Count > 500)
                                 {
                                     fpsDatas.RemoveAt(0);
+
                                 } 
                                 stopwatch.Restart();
                             }

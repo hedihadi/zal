@@ -28,13 +28,23 @@ class _MainScreenState extends ConsumerState<MainScreen> with WindowListener, Tr
     ref.read(executableProvider);
     final user = ref.watch(userProvider);
     WidgetsBinding.instance.addPostFrameCallback((_) => runStartupCode(ref, context));
-    if (user.hasValue == false) {
-      return const Scaffold();
-    }
-    return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 1.w),
-        child: user.valueOrNull == null ? const MainLoginScreen() : const AuthorizedScreen(),
+    return user.when(
+      data: (data) {
+        return Scaffold(
+          body: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 1.w),
+            child: data == null ? const MainLoginScreen() : const AuthorizedScreen(),
+          ),
+        );
+      },
+      error: (error, stackTrace) {
+        ref.invalidate(userProvider);
+        return Center(
+          child: Text(error.toString()),
+        );
+      },
+      loading: () => const Center(
+        child: CircularProgressIndicator(),
       ),
     );
   }
@@ -51,7 +61,7 @@ class _MainScreenState extends ConsumerState<MainScreen> with WindowListener, Tr
 
   @override
   void onWindowClose() async {
-    Settings settings = await LocalDatabaseManager.loadSettings();
+    Settings settings = await LocalDatabaseManager.loadSettings() ?? Settings.defaultSettings();
     if (settings.runInBackground) {
       await windowManager.hide();
     } else {

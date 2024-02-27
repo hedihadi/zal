@@ -62,6 +62,8 @@ class SelectGpuProcessWidget extends ConsumerWidget {
               ),
               IconButton(
                   onPressed: () {
+                    ref.read(webrtcProvider.notifier).sendMessage("get_gpu_processes", "");
+
                     ref.invalidate(selectedGpuProcessProvider);
                     ref.invalidate(gpuProcessesProvider);
                   },

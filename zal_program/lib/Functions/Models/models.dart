@@ -23,7 +23,8 @@ enum WebrtcDataType {
   startFps,
   stopFps,
   getProcessIcon,
-  launchApp
+  launchApp,
+  runProcess
 }
 
 enum NewNotificationKey { Gpu, Cpu, Ram, Storage, Network }

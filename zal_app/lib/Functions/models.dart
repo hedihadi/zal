@@ -27,7 +27,19 @@ enum DataType { Hardwares, TaskManager }
 
 enum StreamDataType { RoomClients }
 
-enum WebrtcDataType { pcData, notifications, drives, directory, file, informationText, fileComplete, gpuProcesses, fpsData, processIcon }
+enum WebrtcDataType {
+  pcData,
+  notifications,
+  drives,
+  directory,
+  file,
+  informationText,
+  fileComplete,
+  gpuProcesses,
+  fpsData,
+  processIcon,
+  runningProcesses
+}
 
 enum NewNotificationKey { Gpu, Cpu, Ram, Storage, Network }
 
@@ -329,7 +341,8 @@ class StreamData {
 
 class FpsData {
   List<double> fpsList;
-  double fps;
+  double currentFps;
+  double averageFps;
   double fps01Low;
   double fps001Low;
 
@@ -338,17 +351,8 @@ class FpsData {
     sortedFps.sort((a, b) => a.compareTo(b));
     fps01Low = calculatePercentile(sortedFps, 0.01).toPrecision(2);
     fps001Low = calculatePercentile(sortedFps, 0.001).toPrecision(2);
-    //double totalFPS = sortedFps.reduce((a, b) => a + b);
-    // fps = totalFPS / fpsList.length;
-    List<double> last10Records;
-    if (fpsList.length >= 10) {
-      // Get the last 10 records using sublist
-      last10Records = fpsList.sublist(fpsList.length - 10);
-    } else {
-      last10Records = List<double>.from(fpsList);
-    }
-    double totalFPS = last10Records.reduce((a, b) => a + b);
-    fps = totalFPS / last10Records.length;
+    double totalFPS = sortedFps.reduce((a, b) => a + b);
+    averageFps = totalFPS / fpsList.length;
   }
 
   addFps(double fps) {
@@ -368,21 +372,24 @@ class FpsData {
 
   FpsData({
     required this.fpsList,
-    required this.fps,
+    required this.currentFps,
     required this.fps01Low,
     required this.fps001Low,
+    required this.averageFps,
   });
 
   FpsData copyWith({
     List<double>? fpsList,
-    double? fps,
+    double? currentFps,
+    double? averageFps,
     double? fps01Low,
     double? fps001Low,
     DateTime? date,
   }) {
     return FpsData(
       fpsList: fpsList ?? this.fpsList,
-      fps: fps ?? this.fps,
+      currentFps: currentFps ?? this.currentFps,
+      averageFps: averageFps ?? this.averageFps,
       fps01Low: fps01Low ?? this.fps01Low,
       fps001Low: fps001Low ?? this.fps001Low,
     );
@@ -898,7 +905,7 @@ class ComputerData {
     } else {
       battery = Battery.nullData();
     }
-    battery = Battery(isCharging: true, batteryPercentage: 60, lifeRemaining: 94, hasBattery: true);
+    //battery = Battery(isCharging: true, batteryPercentage: 60, lifeRemaining: 94, hasBattery: true);
     if (computerData['storagesData'] != null) {
       storages = List<Map<String, dynamic>>.from(computerData['storagesData']).map((e) => Storage.fromMap(e)).toList();
     } else {

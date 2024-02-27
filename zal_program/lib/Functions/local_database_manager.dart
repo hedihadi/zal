@@ -33,13 +33,12 @@ class LocalDatabaseManager {
     await box.put('computerSpecs', computerSpecs.toJson());
   }
 
-  static Future<Settings> loadSettings() async {
+  static Future<Settings?> loadSettings() async {
     final box = Hive.box("data");
     if (box.containsKey("settings")) {
       return Settings.fromJson(box.get("settings")!);
-    } else {
-      return Settings.defaultSettings();
-    }
+    } 
+    return null;
   }
 
   static Future<List<NotificationData>?> loadNotifications() async {

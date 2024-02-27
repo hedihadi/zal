@@ -1,3 +1,4 @@
+import 'package:color_print/color_print.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zal/Functions/models.dart';
 import 'package:zal/Functions/utils.dart';
@@ -8,6 +9,7 @@ final informationTextProvider = FutureProvider<WebrtcProviderModel>((ref) {
   final sub = ref.listen(webrtcProvider, (prev, cur) {
     if (cur.data?.type == WebrtcDataType.informationText) {
       final context = ref.read(contextProvider)!;
+      logInfo(cur.data?.data);
       showSnackbar(cur.data!.data, context);
     }
   });

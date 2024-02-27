@@ -78,10 +78,8 @@ namespace ZalConsole
             });
             client.On("stop_fps", response =>
             {
-                foreach (var process in Process.GetProcessesByName("presentmon"))
-                {
-                    process.Kill();
-                }
+                fpsDataGetter.stopPresentmon();
+              
             });
 
             var serializedData = Newtonsoft.Json.JsonConvert.SerializeObject(computerDataGetter.getcomputerData());
@@ -116,9 +114,17 @@ namespace ZalConsole
             });
             client.On("get_gpu_processes", async response =>
             {
-                var gpuProcesses = GpuUtilizationGetter.getProcessesGpuUsage();
-                var serializedData = Newtonsoft.Json.JsonConvert.SerializeObject(gpuProcesses);
-                await client.EmitAsync("gpu_processes", serializedData);
+                try
+                {
+                    var gpuProcesses = GpuUtilizationGetter.getProcessesGpuUsage();
+                    var serializedData = Newtonsoft.Json.JsonConvert.SerializeObject(gpuProcesses);
+                    await client.EmitAsync("gpu_processes", serializedData);
+                }
+                catch (Exception ex)
+                {
+                    await client.EmitAsync("information_text", ex.ToString());
+                }
+               
             });
             client.On("get_data", async response =>
             {

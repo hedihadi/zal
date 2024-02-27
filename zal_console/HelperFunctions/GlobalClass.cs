@@ -48,6 +48,7 @@ namespace ZalConsole.HelperFunctions
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.RedirectStandardOutput = true;
             process.StartInfo.RedirectStandardError = true;
+            process.StartInfo.CreateNoWindow = true;
             process.Start();
             //* Read the output (or the error)
             string output = process.StandardOutput.ReadToEnd();

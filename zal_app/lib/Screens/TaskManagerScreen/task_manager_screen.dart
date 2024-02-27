@@ -51,7 +51,7 @@ class TaskManagerScreen extends ConsumerWidget {
           ),
         ),
         SizedBox(height: 2.h),
-        ListView.builder(
+        ListView.separated(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemCount: sortedTaskProcesses.length,
@@ -89,7 +89,8 @@ class TaskManagerScreen extends ConsumerWidget {
                               style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 17, color: getTemperatureColor(process.cpuPercent))),
                           InkWell(
                               onTap: () async {
-                                bool response = await showConfirmDialog('are you sure?', '${process.name} will be terminated.', context);
+                                bool response =
+                                    await showConfirmDialog('are you sure?', '${process.name} do you want to kill this process?', context);
                                 if (response == false) return;
                                 ref.read(webrtcProvider.notifier).sendMessage('kill_process', jsonEncode(process.pids));
                               },
@@ -125,9 +126,14 @@ class TaskManagerScreen extends ConsumerWidget {
               ),
             );
           },
+          separatorBuilder: (context, index) {
+            if (index == 5) {
+              return InlineAd(adUnit: Platform.isAndroid ? "ca-app-pub-5545344389727160/3866023931" : "ca-app-pub-5545344389727160/8905268635");
+            }
+            return Container();
+          },
         ),
         //TaskmanagerTableWidget(processes: sortedTaskProcesses),
-        InlineAd(adUnit: Platform.isAndroid ? "ca-app-pub-5545344389727160/7822053264" : "ca-app-pub-5545344389727160/7748436032"),
       ],
     );
   }

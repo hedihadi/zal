@@ -30,7 +30,7 @@ class ResultWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     if (result == null) return Container();
     if (result!['response'] == "error") {
-      return Center(child: Text("something went wrong, please try again later...\n${result!['data']}"));
+      return Center(child: Text("something went wrong, please try again...\n${result!['data']}"));
     }
     final specs = ref.watch(computerSpecsProvider).value;
     final gpu = ref.read(settingsProvider).value!['primaryGpuName'];
@@ -78,7 +78,7 @@ class ResultWidget extends ConsumerWidget {
                               addSpacing: true,
                               showIcon: false,
                               wrapValueInExpanded: true,
-                              textColor: data['gpu']['is_my_gpu_above_minimum_settings'] ? const Color(0xff77839a) : null,
+                              textColor: data['gpu']['is_my_gpu_above_minimum_specs'] ? const Color(0xff77839a) : null,
                             ),
                             tableRow(
                               context,
@@ -88,12 +88,12 @@ class ResultWidget extends ConsumerWidget {
                               addSpacing: true,
                               showIcon: false,
                               wrapValueInExpanded: true,
-                              textColor: data['gpu']['is_my_gpu_above_minimum_settings'] ? const Color(0xff77839a) : null,
+                              textColor: data['gpu']['is_my_gpu_above_minimum_specs'] ? const Color(0xff77839a) : null,
                               suffixIcon: Padding(
                                 padding: EdgeInsets.only(left: 1.w),
                                 child: Icon(
-                                  data['gpu']['is_my_gpu_above_minimum_settings'] ? FontAwesomeIcons.check : FontAwesomeIcons.xmark,
-                                  color: data['gpu']['is_my_gpu_above_minimum_settings'] ? Colors.green : Colors.red,
+                                  data['gpu']['is_my_gpu_above_minimum_specs'] ? FontAwesomeIcons.check : FontAwesomeIcons.xmark,
+                                  color: data['gpu']['is_my_gpu_above_minimum_specs'] ? Colors.green : Colors.red,
                                   size: 15,
                                 ),
                               ),
@@ -123,7 +123,7 @@ class ResultWidget extends ConsumerWidget {
                               addSpacing: true,
                               showIcon: false,
                               wrapValueInExpanded: true,
-                              textColor: data['cpu']['is_my_cpu_above_minimum_settings'] ? const Color(0xff77839a) : null,
+                              textColor: data['cpu']['is_my_cpu_above_minimum_specs'] ? const Color(0xff77839a) : null,
                             ),
                             tableRow(
                               context,
@@ -133,12 +133,12 @@ class ResultWidget extends ConsumerWidget {
                               addSpacing: true,
                               showIcon: false,
                               wrapValueInExpanded: true,
-                              textColor: data['cpu']['is_my_cpu_above_minimum_settings'] ? const Color(0xff77839a) : null,
+                              textColor: data['cpu']['is_my_cpu_above_minimum_specs'] ? const Color(0xff77839a) : null,
                               suffixIcon: Padding(
                                 padding: EdgeInsets.only(left: 1.w),
                                 child: Icon(
-                                  data['cpu']['is_my_cpu_above_minimum_settings'] ? FontAwesomeIcons.check : FontAwesomeIcons.xmark,
-                                  color: data['cpu']['is_my_cpu_above_minimum_settings'] ? Colors.green : Colors.red,
+                                  data['cpu']['is_my_cpu_above_minimum_specs'] ? FontAwesomeIcons.check : FontAwesomeIcons.xmark,
+                                  color: data['cpu']['is_my_cpu_above_minimum_specs'] ? Colors.green : Colors.red,
                                   size: 15,
                                 ),
                               ),
@@ -168,7 +168,7 @@ class ResultWidget extends ConsumerWidget {
                               addSpacing: true,
                               showIcon: false,
                               wrapValueInExpanded: true,
-                              textColor: data['ram']['is_my_ram_above_minimum_settings'] ? const Color(0xff77839a) : null,
+                              textColor: data['ram']['is_my_ram_above_minimum_specs'] ? const Color(0xff77839a) : null,
                             ),
                             tableRow(
                               context,
@@ -178,12 +178,12 @@ class ResultWidget extends ConsumerWidget {
                               addSpacing: true,
                               showIcon: false,
                               wrapValueInExpanded: true,
-                              textColor: data['ram']['is_my_ram_above_minimum_settings'] ? const Color(0xff77839a) : null,
+                              textColor: data['ram']['is_my_ram_above_minimum_specs'] ? const Color(0xff77839a) : null,
                               suffixIcon: Padding(
                                 padding: EdgeInsets.only(left: 1.w),
                                 child: Icon(
-                                  data['ram']['is_my_ram_above_minimum_settings'] ? FontAwesomeIcons.check : FontAwesomeIcons.xmark,
-                                  color: data['ram']['is_my_ram_above_minimum_settings'] ? Colors.green : Colors.red,
+                                  data['ram']['is_my_ram_above_minimum_specs'] ? FontAwesomeIcons.check : FontAwesomeIcons.xmark,
+                                  color: data['ram']['is_my_ram_above_minimum_specs'] ? Colors.green : Colors.red,
                                   size: 15,
                                 ),
                               ),
@@ -233,7 +233,7 @@ class ResultWidget extends ConsumerWidget {
                               addSpacing: true,
                               showIcon: false,
                               wrapValueInExpanded: true,
-                              textColor: data['gpu']['is_my_gpu_above_recommended_settings'] ? const Color(0xff77839a) : null,
+                              textColor: data['gpu']['is_my_gpu_above_recommended_specs'] ? const Color(0xff77839a) : null,
                             ),
                             tableRow(
                               context,
@@ -243,12 +243,12 @@ class ResultWidget extends ConsumerWidget {
                               addSpacing: true,
                               showIcon: false,
                               wrapValueInExpanded: true,
-                              textColor: data['gpu']['is_my_gpu_above_recommended_settings'] ? const Color(0xff77839a) : null,
+                              textColor: data['gpu']['is_my_gpu_above_recommended_specs'] ? const Color(0xff77839a) : null,
                               suffixIcon: Padding(
                                 padding: EdgeInsets.only(left: 1.w),
                                 child: Icon(
-                                  data['gpu']['is_my_gpu_above_recommended_settings'] ? FontAwesomeIcons.check : FontAwesomeIcons.xmark,
-                                  color: data['gpu']['is_my_gpu_above_recommended_settings'] ? Colors.green : Colors.red,
+                                  data['gpu']['is_my_gpu_above_recommended_specs'] ? FontAwesomeIcons.check : FontAwesomeIcons.xmark,
+                                  color: data['gpu']['is_my_gpu_above_recommended_specs'] ? Colors.green : Colors.red,
                                   size: 15,
                                 ),
                               ),
@@ -278,7 +278,7 @@ class ResultWidget extends ConsumerWidget {
                               addSpacing: true,
                               showIcon: false,
                               wrapValueInExpanded: true,
-                              textColor: data['cpu']['is_my_cpu_above_recommended_settings'] ? const Color(0xff77839a) : null,
+                              textColor: data['cpu']['is_my_cpu_above_recommended_specs'] ? const Color(0xff77839a) : null,
                             ),
                             tableRow(
                               context,
@@ -288,12 +288,12 @@ class ResultWidget extends ConsumerWidget {
                               addSpacing: true,
                               showIcon: false,
                               wrapValueInExpanded: true,
-                              textColor: data['cpu']['is_my_cpu_above_recommended_settings'] ? const Color(0xff77839a) : null,
+                              textColor: data['cpu']['is_my_cpu_above_recommended_specs'] ? const Color(0xff77839a) : null,
                               suffixIcon: Padding(
                                 padding: EdgeInsets.only(left: 1.w),
                                 child: Icon(
-                                  data['cpu']['is_my_cpu_above_recommended_settings'] ? FontAwesomeIcons.check : FontAwesomeIcons.xmark,
-                                  color: data['cpu']['is_my_cpu_above_recommended_settings'] ? Colors.green : Colors.red,
+                                  data['cpu']['is_my_cpu_above_recommended_specs'] ? FontAwesomeIcons.check : FontAwesomeIcons.xmark,
+                                  color: data['cpu']['is_my_cpu_above_recommended_specs'] ? Colors.green : Colors.red,
                                   size: 15,
                                 ),
                               ),
@@ -323,7 +323,7 @@ class ResultWidget extends ConsumerWidget {
                               addSpacing: true,
                               showIcon: false,
                               wrapValueInExpanded: true,
-                              textColor: data['ram']['is_my_ram_above_recommended_settings'] ? const Color(0xff77839a) : null,
+                              textColor: data['ram']['is_my_ram_above_recommended_specs'] ? const Color(0xff77839a) : null,
                             ),
                             tableRow(
                               context,
@@ -333,12 +333,12 @@ class ResultWidget extends ConsumerWidget {
                               addSpacing: true,
                               showIcon: false,
                               wrapValueInExpanded: true,
-                              textColor: data['ram']['is_my_ram_above_recommended_settings'] ? const Color(0xff77839a) : null,
+                              textColor: data['ram']['is_my_ram_above_recommended_specs'] ? const Color(0xff77839a) : null,
                               suffixIcon: Padding(
                                 padding: EdgeInsets.only(left: 1.w),
                                 child: Icon(
-                                  data['ram']['is_my_ram_above_recommended_settings'] ? FontAwesomeIcons.check : FontAwesomeIcons.xmark,
-                                  color: data['ram']['is_my_ram_above_recommended_settings'] ? Colors.green : Colors.red,
+                                  data['ram']['is_my_ram_above_recommended_specs'] ? FontAwesomeIcons.check : FontAwesomeIcons.xmark,
+                                  color: data['ram']['is_my_ram_above_recommended_specs'] ? Colors.green : Colors.red,
                                   size: 15,
                                 ),
                               ),
@@ -351,10 +351,27 @@ class ResultWidget extends ConsumerWidget {
                 ]),
           ),
         ),
-        Text(
-          "Recommended Upgrades",
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
+        if (['none', 'None', null].contains(data['hardware_bottleneck']) == false)
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+              child: Column(
+                children: [
+                  const Icon(FontAwesomeIcons.warning, color: Colors.yellow),
+                  Text(
+                    "The weakest part in your system is your ${data['hardware_bottleneck']}. Upgrading this will have a big impact on your performance in games.",
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+        SizedBox(height: 5.h),
+        // Text(
+        //   "Recommended Upgrades",
+        //   style: Theme.of(context).textTheme.titleLarge,
+        // ),
         if (data['gpu']['gpu_upgrade_for_100fps'] != null)
           Card(
             elevation: 1,
@@ -365,7 +382,10 @@ class ResultWidget extends ConsumerWidget {
                 children: [
                   Text(
                     "GPU Upgrade",
-                    style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Theme.of(context).primaryColor),
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium!
+                        .copyWith(color: Theme.of(context).primaryColor, fontFamily: GoogleFonts.inter().fontFamily, fontWeight: FontWeight.w500),
                   ),
                   const Text(
                     "you'll get more performance if you upgrade your GPU, consider these suggested upgrades",
@@ -377,7 +397,7 @@ class ResultWidget extends ConsumerWidget {
                     padding: EdgeInsets.zero,
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 2),
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 1.5),
                     children: [
                       Card(
                         margin: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
@@ -392,7 +412,12 @@ class ResultWidget extends ConsumerWidget {
                             children: [
                               Text(
                                 '${data['gpu']['gpu_upgrade_for_100fps']['mid']['amd']}',
-                                style: Theme.of(context).textTheme.titleLarge,
+                                overflow: TextOverflow.ellipsis,
+                                style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.grey[400], fontSize: 19),
+                              ),
+                              Text(
+                                'estimated price',
+                                style: Theme.of(context).textTheme.labelSmall,
                               ),
                               Table(
                                 columnWidths: const {
@@ -438,7 +463,12 @@ class ResultWidget extends ConsumerWidget {
                             children: [
                               Text(
                                 '${data['gpu']['gpu_upgrade_for_100fps']['expensive']['amd']}',
-                                style: Theme.of(context).textTheme.titleLarge,
+                                overflow: TextOverflow.ellipsis,
+                                style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.grey[400], fontSize: 19),
+                              ),
+                              Text(
+                                'estimated price',
+                                style: Theme.of(context).textTheme.labelSmall,
                               ),
                               Table(
                                 columnWidths: const {
@@ -470,13 +500,353 @@ class ResultWidget extends ConsumerWidget {
                             ],
                           ),
                         ),
+                      ),
+                      Card(
+                        margin: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
+                        elevation: 0,
+                        color: Theme.of(context).appBarTheme.backgroundColor,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                '${data['gpu']['gpu_upgrade_for_100fps']['mid']['nvidia']}',
+                                overflow: TextOverflow.ellipsis,
+                                style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.grey[400], fontSize: 19),
+                              ),
+                              Text(
+                                'estimated price',
+                                style: Theme.of(context).textTheme.labelSmall,
+                              ),
+                              Table(
+                                columnWidths: const {
+                                  0: IntrinsicColumnWidth(),
+                                  1: IntrinsicColumnWidth(),
+                                },
+                                defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                                children: <TableRow>[
+                                  tableRow(
+                                    context,
+                                    "new",
+                                    Icons.scale,
+                                    '${data['gpu']['gpu_upgrade_for_100fps']['mid']['nvidia_price_new']}',
+                                    addSpacing: true,
+                                    showIcon: false,
+                                    wrapValueInExpanded: true,
+                                  ),
+                                  tableRow(
+                                    context,
+                                    "used",
+                                    Icons.scale,
+                                    '${data['gpu']['gpu_upgrade_for_100fps']['mid']['nvidia_price_used']}',
+                                    addSpacing: true,
+                                    showIcon: false,
+                                    wrapValueInExpanded: true,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Card(
+                        margin: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
+                        elevation: 0,
+                        color: Theme.of(context).appBarTheme.backgroundColor,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                '${data['gpu']['gpu_upgrade_for_100fps']['expensive']['nvidia']}',
+                                overflow: TextOverflow.ellipsis,
+                                style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.grey[400], fontSize: 19),
+                              ),
+                              Text(
+                                'estimated price',
+                                style: Theme.of(context).textTheme.labelSmall,
+                              ),
+                              Table(
+                                columnWidths: const {
+                                  0: IntrinsicColumnWidth(),
+                                  1: IntrinsicColumnWidth(),
+                                },
+                                defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                                children: <TableRow>[
+                                  tableRow(
+                                    context,
+                                    "new",
+                                    Icons.scale,
+                                    '${data['gpu']['gpu_upgrade_for_100fps']['expensive']['nvidia_price_new']}',
+                                    addSpacing: true,
+                                    showIcon: false,
+                                    wrapValueInExpanded: true,
+                                  ),
+                                  tableRow(
+                                    context,
+                                    "used",
+                                    Icons.scale,
+                                    '${data['gpu']['gpu_upgrade_for_100fps']['expensive']['nvidia_price_used']}',
+                                    addSpacing: true,
+                                    showIcon: false,
+                                    wrapValueInExpanded: true,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
                       )
                     ],
                   ),
                 ],
               ),
             ),
-          )
+          ),
+        if (data['cpu']['cpu_upgrade_for_100fps'] != null)
+          Card(
+            elevation: 1,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "CPU Upgrade",
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium!
+                        .copyWith(color: Theme.of(context).primaryColor, fontFamily: GoogleFonts.inter().fontFamily, fontWeight: FontWeight.w500),
+                  ),
+                  const Text(
+                    "you'll get more performance if you upgrade your cpu, consider these suggested upgrades",
+                    style: TextStyle(
+                      color: Color(0xff77839a),
+                    ),
+                  ),
+                  GridView(
+                    padding: EdgeInsets.zero,
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 1.5),
+                    children: [
+                      Card(
+                        margin: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
+                        elevation: 0,
+                        color: Theme.of(context).appBarTheme.backgroundColor,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                '${data['cpu']['cpu_upgrade_for_100fps']['mid']['ryzen']}',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.grey[400], fontSize: 19),
+                              ),
+                              Text(
+                                'estimated price',
+                                style: Theme.of(context).textTheme.labelSmall,
+                              ),
+                              Table(
+                                columnWidths: const {
+                                  0: IntrinsicColumnWidth(),
+                                  1: IntrinsicColumnWidth(),
+                                },
+                                defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                                children: <TableRow>[
+                                  tableRow(
+                                    context,
+                                    "new",
+                                    Icons.scale,
+                                    '${data['cpu']['cpu_upgrade_for_100fps']['mid']['ryzen_price_new']}',
+                                    addSpacing: true,
+                                    showIcon: false,
+                                    wrapValueInExpanded: true,
+                                  ),
+                                  tableRow(
+                                    context,
+                                    "used",
+                                    Icons.scale,
+                                    '${data['cpu']['cpu_upgrade_for_100fps']['mid']['ryzen_price_used']}',
+                                    addSpacing: true,
+                                    showIcon: false,
+                                    wrapValueInExpanded: true,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Card(
+                        margin: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
+                        elevation: 0,
+                        color: Theme.of(context).appBarTheme.backgroundColor,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                '${data['cpu']['cpu_upgrade_for_100fps']['expensive']['ryzen']}',
+                                overflow: TextOverflow.ellipsis,
+                                style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.grey[400], fontSize: 19),
+                              ),
+                              Text(
+                                'estimated price',
+                                style: Theme.of(context).textTheme.labelSmall,
+                              ),
+                              Table(
+                                columnWidths: const {
+                                  0: IntrinsicColumnWidth(),
+                                  1: IntrinsicColumnWidth(),
+                                },
+                                defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                                children: <TableRow>[
+                                  tableRow(
+                                    context,
+                                    "new",
+                                    Icons.scale,
+                                    '${data['cpu']['cpu_upgrade_for_100fps']['expensive']['ryzen_price_new']}',
+                                    addSpacing: true,
+                                    showIcon: false,
+                                    wrapValueInExpanded: true,
+                                  ),
+                                  tableRow(
+                                    context,
+                                    "used",
+                                    Icons.scale,
+                                    '${data['cpu']['cpu_upgrade_for_100fps']['expensive']['ryzen_price_used']}',
+                                    addSpacing: true,
+                                    showIcon: false,
+                                    wrapValueInExpanded: true,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Card(
+                        margin: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
+                        elevation: 0,
+                        color: Theme.of(context).appBarTheme.backgroundColor,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                '${data['cpu']['cpu_upgrade_for_100fps']['mid']['intel']}',
+                                overflow: TextOverflow.ellipsis,
+                                style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.grey[400], fontSize: 19),
+                              ),
+                              Text(
+                                'estimated price',
+                                style: Theme.of(context).textTheme.labelSmall,
+                              ),
+                              Table(
+                                columnWidths: const {
+                                  0: IntrinsicColumnWidth(),
+                                  1: IntrinsicColumnWidth(),
+                                },
+                                defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                                children: <TableRow>[
+                                  tableRow(
+                                    context,
+                                    "new",
+                                    Icons.scale,
+                                    '${data['cpu']['cpu_upgrade_for_100fps']['mid']['intel_price_new']}',
+                                    addSpacing: true,
+                                    showIcon: false,
+                                    wrapValueInExpanded: true,
+                                  ),
+                                  tableRow(
+                                    context,
+                                    "used",
+                                    Icons.scale,
+                                    '${data['cpu']['cpu_upgrade_for_100fps']['mid']['intel_price_used']}',
+                                    addSpacing: true,
+                                    showIcon: false,
+                                    wrapValueInExpanded: true,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Card(
+                        margin: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
+                        elevation: 0,
+                        color: Theme.of(context).appBarTheme.backgroundColor,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                '${data['cpu']['cpu_upgrade_for_100fps']['expensive']['intel']}',
+                                overflow: TextOverflow.ellipsis,
+                                style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.grey[400], fontSize: 19),
+                              ),
+                              Text(
+                                'estimated price',
+                                style: Theme.of(context).textTheme.labelSmall,
+                              ),
+                              Table(
+                                columnWidths: const {
+                                  0: IntrinsicColumnWidth(),
+                                  1: IntrinsicColumnWidth(),
+                                },
+                                defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                                children: <TableRow>[
+                                  tableRow(
+                                    context,
+                                    "new",
+                                    Icons.scale,
+                                    '${data['cpu']['cpu_upgrade_for_100fps']['expensive']['intel_price_new']}',
+                                    addSpacing: true,
+                                    showIcon: false,
+                                    wrapValueInExpanded: true,
+                                  ),
+                                  tableRow(
+                                    context,
+                                    "used",
+                                    Icons.scale,
+                                    '${data['cpu']['cpu_upgrade_for_100fps']['expensive']['intel_price_used']}',
+                                    addSpacing: true,
+                                    showIcon: false,
+                                    wrapValueInExpanded: true,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
       ],
     );
   }

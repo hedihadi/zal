@@ -49,7 +49,7 @@ class FpsScreenPcWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final data = ref.watch(fpsComputerDataProvider);
     final settings = ref.watch(settingsProvider).value!;
-    final gpu = ref.read(computerDataProvider.notifier).getPrimaryGpu();
+    final gpu = ref.watch(primaryGpuProvider);
 
     if (gpu == null) return Container();
 
@@ -291,6 +291,7 @@ class FpsScreenPcWidget extends ConsumerWidget {
                         maxValue: getTemperatureText((data.highestValues['cpu.temperature'] ?? 0).toDouble(), ref)),
                   ],
                 ),
+                InlineAd(adUnit: Platform.isAndroid ? "ca-app-pub-5545344389727160/5701849781" : "ca-app-pub-5545344389727160/3665863326"),
                 Visibility(
                   visible: ((settings['showCpuCores'] ?? true) == true),
                   child: StaggeredGridview(

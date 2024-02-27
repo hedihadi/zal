@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -117,9 +118,6 @@ class FpsScreen extends ConsumerWidget {
               ),
             ),
             const FpsRecordsWidget(),
-            SliverToBoxAdapter(
-              child: InlineAd(adUnit: Platform.isAndroid ? "ca-app-pub-5545344389727160/7822053264" : "ca-app-pub-5545344389727160/7748436032"),
-            ),
           ],
         ),
       ),
@@ -161,7 +159,17 @@ class FpsTitle extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedGpuProcess = ref.watch(selectedGpuProcessProvider);
-    return Text("FPS ${selectedGpuProcess?.name ?? 'data'}");
+    return Row(
+      children: [
+        if ([null, ""].contains(selectedGpuProcess?.icon) == false)
+          Image.memory(
+            base64Decode(selectedGpuProcess!.icon!),
+            gaplessPlayback: true,
+            scale: 1,
+          ),
+        Text(selectedGpuProcess?.name ?? ''),
+      ],
+    );
   }
 }
 

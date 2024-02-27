@@ -17,7 +17,7 @@ class MainLoginScreen extends ConsumerWidget {
         child: ListView(
           shrinkWrap: true,
           children: [
-            Text('Please Sign in  Continue', style: Theme.of(context).textTheme.titleLarge, textAlign: TextAlign.center),
+            Text('Please Sign in to Continue', style: Theme.of(context).textTheme.titleLarge, textAlign: TextAlign.center),
             Center(
                 child: TextButton(
                     onPressed: () async {

@@ -27,7 +27,6 @@ class FpsDataWidget extends ConsumerWidget {
     return fpsData.when(
       skipLoadingOnReload: true,
       data: (data) {
-        if (data.fpsList.isEmpty) return Container();
         return Padding(
           padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 5),
           child: Column(
@@ -38,7 +37,7 @@ class FpsDataWidget extends ConsumerWidget {
                 children: [
                   Center(
                     child: Text(
-                      ref.watch(fpsDataProvider.notifier).getCurrentFps().toStringAsFixed(1),
+                      data.currentFps.toStringAsFixed(1),
                       style: Theme.of(context).textTheme.displayLarge,
                     ),
                   ),
@@ -93,7 +92,7 @@ class Linechart extends ConsumerWidget {
       //fontWeight: FontWeight.bold,
     );
 
-    if ((value == (meta.min)) || value == (meta.max) || value.round() == fpsData?.fps.round()) {
+    if ((value == (meta.min)) || value == (meta.max) || value.round() == fpsData?.averageFps.round()) {
       return SideTitleWidget(
         axisSide: meta.axisSide,
         space: 5,
@@ -105,9 +104,9 @@ class Linechart extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final fpsList = ref.watch(aProvider);
-    final lowest = fpsList.reduce(min);
-    final highest = fpsList.reduce(max);
+    final fpsList = ref.watch(fpsChartProvider);
+    final lowest = fpsList.isEmpty ? 0.0 : fpsList.reduce(min);
+    final highest = fpsList.isEmpty ? 0.0 : fpsList.reduce(max);
     final fpsData = ref.read(fpsDataProvider).valueOrNull;
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -174,12 +173,6 @@ class Linechart extends ConsumerWidget {
               horizontalInterval: 0.01,
               verticalInterval: 2,
               checkToShowHorizontalLine: (value) {
-                return false;
-                if (value.toPrecision(2) == (highest.toPrecision(2)) ||
-                    value.toPrecision(2) == (lowest.toPrecision(2)) ||
-                    value.toPrecision(2) == fpsData?.fps.toPrecision(2)) {
-                  return true;
-                }
                 return false;
               },
               getDrawingHorizontalLine: (_) => FlLine(

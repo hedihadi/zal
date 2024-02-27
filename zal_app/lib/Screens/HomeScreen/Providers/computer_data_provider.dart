@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:collection/collection.dart';
+import 'package:color_print/color_print.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zal/Functions/models.dart';
 import 'package:zal/Functions/utils.dart';
@@ -51,32 +52,6 @@ class ComputerDataNotifier extends AsyncNotifier<ComputerData> {
     }
     throw ifNull;
   }
-
-  ///TODO: calling this function within widgets causes a flash of error to occur because-
-  ///we're causing the provider to update itself, so we need to make a variable for primaryGpu
-  ///instead of calling a function to get it.
-  Gpu? getPrimaryGpu() {
-    try {
-      final settings = ref.read(settingsProvider).value;
-      final gpus = state.value?.gpus;
-      if ([settings, gpus].contains(null) || gpus!.isEmpty) return null;
-      String? primaryGpuName = settings!['primaryGpuName'];
-      if (primaryGpuName == null) {
-        //assign the first gpu as primary
-        ref.read(settingsProvider.notifier).updateSettings("primaryGpuName",gpus.first.name);
-        primaryGpuName = gpus.first.name;
-      }
-      //try to find the primary gpu. if we fail, we'll assign the first gpu as primary
-      final primaryGpu = gpus.firstWhereOrNull((element) => element.name == primaryGpuName);
-      if (primaryGpu == null) {
-        ref.read(settingsProvider.notifier).updateSettings("primaryGpuName",gpus.first.name);
-        return gpus.first;
-      } else {
-        return primaryGpu;
-      }
-    } catch (c) {}
-    return null;
-  }
 }
 
 final computerDataProvider = AsyncNotifierProvider<ComputerDataNotifier, ComputerData>(() {
@@ -89,4 +64,25 @@ final _computerDataProvider = FutureProvider<WebrtcProviderModel>((ref) {
   });
   ref.onDispose(() => sub.close());
   return ref.future;
+});
+
+final primaryGpuProvider = StateProvider<Gpu?>((ref) {
+  final computerData = ref.watch(computerDataProvider).value;
+  final settings = ref.watch(settingsProvider).value;
+
+  final gpus = computerData?.gpus;
+  if (settings == null || gpus == null || gpus.isEmpty) return null;
+  String? primaryGpuName = settings['primaryGpuName'];
+  //if (primaryGpuName == null) {
+  //  //assign the first gpu as primary
+  //  Future.delayed(const Duration(milliseconds: 1), () => ref.read(settingsProvider.notifier).updateSettings("primaryGpuName", gpus.first.name));
+  //  primaryGpuName = gpus.first.name;
+  //}
+  //try to find the primary gpu. if we fail, we'll assign the first gpu as primary
+  final primaryGpu = gpus.firstWhereOrNull((element) => element.name == primaryGpuName);
+  if (primaryGpu == null) {
+    ref.read(settingsProvider.notifier).updateSettings("primaryGpuName", gpus.first.name, updateState: false);
+    return gpus.first;
+  }
+  return primaryGpu;
 });

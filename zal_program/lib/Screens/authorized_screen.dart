@@ -6,8 +6,10 @@ import 'package:zal/Screens/HomeScreen/home_screen.dart';
 import 'package:zal/Screens/MainScreen/Widgets/phone_widget.dart';
 import 'package:zal/Screens/MainScreen/main_screen_providers.dart';
 import 'package:zal/Screens/NotificationsScreen/notifications_screen_providers.dart';
+import 'package:zal/Screens/SettingsScreen/settings_provider.dart';
 import 'package:zal/Screens/SettingsScreen/settings_screen.dart';
 import 'package:zal/Screens/computer_screen.dart';
+
 final sidebarSelectedIndexProvider = StateProvider<int>((ref) => 0);
 
 class AuthorizedScreen extends ConsumerWidget {
@@ -17,6 +19,7 @@ class AuthorizedScreen extends ConsumerWidget {
     final sidebarSelectedIndex = ref.watch(sidebarSelectedIndexProvider);
     ref.read(consumerTimerProvider);
     ref.read(notificationsProvider);
+    ref.read(runningProcessesProvider);
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

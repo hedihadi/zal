@@ -38,7 +38,7 @@ class NewNotificationsDataNotifier extends StateNotifier<NotificationData> {
     final isCelcius = ref.read(settingsProvider).valueOrNull?['useCelcius'] ?? true;
     if (parsedData == null) return [];
     if (state.key == NewNotificationKey.Gpu) {
-      final primaryGpu = ref.read(computerDataProvider.notifier).getPrimaryGpu();
+      final primaryGpu = ref.read(primaryGpuProvider);
       if (primaryGpu == null) return [];
       List<NotificationKeyWithUnit> notificationKeys = [];
       notificationKeys.add(NotificationKeyWithUnit(keyName: 'temperature', unit: isCelcius ? 'C' : 'F'));

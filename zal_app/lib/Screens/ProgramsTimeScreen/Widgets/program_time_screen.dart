@@ -137,7 +137,7 @@ class ProgramTimeScreen extends ConsumerWidget {
                                     children: <TextSpan>[
                                       TextSpan(
                                         text: convertMinutesToHoursAndMinutes((rod.toY - 1).toInt()),
-                                        style: const TextStyle(color: Colors.yellow),
+                                        style: TextStyle(color: Theme.of(context).primaryColor),
                                       ),
                                     ],
                                   );
@@ -184,7 +184,7 @@ class ProgramTimeScreen extends ConsumerWidget {
                                       toY: largestNumber,
                                     ),
                                     toY: e.value.toDouble(),
-                                    color: Colors.yellow,
+                                    color: Theme.of(context).primaryColor,
                                     width: 10,
                                   ),
                                 ],

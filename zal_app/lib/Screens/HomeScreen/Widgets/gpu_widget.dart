@@ -19,7 +19,7 @@ class GpuWidget extends ConsumerWidget {
     final computerData = ref.watch(computerDataProvider).value;
     if (computerData == null) return Container();
 
-    final primaryGpu = ref.read(computerDataProvider.notifier).getPrimaryGpu();
+    final primaryGpu = ref.watch(primaryGpuProvider);
     if (primaryGpu == null) {
       return Container();
     }

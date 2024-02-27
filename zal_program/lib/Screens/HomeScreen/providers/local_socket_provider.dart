@@ -3,6 +3,7 @@ import 'package:zal/Functions/Models/computer_data_models.dart';
 import 'dart:async';
 import 'package:zal/Functions/Models/models.dart';
 import 'package:zal/Screens/HomeScreen/providers/local_socket_stream_provider.dart';
+import 'package:zal/Screens/HomeScreen/providers/webrtc_provider.dart';
 import 'package:zal/Screens/NotificationsScreen/notifications_screen_providers.dart';
 import 'package:zal/Screens/SettingsScreen/settings_provider.dart';
 import 'package:zal/Screens/computer_screen.dart';
@@ -21,7 +22,7 @@ class LocalSocketNotifier extends AsyncNotifier<ComputerData?> {
         var computerData = ComputerData.construct(streamData.data, ref);
         ref.read(notificationsProvider.notifier).checkNotifications(computerData);
         if (computerData.isRunningAsAdminstrator) {
-          Future.delayed(const Duration(milliseconds: 5), () => ref.read(computerSpecsProvider.notifier).saveSettings(computerData));
+          Future.delayed(const Duration(milliseconds: 0), () => ref.read(computerSpecsProvider.notifier).saveSettings(computerData));
         }
         return computerData;
       }

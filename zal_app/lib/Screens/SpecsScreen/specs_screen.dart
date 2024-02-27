@@ -44,7 +44,7 @@ class SpecsScreen extends ConsumerWidget {
                 height: 25,
               ),
               Icons.power,
-              "${ref.read(computerDataProvider.notifier).getPrimaryGpu()?.name}",
+              "${ref.watch(primaryGpuProvider)?.name}",
               addSpacing: true,
             ),
             tableRow(
@@ -103,7 +103,10 @@ class SpecsScreen extends ConsumerWidget {
             ),
           ],
         );
-        return Padding(padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h), child: table,);
+        return Padding(
+          padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+          child: table,
+        );
       },
       error: (error, stackTrace) {
         return Container();
