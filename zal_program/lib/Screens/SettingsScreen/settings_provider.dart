@@ -32,7 +32,7 @@ class SettingsNotifier extends AsyncNotifier<Settings> {
         );
       });
       if (settings.startMinimized && settings.runInBackground && isFirstRun == false) {
-        Future.delayed(const Duration(seconds: 1), () => windowManager.hide());
+        Future.delayed(const Duration(seconds: 3), () => windowManager.hide());
       }
       isFirstUpdate = false;
     }
@@ -119,6 +119,11 @@ final runningProcessesProvider = FutureProvider<Map<String, bool>>((ref) async {
     "zal-console.exe": result.contains("zal-console.exe"),
     "zal-server.exe": result.contains("zal-server.exe"),
   };
+  if (data['zal-server'] == false) {
+    try {
+      ProgramsRunner.runServer();
+    } catch (c) {}
+  }
   try {
     ref.read(webrtcProvider.notifier).sendMessage("running_processes", jsonEncode(data));
   } catch (c) {

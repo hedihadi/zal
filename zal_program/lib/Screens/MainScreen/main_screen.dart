@@ -11,6 +11,8 @@ import 'package:zal/Functions/programs_runner.dart';
 import 'package:zal/Functions/utils.dart';
 import 'package:zal/Screens/LoginScreen/main_login_screen.dart';
 import 'package:zal/Screens/MainScreen/main_screen_providers.dart';
+import 'package:zal/Screens/NotificationsScreen/notifications_screen_providers.dart';
+import 'package:zal/Screens/SettingsScreen/settings_provider.dart';
 import 'package:zal/Screens/authorized_screen.dart';
 
 final didRunStartupCodeProvider = StateProvider<bool>((ref) => false);
@@ -25,7 +27,10 @@ class MainScreen extends ConsumerStatefulWidget {
 class _MainScreenState extends ConsumerState<MainScreen> with WindowListener, TrayListener {
   @override
   Widget build(BuildContext context) {
-    ref.read(executableProvider);
+    ref.watch(executableProvider);
+    ref.watch(consumerTimerProvider);
+    ref.watch(notificationsProvider);
+    ref.watch(runningProcessesProvider);
     final user = ref.watch(userProvider);
     WidgetsBinding.instance.addPostFrameCallback((_) => runStartupCode(ref, context));
     return user.when(

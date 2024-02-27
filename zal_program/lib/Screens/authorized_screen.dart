@@ -17,9 +17,7 @@ class AuthorizedScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final sidebarSelectedIndex = ref.watch(sidebarSelectedIndexProvider);
-    ref.read(consumerTimerProvider);
-    ref.read(notificationsProvider);
-    ref.read(runningProcessesProvider);
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
