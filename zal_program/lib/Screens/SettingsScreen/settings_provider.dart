@@ -17,9 +17,7 @@ class SettingsNotifier extends AsyncNotifier<Settings> {
   bool isFirstUpdate = true;
   Future<Settings> _fetchData() async {
     Settings? settings = await LocalDatabaseManager.loadSettings();
-    bool isFirstRun = false;
     if (settings == null) {
-      isFirstRun = true;
       settings = Settings.defaultSettings();
       saveSettings();
     }
@@ -31,9 +29,7 @@ class SettingsNotifier extends AsyncNotifier<Settings> {
           },
         );
       });
-      if (settings.startMinimized && settings.runInBackground && isFirstRun == false) {
-        Future.delayed(const Duration(seconds: 3), () => windowManager.hide());
-      }
+     
       isFirstUpdate = false;
     }
 

@@ -694,7 +694,7 @@ class Ram {
       memoryUsed: map['memoryUsed'] ?? 0,
       memoryAvailable: map['memoryAvailable'] ?? 0,
       memoryUsedPercentage: map['memoryUsedPercentage']?.toInt() ?? 0,
-      ramPieces: List<RamPiece>.from(map['ramPiecesData']?.map((x) => RamPiece.fromMap(x))),
+      ramPieces: map['ramPiecesData'] != null ? List<RamPiece>.from(map['ramPiecesData']?.map((x) => RamPiece.fromMap(x))) : [],
     );
   }
 
