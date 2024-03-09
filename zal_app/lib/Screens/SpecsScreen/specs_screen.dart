@@ -51,7 +51,7 @@ class SpecsScreen extends ConsumerWidget {
               context,
               "",
               Icons.power,
-              data.cpu.cpuInfo.name,
+              "${data.cpu.cpuInfo?.name}",
               customIcon: Image.asset(
                 "assets/images/icons/cpu.png",
                 height: 25,

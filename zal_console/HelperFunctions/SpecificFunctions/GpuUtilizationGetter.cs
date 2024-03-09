@@ -34,7 +34,12 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
                 var splittedData = process.Split(',');
                 int pid = int.Parse(splittedData[0].Split('_')[1]);
 
-                double usage = double.Parse(splittedData[1]);
+                double usage =1;
+                try
+                {
+                   usage= double.Parse(splittedData[1]);
+                }
+                catch { }
                 if (usage == 0) continue;
 
                 var p = Process.GetProcessById(pid);

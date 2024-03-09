@@ -29,7 +29,7 @@ Future<void> main() async {
   await AnalyticsManager.requestFirebaseMessagingPermission();
   await AnalyticsManager.setForegroundListenerForFirebaseMessaging();
 
-  MobileAds.instance.initialize(); 
+  MobileAds.instance.initialize();
   Purchases.configure(_revenueCatConfiguration);
   await dotenv.load(fileName: ".env");
   //for some reason this is needed to allow error printing
