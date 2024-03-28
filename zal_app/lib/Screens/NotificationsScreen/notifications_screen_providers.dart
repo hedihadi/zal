@@ -38,8 +38,8 @@ class NewNotificationsDataNotifier extends StateNotifier<NotificationData> {
     final isCelcius = ref.read(settingsProvider).valueOrNull?['useCelcius'] ?? true;
     if (parsedData == null) return [];
     if (state.key == NewNotificationKey.Gpu) {
-      final primaryGpu = ref.read(primaryGpuProvider);
-      if (primaryGpu == null) return [];
+      final gpu = computerData?.gpu;
+      if (gpu == null) return [];
       List<NotificationKeyWithUnit> notificationKeys = [];
       notificationKeys.add(NotificationKeyWithUnit(keyName: 'temperature', unit: isCelcius ? 'C' : 'F'));
 
@@ -99,7 +99,7 @@ class NotificationsNotifier extends AsyncNotifier<List<NotificationData>> {
     final parsedData = jsonDecode(data.data);
     List<NotificationData> notifications = [];
     for (final rawNotification in parsedData) {
-      notifications.add(NotificationData.fromJson(rawNotification));
+      notifications.add(NotificationData.fromMap(rawNotification));
     }
     return notifications;
   }

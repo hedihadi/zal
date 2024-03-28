@@ -12,7 +12,7 @@ class FpsWidget extends ConsumerWidget {
   final ComputerData computerData;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final gpu = ref.watch(primaryGpuProvider);
+    final gpu = ref.watch(computerDataProvider).value?.gpu;
     if (gpu == null) {
       return Container();
     }

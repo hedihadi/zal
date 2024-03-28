@@ -41,7 +41,7 @@ class SpecsWidget extends ConsumerWidget {
                 height: 25,
               ),
               Icons.power,
-              data.gpusName.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(', ', '\n'),
+              data.gpuName.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(', ', '\n'),
               addSpacing: true,
             ),
             tableRow(
@@ -95,7 +95,7 @@ class SpecsWidget extends ConsumerWidget {
           child: ListView(
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
-            children:  [
+            children: [
               table,
               //Screenshot(
               //  controller: screenshotController,
@@ -118,7 +118,7 @@ class SpecsWidget extends ConsumerWidget {
       },
       error: (error, stackTrace) {
         print(error);
-        
+
         print(stackTrace);
         return Text("$error");
       },

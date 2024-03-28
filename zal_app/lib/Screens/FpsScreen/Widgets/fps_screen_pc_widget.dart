@@ -49,7 +49,7 @@ class FpsScreenPcWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final data = ref.watch(fpsComputerDataProvider);
     final settings = ref.watch(settingsProvider).value!;
-    final gpu = ref.watch(primaryGpuProvider);
+    final gpu = ref.watch(computerDataProvider).value?.gpu;
 
     if (gpu == null) return Container();
 

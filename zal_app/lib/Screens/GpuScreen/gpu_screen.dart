@@ -24,7 +24,7 @@ class GpuScreen extends ConsumerWidget {
     final computerData = ref.watch(computerDataProvider).value;
     if (computerData == null) return Container();
     ref.read(screenViewProvider("gpu"));
-    final gpu = computerData.gpus.firstWhereOrNull((element) => element.name == gpuName);
+    final gpu=computerData.gpu;
     if (gpu == null) return const Text("gpu doesn't exist");
     return Scaffold(
       appBar: AppBar(title: const Text("GPU")),

@@ -27,8 +27,7 @@ class CanRunGameScreen extends ConsumerWidget {
     final canRunGame = ref.watch(canRunGameProvider);
     final selectedGame = ref.watch(selectedGameProvider);
     ref.read(computerSpecsProvider);
-    final gpu = ref.read(settingsProvider).value?['primaryGpuName'];
-    if (gpu == null) {
+    if (ref.read(computerSpecsProvider).value == null) {
       return const Center(
         child: Text(
           "We currently do not have your PC specifications saved, please connect to your PC before using this feature.",

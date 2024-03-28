@@ -19,8 +19,10 @@ class ComputerDataNotifier extends AsyncNotifier<ComputerData> {
     List<int> utf8Bytes = utf8.encode(data);
     // Get the length of the byte array
     int sizeInBytes = utf8Bytes.length;
-    //print("payload size: ${sizeInBytes.toSize()}");
-    final computerData = ComputerData.construct(decompressGzip(data));
+    //print("payload 1size: ${sizeInBytes.toSize()}");
+    print(data);
+    final decompressed = decompressGzip(data);
+    final computerData = ComputerData.construct(decompressed);
     return computerData;
   }
 
@@ -31,6 +33,7 @@ class ComputerDataNotifier extends AsyncNotifier<ComputerData> {
     try {
       data = await _fetchData(webrtcProviderModel.data?.data ?? '');
     } catch (c) {
+      print(c);
       throw ErrorParsingComputerData(webrtcProviderModel.data?.data ?? '', c);
     }
     if (data.isRunningAsAdminstrator) {
@@ -64,25 +67,4 @@ final _computerDataProvider = FutureProvider<WebrtcProviderModel>((ref) {
   });
   ref.onDispose(() => sub.close());
   return ref.future;
-});
-
-final primaryGpuProvider = StateProvider<Gpu?>((ref) {
-  final computerData = ref.watch(computerDataProvider).value;
-  final settings = ref.watch(settingsProvider).value;
-
-  final gpus = computerData?.gpus;
-  if (settings == null || gpus == null || gpus.isEmpty) return null;
-  String? primaryGpuName = settings['primaryGpuName'];
-  //if (primaryGpuName == null) {
-  //  //assign the first gpu as primary
-  //  Future.delayed(const Duration(milliseconds: 1), () => ref.read(settingsProvider.notifier).updateSettings("primaryGpuName", gpus.first.name));
-  //  primaryGpuName = gpus.first.name;
-  //}
-  //try to find the primary gpu. if we fail, we'll assign the first gpu as primary
-  final primaryGpu = gpus.firstWhereOrNull((element) => element.name == primaryGpuName);
-  if (primaryGpu == null) {
-    ref.read(settingsProvider.notifier).updateSettings("primaryGpuName", gpus.first.name, updateState: false);
-    return gpus.first;
-  }
-  return primaryGpu;
 });

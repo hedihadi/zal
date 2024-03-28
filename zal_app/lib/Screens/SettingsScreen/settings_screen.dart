@@ -62,19 +62,19 @@ class SettingsScreen extends ConsumerWidget {
               : SectionSettingUi(children: [
                   Text("Select your primary GPU", style: Theme.of(context).textTheme.titleLarge),
                   StaggeredGridview(
-                      children: ref.watch(computerDataProvider).valueOrNull!.gpus.map((e) {
+                      children: ref.watch(computerDataProvider).valueOrNull!.availableGpus!.map((e) {
                     final gpu = e;
                     return GestureDetector(
                       onTap: () {
-                        ref.read(settingsProvider.notifier).updateSettings('primaryGpuName',gpu.name);
+                        ref.read(settingsProvider.notifier).updateSettings('primaryGpuName',gpu);
                       },
                       child: Card(
-                        color: (settings?['primaryGpuName'] ?? "") == gpu.name ? Theme.of(context).primaryColor : Theme.of(context).cardColor,
+                        color: (settings?['primaryGpuName'] ?? "") == gpu ? Theme.of(context).primaryColor : Theme.of(context).cardColor,
                         elevation: 5,
                         shadowColor: Colors.transparent,
                         child: Center(
                           child: Text(
-                            gpu.name,
+                            gpu,
                             maxLines: 2,
                             style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Theme.of(context).cardColor),
                           ),

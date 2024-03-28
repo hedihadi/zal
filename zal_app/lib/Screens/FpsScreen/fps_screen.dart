@@ -60,11 +60,25 @@ class FpsScreen extends ConsumerWidget {
       },
       child: Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           title: const FpsTitle(),
           actions: [
             //   const FpsHelpWidget(),
             PopupMenuButton<SampleItem>(
-              icon: const Icon(FontAwesomeIcons.gear),
+              icon: const Card(
+                  shadowColor: Colors.transparent,
+                  margin: EdgeInsets.zero,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text("More"),
+                        Icon(FontAwesomeIcons.ellipsisVertical),
+                      ],
+                    ),
+                  )),
               itemBuilder: (BuildContext context) => <PopupMenuEntry<SampleItem>>[
                 PopupMenuItem(
                   child: const Text("choose game"),
@@ -96,6 +110,9 @@ class FpsScreen extends ConsumerWidget {
         ),
         body: CustomScrollView(
           slivers: [
+            SliverToBoxAdapter(
+              child: SizedBox(height: 2.h),
+            ),
             const SliverToBoxAdapter(
               child: FpsDataWidget(),
             ),
@@ -160,6 +177,7 @@ class FpsTitle extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedGpuProcess = ref.watch(selectedGpuProcessProvider);
     return Row(
+      mainAxisSize: MainAxisSize.min,
       children: [
         if ([null, ""].contains(selectedGpuProcess?.icon) == false)
           Image.memory(
@@ -167,7 +185,10 @@ class FpsTitle extends ConsumerWidget {
             gaplessPlayback: true,
             scale: 1,
           ),
-        Text(selectedGpuProcess?.name ?? ''),
+        Text(
+          selectedGpuProcess?.name ?? '',
+          style: Theme.of(context).textTheme.labelLarge,
+        ),
       ],
     );
   }

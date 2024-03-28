@@ -35,11 +35,11 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     ref.read(shouldShowUpdateDialogProvider);
     ref.read(informationTextProvider);
-    final primaryGpu = ref.watch(primaryGpuProvider);
     final computerData = ref.watch(computerDataProvider);
     return computerData.when(
       skipLoadingOnReload: true,
       data: (data) {
+        final gpu = data.gpu;
         return ListView(
           children: [
             SizedBox(
@@ -218,58 +218,55 @@ class HomeScreen extends ConsumerWidget {
                           ),
                         ),
                       ),
-                      if (primaryGpu != null)
-                        Expanded(
-                          child: AspectRatio(
-                            aspectRatio: 1,
-                            child: SfRadialGauge(
-                              animationDuration: 0,
-                              axes: <RadialAxis>[
-                                RadialAxis(
-                                    canScaleToFit: true,
-                                    startAngle: 0,
-                                    endAngle: 360,
-                                    showTicks: false,
-                                    showLabels: false,
-                                    axisLineStyle: const AxisLineStyle(thickness: 10),
-                                    pointers: <GaugePointer>[
-                                      RangePointer(
-                                        value: primaryGpu.corePercentage,
-                                        width: 10,
-                                        color: Theme.of(context).primaryColor,
-                                        enableAnimation: true,
-                                        cornerStyle: CornerStyle.bothCurve,
-                                      )
-                                    ],
-                                    annotations: <GaugeAnnotation>[
-                                      GaugeAnnotation(
-                                          widget: Column(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                getTemperatureText(primaryGpu.temperature, ref),
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .labelLarge!
-                                                    .copyWith(color: getTemperatureColor(primaryGpu.temperature ?? 0)),
-                                              ),
-                                              Image.asset(
-                                                "assets/images/icons/gpu.png",
-                                                height: 25,
-                                              ),
-                                              Text(
-                                                "${primaryGpu.corePercentage.round()}%",
-                                                style: Theme.of(context).textTheme.titleSmall!.copyWith(color: Theme.of(context).primaryColor),
-                                              ),
-                                            ],
-                                          ),
-                                          angle: 270,
-                                          positionFactor: 0.1),
-                                    ])
-                              ],
-                            ),
+                      Expanded(
+                        child: AspectRatio(
+                          aspectRatio: 1,
+                          child: SfRadialGauge(
+                            animationDuration: 0,
+                            axes: <RadialAxis>[
+                              RadialAxis(
+                                  canScaleToFit: true,
+                                  startAngle: 0,
+                                  endAngle: 360,
+                                  showTicks: false,
+                                  showLabels: false,
+                                  axisLineStyle: const AxisLineStyle(thickness: 10),
+                                  pointers: <GaugePointer>[
+                                    RangePointer(
+                                      value: gpu.corePercentage,
+                                      width: 10,
+                                      color: Theme.of(context).primaryColor,
+                                      enableAnimation: true,
+                                      cornerStyle: CornerStyle.bothCurve,
+                                    )
+                                  ],
+                                  annotations: <GaugeAnnotation>[
+                                    GaugeAnnotation(
+                                        widget: Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              getTemperatureText(gpu.temperature, ref),
+                                              style:
+                                                  Theme.of(context).textTheme.labelLarge!.copyWith(color: getTemperatureColor(gpu.temperature ?? 0)),
+                                            ),
+                                            Image.asset(
+                                              "assets/images/icons/gpu.png",
+                                              height: 25,
+                                            ),
+                                            Text(
+                                              "${gpu.corePercentage.round()}%",
+                                              style: Theme.of(context).textTheme.titleSmall!.copyWith(color: Theme.of(context).primaryColor),
+                                            ),
+                                          ],
+                                        ),
+                                        angle: 270,
+                                        positionFactor: 0.1),
+                                  ])
+                            ],
                           ),
                         ),
+                      ),
                     ],
                   ),
                 ],

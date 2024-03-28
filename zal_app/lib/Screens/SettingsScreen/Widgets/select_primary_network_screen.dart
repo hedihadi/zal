@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:zal/Functions/utils.dart';
 import 'package:zal/Screens/HomeScreen/Providers/computer_data_provider.dart';
 import 'package:zal/Screens/HomeScreen/Providers/home_screen_providers.dart';
+import 'package:zal/Screens/HomeScreen/Providers/webrtc_provider.dart';
 import 'package:zal/Widgets/card_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -31,7 +32,7 @@ class SelectPrimaryNetworkScreen extends ConsumerWidget {
           final e = computerData!.networkInterfaces[index];
           return GestureDetector(
             onTap: () {
-              ref.read(socketObjectProvider.notifier).state?.sendData("change_primary_network", e.name);
+              ref.read(webrtcProvider.notifier).sendMessage("change_primary_network", e.name);
               showSnackbar("primary network changed!", context);
             },
             child: CardWidget(

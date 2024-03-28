@@ -31,9 +31,9 @@ class HeavyProcessesWidget extends ConsumerWidget {
       case SortBy.Memory:
         taskProcesses.sort((b, a) => a.memoryUsage.compareTo(b.memoryUsage));
         break;
-      case SortBy.Cpu:
-        taskProcesses.sort((b, a) => a.cpuPercent.compareTo(b.cpuPercent));
-        break;
+      //case SortBy.Cpu:
+      //  taskProcesses.sort((b, a) => a.cpuPercent.compareTo(b.cpuPercent));
+      //  break;
     }
 
     return taskProcesses.take(amount).toList();

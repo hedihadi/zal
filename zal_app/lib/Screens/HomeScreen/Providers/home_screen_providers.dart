@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import 'package:zal/Functions/models.dart';
@@ -35,7 +36,8 @@ final computerSocketStreamProvider = StreamProvider<StreamData>((ref) async* {
       showSnackbarLocal("Server Disconnected");
     });
     socket.socket.on('accept_answer', (data) {
-      ref.read(webrtcProvider.notifier).acceptAnswer(data);
+      final parsedData = jsonDecode(data);
+      ref.read(webrtcProvider.notifier).acceptAnswer(parsedData);
     });
     socket.socket.on('offer_failed', (data) {
       ref.read(webrtcProvider.notifier).offerFailed();

@@ -33,7 +33,6 @@ class ResultWidget extends ConsumerWidget {
       return Center(child: Text("something went wrong, please try again...\n${result!['data']}"));
     }
     final specs = ref.watch(computerSpecsProvider).value;
-    final gpu = ref.read(settingsProvider).value!['primaryGpuName'];
     final data = result!['data'];
     final amdOrNvidia = ref.watch(amdOrNvidiaProvider);
     final ryzenOrIntel = ref.watch(ryzenOrIntelProvider);
@@ -84,7 +83,7 @@ class ResultWidget extends ConsumerWidget {
                               context,
                               "yours",
                               Icons.scale,
-                              "$gpu",
+                              specs!.gpuName,
                               addSpacing: true,
                               showIcon: false,
                               wrapValueInExpanded: true,
@@ -129,7 +128,7 @@ class ResultWidget extends ConsumerWidget {
                               context,
                               "yours",
                               Icons.scale,
-                              "${specs?.cpuName}",
+                              specs.cpuName,
                               addSpacing: true,
                               showIcon: false,
                               wrapValueInExpanded: true,
@@ -174,7 +173,7 @@ class ResultWidget extends ConsumerWidget {
                               context,
                               "yours",
                               Icons.scale,
-                              "${specs?.ramSize}",
+                              specs.ramSize,
                               addSpacing: true,
                               showIcon: false,
                               wrapValueInExpanded: true,
@@ -239,7 +238,7 @@ class ResultWidget extends ConsumerWidget {
                               context,
                               "yours",
                               Icons.scale,
-                              "$gpu",
+                              specs.gpuName,
                               addSpacing: true,
                               showIcon: false,
                               wrapValueInExpanded: true,
@@ -284,7 +283,7 @@ class ResultWidget extends ConsumerWidget {
                               context,
                               "yours",
                               Icons.scale,
-                              "${specs?.cpuName}",
+                              specs.cpuName,
                               addSpacing: true,
                               showIcon: false,
                               wrapValueInExpanded: true,
@@ -329,7 +328,7 @@ class ResultWidget extends ConsumerWidget {
                               context,
                               "yours",
                               Icons.scale,
-                              "${specs?.ramSize}",
+                              specs.ramSize,
                               addSpacing: true,
                               showIcon: false,
                               wrapValueInExpanded: true,

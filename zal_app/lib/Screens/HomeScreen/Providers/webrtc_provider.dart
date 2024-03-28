@@ -13,6 +13,7 @@ import 'package:zal/Screens/HomeScreen/Providers/home_screen_providers.dart';
 class WebRtcNotifier extends StateNotifier<WebrtcProviderModel> {
   ///this list keeps track of all the offers, we send offers one by one to PC until one of the offers manage to work.
   List<RTCSessionDescription> sdpOffers = [];
+  DateTime lastWait = DateTime.now();
   bool isWaitingForOfferResponse = false;
   StateNotifierProviderRef<Object?, Object?> ref;
   late WebrtcModel webrtc;
@@ -44,8 +45,9 @@ class WebRtcNotifier extends StateNotifier<WebrtcProviderModel> {
     if (sdp == null) return;
     if (sdp.type == 'offer') {
       logWarning("$isWaitingForOfferResponse");
-      if (isWaitingForOfferResponse == false) {
+      if (isWaitingForOfferResponse == false || (DateTime.now().millisecondsSinceEpoch - lastWait.millisecondsSinceEpoch) > 2000) {
         _sendSdpToPc(sdp);
+        lastWait = DateTime.now();
         isWaitingForOfferResponse = true;
       } else {
         sdpOffers.add(sdp);
@@ -63,7 +65,7 @@ class WebRtcNotifier extends StateNotifier<WebrtcProviderModel> {
   acceptAnswer(Map<String, dynamic> data) {
     RTCSessionDescription offer = RTCSessionDescription(
       data["sdp"],
-      data["type"],
+      data["type"].toString(),
     );
     try {
       webrtc.acceptAnswer(offer);

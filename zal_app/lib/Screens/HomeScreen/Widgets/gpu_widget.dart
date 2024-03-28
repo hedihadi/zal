@@ -19,17 +19,14 @@ class GpuWidget extends ConsumerWidget {
     final computerData = ref.watch(computerDataProvider).value;
     if (computerData == null) return Container();
 
-    final primaryGpu = ref.watch(primaryGpuProvider);
-    if (primaryGpu == null) {
-      return Container();
-    }
+    final gpu = computerData.gpu;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         GestureDetector(
           onTap: () => Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => GpuScreen(
-                    gpuName: primaryGpu.name,
+                    gpuName: gpu.name,
                   ))),
           child: CardWidget(
             title: "GPU",
@@ -57,25 +54,25 @@ class GpuWidget extends ConsumerWidget {
                           context,
                           "",
                           FontAwesomeIcons.memory,
-                          "${primaryGpu.coreSpeed.round()}Mhz",
+                          "${gpu.coreSpeed.round()}Mhz",
                         ),
                         tableRow(
                           context,
                           "",
                           FontAwesomeIcons.fan,
-                          "${primaryGpu.fanSpeedPercentage.round()}%",
+                          "${gpu.fanSpeedPercentage.round()}%",
                         ),
                         tableRow(
                           context,
                           "",
                           Icons.power,
-                          "${primaryGpu.power.round()}W",
+                          "${gpu.power.round()}W",
                         ),
                       ],
                     ),
                     Text(
-                      getTemperatureText(primaryGpu.temperature, ref),
-                      style: Theme.of(context).textTheme.labelLarge!.copyWith(color: getTemperatureColor(primaryGpu.temperature)),
+                      getTemperatureText(gpu.temperature, ref),
+                      style: Theme.of(context).textTheme.labelLarge!.copyWith(color: getTemperatureColor(gpu.temperature)),
                     ),
                   ],
                 ),
@@ -91,10 +88,10 @@ class GpuWidget extends ConsumerWidget {
                 ),
                 Row(
                   children: [
-                    Expanded(child: HorizontalCircleProgressBar(progress: primaryGpu.corePercentage / 100)),
+                    Expanded(child: HorizontalCircleProgressBar(progress: gpu.corePercentage / 100)),
                     SizedBox(width: 2.w),
                     Text(
-                      "${primaryGpu.corePercentage.round()}%",
+                      "${gpu.corePercentage.round()}%",
                       style: Theme.of(context).textTheme.labelMedium,
                     ),
                   ],

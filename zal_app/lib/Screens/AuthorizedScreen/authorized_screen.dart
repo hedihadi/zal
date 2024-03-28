@@ -45,8 +45,8 @@ class AuthorizedScreen extends ConsumerWidget {
     ref.read(notificationsProvider);
     ref.read(todayConsumerTimeProvider);
     ref.read(programIconsProvider);
-    ref.read(primaryGpuProvider);
     ref.read(areProcessesRunningProvider);
+    ref.watch(connectionEstablishmentFixerProvider);
     final index = ref.watch(bottomNavigationbarIndexProvider);
     return Scaffold(
       resizeToAvoidBottomInset: false,

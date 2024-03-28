@@ -1,1 +1,0 @@
-pyinstaller task_manager.py --onefile

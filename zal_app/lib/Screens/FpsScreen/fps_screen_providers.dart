@@ -160,7 +160,7 @@ final _fpsComputerDataProvider = StateProvider<Map<String, num>>((ref) => {});
 final fpsComputerDataProvider = StateProvider<FpsComputerData>((ref) {
   final oldData = ref.watch(_fpsComputerDataProvider);
   final computerData = ref.watch(computerDataProvider).value!;
-  final gpu = ref.watch(primaryGpuProvider)!;
+  final gpu = computerData.gpu;
   final cpu = computerData.cpu;
   if (gpu.coreSpeed > (oldData['gpu.coreSpeed'] ?? 0)) {
     oldData['gpu.coreSpeed'] = gpu.coreSpeed;

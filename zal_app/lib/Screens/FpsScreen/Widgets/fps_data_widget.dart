@@ -36,9 +36,25 @@ class FpsDataWidget extends ConsumerWidget {
                 alignment: Alignment.topRight,
                 children: [
                   Center(
-                    child: Text(
-                      data.currentFps.toStringAsFixed(1),
-                      style: Theme.of(context).textTheme.displayLarge,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          data.currentFps.toStringAsFixed(1),
+                          style: Theme.of(context).textTheme.displayLarge!.copyWith(height: 1),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 1),
+                          child: Text(
+                            "fps",
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelLarge!
+                                .copyWith(fontSize: Theme.of(context).textTheme.labelLarge!.fontSize! + 2, color: Colors.blueGrey[600]),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],

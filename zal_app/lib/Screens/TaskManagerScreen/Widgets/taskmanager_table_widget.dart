@@ -90,7 +90,7 @@ class TaskmanagerTableWidget extends ConsumerWidget {
                             gaplessPlayback: true,
                             scale: 0.5,
                           )
-                        : const Icon(FontAwesomeIcons.question),
+                        : Image.asset("assets/images/icons/app.png"),
                   ),
                   Text(process.name, style: Theme.of(context).textTheme.titleSmall),
                   Padding(

@@ -12,6 +12,7 @@ import 'package:zal/Screens/HomeScreen/Providers/computer_data_provider.dart';
 import 'package:zal/Screens/HomeScreen/Providers/webrtc_provider.dart';
 import 'package:zal/Screens/TaskManagerScreen/Widgets/taskmanager_table_widget.dart';
 import 'package:zal/Widgets/inline_ad.dart';
+import 'package:zal/Widgets/title_widget.dart';
 
 final selectedSortByProvider = StateProvider<SortBy>((ref) => SortBy.Memory);
 
@@ -29,6 +30,12 @@ class TaskManagerScreen extends ConsumerWidget {
     return ListView(
       children: [
         SizedBox(height: 2.h),
+        Center(
+          child: Text(
+            "Task Manager",
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+        ),
         Center(
           child: ToggleButtons(
             constraints: const BoxConstraints(
@@ -57,11 +64,12 @@ class TaskManagerScreen extends ConsumerWidget {
           itemCount: sortedTaskProcesses.length,
           itemBuilder: (context, index) {
             final process = sortedTaskProcesses[index];
+            final icon = ref.read(processIconProvider).containsKey(process.name) ? ref.read(processIconProvider)[process.name] : null;
             return Padding(
               padding: EdgeInsets.symmetric(vertical: 0.h, horizontal: 3),
               child: Card(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 2.w),
+                  padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 1.w),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,36 +79,41 @@ class TaskManagerScreen extends ConsumerWidget {
                         children: [
                           Padding(
                             padding: EdgeInsets.only(left: 2.w),
-                            child: ref.read(processIconProvider)[process.name] != null
+                            child: icon != null
                                 ? Image.memory(
-                                    ref.read(processIconProvider)[process.name]!,
+                                    icon,
                                     gaplessPlayback: true,
-                                    scale: 0.5,
+                                    height: 50,
                                   )
-                                : const Icon(FontAwesomeIcons.question),
+                                : Image.asset("assets/images/icons/app.png", height: 25),
                           ),
                           Expanded(
-                            child: Text(
-                              process.name,
-                              style: GoogleFonts.inter(fontWeight: FontWeight.w600),
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 3),
+                              child: Text(
+                                process.name,
+                                style: GoogleFonts.inter(fontWeight: FontWeight.w600),
+                              ),
                             ),
                           ),
-                          Text("${process.cpuPercent.toStringAsFixed(1)}%",
-                              style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 17, color: getTemperatureColor(process.cpuPercent))),
+                          if (process.cpuPercent != 0)
+                            Text("${process.cpuPercent.toStringAsFixed(1)}%",
+                                style:
+                                    Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 17, color: getTemperatureColor(process.cpuPercent))),
                           InkWell(
-                              onTap: () async {
-                                bool response =
-                                    await showConfirmDialog('are you sure?', '${process.name} do you want to kill this process?', context);
-                                if (response == false) return;
-                                ref.read(webrtcProvider.notifier).sendMessage('kill_process', jsonEncode(process.pids));
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(5),
-                                child: Icon(
-                                  FontAwesomeIcons.xmark,
-                                  color: Theme.of(context).colorScheme.error,
-                                ),
-                              ))
+                            onTap: () async {
+                              bool response = await showConfirmDialog('are you sure?', 'do you want to kill ${process.name} process?', context);
+                              if (response == false) return;
+                              ref.read(webrtcProvider.notifier).sendMessage('kill_process', jsonEncode(process.pids));
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(5),
+                              child: Icon(
+                                FontAwesomeIcons.xmark,
+                                color: Theme.of(context).colorScheme.error,
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                       SizedBox(height: 1.h),
@@ -146,9 +159,9 @@ class TaskManagerScreen extends ConsumerWidget {
       case SortBy.Memory:
         taskProcesses.sort((b, a) => a.memoryUsage.compareTo(b.memoryUsage));
         break;
-      case SortBy.Cpu:
-        taskProcesses.sort((b, a) => a.cpuPercent.compareTo(b.cpuPercent));
-        break;
+      //case SortBy.Cpu:
+      //  taskProcesses.sort((b, a) => a.cpuPercent.compareTo(b.cpuPercent));
+      //  break;
     }
     return taskProcesses;
   }

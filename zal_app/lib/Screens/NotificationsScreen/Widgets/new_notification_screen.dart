@@ -180,7 +180,7 @@ class NewNotificationScreen extends ConsumerWidget {
                   ),
                 ),
               ),
-            ),
+            ), 
             ElevatedButton(
                 onPressed: () {
                   ref.read(webrtcProvider.notifier).sendMessage('new_notification', notificationData.toJson());

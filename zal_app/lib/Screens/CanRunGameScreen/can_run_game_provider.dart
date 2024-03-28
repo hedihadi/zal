@@ -26,7 +26,7 @@ class GeminiNotifier extends AsyncNotifier<Map<String, dynamic>?> {
 * **Game Name:** $game.
 * **Game Minimum Specs:** ${parsedData['pc_requirements']['minimum'].replaceAll("or", "").replaceAll("better", "")}.
 * **Game Recommended Specs:** ${parsedData['pc_requirements']['recommended'].replaceAll("or", "").replaceAll("better", "")}.
-* **My Device GPU:** ${ref.read(settingsProvider).value!['primaryGpuName']}.
+* **My Device GPU:** ${specs.gpuName}.
 * **My Device CPU:** ${specs.cpuName}.
 * **My Device RAM:** ${specs.ramSize}.
 
