@@ -1,0 +1,104 @@
+﻿<Page x:Class="Zal.LoginPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      mc:Ignorable="d" 
+  Height="250" Width="450"
+      Title="LoginPage">
+    <Grid Margin="0,0,0,0">
+        <Grid.Resources >
+            <Style TargetType="Border" >
+                <Setter Property="Padding" Value="5,5,5,5" />
+            </Style>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+
+
+            <ColumnDefinition Width="155" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35" />
+            <RowDefinition Height="35" />
+            <RowDefinition Height="35" />
+            <RowDefinition Height="35" />
+            <RowDefinition Height="35" />
+            <RowDefinition Height="35" />
+            <RowDefinition Height="35" />
+
+        </Grid.RowDefinitions>
+        <TextBlock x:Name="welcomeText"
+                   Margin="0,5,0,0"
+  Style="{StaticResource MaterialDesignBody2TextBlock}"
+  Text="Welcome! create an account to get started" 
+           Grid.Row="0"
+            Grid.Column="0" Grid.ColumnSpan="3" Foreground="White" HorizontalAlignment="Center" Height="20"  VerticalAlignment="Top" 
+            />
+        <materialDesign:PackIcon x:Name="usernameIcon" Grid.Row="1"
+                               Grid.Column="0"
+                               Foreground="{Binding ElementName=Username, Path=BorderBrush}"
+                               Kind="Account" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,5,0"  />
+
+        <TextBox x:Name="Username"
+                      Padding="5"
+                  Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                 materialDesign:HintAssist.Hint="Username" Grid.Row="1" Grid.Column="1" Foreground="White" Margin="0,0,0,5" />
+        <materialDesign:PackIcon Grid.Row="2"
+                               Grid.Column="0"
+                               Foreground="{Binding ElementName=Email, Path=BorderBrush}"
+                               Kind="Email" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,5,0"/>
+
+        <TextBox x:Name="Email"
+            Padding="5"
+               Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                 materialDesign:HintAssist.Hint="Email" Grid.Row="2" Grid.Column="1" Foreground="White" Margin="0,0,0,5">
+        </TextBox>
+
+        <materialDesign:PackIcon Grid.Row="3"
+                               Grid.Column="0"
+                               Foreground="{Binding ElementName=Password, Path=BorderBrush}"
+                               Kind="Key" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,5,0" />
+
+        <PasswordBox x:Name="Password"
+                     Padding="5"
+               Style="{StaticResource MaterialDesignOutlinedPasswordBox}"
+                 materialDesign:HintAssist.Hint="Password" Grid.Row="3" Grid.Column="1" Foreground="White" Margin="0,0,0,5"  >
+        </PasswordBox>
+
+
+
+        <Button x:Name="loginButton"
+            
+             Grid.Row="4" Grid.Column="1" Click="Button_Click"
+  IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+  Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+  ToolTip="MaterialDesignFloatingActionMiniLightButton" Margin="114,0,0,30" Grid.RowSpan="2">
+            <materialDesign:PackIcon
+    Width="30"
+    Height="30"
+    Kind="ArrowRight" />
+        </Button>
+
+        <Button x:Name="switchButton"
+            
+
+  Content="or Login"
+         Grid.Column="1" Grid.Row="4"
+            Width="100"
+       Style="{StaticResource MaterialDesignFlatLightButton}"     
+  IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+  ToolTip="MaterialDesignFlatButton"  Background="{x:Null}" BorderThickness="0,0,0,0" Click="Button_Click_1" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,3,54,0" FontSize="12" />
+        <TextBlock
+             x:Name="ErrorText"
+            Style="{StaticResource MaterialDesignBody2TextBlock}"
+            Text="" 
+           Foreground="#FFB93B3B" HorizontalAlignment="Center" Height="20"  VerticalAlignment="Center" Grid.ColumnSpan="3" Grid.Row="5"
+            />
+
+    </Grid>
+
+
+</Page>

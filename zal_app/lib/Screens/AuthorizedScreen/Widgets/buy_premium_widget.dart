@@ -102,7 +102,7 @@ class BuyPremiumWidget extends ConsumerWidget {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    "3-days trial, cancel anytime!",
+                                    "3-days trial!",
                                     style: Theme.of(context).textTheme.labelMedium,
                                   ),
                                   Text(
@@ -163,7 +163,7 @@ class BuyPremiumWidget extends ConsumerWidget {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    "7-days trial, cancel anytime!",
+                                    "7-days trial!",
                                     style: Theme.of(context).textTheme.labelMedium,
                                   ),
                                   Text(
@@ -180,7 +180,12 @@ class BuyPremiumWidget extends ConsumerWidget {
                     ),
                   ),
                 )),
-            SizedBox(height: 9.h),
+            SizedBox(height: 2.h),
+            Text(
+              "Subscriptions will automatically renew unless canceled within 3 days before the end of the current period. you can cancel anytime through your Google Play Store settings.",
+              style: Theme.of(context).textTheme.labelSmall,
+            ),
+            SizedBox(height: 2.h),
             const RestorePurchasesButton(),
           ],
         ),
@@ -207,7 +212,7 @@ class BenefitsWidget extends ConsumerWidget {
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
           children: const [
             BenefitCard(text: "Remove Ads"),
-            BenefitCard(text: "better charts (coming soon)"),
+            // BenefitCard(text: "better charts (coming soon)"),
             BenefitCard(text: "Support the Developer"),
           ],
         ),

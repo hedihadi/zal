@@ -33,7 +33,7 @@ class SettingsScreen extends ConsumerWidget {
                 title: "Use Celcius",
                 subtitle: "switch between Celcius and Fahreneit",
                 value: settings?['useCelcius'] ?? true,
-                onChanged: (value) => ref.read(settingsProvider.notifier).updateSettings('useCelcius',value),
+                onChanged: (value) => ref.read(settingsProvider.notifier).updateSettings('useCelcius', value),
                 icon: const Icon(FontAwesomeIcons.temperatureHalf),
               ),
             ],
@@ -45,14 +45,14 @@ class SettingsScreen extends ConsumerWidget {
                 subtitle:
                     "your data will be used to see how the App\nbehaves on different PC Specs,this is \nextremely helpful to me, please leave it ON.",
                 value: settings?['sendAnalaytics'] ?? true,
-                onChanged: (value) => ref.read(settingsProvider.notifier).updateSettings('sendAnalaytics',value),
+                onChanged: (value) => ref.read(settingsProvider.notifier).updateSettings('sendAnalaytics', value),
                 icon: const Icon(FontAwesomeIcons.paintRoller),
               ),
               SwitchSettingUi(
                 title: "Personalized Ads",
                 subtitle: "",
                 value: settings?['personalizedAds'] ?? true,
-                onChanged: (value) => ref.read(settingsProvider.notifier).updateSettings('personalizedAds',value),
+                onChanged: (value) => ref.read(settingsProvider.notifier).updateSettings('personalizedAds', value),
                 icon: const Icon(FontAwesomeIcons.paintRoller),
               ),
             ],
@@ -60,28 +60,6 @@ class SettingsScreen extends ConsumerWidget {
           ref.watch(computerDataProvider).valueOrNull == null
               ? Container()
               : SectionSettingUi(children: [
-                  Text("Select your primary GPU", style: Theme.of(context).textTheme.titleLarge),
-                  StaggeredGridview(
-                      children: ref.watch(computerDataProvider).valueOrNull!.availableGpus!.map((e) {
-                    final gpu = e;
-                    return GestureDetector(
-                      onTap: () {
-                        ref.read(settingsProvider.notifier).updateSettings('primaryGpuName',gpu);
-                      },
-                      child: Card(
-                        color: (settings?['primaryGpuName'] ?? "") == gpu ? Theme.of(context).primaryColor : Theme.of(context).cardColor,
-                        elevation: 5,
-                        shadowColor: Colors.transparent,
-                        child: Center(
-                          child: Text(
-                            gpu,
-                            maxLines: 2,
-                            style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Theme.of(context).cardColor),
-                          ),
-                        ),
-                      ),
-                    );
-                  }).toList()),
                   Align(
                       alignment: Alignment.centerRight,
                       child: TextButton.icon(

@@ -1,0 +1,72 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+<PropertyGroup>
+        <TargetFramework>net7.0-windows10.0.17763.0</TargetFramework>
+        <UseWPF>true</UseWPF>
+        <UseWindowsForms>true</UseWindowsForms>
+        <FileVersion>1.7.4</FileVersion>
+        <ApplicationIcon>white.ico</ApplicationIcon>
+        <LangVersion>preview</LangVersion>
+        <SignAssembly>False</SignAssembly>
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <Version>1.7.4</Version>
+        <AssemblyVersion>1.7.4</AssemblyVersion>
+    </PropertyGroup>
+<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+  <WarningLevel>9999</WarningLevel>
+</PropertyGroup>
+<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+  <WarningLevel>9999</WarningLevel>
+</PropertyGroup>
+<ItemGroup>
+  <None Remove="Resources\presentmon.exe" />
+</ItemGroup>
+<ItemGroup>
+  <Content Include="white.ico" />
+  <Content Include="Resources\presentmon.exe">
+    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+  </Content>
+</ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="FirebaseAuthentication.net" Version="4.1.0" />
+    <PackageReference Include="FirebaseAuthentication.WPF" Version="4.1.0" />
+    <PackageReference Include="FirebaseDatabase.net" Version="4.2.0" />
+    <PackageReference Include="LibreHardwareMonitorLib" Version="0.9.2" />
+    <PackageReference Include="MaterialDesignColors" Version="2.1.4" />
+    <PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
+    <PackageReference Include="Microsoft.PowerShell.5.1.ReferenceAssemblies" Version="1.0.0" />
+    <PackageReference Include="Microsoft.PowerShell.SDK" Version="7.3.11" />
+    <PackageReference Include="SharpDX.Direct3D11" Version="4.2.0" />
+    <PackageReference Include="SIPSorcery" Version="6.2.1" />
+    <PackageReference Include="SIPSorceryMedia.Encoders" Version="0.0.13" />
+    <PackageReference Include="SocketIOClient" Version="3.1.1" />
+    <PackageReference Include="System.Management.Automation" Version="7.3.11" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Resources\DiskInfo.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Processes.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,5 @@
+//DON'T USE THIS, onefile causes the file to be considered a trojan by some anti-viruses.
+pyinstaller task_manager.py --onefile
+
+pyinstaller task_manager.py
+pyinstaller get_process_icon.py
