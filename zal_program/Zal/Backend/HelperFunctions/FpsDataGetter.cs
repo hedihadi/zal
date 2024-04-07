@@ -96,69 +96,81 @@ namespace Zal.HelperFunctions
 
             while (!reader.EndOfStream)
             {
-                if (isDisposed) break;
-                //Thread.Sleep(30);
-                string line = reader.ReadLine();
-                if (shouldLog) Logger.Log($"fpsData:{line}");
-                var msBetweenPresents = "";
                 try
                 {
-                    msBetweenPresents = line.Split(',')[9];
-                }
-                catch
-                {
-                    Logger.Log("skipped line, msBetweenPresents failed");
-                    continue;
-                }
-
-                uint? processId = null;
-                String? processName = line.Split(',')[0];
-                try
-                {
-                    processId = uint.Parse(line.Split(',')[1]);
-                }
-                catch
-                {
-                    Logger.Log("skipped line, processId failed");
-                }
-                if (processName == "<error>")
-                {
-                    Logger.Log("skipped line, error line");
-                    continue;
-                }
-
-                if (processId != null)
-                {
-                    var time = getTimestamp();
-                    if (msBetweenPresents.Any(char.IsDigit))
+                    if (isDisposed)
                     {
-                        var doubledMsBetweenPresents = double.Parse(msBetweenPresents);
-                        fpsDatas.Add((1000 / doubledMsBetweenPresents));
-
-
-                        if (fpsDatas.Count > 10)
-                        {
-                            try
-                            {
-                                sendFpsData.Invoke(null, fpsDatas);
-                            }
-                            catch (Exception exc)
-                            {
-                                Logger.LogError("error sending fps data", exc);
-                            }
-                            fpsDatas.Clear();
-                        }
+                        Logger.Log("presentmon disposed, stopping fps");
+                        break;
+                    }
+                    //Thread.Sleep(30);
+                    string line = reader.ReadLine();
+                    if (shouldLog) Logger.Log($"fpsData:{line}");
+                    var msBetweenPresents = "";
+                    try
+                    {
+                        msBetweenPresents = line.Split(',')[9];
+                    }
+                    catch
+                    {
+                        Logger.Log("skipped line, msBetweenPresents failed");
                         continue;
+                    }
+
+                    uint? processId = null;
+                    String? processName = line.Split(',')[0];
+                    try
+                    {
+                        processId = uint.Parse(line.Split(',')[1]);
+                    }
+                    catch
+                    {
+                        Logger.Log("skipped line, processId failed");
+                    }
+                    if (processName == "<error>")
+                    {
+                        Logger.Log("skipped line, error line");
+                        continue;
+                    }
+
+                    if (processId != null)
+                    {
+                        var time = getTimestamp();
+                        if (msBetweenPresents.Any(char.IsDigit))
+                        {
+                            var doubledMsBetweenPresents = double.Parse(msBetweenPresents, System.Globalization.NumberStyles.AllowDecimalPoint, System.Globalization.NumberFormatInfo.InvariantInfo);
+                            fpsDatas.Add((1000 / doubledMsBetweenPresents));
+
+
+                            if (fpsDatas.Count > 10)
+                            {
+                                try
+                                {
+                                    sendFpsData.Invoke(null, fpsDatas);
+                                }
+                                catch (Exception exc)
+                                {
+                                    Logger.LogError("error sending fps data", exc);
+                                }
+                                fpsDatas.Clear();
+                            }
+                            continue;
+                        }
+                        else
+                        {
+                            Logger.Log("msBetweenPresents not digits");
+                        }
                     }
                     else
                     {
-                        Logger.Log("msBetweenPresents not digits");
+                        Logger.Log("processId is null");
                     }
                 }
-                else
+                catch (Exception exc)
                 {
-                    Logger.Log("processId is null");
+                    Logger.LogError("error during fps", exc);
                 }
+
             }
 
         }
