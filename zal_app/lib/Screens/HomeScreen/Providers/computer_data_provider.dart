@@ -20,7 +20,7 @@ class ComputerDataNotifier extends AsyncNotifier<ComputerData> {
     // Get the length of the byte array
     int sizeInBytes = utf8Bytes.length;
     //print("payload 1size: ${sizeInBytes.toSize()}");
-    print(data);
+    //print(data);
     final decompressed = decompressGzip(data);
     final computerData = ComputerData.construct(decompressed);
     return computerData;

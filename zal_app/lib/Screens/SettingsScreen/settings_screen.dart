@@ -1,10 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:zal/Screens/HomeScreen/Providers/computer_data_provider.dart';
 import 'package:zal/Screens/SettingsScreen/Widgets/select_primary_network_screen.dart';
+import 'package:zal/Widgets/SettingsUI/custom_setting_ui.dart';
 import 'package:zal/Widgets/SettingsUI/section_setting_ui.dart';
 import 'package:zal/Widgets/SettingsUI/switch_setting_ui.dart';
 import 'package:zal/Functions/analytics_manager.dart';
@@ -13,6 +15,8 @@ import 'package:zal/Screens/LoginScreen/login_providers.dart';
 import 'package:zal/Screens/SettingsScreen/settings_providers.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zal/Widgets/staggered_gridview.dart';
+
+import '../../Functions/admob_consent_helper.dart';
 
 final revenueCatIdProvider = FutureProvider((ref) => Purchases.appUserID);
 
@@ -48,27 +52,23 @@ class SettingsScreen extends ConsumerWidget {
                 onChanged: (value) => ref.read(settingsProvider.notifier).updateSettings('sendAnalaytics', value),
                 icon: const Icon(FontAwesomeIcons.paintRoller),
               ),
-              SwitchSettingUi(
+              CustomSettingUi(
                 title: "Personalized Ads",
                 subtitle: "",
-                value: settings?['personalizedAds'] ?? true,
-                onChanged: (value) => ref.read(settingsProvider.notifier).updateSettings('personalizedAds', value),
-                icon: const Icon(FontAwesomeIcons.paintRoller),
+                icon: const Icon(FontAwesomeIcons.paintbrush),
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                      onPressed: () async {
+                        await ConsentInformation.instance.reset();
+                        AdmobConsentHelper().initialize(forced:true);
+                      },
+                      child: const Text("choose")),
+                ),
               ),
             ],
           ),
-          ref.watch(computerDataProvider).valueOrNull == null
-              ? Container()
-              : SectionSettingUi(children: [
-                  Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton.icon(
-                          onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SelectPrimaryNetworkScreen()));
-                          },
-                          icon: const Icon(FontAwesomeIcons.gear),
-                          label: const Text("Primary Network"))),
-                ]),
+
           //MISC
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

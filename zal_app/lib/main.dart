@@ -21,7 +21,7 @@ import 'Functions/theme.dart';
 
 final _revenueCatConfiguration = PurchasesConfiguration(Platform.isAndroid ? 'goog_xokAwGykaqKIgLAIODrNHTTMnxF' : 'appl_eqiIImrSxvAweggWipqxMOgYidj');
 Future<void> main() async {
-  Gemini.init(apiKey: 'AIzaSyBudb4x3TAWx6vJGPM-5-2h6YyqiL9Af_E');
+  Gemini.init(apiKey: 'AIzaSyCAsBp3Ol_W-3zaS6AFI5eJfs8hvr3VDPo');
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: Platform.isAndroid ? DefaultFirebaseOptions.android : DefaultFirebaseOptions.ios);
   final dir = await getApplicationDocumentsDirectory();

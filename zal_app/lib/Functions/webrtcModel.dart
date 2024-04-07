@@ -5,7 +5,29 @@ import 'package:zal/Screens/HomeScreen/Providers/webrtc_provider.dart';
 class WebrtcModel {
   final connectionConfiguration = {
     'iceServers': [
-      {'url': 'stun:stun.l.google.com:19302'},
+      {
+        'urls': "stun:stun.relay.metered.ca:80",
+      },
+      {
+        "urls": "turn:global.relay.metered.ca:80",
+        "username": "1e0b3b6edb6997a73313ef82",
+        "credential": "i27Gzv1zV/ClbtLM",
+      },
+      {
+        "urls": "turn:global.relay.metered.ca:80?transport=tcp",
+        "username": "1e0b3b6edb6997a73313ef82",
+        "credential": "i27Gzv1zV/ClbtLM",
+      },
+      {
+        "urls": "turn:global.relay.metered.ca:443",
+        "username": "1e0b3b6edb6997a73313ef82",
+        "credential": "i27Gzv1zV/ClbtLM",
+      },
+      {
+        "urls": "turns:global.relay.metered.ca:443?transport=tcp",
+        "username": "1e0b3b6edb6997a73313ef82",
+        "credential": "i27Gzv1zV/ClbtLM",
+      },
     ]
   };
 

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:color_print/color_print.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:sizer/sizer.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:zal/Functions/models.dart';

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sizer/sizer.dart';
+import 'package:zal/Functions/admob_consent_helper.dart';
 import 'package:zal/Screens/AuthorizedScreen/authorized_screen.dart';
 import 'package:zal/Screens/LoginScreen/login_providers.dart';
 import 'package:zal/Screens/LoginScreen/main_login_screen.dart';
@@ -14,6 +15,7 @@ class MainScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final auth = ref.watch(authProvider);
+    AdmobConsentHelper().initialize();
     final shouldShowOnboarding = ref.watch(shouldShowOnboardingProvider);
     WidgetsBinding.instance.addPostFrameCallback((_) => ref.read(contextProvider.notifier).state = context);
     if (auth.hasValue == false) {
