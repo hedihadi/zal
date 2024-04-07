@@ -17,6 +17,7 @@ namespace Zal.MajorFunctions
         public DataManager dataManager;
         public NotificationsManager notificationsManager;
         public RunningProgramsTracker runningProgramsTracker;
+        public bool shouldLogFpsData = false;
         private FrontendGlobalClass(EventHandler<RTCPeerConnectionState> webrtcConnectionStateChanged,
             EventHandler<ServerSocketConnectionState> socketServerConnectionStateChanged,
             EventHandler<computerData> computerDataReceived

@@ -69,9 +69,8 @@ namespace Zal.Functions.MajorFunctions
             }
             return null;
         }
-        private async Task sendDataToMobile()
+        public async Task<Dictionary<string, object>?> getBackendData()
         {
-
             var data = new Dictionary<string, object>();
             var computerData = await getComputerDataAsync();
             data["computerData"] = computerData;
@@ -86,6 +85,12 @@ namespace Zal.Functions.MajorFunctions
                 dictionaryComputerData["availableGpus"] = computerData.gpuData.Select(gpu => gpu.name).ToList();
                 data["computerData"] = dictionaryComputerData;
             }
+            return data;
+        }
+        private async Task sendDataToMobile()
+        {
+
+            var data = await getBackendData();
             var compressedData = CompressGzip(Newtonsoft.Json.JsonConvert.SerializeObject(data));
             FrontendGlobalClass.Instance.webrtc?.sendMessage("pc_data", compressedData);
         }
@@ -143,7 +148,7 @@ class ChartsDataManager
     {
         var primaryGpuName = LocalDatabase.Instance.readKey("primaryGpu");
         gpuData? primaryGpu = null;
-        Logger.Log($"fetching primary gpu object from name {primaryGpuName}");
+        //Logger.Log($"fetching primary gpu object from name {primaryGpuName}");
         foreach (var gpu in computerData.gpuData)
         {
             if (gpu.name == primaryGpuName)

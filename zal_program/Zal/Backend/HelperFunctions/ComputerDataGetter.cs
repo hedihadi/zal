@@ -84,7 +84,28 @@ namespace Zal.HelperFunctions
 
 
         }
+        public string getEntireComputerData()
+        {
+            computerData computerData = new computerData();
+            computer.Accept(new UpdateVisitor());
+            Dictionary<string, object> result = new Dictionary<string, object>();
+            foreach (IHardware hardware in computer.Hardware)
+            {
+                Dictionary<string, object> data = new Dictionary<string, object>();
+                data["type"] = hardware.HardwareType.ToString();
+                foreach (var sensor in hardware.Sensors)
+                {
+                    Dictionary<string, object> sensorData = new Dictionary<string, object>();
+                    sensorData["type"] = sensor.SensorType.ToString();
+                    sensorData["value"] = sensor.Value.ToString();
+                    data[sensor.Name] = sensorData;
+                }
 
+                result.Add(hardware.Name, data);
+            }
+            var stringifiedData = Newtonsoft.Json.JsonConvert.SerializeObject(result);
+            return stringifiedData;
+        }
         public async Task<computerData> getcomputerDataAsync()
         {
             computerData computerData = new computerData();

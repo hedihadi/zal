@@ -112,7 +112,7 @@ namespace Zal.Functions.MajorFunctions
             }
             else if (messageData.name == "start_fps")
             {
-                FrontendGlobalClass.Instance.backend?.startFps(Int32.Parse(messageData.data.ToString()));
+                FrontendGlobalClass.Instance.backend?.startFps(Int32.Parse(messageData.data.ToString()), FrontendGlobalClass.Instance.shouldLogFpsData);
                 FrontendGlobalClass.Instance.backend.fpsDataReceived += (sender, e) =>
                 {
                     sendMessage("fps_data", e);

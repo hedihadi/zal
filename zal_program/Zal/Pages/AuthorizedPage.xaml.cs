@@ -12,6 +12,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Media;
+using Windows.UI.Notifications;
 using Zal.Functions.Models;
 using Zal.MajorFunctions;
 using Application = System.Windows.Application;
@@ -215,6 +216,30 @@ namespace Zal
         {
             Process.Start("notepad.exe", Logger.GetLogFilePath());
         }
+        private async void copyBackendData(object sender, RoutedEventArgs e)
+        {
+            var data = await FrontendGlobalClass.Instance.dataManager.getBackendData();
+            System.Windows.Clipboard.SetText(Newtonsoft.Json.JsonConvert.SerializeObject(data));
+
+            var toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastImageAndText02);
+
+            // Fill in the text elements
+            var stringElements = toastXml.GetElementsByTagName("text");
+            stringElements[0].AppendChild(toastXml.CreateTextNode("Backend data copied!")); ;
+            ToastNotificationManager.CreateToastNotifier("Zal").Show(new ToastNotification(toastXml));
+        }
+        private void copyRawBackendData(object sender, RoutedEventArgs e)
+        {
+            var data = FrontendGlobalClass.Instance.backend.getEntireComputerData();
+            System.Windows.Clipboard.SetText(Newtonsoft.Json.JsonConvert.SerializeObject(data));
+
+            var toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastImageAndText02);
+
+            // Fill in the text elements
+            var stringElements = toastXml.GetElementsByTagName("text");
+            stringElements[0].AppendChild(toastXml.CreateTextNode("raw data copied!")); ;
+            ToastNotificationManager.CreateToastNotifier("Zal").Show(new ToastNotification(toastXml));
+        }
         private void minimizeToTray_Click(object sender, RoutedEventArgs e)
         {
             //    Zal.Settings.Default.minimizeToTray = !Zal.Settings.Default.minimizeToTray;
@@ -231,7 +256,10 @@ namespace Zal
             var response = ((bool?)(LocalDatabase.Instance.readKey("runOnStartup")) ?? false);
             updateCheckBoxesAsync();
         }
-
+        private async void logFpsData_Click(object sender, RoutedEventArgs e)
+        {
+            FrontendGlobalClass.Instance.shouldLogFpsData = logFpsData.IsChecked ?? false;
+        }
         private async void GpusList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var selectedGpuName = e.AddedItems[0];

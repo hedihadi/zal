@@ -37,19 +37,23 @@
             IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}"
             StaysOpen="True" Margin="411,0,0,215" Width="39" Foreground="#FF9C9C9C">
             <Grid
-                Width="130"
+                Width="200"
                
 
                 Margin="8,0,8,0">
                 <Grid.RowDefinitions>
                     <RowDefinition
                         Height="30" />
-
                     <RowDefinition
                         Height="30" />
                     <RowDefinition
                         Height="30" />
-
+                    <RowDefinition
+                        Height="30" />
+                    <RowDefinition
+                        Height="30" />
+                    <RowDefinition
+                        Height="30" />
                     <RowDefinition
                         Height="30" />
                     <RowDefinition
@@ -62,14 +66,29 @@
                     Content="Run at Startup"
                     IsChecked="True"
                     IsThreeState="False" Click="runAtStartup_Click" />
+                <CheckBox
+    Grid.Row="2"
+    x:Name="logFpsData"
+    Content="Log FPS data"
+    IsChecked="False"
+    IsThreeState="False" Click="logFpsData_Click" />
                 <Button 
                     Grid.Row="3"
                     Content="View Log"
                     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}"
                     Style="{StaticResource MaterialDesignFlatLightButton}" Click="viewLogClicked"/>
-
                 <Button 
                     Grid.Row="4"
+                    Content="Copy backend data"
+                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}"
+                    Style="{StaticResource MaterialDesignFlatLightButton}" Click="copyBackendData"/>
+                <Button 
+                    Grid.Row="5"
+                    Content="Copy raw backend data"
+                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}"
+                    Style="{StaticResource MaterialDesignFlatLightButton}" Click="copyRawBackendData"/>
+                <Button 
+                    Grid.Row="6"
                     Content="Logout"
                     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}"
                     Style="{StaticResource MaterialDesignFlatLightButton}" Click="LogoutClicked"/>

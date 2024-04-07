@@ -9,13 +9,13 @@
         <TargetFramework>net7.0-windows10.0.17763.0</TargetFramework>
         <UseWPF>true</UseWPF>
         <UseWindowsForms>true</UseWindowsForms>
-        <FileVersion>1.7.4</FileVersion>
+        <FileVersion>1.7.5</FileVersion>
         <ApplicationIcon>white.ico</ApplicationIcon>
         <LangVersion>preview</LangVersion>
         <SignAssembly>False</SignAssembly>
         <PlatformTarget>AnyCPU</PlatformTarget>
-        <Version>1.7.4</Version>
-        <AssemblyVersion>1.7.4</AssemblyVersion>
+        <Version>1.7.5</Version>
+        <AssemblyVersion>1.7.5</AssemblyVersion>
     </PropertyGroup>
 <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
   <WarningLevel>9999</WarningLevel>

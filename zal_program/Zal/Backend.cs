@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using ZalConsole.HelperFunctions.SpecificFunctions;
 using Zal.Constants.Models;
 using Zal.HelperFunctions;
+using ZalConsole.HelperFunctions.SpecificFunctions;
 
 namespace Zal
 {
@@ -12,6 +12,7 @@ namespace Zal
         computerDataGetter computerDataGetter = null;
         public event EventHandler<string> fpsDataReceived;
         FpsDataGetter fpsDataGetter = new FpsDataGetter();
+
         public Backend()
         {
             try
@@ -27,16 +28,22 @@ namespace Zal
         {
             return await computerDataGetter.getcomputerDataAsync();
         }
+        public string getEntireComputerData()
+        {
+            return computerDataGetter.getEntireComputerData();
+        }
         public Dictionary<String, Dictionary<string, dynamic>> getGpuProcesses()
         {
             var gpuProcesses = GpuUtilizationGetter.getProcessesGpuUsage();
             return gpuProcesses;
         }
-        public void startFps(int pid)
+        public void startFps(int pid, bool logFps)
         {
+
             _ = Task.Run(async () =>
             {
-                fpsDataGetter.startPresentmon(pid);
+                Logger.Log($"starting presentmon (fps getter), pid:{pid},logging:{logFps}");
+                fpsDataGetter.startPresentmon(pid, logFps);
                 fpsDataGetter.sendFpsData += (sender, fpsData) =>
                 {
                     var data = Newtonsoft.Json.JsonConvert.SerializeObject(fpsData);
