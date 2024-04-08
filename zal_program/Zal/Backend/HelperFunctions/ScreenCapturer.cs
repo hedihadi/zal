@@ -63,10 +63,8 @@ namespace ZalConsole.HelperFunctions
                     {
                         try
                         {
-                            OutputDuplicateFrameInformation duplicateFrameInformation;
-
                             // Try to get duplicated frame within given time is ms
-                            duplicatedOutput.TryAcquireNextFrame(1000, out duplicateFrameInformation, out var screenResource);
+                            duplicatedOutput.TryAcquireNextFrame(1000, out _, out var screenResource);
 
                             // copy resource into memory that can be accessed by the CPU
                             using (var screenTexture2D = screenResource.QueryInterface<Texture2D>())
