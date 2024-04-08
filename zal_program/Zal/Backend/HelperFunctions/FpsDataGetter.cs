@@ -14,9 +14,9 @@ namespace Zal.HelperFunctions
         private System.Threading.Tasks.Task fpsTask;
         private bool isDisposed = false;
         public event EventHandler<dynamic> sendFpsData;
-        private List<double> fpsDatas = [];
+        private readonly List<double> fpsDatas = [];
         private int processId;
-        Stopwatch stopwatch = new Stopwatch();
+        readonly Stopwatch stopwatch = new Stopwatch();
         bool shouldLog = false;
 
         public FpsDataGetter()
@@ -30,7 +30,6 @@ namespace Zal.HelperFunctions
             //  }, null, 0, 30000);
 
             //send fpsdata to mobile every n seconds
-
         }
 
         public double calculatePercentile(IEnumerable<double> seq, double percentile)

@@ -8,13 +8,15 @@ namespace Zal
 {
     public class LocalDatabase
     {
-        Dictionary<string, object> data = new Dictionary<string, object>();
+        readonly Dictionary<string, object> data = new Dictionary<string, object>();
         private static LocalDatabase instance;
         private readonly SemaphoreSlim _writeSemaphore = new SemaphoreSlim(1);
+
         private LocalDatabase(Dictionary<string, object> initData)
         {
             data = initData;
         }
+
         public async static Task Initialize()
         {
             var text = await GlobalClass.Instance.readTextFromDocumentFolder("database.json");
@@ -30,10 +32,15 @@ namespace Zal
                     }
 
                 }
-                catch (Exception ex) { Logger.LogError("error reading database.json", ex); }
+                catch (Exception ex)
+                {
+                    Logger.LogError("error reading database.json", ex);
+                }
             }
+
             instance = new LocalDatabase(new Dictionary<string, object>());
         }
+
         public static LocalDatabase Instance
         {
             get
@@ -42,23 +49,26 @@ namespace Zal
                 {
                     throw new Exception("initialize first!!");
                 }
+
                 return instance;
             }
         }
+
         public object readKey(string key)
         {
             if (data.ContainsKey(key))
             {
                 return data[key];
             }
+
             return null;
         }
+
         public async Task writeKey(string key, object text)
         {
             await _writeSemaphore.WaitAsync();
             try
             {
-
                 data[key] = text;
                 var serializedData = Newtonsoft.Json.JsonConvert.SerializeObject(data);
                 WriteAsync(serializedData);
@@ -74,6 +84,5 @@ namespace Zal
             GlobalClass.Instance.saveTextToDocumentFolder("database.json", text);
 
         }
-
     }
 }

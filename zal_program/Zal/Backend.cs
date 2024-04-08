@@ -9,9 +9,9 @@ namespace Zal
 {
     public class Backend
     {
-        computerDataGetter computerDataGetter = null;
+        readonly computerDataGetter computerDataGetter = null;
         public event EventHandler<string> fpsDataReceived;
-        FpsDataGetter fpsDataGetter = new FpsDataGetter();
+        readonly FpsDataGetter fpsDataGetter = new FpsDataGetter();
 
         public Backend()
         {
