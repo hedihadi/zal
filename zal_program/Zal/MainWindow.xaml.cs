@@ -3,7 +3,6 @@ using Firebase.Auth.UI;
 using System;
 using System.Diagnostics;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Navigation;

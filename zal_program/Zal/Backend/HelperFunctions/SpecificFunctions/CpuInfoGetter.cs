@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Management;
-using System.Text;
-using System.Threading.Tasks;
 using Zal.Constants.Models;
 
 namespace Zal.HelperFunctions.SpecificcomputerDataFunctions

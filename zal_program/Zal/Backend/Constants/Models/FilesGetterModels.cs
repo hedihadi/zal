@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-public class FileData
+﻿public class FileData
 {
     private string _label;
     public string label
