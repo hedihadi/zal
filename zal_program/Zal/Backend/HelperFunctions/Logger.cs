@@ -6,12 +6,14 @@ namespace Zal
     public static class Logger
     {
         static readonly object _locker = new object();
-        public static void LogError(string message, Exception ex, Object dataToPrint = null)
+
+        public static void LogError(string message, Exception ex, object dataToPrint = null)
         {
             string stringifiedData = Newtonsoft.Json.JsonConvert.SerializeObject(dataToPrint);
             string text = dataToPrint == null ? "" : stringifiedData;
             Logger.Log($"{message},,error:{ex.Message},,stack:{ex.StackTrace},,{text}");
         }
+
         public static void Log(string logMessage)
         {
             try
@@ -25,11 +27,13 @@ namespace Zal
                 //the irony, right? well i can't do much here
             }
         }
-        public static String GetLogFilePath()
+
+        public static string GetLogFilePath()
         {
             return Path.Combine(Path.GetTempPath(), "zal_log.txt");
 
         }
+
         public static void ResetLog()
         {
             try
@@ -40,9 +44,7 @@ namespace Zal
             }
             catch
             {
-
             }
-
         }
 
         static void WriteToLog(string logMessage, string logFilePath)
@@ -51,7 +53,7 @@ namespace Zal
             {
                 string formattedDate = DateTime.Now.ToString("HH:mm:ss");
                 File.AppendAllText(logFilePath,
-                        string.Format("DT: {1}{0}Msg: {2}{0}--------------------{0}",
+                    string.Format("DT: {1}{0}Msg: {2}{0}--------------------{0}",
                         Environment.NewLine, formattedDate, logMessage));
             }
         }

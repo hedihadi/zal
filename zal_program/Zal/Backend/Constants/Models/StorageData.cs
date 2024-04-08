@@ -17,7 +17,7 @@ namespace Zal.Constants.Models
         //whether it's hdd, ssd, or external storage
         public string type { get; set; }
         public List<partitionInfo> partitions { get; } = new List<partitionInfo>();
-        public Dictionary<String, dynamic> info = new Dictionary<String, dynamic>();
+        public Dictionary<string, dynamic> info = new Dictionary<string, dynamic>();
         public List<smartAttribute> smartAttributes = new List<smartAttribute>();
         public storageData(IHardware hardware, List<crystalDiskData>? crystalDiskDatas)
         {
@@ -90,15 +90,12 @@ namespace Zal.Constants.Models
                     {
 
                     }
-
                 }
-
             }
             var diskNumber = int.Parse(hardware.Identifier.ToString().Substring(hardware.Identifier.ToString().Length - 1));
 
             try
             {
-
                 var diskInfo = diskInfoGetter.GetdiskInfo(diskNumber, crystalDiskData);
 
                 this.diskNumber = diskNumber;
@@ -111,11 +108,8 @@ namespace Zal.Constants.Models
             {
                 Logger.LogError("error calling GetdiskInfo", ex);
             }
-
         }
     }
-
-
 }
 public class partitionInfo
 {
@@ -129,6 +123,7 @@ public class partitionInfo
     public long size { get; set; }
     public long freeSpace { get; set; }
 }
+
 public class diskInfo
 {
     public int diskNumber { get; set; }

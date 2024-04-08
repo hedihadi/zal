@@ -18,10 +18,12 @@ namespace ZalConsole.HelperFunctions
         public ProcessesGetter processesGetter = new ProcessesGetter();
         private static GlobalClass instance;
         private List<ProcessInfo>? processInfos;
+
         private GlobalClass()
         {
             // Initialization code here
         }
+
         public bool saveTextToDocumentFolder(string filename, string data)
         {
             var directory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Zal");
@@ -29,11 +31,11 @@ namespace ZalConsole.HelperFunctions
             var filePath = Path.Combine(directory, filename);
             try
             {
-
                 using (StreamWriter writer = new StreamWriter(filePath))
                 {
                     writer.Write(data);
                 }
+
                 return true;
             }
             catch (Exception ex)
@@ -42,6 +44,7 @@ namespace ZalConsole.HelperFunctions
                 return false;
             }
         }
+
         public async Task<string?> readTextFromDocumentFolder(string filename)
         {
             var directory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Zal");
@@ -80,6 +83,7 @@ namespace ZalConsole.HelperFunctions
                 {
                     Logger.LogError($"failed to read {filePath} and failed to delete it", e);
                 }
+
                 return null;
             }
             catch (UnauthorizedAccessException)
@@ -93,6 +97,7 @@ namespace ZalConsole.HelperFunctions
                 return null;
             }
         }
+
         public static GlobalClass Instance
         {
             get
@@ -101,14 +106,17 @@ namespace ZalConsole.HelperFunctions
                 {
                     instance = new GlobalClass();
                 }
+
                 return instance;
             }
         }
-        public string getFilepathFromResources(String fileName)
+
+        public string getFilepathFromResources(string fileName)
         {
             return Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Resources", fileName);
         }
-        public string extractZipFromResourcesAndGetFilepathWithinTheExtract(String zipFileName, String filenameWithinTheExtract)
+
+        public string extractZipFromResourcesAndGetFilepathWithinTheExtract(string zipFileName, string filenameWithinTheExtract)
         {
             var zipFilepath = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Resources", zipFileName);
             var zipFileNameWithoutDotZip = zipFilepath.Replace(".zip", "");
@@ -124,11 +132,12 @@ namespace ZalConsole.HelperFunctions
             {
                 Logger.LogError("failed to extract zip from resources folder", c);
             }
+
             return Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Resources", zipFileNameWithoutDotZip, filenameWithinTheExtract);
         }
 
         ///return icon of a file in base64
-        public string getFileIcon(String fileName)
+        public string getFileIcon(string fileName)
         {
             var filePath = extractZipFromResourcesAndGetFilepathWithinTheExtract("get_process_icon.zip", "get_process_icon.exe");
 
@@ -159,10 +168,12 @@ namespace ZalConsole.HelperFunctions
                     win32DiskDrives = null;
                 });
             }
+
             return win32DiskDrives;
 
 
         }
+
         public List<ProcessInfo> getProcessInfos()
         {
             if (processInfos == null)
@@ -177,9 +188,10 @@ namespace ZalConsole.HelperFunctions
                     processInfos = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ProcessInfo>>(jsonContent);
                 }
             }
-            return processInfos;
 
+            return processInfos;
         }
+
         public List<ManagementObject> getWin32DiskPartitions(int diskNumber)
         {
             if (win32DiskPartitions == null)
@@ -208,6 +220,7 @@ namespace ZalConsole.HelperFunctions
 
             return filteredPartitions;
         }
+
         public ManagementObjectCollection getWin32DiskPartitionsForFreeDiskSpace()
         {
             if (win32DiskPartitionsForFreeDiskSpace == null)
@@ -219,15 +232,13 @@ namespace ZalConsole.HelperFunctions
                 win32DiskPartitionsForFreeDiskSpace = searcher.Get();
 
                 Task.Run(async () =>
-               {
-                   await Task.Delay(TimeSpan.FromSeconds(60));
-                   win32DiskPartitionsForFreeDiskSpace = null;
-               });
+                {
+                    await Task.Delay(TimeSpan.FromSeconds(60));
+                    win32DiskPartitionsForFreeDiskSpace = null;
+                });
             }
+
             return win32DiskPartitionsForFreeDiskSpace;
-
-
         }
     }
-
 }

@@ -18,6 +18,7 @@ namespace Zal.HelperFunctions
         private int processId;
         Stopwatch stopwatch = new Stopwatch();
         bool shouldLog = false;
+
         public FpsDataGetter()
         {
             stopwatch.Start();
@@ -44,11 +45,13 @@ namespace Zal.HelperFunctions
             else
                 return elements[index];
         }
+
         public void disposeIt()
         {
             isDisposed = true;
             stopPresentmon();
         }
+
         public void stopPresentmon()
         {
             Logger.Log("stopping presentmon");
@@ -58,6 +61,7 @@ namespace Zal.HelperFunctions
                 Logger.Log("presentmon killed");
             }
         }
+
         public async void startPresentmon(int processId, bool logFps)
         {
             shouldLog = logFps;
@@ -82,13 +86,16 @@ namespace Zal.HelperFunctions
             {
                 Logger.LogError($"error running presentmon", ex);
             }
+
             Task.Run(async () => { await parseIncomingPresentmonData(); });
         }
-        private static String getTimestamp()
+
+        private static string getTimestamp()
         {
 
             return (new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds()).ToString();
         }
+
         //chosenProcessName is the process that was used during the creation of this void, if the currentProcessName changes, this void will stop itself.
         private async Task parseIncomingPresentmonData()
         {
@@ -103,6 +110,7 @@ namespace Zal.HelperFunctions
                         Logger.Log("presentmon disposed, stopping fps");
                         break;
                     }
+
                     //Thread.Sleep(30);
                     string line = reader.ReadLine();
                     if (shouldLog) Logger.Log($"fpsData:{line}");
@@ -118,7 +126,7 @@ namespace Zal.HelperFunctions
                     }
 
                     uint? processId = null;
-                    String? processName = line.Split(',')[0];
+                    string? processName = line.Split(',')[0];
                     try
                     {
                         processId = uint.Parse(line.Split(',')[1]);
@@ -127,6 +135,7 @@ namespace Zal.HelperFunctions
                     {
                         Logger.Log("skipped line, processId failed");
                     }
+
                     if (processName == "<error>")
                     {
                         Logger.Log("skipped line, error line");
@@ -141,7 +150,6 @@ namespace Zal.HelperFunctions
                             var doubledMsBetweenPresents = double.Parse(msBetweenPresents, System.Globalization.NumberStyles.AllowDecimalPoint, System.Globalization.NumberFormatInfo.InvariantInfo);
                             fpsDatas.Add((1000 / doubledMsBetweenPresents));
 
-
                             if (fpsDatas.Count > 10)
                             {
                                 try
@@ -152,8 +160,10 @@ namespace Zal.HelperFunctions
                                 {
                                     Logger.LogError("error sending fps data", exc);
                                 }
+
                                 fpsDatas.Clear();
                             }
+
                             continue;
                         }
                         else
@@ -170,9 +180,7 @@ namespace Zal.HelperFunctions
                 {
                     Logger.LogError("error during fps", exc);
                 }
-
             }
-
         }
     }
 }

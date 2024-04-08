@@ -18,11 +18,13 @@ namespace Zal.Functions.MajorFunctions
         RTCDataChannel? dataChannel;
         public event EventHandler<RTCPeerConnectionState> connectionStateChanged;
         public event EventHandler<WebrtcData> messageReceivedEvent;
+
         public Webrtc(EventHandler<RTCPeerConnectionState> connectionStateChanged)
         {
             this.connectionStateChanged = connectionStateChanged;
         }
-        public async Task start(String data)
+
+        public async Task start(string data)
         {
             var pc = await CreatePeerConnection();
 
@@ -36,35 +38,43 @@ namespace Zal.Functions.MajorFunctions
                 await FrontendGlobalClass.Instance.serverSocket.socketio.EmitAsync("offer_failed");
                 return;
             }
+
             var answer = pc.createAnswer();
             //await pc.setLocalDescription(answer);
             await FrontendGlobalClass.Instance.serverSocket.socketio.EmitAsync("accept_answer", answer.toJSON());
         }
+
         private async Task<RTCPeerConnection?> CreatePeerConnection()
         {
             RTCConfiguration config = new RTCConfiguration
             {
-                iceServers = new List<RTCIceServer> { new RTCIceServer { urls = "stun:stun.relay.metered.ca:80" },
-              new RTCIceServer {
-    urls= "turn:global.relay.metered.ca:80",
-    username= "1e0b3b6edb6997a73313ef82",
-    credential= "i27Gzv1zV/ClbtLM",
-  },
-  new RTCIceServer {
-    urls= "turn:global.relay.metered.ca:80?transport=tcp",
-    username= "1e0b3b6edb6997a73313ef82",
-    credential= "i27Gzv1zV/ClbtLM",
-  },
-  new RTCIceServer {
-    urls= "turn:global.relay.metered.ca:443",
-    username= "1e0b3b6edb6997a73313ef82",
-    credential= "i27Gzv1zV/ClbtLM",
-  },
-  new RTCIceServer {
-    urls= "turns:global.relay.metered.ca:443?transport=tcp",
-    username= "1e0b3b6edb6997a73313ef82",
-    credential= "i27Gzv1zV/ClbtLM",
-  },
+                iceServers = new List<RTCIceServer>
+                {
+                    new RTCIceServer { urls = "stun:stun.relay.metered.ca:80" },
+                    new RTCIceServer
+                    {
+                        urls = "turn:global.relay.metered.ca:80",
+                        username = "1e0b3b6edb6997a73313ef82",
+                        credential = "i27Gzv1zV/ClbtLM",
+                    },
+                    new RTCIceServer
+                    {
+                        urls = "turn:global.relay.metered.ca:80?transport=tcp",
+                        username = "1e0b3b6edb6997a73313ef82",
+                        credential = "i27Gzv1zV/ClbtLM",
+                    },
+                    new RTCIceServer
+                    {
+                        urls = "turn:global.relay.metered.ca:443",
+                        username = "1e0b3b6edb6997a73313ef82",
+                        credential = "i27Gzv1zV/ClbtLM",
+                    },
+                    new RTCIceServer
+                    {
+                        urls = "turns:global.relay.metered.ca:443?transport=tcp",
+                        username = "1e0b3b6edb6997a73313ef82",
+                        credential = "i27Gzv1zV/ClbtLM",
+                    },
                 }
             };
             var pc = new RTCPeerConnection(config);
@@ -93,7 +103,6 @@ namespace Zal.Functions.MajorFunctions
                     {
                         await FrontendGlobalClass.Instance.notificationsManager.broadcastNotificationsToMobile();
                     });
-
                 }
 
                 if (state == RTCPeerConnectionState.failed)
@@ -110,16 +119,15 @@ namespace Zal.Functions.MajorFunctions
                     FrontendGlobalClass.Instance.backend?.stopFps();
                     GlobalClass.Instance.processesGetter.resetSentIcons();
                 }
-
             };
 
             return pc;
         }
+
         private async Task messageReceivedAsync(WebrtcData messageData)
         {
             if (messageData.name == "get_gpu_processes")
             {
-
                 try
                 {
                     var data = Newtonsoft.Json.JsonConvert.SerializeObject(FrontendGlobalClass.Instance.backend.getGpuProcesses());
@@ -133,7 +141,7 @@ namespace Zal.Functions.MajorFunctions
             }
             else if (messageData.name == "start_fps")
             {
-                FrontendGlobalClass.Instance.backend?.startFps(Int32.Parse(messageData.data.ToString()), FrontendGlobalClass.Instance.shouldLogFpsData);
+                FrontendGlobalClass.Instance.backend?.startFps(int.Parse(messageData.data.ToString()), FrontendGlobalClass.Instance.shouldLogFpsData);
                 FrontendGlobalClass.Instance.backend.fpsDataReceived += (sender, e) =>
                 {
                     sendMessage("fps_data", e);
@@ -160,11 +168,11 @@ namespace Zal.Functions.MajorFunctions
                 var proc = new Process
                 {
                     StartInfo =
-                                {
-                                      FileName = selfPath,
-                                       UseShellExecute = true,
-                                        Verb = "runas"
-                                }
+                    {
+                        FileName = selfPath,
+                        UseShellExecute = true,
+                        Verb = "runas"
+                    }
                 };
 
                 try
@@ -212,6 +220,7 @@ namespace Zal.Functions.MajorFunctions
                 {
                     System.Diagnostics.Process.GetProcessById(pid).Kill();
                 }
+
                 sendMessage("information_text", $"Process killed!");
 
             }
