@@ -17,7 +17,7 @@ namespace Zal.HelperFunctions
         private readonly List<crystalDiskData>? crystalDiskDatas;
         private readonly List<ramPieceData>? ramPiecesData;
         //this variable holds the network speed that the user has chosen as primary.
-        private networkSpeed primarynetworkSpeed = new networkSpeed(download: 0, upload: 0);
+        private readonly networkSpeed primarynetworkSpeed = new networkSpeed(download: 0, upload: 0);
 
         private readonly NetworkSpeedGetter networkSpeedGetter = new NetworkSpeedGetter();
         //disabled fps feature because it's buggy

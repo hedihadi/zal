@@ -22,7 +22,7 @@ namespace Zal
             if (!createdNew)
             {
                 //app is already running! Exiting the application
-                Application.Current.Shutdown();
+                Current.Shutdown();
             }
 
             base.OnStartup(e);

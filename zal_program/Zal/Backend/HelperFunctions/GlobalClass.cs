@@ -113,12 +113,12 @@ namespace ZalConsole.HelperFunctions
 
         public string getFilepathFromResources(string fileName)
         {
-            return Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Resources", fileName);
+            return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", fileName);
         }
 
         public string extractZipFromResourcesAndGetFilepathWithinTheExtract(string zipFileName, string filenameWithinTheExtract)
         {
-            var zipFilepath = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Resources", zipFileName);
+            var zipFilepath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", zipFileName);
             var zipFileNameWithoutDotZip = zipFilepath.Replace(".zip", "");
             try
             {
@@ -133,7 +133,7 @@ namespace ZalConsole.HelperFunctions
                 Logger.LogError("failed to extract zip from resources folder", c);
             }
 
-            return Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Resources", zipFileNameWithoutDotZip, filenameWithinTheExtract);
+            return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", zipFileNameWithoutDotZip, filenameWithinTheExtract);
         }
 
         ///return icon of a file in base64

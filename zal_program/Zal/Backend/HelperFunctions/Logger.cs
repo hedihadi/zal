@@ -11,7 +11,7 @@ namespace Zal
         {
             string stringifiedData = Newtonsoft.Json.JsonConvert.SerializeObject(dataToPrint);
             string text = dataToPrint == null ? "" : stringifiedData;
-            Logger.Log($"{message},,error:{ex.Message},,stack:{ex.StackTrace},,{text}");
+            Log($"{message},,error:{ex.Message},,stack:{ex.StackTrace},,{text}");
         }
 
         public static void Log(string logMessage)
@@ -24,7 +24,7 @@ namespace Zal
             }
             catch (Exception e)
             {
-                //the irony, right? well i can't do much here
+                //the irony, right? well I can't do much here
             }
         }
 

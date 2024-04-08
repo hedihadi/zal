@@ -13,7 +13,7 @@ namespace ZalConsole.HelperFunctions
 {
     public class RunningProgramsTracker
     {
-        private Timer timer1;
+        private readonly Timer timer1;
         private readonly List<string> runningProcesses = [];
 
         public RunningProgramsTracker()

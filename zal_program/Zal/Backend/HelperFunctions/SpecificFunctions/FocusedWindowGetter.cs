@@ -9,7 +9,7 @@ namespace Zal.HelperFunctions.SpecificFunctions
 {
     public class FocusedWindowGetter
     {
-        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        [DllImport("user32.dll")]
         private static extern IntPtr GetForegroundWindow();
         [DllImport("user32.dll", SetLastError = true)]
         private static extern int GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);

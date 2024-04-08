@@ -166,7 +166,7 @@ namespace Zal
                     {
                         try
                         {
-                            string fileName = Path.Combine(System.IO.Path.GetTempPath(), "zal.msi");
+                            string fileName = Path.Combine(Path.GetTempPath(), "zal.msi");
                             webClient.DownloadFile("https://zalapp.com/zal.msi", fileName);
                             Console.WriteLine("File downloaded successfully.");
 

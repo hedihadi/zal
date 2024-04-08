@@ -46,7 +46,7 @@ namespace Zal
 
         private void setupTrayMenu()
         {
-            System.Windows.Forms.NotifyIcon ni = new System.Windows.Forms.NotifyIcon();
+            NotifyIcon ni = new NotifyIcon();
             ni.Icon = System.Drawing.Icon.ExtractAssociatedIcon(Process.GetCurrentProcess().MainModule.FileName);
             ni.Visible = true;
             var trayMenu = new ContextMenuStrip();
@@ -59,7 +59,7 @@ namespace Zal
                 delegate (object sender, EventArgs args)
                 {
                     Show();
-                    WindowState = System.Windows.WindowState.Normal;
+                    WindowState = WindowState.Normal;
                 };
 
             // if(Zal.Settings.Default.minimizeToTray)

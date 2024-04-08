@@ -44,8 +44,8 @@ namespace Zal.HelperFunctions.SpecificFunctions
             try
             {
                 process.WaitForExit();
-                string resultPath = Path.Combine(System.IO.Path.GetDirectoryName(filePath), "diskInfo.txt");
-                var diskInfos = CrystaldiskInfoGetter.parseCrystaldiskInfoOutput(resultPath);
+                string resultPath = Path.Combine(Path.GetDirectoryName(filePath), "diskInfo.txt");
+                var diskInfos = parseCrystaldiskInfoOutput(resultPath);
                 process.Close();
                 return diskInfos;
             }
@@ -96,7 +96,6 @@ namespace Zal.HelperFunctions.SpecificFunctions
                         string text = line.Split(':')[1];
 
                         currentHardware.info.Add("transferMode", text.Split('|'));
-
                     }
 
                     if (line.Contains("Queue Depth :"))

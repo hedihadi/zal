@@ -13,7 +13,7 @@ namespace ZalConsole.HelperFunctions
 
     public class ScreenCapturer
     {
-        private byte[] _previousScreen;
+        private readonly byte[] _previousScreen;
         private bool _run, _init;
         public int Size { get; private set; }
 

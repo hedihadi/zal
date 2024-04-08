@@ -14,7 +14,7 @@ namespace Zal.Functions.MajorFunctions
 {
     public class Webrtc
     {
-        RTCPeerConnection? pc;
+        readonly RTCPeerConnection? pc;
         RTCDataChannel? dataChannel;
         public event EventHandler<RTCPeerConnectionState> connectionStateChanged;
         public event EventHandler<WebrtcData> messageReceivedEvent;
@@ -83,9 +83,9 @@ namespace Zal.Functions.MajorFunctions
             dataChannel = dc;
             dataChannel.onmessage += (datachan, type, data) =>
             {
-                System.Diagnostics.Debug.WriteLine("message");
+                Debug.WriteLine("message");
                 string message = Encoding.UTF8.GetString(data);
-                var parsedMessage = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, object>>(message);
+                var parsedMessage = JsonConvert.DeserializeObject<Dictionary<string, object>>(message);
                 WebrtcData webrtcData = new WebrtcData();
                 webrtcData.data = parsedMessage["data"];
                 webrtcData.name = (string)parsedMessage["name"];
@@ -130,7 +130,7 @@ namespace Zal.Functions.MajorFunctions
             {
                 try
                 {
-                    var data = Newtonsoft.Json.JsonConvert.SerializeObject(FrontendGlobalClass.Instance.backend.getGpuProcesses());
+                    var data = JsonConvert.SerializeObject(FrontendGlobalClass.Instance.backend.getGpuProcesses());
                     sendMessage("gpu_processes", data);
                 }
                 catch (Exception e)
@@ -153,12 +153,12 @@ namespace Zal.Functions.MajorFunctions
             }
             else if (messageData.name == "edit_notification")
             {
-                var data = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, object>>(messageData.data.ToString());
+                var data = JsonConvert.DeserializeObject<Dictionary<string, object>>(messageData.data.ToString());
                 FrontendGlobalClass.Instance.notificationsManager.editNotification(data);
             }
             else if (messageData.name == "new_notification")
             {
-                var data = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, object>>(messageData.data.ToString());
+                var data = JsonConvert.DeserializeObject<Dictionary<string, object>>(messageData.data.ToString());
                 FrontendGlobalClass.Instance.notificationsManager.newNotification(data);
             }
             else if (messageData.name == "restart_admin")
@@ -195,7 +195,7 @@ namespace Zal.Functions.MajorFunctions
                 var processpath = ProcesspathGetter.load(messageData.data.ToString());
                 if (processpath != null)
                 {
-                    System.Diagnostics.Process.Start(processpath);
+                    Process.Start(processpath);
                     sendMessage("information_text", $"{messageData.data} launched!");
                 }
                 else
@@ -215,10 +215,10 @@ namespace Zal.Functions.MajorFunctions
             }
             else if (messageData.name == "kill_process")
             {
-                var pids = Newtonsoft.Json.JsonConvert.DeserializeObject<List<int>>(messageData.data.ToString());
+                var pids = JsonConvert.DeserializeObject<List<int>>(messageData.data.ToString());
                 foreach (var pid in pids)
                 {
-                    System.Diagnostics.Process.GetProcessById(pid).Kill();
+                    Process.GetProcessById(pid).Kill();
                 }
 
                 sendMessage("information_text", $"Process killed!");
@@ -240,7 +240,7 @@ namespace Zal.Functions.MajorFunctions
             var map = new Dictionary<string, object>();
             map["data"] = data;
             map["name"] = name;
-            var compressed = Newtonsoft.Json.JsonConvert.SerializeObject(map);
+            var compressed = JsonConvert.SerializeObject(map);
             dataChannel?.send(compressed);
         }
     }

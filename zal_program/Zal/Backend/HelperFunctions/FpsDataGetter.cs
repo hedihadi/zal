@@ -11,11 +11,11 @@ namespace Zal.HelperFunctions
     public class FpsDataGetter
     {
         private Process? presentmonProcess;
-        private System.Threading.Tasks.Task fpsTask;
+        private readonly Task fpsTask;
         private bool isDisposed = false;
         public event EventHandler<dynamic> sendFpsData;
         private readonly List<double> fpsDatas = [];
-        private int processId;
+        private readonly int processId;
         readonly Stopwatch stopwatch = new Stopwatch();
         bool shouldLog = false;
 
