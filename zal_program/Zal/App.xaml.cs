@@ -12,12 +12,12 @@ namespace Zal
     public partial class App : Application
     {
         private static Mutex _mutex = null;
+
         protected override void OnStartup(StartupEventArgs e)
         {
             const string appName = "Zal";
-            bool createdNew;
 
-            _mutex = new Mutex(true, appName, out createdNew);
+            _mutex = new Mutex(true, appName, out var createdNew);
 
             if (!createdNew)
             {
@@ -27,6 +27,7 @@ namespace Zal
 
             base.OnStartup(e);
         }
+
         public App()
         {
 
@@ -35,11 +36,11 @@ namespace Zal
                 ApiKey = "AIzaSyDSj8N7DH3jtMOAa4hd7ytqMq2H_8iprmc",
                 AuthDomain = "zal1-353509.firebaseapp.com",
                 Providers = new FirebaseAuthProvider[]
-               {
+                {
                     new GoogleProvider(),
 
                     new EmailProvider()
-               },
+                },
                 PrivacyPolicyUrl = "https://github.com/step-up-labs/firebase-authentication-dotnet",
                 TermsOfServiceUrl = "https://github.com/step-up-labs/firebase-database-dotnet",
                 IsAnonymousAllowed = false,

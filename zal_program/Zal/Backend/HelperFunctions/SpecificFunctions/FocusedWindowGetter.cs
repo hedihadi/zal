@@ -22,14 +22,12 @@ namespace Zal.HelperFunctions.SpecificFunctions
             // such as when a window is losing activation.
             if (hwnd == IntPtr.Zero)
                 return null;
-            uint pid;
-            GetWindowThreadProcessId(hwnd, out pid);
+            GetWindowThreadProcessId(hwnd, out var pid);
             var proc = Process.GetProcessById(((int)pid));
 
             return proc.GetChildProcesses().Select(process => process.Id).ToList();
         }
     }
-
 }
 
 public static class ProcessExtensions

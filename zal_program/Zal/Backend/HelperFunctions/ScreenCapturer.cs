@@ -16,9 +16,9 @@ namespace ZalConsole.HelperFunctions
         private byte[] _previousScreen;
         private bool _run, _init;
         public int Size { get; private set; }
+
         public ScreenCapturer()
         {
-
         }
 
         public void Start(int frameRate = 30)
@@ -63,11 +63,10 @@ namespace ZalConsole.HelperFunctions
                     {
                         try
                         {
-                            SharpDX.DXGI.Resource screenResource;
                             OutputDuplicateFrameInformation duplicateFrameInformation;
 
                             // Try to get duplicated frame within given time is ms
-                            duplicatedOutput.TryAcquireNextFrame(1000, out duplicateFrameInformation, out screenResource);
+                            duplicatedOutput.TryAcquireNextFrame(1000, out duplicateFrameInformation, out var screenResource);
 
                             // copy resource into memory that can be accessed by the CPU
                             using (var screenTexture2D = screenResource.QueryInterface<Texture2D>())
@@ -87,7 +86,7 @@ namespace ZalConsole.HelperFunctions
                                 var destPtr = mapDest.Scan0;
                                 for (int y = 0; y < height; y++)
                                 {
-                                    // Copy a single line 
+                                    // Copy a single line
                                     Utilities.CopyMemory(destPtr, sourcePtr, width * 4);
 
                                     // Advance pointers
@@ -100,16 +99,17 @@ namespace ZalConsole.HelperFunctions
                                 device.ImmediateContext.UnmapSubresource(screenTexture, 0);
 
                                 //using (var ms = new MemoryStream())
-                               // {
+                                // {
                                 //    bitmap.Save(ms, ImageFormat.Bmp);
 
 
                                 //    ScreenRefreshed?.Invoke(this, ms.ToArray());
                                 //    _init = true;
-                              //  }
+                                //  }
                                 ScreenRefreshed?.Invoke(this, bitmap);
                                 _init = true;
                             }
+
                             screenResource.Dispose();
                             duplicatedOutput.ReleaseFrame();
                             Thread.Sleep(1000 / frameRate);
@@ -124,7 +124,6 @@ namespace ZalConsole.HelperFunctions
                         }
                         catch
                         {
-
                         }
                     }
                 }
