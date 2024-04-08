@@ -1,5 +1,5 @@
 ### From: https://github.com/dotnet/aspnetcore/blob/main/.editorconfig
-### Last sync: b3d1545
+### Last sync: 5d78927
 ### Disabled: CA1305, CA2007, IDE0011, IDE0073, IDE0161
 ; EditorConfig to support per-solution formatting.
 ; Use the EditorConfig VS add-in to make this work.
