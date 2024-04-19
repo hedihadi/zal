@@ -1,6 +1,7 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Zal.Functions.Models
 {
@@ -68,7 +69,7 @@ namespace Zal.Functions.Models
             return result;
         }
 
-        public static NotificationKeyWithUnit FromDictionary(Newtonsoft.Json.Linq.JObject map)
+        public static NotificationKeyWithUnit FromDictionary(JObject map)
         {
             return new NotificationKeyWithUnit(
                 map["keyName"]?.ToString() ?? string.Empty,
@@ -157,7 +158,7 @@ namespace Zal.Functions.Models
         {
             return new NotificationData(
                 Enum.Parse<NotificationKey>(map["key"].ToString()),
-                NotificationKeyWithUnit.FromDictionary((Newtonsoft.Json.Linq.JObject)map["childKey"]),
+                NotificationKeyWithUnit.FromDictionary((JObject)map["childKey"]),
                 Enum.Parse<NotificationFactorType>(map["factorType"].ToString()),
                 Convert.ToDouble(map["factorValue"]),
                 Convert.ToInt32(map["secondsThreshold"]),

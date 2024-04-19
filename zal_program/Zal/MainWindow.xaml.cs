@@ -1,11 +1,12 @@
-﻿using Firebase.Auth;
-using Firebase.Auth.UI;
-using System;
+﻿using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Navigation;
+using Firebase.Auth;
+using Firebase.Auth.UI;
+using Application = System.Windows.Application;
 
 namespace Zal
 {
@@ -27,7 +28,7 @@ namespace Zal
 
         private void AuthStateChanged(object sender, UserEventArgs e)
         {
-            System.Windows.Application.Current.Dispatcher.Invoke(async () =>
+            Application.Current.Dispatcher.Invoke(async () =>
             {
                 if (e.User == null)
                 {
@@ -53,10 +54,10 @@ namespace Zal
 
             // Add items to the context menu
             trayMenu.Items.Add("Open", null, (sender, e) => Show());
-            trayMenu.Items.Add("Exit", null, (sender, e) => System.Windows.Application.Current.Shutdown());
+            trayMenu.Items.Add("Exit", null, (sender, e) => Application.Current.Shutdown());
             ni.ContextMenuStrip = trayMenu;
             ni.DoubleClick +=
-                delegate (object sender, EventArgs args)
+                delegate
                 {
                     Show();
                     WindowState = WindowState.Normal;
@@ -88,7 +89,7 @@ namespace Zal
         private void Button_Click(object sender, RoutedEventArgs e)
         {
 
-            System.Windows.Application.Current.Shutdown();
+            Application.Current.Shutdown();
 
         }
         private void Minimize_Click(object sender, RoutedEventArgs e)
@@ -96,7 +97,7 @@ namespace Zal
             Hide();
 
         }
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void Window_Closing(object sender, CancelEventArgs e)
         {
             foreach (var process in Process.GetProcessesByName("task_manager"))
             {

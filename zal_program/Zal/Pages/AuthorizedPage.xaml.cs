@@ -1,6 +1,3 @@
-using Firebase.Auth.UI;
-using Microsoft.Win32;
-using SIPSorcery.Net;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -13,9 +10,15 @@ using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Media;
 using Windows.UI.Notifications;
+using Firebase.Auth.UI;
+using Microsoft.Win32;
+using Newtonsoft.Json;
+using SIPSorcery.Net;
 using Zal.Functions.Models;
 using Zal.MajorFunctions;
 using Application = System.Windows.Application;
+using Clipboard = System.Windows.Clipboard;
+using MessageBox = System.Windows.Forms.MessageBox;
 
 namespace Zal
 {
@@ -160,7 +163,7 @@ namespace Zal
             var currentVersion = System.Windows.Forms.Application.ProductVersion;
             if (latestVersion != currentVersion)
             {
-                var dialog = System.Windows.Forms.MessageBox.Show("New update is available! do you want to update?", "Zal", MessageBoxButtons.YesNo);
+                var dialog = MessageBox.Show("New update is available! do you want to update?", "Zal", MessageBoxButtons.YesNo);
                 if (dialog == DialogResult.Yes)
                 {
                     using (var webClient = new WebClient())
@@ -182,7 +185,7 @@ namespace Zal
                         }
                         catch (Exception ex)
                         {
-                            System.Windows.Forms.MessageBox.Show("An error occurred updating Zal: " + ex.Message);
+                            MessageBox.Show("An error occurred updating Zal: " + ex.Message);
                         }
                     }
                 }
@@ -221,7 +224,7 @@ namespace Zal
         private async void copyBackendData(object sender, RoutedEventArgs e)
         {
             var data = await FrontendGlobalClass.Instance.dataManager.getBackendData();
-            System.Windows.Clipboard.SetText(Newtonsoft.Json.JsonConvert.SerializeObject(data));
+            Clipboard.SetText(JsonConvert.SerializeObject(data));
 
             var toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastImageAndText02);
 
@@ -234,7 +237,7 @@ namespace Zal
         private void copyRawBackendData(object sender, RoutedEventArgs e)
         {
             var data = FrontendGlobalClass.Instance.backend.getEntireComputerData();
-            System.Windows.Clipboard.SetText(Newtonsoft.Json.JsonConvert.SerializeObject(data));
+            Clipboard.SetText(JsonConvert.SerializeObject(data));
 
             var toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastImageAndText02);
 

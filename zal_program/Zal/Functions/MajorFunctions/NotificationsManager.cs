@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Zal.Constants.Models;
 using Zal.Functions.Models;
 using Zal.MajorFunctions;
@@ -26,7 +28,7 @@ namespace Zal.Functions.MajorFunctions
             {
                 try
                 {
-                    var parsedData = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(data);
+                    var parsedData = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(data);
                     foreach (var notif in parsedData)
                     {
                         await addNewNotification(NotificationData.FromDictionary(notif));
@@ -85,8 +87,8 @@ namespace Zal.Functions.MajorFunctions
                 return;
             }
 
-            var serializedData = Newtonsoft.Json.JsonConvert.SerializeObject(data);
-            var dictionaryData = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, object>>(serializedData);
+            var serializedData = JsonConvert.SerializeObject(data);
+            var dictionaryData = JsonConvert.DeserializeObject<Dictionary<string, object>>(serializedData);
 
             foreach (var notification in notifications)
             {
@@ -103,19 +105,19 @@ namespace Zal.Functions.MajorFunctions
                 {
                     id = $"gpuData.{notification.childKey.keyName}";
                     var primaryGpu = await ChartsDataManager.getPrimaryGpu(data);
-                    var serializedGpu = Newtonsoft.Json.JsonConvert.SerializeObject(primaryGpu);
-                    var dictionaryGpu = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, object>>(serializedGpu);
+                    var serializedGpu = JsonConvert.SerializeObject(primaryGpu);
+                    var dictionaryGpu = JsonConvert.DeserializeObject<Dictionary<string, object>>(serializedGpu);
                     currentValue = Convert.ToDouble(dictionaryGpu[notification.childKey.keyName]);
                 }
                 else if (notification.key == NotificationKey.Cpu)
                 {
                     id = $"cpuData.{notification.childKey.keyName}";
-                    currentValue = (double?)((Newtonsoft.Json.Linq.JObject)(dictionaryData["cpuData"]))[notification.childKey.keyName];
+                    currentValue = (double?)((JObject)(dictionaryData["cpuData"]))[notification.childKey.keyName];
                 }
                 else if (notification.key == NotificationKey.Ram)
                 {
                     id = $"ramData.{notification.childKey.keyName}";
-                    currentValue = (double?)((Newtonsoft.Json.Linq.JObject)(dictionaryData["ramData"]))[notification.childKey.keyName];
+                    currentValue = (double?)((JObject)(dictionaryData["ramData"]))[notification.childKey.keyName];
 
                 }
                 else if (notification.key == NotificationKey.Storage)
@@ -215,7 +217,7 @@ namespace Zal.Functions.MajorFunctions
 
         private async Task saveNotifications()
         {
-            var data = Newtonsoft.Json.JsonConvert.SerializeObject(notifications);
+            var data = JsonConvert.SerializeObject(notifications);
             GlobalClass.Instance.saveTextToDocumentFolder("notifications", data);
         }
 
@@ -235,7 +237,7 @@ namespace Zal.Functions.MajorFunctions
         public async Task editNotification(Dictionary<string, object> notificationData)
         {
             var type = notificationData["type"].ToString();
-            var notification = NotificationData.FromDictionary(Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, object>>(notificationData["notification"].ToString()));
+            var notification = NotificationData.FromDictionary(JsonConvert.DeserializeObject<Dictionary<string, object>>(notificationData["notification"].ToString()));
             var foundNotification = notifications.FirstOrDefault(n => n.getKey() == notification.getKey());
 
             if (foundNotification != null)
@@ -266,7 +268,7 @@ namespace Zal.Functions.MajorFunctions
             {
                 if (FrontendGlobalClass.Instance.webrtc.isConnected())
                 {
-                    var data = Newtonsoft.Json.JsonConvert.SerializeObject(notifications);
+                    var data = JsonConvert.SerializeObject(notifications);
                     //for some reason, without this delay the mobile app won't receive the notifications.
                     await Task.Delay(2000);
                     FrontendGlobalClass.Instance.webrtc.sendMessage("notifications", data);

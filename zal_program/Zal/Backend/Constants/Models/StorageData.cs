@@ -1,7 +1,7 @@
-using LibreHardwareMonitor.Hardware;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using LibreHardwareMonitor.Hardware;
 using Zal.HelperFunctions.SpecificFunctions;
 
 namespace Zal.Constants.Models
@@ -58,7 +58,7 @@ namespace Zal.Constants.Models
                     {
                         temperature = (ulong)sensor.Value;
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
 
                     }
@@ -74,7 +74,7 @@ namespace Zal.Constants.Models
                         }
 
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
 
                     }
@@ -86,7 +86,7 @@ namespace Zal.Constants.Models
                     {
                         writeRate = (ulong)sensor.Value;
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
 
                     }

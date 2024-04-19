@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -162,17 +163,14 @@ namespace Zal.HelperFunctions.SpecificFunctions
                     else if ((line.Contains("ID Cur Wor Thr RawValues(6) Attribute Name")))
                     {
                         currentHardware.smartAttributes = [];
-                        continue; // Skip header line
                     }
                     else if (line.Contains("ID RawValues(6) Attribute Name"))
                     {
                         currentHardware.smartAttributes = [];
                         currentHardware.isNvme = true;
-                        continue; // Skip header line
                     }
                     else if (line == "" || line.Contains("--") || line.Contains("     +0") || line.Contains("        0") || line.Contains(": "))
                     {
-                        continue;
                     }
                     else if (currentHardware.smartAttributes != null && currentHardware.isNvme == false)
                     {
@@ -186,7 +184,7 @@ namespace Zal.HelperFunctions.SpecificFunctions
                         long rawValue = 0;
                         try
                         {
-                            rawValue = long.Parse(parts[4], System.Globalization.NumberStyles.HexNumber);
+                            rawValue = long.Parse(parts[4], NumberStyles.HexNumber);
                         }
                         catch (Exception c)
                         {
@@ -204,7 +202,7 @@ namespace Zal.HelperFunctions.SpecificFunctions
                         };
                         currentHardware.smartAttributes.Add(smartAttribute);
                     }
-                    else if (currentHardware.smartAttributes != null && currentHardware.isNvme == true)
+                    else if (currentHardware.smartAttributes != null && currentHardware.isNvme)
                     {
                         var parts = line.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                         var attributeName = string.Join(" ", parts, 2, parts.Length - 2);
@@ -216,7 +214,7 @@ namespace Zal.HelperFunctions.SpecificFunctions
                         long rawValue = 0;
                         try
                         {
-                            rawValue = long.Parse(parts[1], System.Globalization.NumberStyles.HexNumber);
+                            rawValue = long.Parse(parts[1], NumberStyles.HexNumber);
                         }
                         catch (Exception c)
                         {

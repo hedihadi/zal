@@ -1,10 +1,10 @@
-using Newtonsoft.Json;
-using SIPSorcery.Net;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using SIPSorcery.Net;
 using Zal.Functions.Models;
 using Zal.HelperFunctions.SpecificFunctions;
 using Zal.MajorFunctions;
@@ -52,7 +52,7 @@ namespace Zal.Functions.MajorFunctions
                 [
                     new()
                     {
-                        urls = "stun:stun.relay.metered.ca:80"
+                        urls = "stun:stun.relay.metered.ca:80",
                     },
                     new()
                     {
@@ -82,7 +82,7 @@ namespace Zal.Functions.MajorFunctions
             };
             var pc = new RTCPeerConnection(config);
 
-            var dc = await pc.createDataChannel("zaldatachannel", null);
+            var dc = await pc.createDataChannel("zaldatachannel");
             dataChannel = dc;
             dataChannel.onmessage += (datachan, type, data) =>
             {
@@ -96,7 +96,7 @@ namespace Zal.Functions.MajorFunctions
                 };
                 messageReceivedAsync(webrtcData);
             };
-            pc.onconnectionstatechange += (state) =>
+            pc.onconnectionstatechange += state =>
             {
                 connectionStateChanged.Invoke(null, state);
 
@@ -104,7 +104,7 @@ namespace Zal.Functions.MajorFunctions
                 FrontendGlobalClass.Instance.dataManager.setMobileConnectionState(state == RTCPeerConnectionState.connected);
                 if (state == RTCPeerConnectionState.connected)
                 {
-                    Task.Delay(2000).ContinueWith(async (a) =>
+                    Task.Delay(2000).ContinueWith(async a =>
                     {
                         await FrontendGlobalClass.Instance.notificationsManager.broadcastNotificationsToMobile();
                     });
@@ -213,7 +213,7 @@ namespace Zal.Functions.MajorFunctions
                 if (processpath != null)
                 {
                     var icon = await GlobalClass.Instance.processesGetter.getFileIcon(processpath);
-                    sendMessage("process_icon", new Dictionary<string, string>() { { "name", messageData.data.ToString() }, { "icon", icon } });
+                    sendMessage("process_icon", new Dictionary<string, string> { { "name", messageData.data.ToString() }, { "icon", icon } });
                 }
 
             }

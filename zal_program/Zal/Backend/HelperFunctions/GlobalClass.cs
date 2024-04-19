@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Compression;
 using System.Management;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using Zal;
 using Zal.HelperFunctions;
 using ZalConsole.Constants.Models;
@@ -72,7 +74,7 @@ namespace ZalConsole.HelperFunctions
                 // File not found
                 return null;
             }
-            catch (IOException c)
+            catch (IOException)
             {
                 // Error reading file, try to delete the file
                 try
@@ -122,9 +124,9 @@ namespace ZalConsole.HelperFunctions
             var zipFileNameWithoutDotZip = zipFilepath.Replace(".zip", "");
             try
             {
-                System.IO.Compression.ZipFile.ExtractToDirectory(zipFilepath, zipFileNameWithoutDotZip);
+                ZipFile.ExtractToDirectory(zipFilepath, zipFileNameWithoutDotZip);
             }
-            catch (IOException c)
+            catch (IOException)
             {
 
             }
@@ -185,7 +187,7 @@ namespace ZalConsole.HelperFunctions
                 {
                     // Read the contents of the JSON file
                     var jsonContent = File.ReadAllText(jsonFilePath);
-                    processInfos = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ProcessInfo>>(jsonContent);
+                    processInfos = JsonConvert.DeserializeObject<List<ProcessInfo>>(jsonContent);
                 }
             }
 

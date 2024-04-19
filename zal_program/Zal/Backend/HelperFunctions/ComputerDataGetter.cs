@@ -1,7 +1,8 @@
-using LibreHardwareMonitor.Hardware;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LibreHardwareMonitor.Hardware;
+using Newtonsoft.Json;
 using Zal.Constants.Models;
 using Zal.HelperFunctions.SpecificcomputerDataFunctions;
 using Zal.HelperFunctions.SpecificFunctions;
@@ -49,7 +50,7 @@ namespace Zal.HelperFunctions
                     computer.Open();
                     break;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     attempts++;
                 }
@@ -114,7 +115,7 @@ namespace Zal.HelperFunctions
                 result.Add(hardware.Name, data);
             }
 
-            var stringifiedData = Newtonsoft.Json.JsonConvert.SerializeObject(result);
+            var stringifiedData = JsonConvert.SerializeObject(result);
             return stringifiedData;
         }
 

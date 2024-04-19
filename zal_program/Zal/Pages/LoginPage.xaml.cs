@@ -1,8 +1,8 @@
-using Firebase.Auth;
-using Firebase.Auth.UI;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using Firebase.Auth;
+using Firebase.Auth.UI;
 
 namespace Zal
 {

@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace Zal
 {
@@ -9,7 +10,7 @@ namespace Zal
 
         public static void LogError(string message, Exception ex, object dataToPrint = null)
         {
-            var stringifiedData = Newtonsoft.Json.JsonConvert.SerializeObject(dataToPrint);
+            var stringifiedData = JsonConvert.SerializeObject(dataToPrint);
             var text = dataToPrint == null ? "" : stringifiedData;
             Log($"{message},,error:{ex.Message},,stack:{ex.StackTrace},,{text}");
         }
@@ -22,7 +23,7 @@ namespace Zal
                 //Use this for daily log files : "Log" + DateTime.Now.ToString("yyyy-MM-dd") + ".txt";
                 WriteToLog(logMessage, logFilePath);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 //the irony, right? well I can't do much here
             }

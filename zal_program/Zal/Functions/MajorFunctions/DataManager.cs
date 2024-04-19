@@ -5,6 +5,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using Zal;
 using Zal.Constants.Models;
 using Zal.MajorFunctions;
@@ -77,8 +78,8 @@ namespace Zal.Functions.MajorFunctions
                 data["charts"] = await chartsDataManager.updateAsync(computerData);
 
                 //this whole thing is just to replace the gpus with only the primary gpu
-                var serializedComputerData = Newtonsoft.Json.JsonConvert.SerializeObject(computerData);
-                var dictionaryComputerData = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, object>>(serializedComputerData);
+                var serializedComputerData = JsonConvert.SerializeObject(computerData);
+                var dictionaryComputerData = JsonConvert.DeserializeObject<Dictionary<string, object>>(serializedComputerData);
                 dictionaryComputerData["gpuData"] = await ChartsDataManager.getPrimaryGpu(computerData);
                 dictionaryComputerData["availableGpus"] = computerData.gpuData.Select(gpu => gpu.name).ToList();
                 data["computerData"] = dictionaryComputerData;
@@ -88,7 +89,7 @@ namespace Zal.Functions.MajorFunctions
         private async Task sendDataToMobile()
         {
             var data = await getBackendData();
-            var compressedData = CompressGzip(Newtonsoft.Json.JsonConvert.SerializeObject(data));
+            var compressedData = CompressGzip(JsonConvert.SerializeObject(data));
             FrontendGlobalClass.Instance.webrtc?.sendMessage("pc_data", compressedData);
         }
 
@@ -114,10 +115,6 @@ namespace Zal.Functions.MajorFunctions
 internal class ChartsDataManager
 {
     private readonly Dictionary<string, List<object>> data = new();
-
-    public ChartsDataManager()
-    {
-    }
 
     public async Task<Dictionary<string, List<object>>> updateAsync(computerData computerData)
     {

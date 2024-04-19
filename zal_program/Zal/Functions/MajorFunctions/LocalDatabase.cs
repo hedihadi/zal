@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using ZalConsole.HelperFunctions;
 
 namespace Zal
@@ -24,7 +25,7 @@ namespace Zal
             {
                 try
                 {
-                    var parsedData = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, object>>(text);
+                    var parsedData = JsonConvert.DeserializeObject<Dictionary<string, object>>(text);
                     if (parsedData != null)
                     {
                         instance = new LocalDatabase(parsedData);
@@ -70,7 +71,7 @@ namespace Zal
             try
             {
                 data[key] = text;
-                var serializedData = Newtonsoft.Json.JsonConvert.SerializeObject(data);
+                var serializedData = JsonConvert.SerializeObject(data);
                 WriteAsync(serializedData);
             }
             finally

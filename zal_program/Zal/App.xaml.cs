@@ -1,8 +1,8 @@
+using System.Threading;
+using System.Windows;
 using Firebase.Auth.Providers;
 using Firebase.Auth.Repository;
 using Firebase.Auth.UI;
-using System.Threading;
-using System.Windows;
 
 namespace Zal
 {

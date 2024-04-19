@@ -69,12 +69,12 @@ namespace Zal.HelperFunctions
                 {
                     processData = (Dictionary<string, object>)result[processName];
                     processData["memoryUsage"] = (long)processData["memoryUsage"] + ramUsageBytes / (1024 * 1024);
-                    processData["pids"] = ((List<int>)processData["pids"]).Concat(new[] { (int)process.Id }).ToList();
+                    processData["pids"] = ((List<int>)processData["pids"]).Concat(new[] { process.Id }).ToList();
                     result[processName] = processData;
                 }
                 else
                 {
-                    processData["memoryUsage"] = (long)ramUsageBytes / (1024 * 1024);
+                    processData["memoryUsage"] = ramUsageBytes / (1024 * 1024);
                     processData["pids"] = new List<int> { process.Id };
                     processData["cpuPercent"] = 0.0;
 
@@ -85,7 +85,7 @@ namespace Zal.HelperFunctions
                         //when the app connects to this program, we have to confidently reset the loadedIcons variable to make sure
                         //the app receives the process icons.
                         if (false)
-                            //if (loadedIcons.Contains(processName) == false)
+                        //if (loadedIcons.Contains(processName) == false)
                         {
                             var filepath = process.MainModule.FileName;
                             var icon = await getFileIcon(filepath);
@@ -96,7 +96,7 @@ namespace Zal.HelperFunctions
                             }
                         }
                     }
-                    catch (Exception c)
+                    catch (Exception)
                     {
                         // loadedIcons.Add(processName);
                     }

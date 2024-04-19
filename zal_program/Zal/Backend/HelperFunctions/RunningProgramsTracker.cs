@@ -63,7 +63,7 @@ namespace ZalConsole.HelperFunctions
 
                     if (processesThatStillRunning.Count != 0)
                     {
-                        var response = await ApiManager.SendDataToDatabase("program-times", new Dictionary<string, object>()
+                        var response = await ApiManager.SendDataToDatabase("program-times", new Dictionary<string, object>
                         {
                             { "programs", processesThatStillRunning }
                         });
@@ -119,7 +119,7 @@ namespace ZalConsole.HelperFunctions
                             continue;
                         }
 
-                        var foundProcessInfo = processInfos.Where((a) => a.name == fileDescription).ToList().FirstOrDefault();
+                        var foundProcessInfo = processInfos.Where(a => a.name == fileDescription).ToList().FirstOrDefault();
                         if (foundProcessInfo != null && foundProcessInfo.isBlacklisted)
                         {
                             continue;
@@ -130,7 +130,6 @@ namespace ZalConsole.HelperFunctions
                     }
                     catch
                     {
-                        continue;
                     }
                 }
             }

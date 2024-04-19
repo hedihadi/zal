@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using ZalConsole.HelperFunctions;
@@ -149,7 +150,7 @@ namespace Zal.HelperFunctions
                         var time = getTimestamp();
                         if (msBetweenPresents.Any(char.IsDigit))
                         {
-                            var doubledMsBetweenPresents = double.Parse(msBetweenPresents, System.Globalization.NumberStyles.AllowDecimalPoint, System.Globalization.NumberFormatInfo.InvariantInfo);
+                            var doubledMsBetweenPresents = double.Parse(msBetweenPresents, NumberStyles.AllowDecimalPoint, NumberFormatInfo.InvariantInfo);
                             fpsDatas.Add((1000 / doubledMsBetweenPresents));
 
                             if (fpsDatas.Count > 10)

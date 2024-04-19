@@ -1,6 +1,6 @@
-using LibreHardwareMonitor.Hardware;
 using System.Collections.Generic;
 using System.Linq;
+using LibreHardwareMonitor.Hardware;
 
 namespace Zal.Constants.Models
 {

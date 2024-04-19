@@ -1,10 +1,12 @@
-using Firebase.Auth.UI;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using Firebase.Auth.UI;
+using Newtonsoft.Json;
 using Zal.Functions.Models;
+
 namespace Zal.Functions.MajorFunctions
 {
     internal class ApiManager
@@ -35,7 +37,7 @@ namespace Zal.Functions.MajorFunctions
 
             using (var client = new HttpClient())
             {
-                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", idToken);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", idToken);
                 return await client.PostAsync(url, content);
             }
         }

@@ -1,5 +1,5 @@
-using LibreHardwareMonitor.Hardware;
 using System.Collections.Generic;
+using LibreHardwareMonitor.Hardware;
 
 namespace Zal.Constants.Models
 {

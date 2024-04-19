@@ -1,7 +1,7 @@
-using Firebase.Auth.UI;
-using SocketIOClient;
 using System;
 using System.Collections.Generic;
+using Firebase.Auth.UI;
+using SocketIOClient;
 using Zal.Functions.Models;
 using Zal.MajorFunctions;
 
@@ -51,7 +51,7 @@ namespace Zal.Functions.MajorFunctions
             {
 
                 var parsedData = response.GetValue<List<int>>();
-                Logger.Log($"socketio room_clients {string.Join<int>(",", parsedData)}");
+                Logger.Log($"socketio room_clients {string.Join(",", parsedData)}");
                 // if the data is 1, that means the client type is 1, which means this client is a phone
                 if (parsedData.Contains(1))
                 {
@@ -94,7 +94,7 @@ namespace Zal.Functions.MajorFunctions
             {
                 socketio.ConnectAsync();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 connectToServer();
             }

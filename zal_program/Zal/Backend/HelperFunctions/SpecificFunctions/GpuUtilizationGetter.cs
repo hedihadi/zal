@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Management.Automation;
-using ZalConsole.Constants.Models;
+using Newtonsoft.Json;
 using Zal;
 using Zal.HelperFunctions.SpecificFunctions;
+using ZalConsole.Constants.Models;
 
 namespace ZalConsole.HelperFunctions.SpecificFunctions
 {
@@ -56,7 +57,7 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
                 ProcessInfo foundProcessInfo;
                 try
                 {
-                    foundProcessInfo = processInfos.Where((a) => a.name == p.ProcessName).ToList().FirstOrDefault();
+                    foundProcessInfo = processInfos.Where(a => a.name == p.ProcessName).ToList().FirstOrDefault();
                 }
                 catch
                 {
@@ -67,7 +68,7 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
                 {
                     if (skipBlackListedProcesses)
                     {
-                        if (foundProcessInfo.isBlacklisted == true)
+                        if (foundProcessInfo.isBlacklisted)
                         {
                             continue;
                         }
@@ -111,7 +112,7 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
                 // Check for errors
                 if (PowerShellInstance.Streams.Error.Count > 0)
                 {
-                    Logger.Log($"error in powershell output: ```{PowerShellInstance.Streams.Error[0].Exception}```,```{PowerShellInstance.Streams.Error[0].ErrorDetails},{PowerShellInstance.Streams.Error[0].ScriptStackTrace}```, data: ```{Newtonsoft.Json.JsonConvert.SerializeObject(PSOutput.ToArray().Select(e => e.ToString()).ToList())}```");
+                    Logger.Log($"error in powershell output: ```{PowerShellInstance.Streams.Error[0].Exception}```,```{PowerShellInstance.Streams.Error[0].ErrorDetails},{PowerShellInstance.Streams.Error[0].ScriptStackTrace}```, data: ```{JsonConvert.SerializeObject(PSOutput.ToArray().Select(e => e.ToString()).ToList())}```");
                 }
                 else
                 {
