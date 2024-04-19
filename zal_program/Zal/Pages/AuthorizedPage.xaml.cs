@@ -16,17 +16,17 @@ using Windows.UI.Notifications;
 using Zal.Functions.Models;
 using Zal.MajorFunctions;
 using Application = System.Windows.Application;
+
 namespace Zal
 {
     public partial class AuthorizedPage : Page
     {
-
         public AuthorizedPage()
         {
             InitializeComponent();
             initialize();
-
         }
+
         private async Task initialize()
         {
             await LocalDatabase.Initialize();
@@ -40,107 +40,105 @@ namespace Zal
             }).Start();
             updateCheckBoxesAsync();
             FrontendGlobalClass.Initialize(webrtcConnectionStateChanged: (sender, state) =>
-            {
-                Dispatcher.Invoke(() =>
                 {
-                    if (state == RTCPeerConnectionState.connecting)
+                    Dispatcher.Invoke(() =>
                     {
+                        if (state == RTCPeerConnectionState.connecting)
+                        {
 
-                        webrtcConnectionStateIndicator.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4caf50"));
-                        webrtcConnectionStateText.Text = "Mobile Connected";
-                    }
-                    else if (state == RTCPeerConnectionState.disconnected)
-                    {
-                        webrtcConnectionStateText.Text = "Mobile not Connected";
-                        webrtcConnectionStateIndicator.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#e63946"));
-                    }
+                            webrtcConnectionStateIndicator.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4caf50"));
+                            webrtcConnectionStateText.Text = "Mobile Connected";
+                        }
+                        else if (state == RTCPeerConnectionState.disconnected)
+                        {
+                            webrtcConnectionStateText.Text = "Mobile not Connected";
+                            webrtcConnectionStateIndicator.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#e63946"));
+                        }
 
-                    else if (state == RTCPeerConnectionState.connecting)
-                    {
-                        webrtcConnectionStateText.Text = "Mobile Connecting";
-                        webrtcConnectionStateIndicator.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4caf50"));
-                    }
-                });
-            }
-           ,
-           (sender, state) =>
-           {
-               if (state == ServerSocketConnectionState.Connecting)
-
-               {
-                   Dispatcher.Invoke(() =>
-                   {
-                       connectionStateIndicator.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#219ebc"));
-                       connectionStateText.Text = "Connecting to Server";
-
-                   });
-
-               }
-               else if (state == ServerSocketConnectionState.Connected)
-               {
-                   Dispatcher.Invoke(() =>
-                   {
-                       connectionStateText.Text = "Connected to Server";
-                       connectionStateIndicator.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4caf50"));
-                   });
-
-               }
-           }
-        , async (sender, data) =>
-        {
-            if (GpusList.Items.IsEmpty)
-            {
-                GpusList.Items.Clear();
-                foreach (var gpu in data.gpuData)
-                {
-                    GpusList.Items.Add(gpu.name);
-                    Logger.Log($"detected gpu:{gpu.name}");
+                        else if (state == RTCPeerConnectionState.connecting)
+                        {
+                            webrtcConnectionStateText.Text = "Mobile Connecting";
+                            webrtcConnectionStateIndicator.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4caf50"));
+                        }
+                    });
                 }
-                //if primary gpu is not set, set it.
-                if (data.gpuData.Count != 0)
+                ,
+                (sender, state) =>
                 {
-                    var primaryGpu = LocalDatabase.Instance.readKey("primaryGpu");
+                    if (state == ServerSocketConnectionState.Connecting)
 
-
-                    if (primaryGpu == null)
                     {
-                        Logger.Log($"setting primary gpu to {data.gpuData.First().name}");
-                        await LocalDatabase.Instance.writeKey("primaryGpu", data.gpuData.First().name);
-                        GpusList.SelectedItem = data.gpuData.First().name;
+                        Dispatcher.Invoke(() =>
+                        {
+                            connectionStateIndicator.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#219ebc"));
+                            connectionStateText.Text = "Connecting to Server";
+                        });
+
                     }
-                    else
+                    else if (state == ServerSocketConnectionState.Connected)
                     {
-                        //check if the primary gpu exists inside this data, this is a useful check in case of the user changed their gpu
-                        bool doesPrimaryGpuExist = false;
+                        Dispatcher.Invoke(() =>
+                        {
+                            connectionStateText.Text = "Connected to Server";
+                            connectionStateIndicator.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4caf50"));
+                        });
+                    }
+                }
+                , async (sender, data) =>
+                {
+                    if (GpusList.Items.IsEmpty)
+                    {
+                        GpusList.Items.Clear();
                         foreach (var gpu in data.gpuData)
                         {
-                            if (gpu.name == primaryGpu.ToString())
+                            GpusList.Items.Add(gpu.name);
+                            Logger.Log($"detected gpu:{gpu.name}");
+                        }
+
+                        //if primary gpu is not set, set it.
+                        if (data.gpuData.Count != 0)
+                        {
+                            var primaryGpu = LocalDatabase.Instance.readKey("primaryGpu");
+
+
+                            if (primaryGpu == null)
                             {
-                                doesPrimaryGpuExist = true;
-                                Logger.Log($"detected primary gpu:{gpu.name}");
-                                GpusList.SelectedItem = gpu.name;
+                                Logger.Log($"setting primary gpu to {data.gpuData.First().name}");
+                                await LocalDatabase.Instance.writeKey("primaryGpu", data.gpuData.First().name);
+                                GpusList.SelectedItem = data.gpuData.First().name;
+                            }
+                            else
+                            {
+                                //check if the primary gpu exists inside this data, this is a useful check in case of the user changed their gpu
+                                bool doesPrimaryGpuExist = false;
+                                foreach (var gpu in data.gpuData)
+                                {
+                                    if (gpu.name == primaryGpu.ToString())
+                                    {
+                                        doesPrimaryGpuExist = true;
+                                        Logger.Log($"detected primary gpu:{gpu.name}");
+                                        GpusList.SelectedItem = gpu.name;
+                                    }
+                                }
+
+                                if (doesPrimaryGpuExist == false)
+                                {
+                                    Logger.Log($"primary gpu not found, setting this gpu as default:{data.gpuData.First().name}");
+                                    //reset primary gpu
+                                    await LocalDatabase.Instance.writeKey("primaryGpu", data.gpuData.First().name);
+                                    GpusList.SelectedItem = data.gpuData.First().name;
+                                }
                             }
                         }
-                        if (doesPrimaryGpuExist == false)
-                        {
-                            Logger.Log($"primary gpu not found, setting this gpu as default:{data.gpuData.First().name}");
-                            //reset primary gpu
-                            await LocalDatabase.Instance.writeKey("primaryGpu", data.gpuData.First().name);
-                            GpusList.SelectedItem = data.gpuData.First().name;
-                        }
+                        // GpusList.SelectedItem = primaryGpu;
                     }
-
                 }
-                // GpusList.SelectedItem = primaryGpu;
-            }
-
-        }
-           );
-
+            );
 
             Logger.Log("program started");
         }
-        private void addStringToListbox(String text)
+
+        private void addStringToListbox(string text)
         {
             Application.Current.Dispatcher.Invoke(new MethodInvoker(delegate
             {
@@ -148,6 +146,7 @@ namespace Zal
                 {
                     ListBox.Items.RemoveAt(ListBox.Items.Count - 1);
                 }
+
                 TextBlock block = new TextBlock();
                 block.Text = $"{DateTime.Now.ToString("h:mm:ss tt")} - {text}";
                 ListBox.Items.Insert(0, block);
@@ -163,13 +162,11 @@ namespace Zal
                 var dialog = System.Windows.Forms.MessageBox.Show("New update is available! do you want to update?", "Zal", MessageBoxButtons.YesNo);
                 if (dialog == DialogResult.Yes)
                 {
-
-
                     using (WebClient webClient = new WebClient())
                     {
                         try
                         {
-                            string fileName = Path.Combine(System.IO.Path.GetTempPath(), "zal.msi");
+                            string fileName = Path.Combine(Path.GetTempPath(), "zal.msi");
                             webClient.DownloadFile("https://zalapp.com/zal.msi", fileName);
                             Console.WriteLine("File downloaded successfully.");
 
@@ -185,11 +182,8 @@ namespace Zal
                             System.Windows.Forms.MessageBox.Show("An error occurred updating Zal: " + ex.Message);
                         }
                     }
-
-
                 }
             }
-
         }
 
         private async Task updateCheckBoxesAsync()
@@ -198,24 +192,25 @@ namespace Zal
             //replace false with saved settings
             runAtStartup.IsChecked = runOnStartup;
 
-
             RegistryKey rk = Registry.CurrentUser.OpenSubKey
-            ("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+                ("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
 
             if (runOnStartup)
                 rk.SetValue("Zal", Process.GetCurrentProcess().MainModule.FileName);
             else
                 rk.DeleteValue("Zal", false);
-
         }
+
         private void LogoutClicked(object sender, RoutedEventArgs e)
         {
             FirebaseUI.Instance.Client.SignOut();
         }
+
         private void viewLogClicked(object sender, RoutedEventArgs e)
         {
             Process.Start("notepad.exe", Logger.GetLogFilePath());
         }
+
         private async void copyBackendData(object sender, RoutedEventArgs e)
         {
             var data = await FrontendGlobalClass.Instance.dataManager.getBackendData();
@@ -225,9 +220,10 @@ namespace Zal
 
             // Fill in the text elements
             var stringElements = toastXml.GetElementsByTagName("text");
-            stringElements[0].AppendChild(toastXml.CreateTextNode("Backend data copied!")); ;
+            stringElements[0].AppendChild(toastXml.CreateTextNode("Backend data copied!"));
             ToastNotificationManager.CreateToastNotifier("Zal").Show(new ToastNotification(toastXml));
         }
+
         private void copyRawBackendData(object sender, RoutedEventArgs e)
         {
             var data = FrontendGlobalClass.Instance.backend.getEntireComputerData();
@@ -237,13 +233,14 @@ namespace Zal
 
             // Fill in the text elements
             var stringElements = toastXml.GetElementsByTagName("text");
-            stringElements[0].AppendChild(toastXml.CreateTextNode("raw data copied!")); ;
+            stringElements[0].AppendChild(toastXml.CreateTextNode("raw data copied!"));
             ToastNotificationManager.CreateToastNotifier("Zal").Show(new ToastNotification(toastXml));
         }
+
         private void minimizeToTray_Click(object sender, RoutedEventArgs e)
         {
-            //    Zal.Settings.Default.minimizeToTray = !Zal.Settings.Default.minimizeToTray;
-            //    Zal.Settings.Default.Save();
+            //   Zal.Settings.Default.minimizeToTray = !Zal.Settings.Default.minimizeToTray;
+            //   Zal.Settings.Default.Save();
             //   Zal.Settings.Default.Upgrade();
             //   updateCheckBoxes();
         }
@@ -256,15 +253,16 @@ namespace Zal
             var response = ((bool?)(LocalDatabase.Instance.readKey("runOnStartup")) ?? false);
             updateCheckBoxesAsync();
         }
+
         private async void logFpsData_Click(object sender, RoutedEventArgs e)
         {
             FrontendGlobalClass.Instance.shouldLogFpsData = logFpsData.IsChecked ?? false;
         }
+
         private async void GpusList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var selectedGpuName = e.AddedItems[0];
             await LocalDatabase.Instance.writeKey("primaryGpu", selectedGpuName.ToString());
-
         }
     }
 }

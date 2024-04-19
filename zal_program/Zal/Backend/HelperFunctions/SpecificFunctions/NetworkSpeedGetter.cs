@@ -12,9 +12,10 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
     class NetworkSpeedGetter
     {
         public networkSpeed primaryNetworkSpeed;
-        private Timer networkInterfaceTimer;
+        private readonly Timer networkInterfaceTimer;
         public List<networkInterfaceData> networkInterfaceDatas;
         private List<NetworkInterface> networkInterfaces;
+
         public NetworkSpeedGetter()
         {
             networkSpeed s = new networkSpeed(0, 0);
@@ -31,23 +32,21 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
             //run code that periodically gets the primary network speed
             Task.Run(async () =>
             {
-
                 while (true)
                 {
                     string? primaryNetwork = (string?)LocalDatabase.Instance.readKey("primaryNetwork");
                     getPrimaryNetworkSpeedAsync(primaryNetwork);
                 }
             });
-
-
         }
+
         private async Task getPrimaryNetworkSpeedAsync(string? primaryNetwork)
         {
 
             //var nics = networkInterfaces();
             if (networkInterfaces == null)
             {
-                networkInterfaces = System.Net.NetworkInformation.NetworkInterface.GetAllNetworkInterfaces().ToList();
+                networkInterfaces = NetworkInterface.GetAllNetworkInterfaces().ToList();
             }
 
             // Select desired NIC
@@ -57,6 +56,7 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
             {
                 return;
             }
+
             var readsBr = new List<double>();
             var readsBs = new List<double>();
             var sw = new Stopwatch();
@@ -64,7 +64,6 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
             var lastBs = nic.GetIPv4Statistics().BytesSent;
             for (var i = 0; i < 100; i++)
             {
-
                 sw.Restart();
                 Thread.Sleep(100);
                 var elapsed = sw.Elapsed.TotalSeconds;
@@ -82,13 +81,16 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
                 {
                     readsBr.RemoveAt(readsBr.Count - 1);
                 }
+
                 readsBs.Insert(0, localBs);
                 if (readsBs.Count > 20)
                 {
                     readsBs.RemoveAt(readsBs.Count - 1);
                 }
+
                 if (i % 10 == 0)
-                { // ~1 second
+                {
+                    // ~1 second
                     var brSec = readsBr.Sum() / readsBs.Count();
                     var bsSec = readsBs.Sum() / readsBs.Count();
                     networkSpeed s = new networkSpeed((int)brSec, (int)bsSec);
@@ -107,7 +109,6 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
                 = NetworkInterface.GetAllNetworkInterfaces();
             List<networkInterfaceData> data = new List<networkInterfaceData>();
 
-
             foreach (NetworkInterface ni in interfaces)
             {
                 var stats = ni.GetIPv4Statistics();
@@ -121,18 +122,21 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
                 info.isPrimary = primaryNetwork == ni.Name;
                 data.Add(info);
             }
-            data.Sort(delegate (networkInterfaceData c1, networkInterfaceData c2) { return c2.bytesReceived.CompareTo(c1.bytesReceived); });
+
+            data.Sort(delegate(networkInterfaceData c1, networkInterfaceData c2) { return c2.bytesReceived.CompareTo(c1.bytesReceived); });
             if (primaryNetwork == null)
             {
                 //if primary network interface isn't set, we'll set it to the network with highest downloaded bytes
                 await LocalDatabase.Instance.writeKey("primaryNetwork", data[0].name);
                 primaryNetwork = data[0].name;
             }
+
             //get the speed of primary network
             return data;
         }
     }
 }
+
 public class networkInterfaceData
 {
     public string name { get; set; }

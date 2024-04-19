@@ -11,12 +11,14 @@ namespace Zal.Functions.MajorFunctions
 {
     public class NotificationsManager
     {
-        private List<NotificationData> notifications = new List<NotificationData>();
-        private List<NotificationWithTimestamp> notificationTimestamps = [];
+        private readonly List<NotificationData> notifications = new List<NotificationData>();
+        private readonly List<NotificationWithTimestamp> notificationTimestamps = [];
+
         public NotificationsManager()
         {
             Task.Delay(2000).ContinueWith(t => { initialize(); });
         }
+
         private async Task initialize()
         {
             var data = await GlobalClass.Instance.readTextFromDocumentFolder("notifications");
@@ -29,6 +31,7 @@ namespace Zal.Functions.MajorFunctions
                     {
                         await addNewNotification(NotificationData.FromDictionary(notif));
                     }
+
                     await broadcastNotificationsToMobile();
                 }
 
@@ -41,40 +44,40 @@ namespace Zal.Functions.MajorFunctions
             {
                 await setBasicNotificatons();
             }
-
-
         }
+
         async Task setBasicNotificatons()
         {
 
             await addNewNotification(new NotificationData(
-       key: NotificationKey.Cpu,
-       childKey: new NotificationKeyWithUnit(keyName: "temperature", unit: "C"),
-       factorType: NotificationFactorType.Higher,
-       factorValue: 75,
-       secondsThreshold: 5,
-       suspended: false
-     ));
+                key: NotificationKey.Cpu,
+                childKey: new NotificationKeyWithUnit(keyName: "temperature", unit: "C"),
+                factorType: NotificationFactorType.Higher,
+                factorValue: 75,
+                secondsThreshold: 5,
+                suspended: false
+            ));
 
             await addNewNotification(new NotificationData(
-      key: NotificationKey.Gpu,
-      childKey: new NotificationKeyWithUnit(displayName: "Gpu", keyName: "temperature", unit: "C"),
-      factorType: NotificationFactorType.Higher,
-      factorValue: 75,
-      secondsThreshold: 5,
-      suspended: false
-    ));
+                key: NotificationKey.Gpu,
+                childKey: new NotificationKeyWithUnit(displayName: "Gpu", keyName: "temperature", unit: "C"),
+                factorType: NotificationFactorType.Higher,
+                factorValue: 75,
+                secondsThreshold: 5,
+                suspended: false
+            ));
             await addNewNotification(new NotificationData(
-       key: NotificationKey.Ram,
-       childKey: new NotificationKeyWithUnit(keyName: "memoryUsedPercentage", unit: "%"),
-       factorType: NotificationFactorType.Higher,
-       factorValue: 95,
-       secondsThreshold: 5,
-       suspended: false
-     ));
+                key: NotificationKey.Ram,
+                childKey: new NotificationKeyWithUnit(keyName: "memoryUsedPercentage", unit: "%"),
+                factorType: NotificationFactorType.Higher,
+                factorValue: 95,
+                secondsThreshold: 5,
+                suspended: false
+            ));
             saveNotifications();
             broadcastNotificationsToMobile();
         }
+
         public async Task checkNotifications(computerData data)
         {
             if (notifications.Count == 0) return;
@@ -114,7 +117,7 @@ namespace Zal.Functions.MajorFunctions
                     id = $"storageData.{notification.childKey.keyName}";
                     //this could be wrong
                     currentValue = ((List<dynamic>)dictionaryData["storagesData"])
-                .Find(element => element["diskNumber"] == Convert.ToInt32(notification.childKey.keyName)).FirstOrDefault()["temperature"];
+                        .Find(element => element["diskNumber"] == Convert.ToInt32(notification.childKey.keyName)).FirstOrDefault()["temperature"];
 
                 }
                 else if (notification.key == NotificationKey.Network)
@@ -142,10 +145,12 @@ namespace Zal.Functions.MajorFunctions
                         currentValue = bytesToMB(data.primaryNetworkSpeed.upload);
                     }
                 }
+
                 if (currentValue == null || id == null)
                 {
                     throw new Exception("faled to find notification id or value");
                 }
+
                 var notficationWithTimeStamp = notificationTimestamps.Where(notification => notification.id == id).FirstOrDefault();
                 if (notficationWithTimeStamp == null)
                 {
@@ -153,6 +158,7 @@ namespace Zal.Functions.MajorFunctions
                     notificationTimestamps.Add(notif);
                     continue;
                 }
+
                 ///if [isDataAboveValue] is true, that means we theoretically should send the notification
                 bool isDataAboveValue = false;
 
@@ -165,6 +171,7 @@ namespace Zal.Functions.MajorFunctions
                 {
                     if (currentValue <= notification.factorValue) isDataAboveValue = true;
                 }
+
                 if (isDataAboveValue)
                 {
                     var elpased = notficationWithTimeStamp.GetElapsedTime();
@@ -173,7 +180,6 @@ namespace Zal.Functions.MajorFunctions
                         ApiManager.SendAlertToMobile(notification, currentValue ?? 0.0);
                         notificationTimestamps[notificationTimestamps.IndexOf(notficationWithTimeStamp)].flipflop = true;
                     }
-
                 }
                 else
                 {
@@ -181,7 +187,6 @@ namespace Zal.Functions.MajorFunctions
                     notificationTimestamps[notificationTimestamps.IndexOf(notficationWithTimeStamp)].lastCheck = DateTime.Now;
                 }
             }
-
         }
 
         private async Task saveNotifications()
@@ -189,10 +194,12 @@ namespace Zal.Functions.MajorFunctions
             var data = Newtonsoft.Json.JsonConvert.SerializeObject(notifications);
             GlobalClass.Instance.saveTextToDocumentFolder("notifications", data);
         }
+
         public async Task addNewNotification(NotificationData notification)
         {
             notifications.Add(notification);
         }
+
         public async Task newNotification(Dictionary<string, object> notificationData)
         {
             var notification = NotificationData.FromDictionary(notificationData);
@@ -200,6 +207,7 @@ namespace Zal.Functions.MajorFunctions
             await broadcastNotificationsToMobile();
             await saveNotifications();
         }
+
         public async Task editNotification(Dictionary<string, object> notificationData)
         {
             var type = notificationData["type"].ToString();
@@ -222,12 +230,12 @@ namespace Zal.Functions.MajorFunctions
 
                     foundNotification.suspended = false;
                 }
+
                 await broadcastNotificationsToMobile();
                 await saveNotifications();
             }
-
-
         }
+
         public async Task broadcastNotificationsToMobile()
         {
             while (true)
@@ -240,19 +248,21 @@ namespace Zal.Functions.MajorFunctions
                     FrontendGlobalClass.Instance.webrtc.sendMessage("notifications", data);
                     break;
                 }
+
                 await Task.Delay(2000);
             }
         }
+
         private double bytesToGB(long bytes)
         {
             const long gigabyte = 1024 * 1024 * 1024;
             return bytes / gigabyte;
         }
+
         private double bytesToMB(long bytes)
         {
             const long gigabyte = 1024 * 1024;
             return bytes / gigabyte;
         }
     }
-
 }

@@ -9,9 +9,9 @@ namespace Zal
 {
     public class Backend
     {
-        computerDataGetter computerDataGetter = null;
+        readonly computerDataGetter computerDataGetter = null;
         public event EventHandler<string> fpsDataReceived;
-        FpsDataGetter fpsDataGetter = new FpsDataGetter();
+        readonly FpsDataGetter fpsDataGetter = new FpsDataGetter();
 
         public Backend()
         {
@@ -24,22 +24,25 @@ namespace Zal
                 Logger.LogError("error initializing computerDataGetter", c);
             }
         }
+
         public async Task<computerData> getComputerDataAsync()
         {
             return await computerDataGetter.getcomputerDataAsync();
         }
+
         public string getEntireComputerData()
         {
             return computerDataGetter.getEntireComputerData();
         }
-        public Dictionary<String, Dictionary<string, dynamic>> getGpuProcesses()
+
+        public Dictionary<string, Dictionary<string, dynamic>> getGpuProcesses()
         {
             var gpuProcesses = GpuUtilizationGetter.getProcessesGpuUsage();
             return gpuProcesses;
         }
+
         public void startFps(int pid, bool logFps)
         {
-
             _ = Task.Run(async () =>
             {
                 Logger.Log($"starting presentmon (fps getter), pid:{pid},logging:{logFps}");
@@ -51,6 +54,7 @@ namespace Zal
                 };
             });
         }
+
         public void stopFps()
         {
             fpsDataGetter.stopPresentmon();

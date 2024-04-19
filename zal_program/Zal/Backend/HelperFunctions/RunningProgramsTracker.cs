@@ -13,12 +13,14 @@ namespace ZalConsole.HelperFunctions
 {
     public class RunningProgramsTracker
     {
-        private Timer timer1;
-        private List<string> runningProcesses = [];
+        private readonly Timer timer1;
+        private readonly List<string> runningProcesses = [];
+
         public RunningProgramsTracker()
         {
             runAsync();
         }
+
         private async Task runAsync()
         {
             while (true)
@@ -43,6 +45,7 @@ namespace ZalConsole.HelperFunctions
                             runningProcesses.Add(currentRunningProcess);
                         }
                     }
+
                     //remove the processes
                     foreach (var runningProcess in runningProcesses)
                     {
@@ -52,27 +55,28 @@ namespace ZalConsole.HelperFunctions
                             {
                                 runningProcess.Remove(currentRunningProcesses.IndexOf(runningProcess));
                             }
-                            catch { }
+                            catch
+                            {
+                            }
                         }
                     }
+
                     if (processesThatStillRunning.Count != 0)
                     {
-                        var response = await ApiManager.SendDataToDatabase("program-times", new Dictionary<string, object>() {
-                        {"programs",processesThatStillRunning }
-});
+                        var response = await ApiManager.SendDataToDatabase("program-times", new Dictionary<string, object>()
+                        {
+                            { "programs", processesThatStillRunning }
+                        });
                         Console.WriteLine(response);
-
-
-
                     }
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.ToString());
                 }
-
             }
         }
+
         private string loadJson()
         {
             var directory = getJsonPath();
@@ -81,15 +85,17 @@ namespace ZalConsole.HelperFunctions
                 return fs.ReadToEnd();
             }
         }
+
         private string getJsonPath()
         {
             var directory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Zal");
             Directory.CreateDirectory(directory);
             return directory;
         }
-        private List<String> getRunningProcesses()
+
+        private List<string> getRunningProcesses()
         {
-            List<String> result = new List<String>();
+            List<string> result = new List<string>();
             Process[] processes = Process.GetProcesses();
             // Iterate through each process
             var gpuProcesses = GpuUtilizationGetter.getProcessesGpuUsage(skipBlackListedProcesses: false);
@@ -98,6 +104,7 @@ namespace ZalConsole.HelperFunctions
             {
                 result.Add(gpuProcess.Value["name"]);
             }
+
             foreach (Process process in processes)
             {
                 // Check if the process has a main window title
@@ -113,6 +120,7 @@ namespace ZalConsole.HelperFunctions
                         {
                             continue;
                         }
+
                         ProcesspathGetter.save(fileDescription, process.MainModule.FileName);
                         result.Add(fileDescription);
                     }
@@ -120,9 +128,9 @@ namespace ZalConsole.HelperFunctions
                     {
                         continue;
                     }
-
                 }
             }
+
             return result;
         }
     }

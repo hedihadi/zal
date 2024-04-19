@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Zal.HelperFunctions.SpecificFunctions;
+﻿using System.Collections.Generic;
 
 namespace Zal.Constants.Models
 {
@@ -18,14 +13,15 @@ namespace Zal.Constants.Models
         public batteryData? batteryData { get; set; }
         public fpsData? fpsData { get; set; }
         public Dictionary<string, dynamic>? taskmanagerData { get; set; }
-        public bool isAdminstrator {get;set;}
+        public bool isAdminstrator { get; set; }
         public Dictionary<int, double> processesGpuUsage;
         public List<networkInterfaceData> networkInterfaces { get; set; }
         public networkSpeed primaryNetworkSpeed { get; set; }
-        public computerData() {
-            this.gpuData = new List<gpuData>();
-            this.storagesData = new List<storageData>();
-        }   
+
+        public computerData()
+        {
+            gpuData = new List<gpuData>();
+            storagesData = new List<storageData>();
+        }
     }
-    
 }

@@ -14,15 +14,17 @@ namespace Zal.Functions.MajorFunctions
 {
     public class Webrtc
     {
-        RTCPeerConnection? pc;
+        readonly RTCPeerConnection? pc;
         RTCDataChannel? dataChannel;
         public event EventHandler<RTCPeerConnectionState> connectionStateChanged;
         public event EventHandler<WebrtcData> messageReceivedEvent;
+
         public Webrtc(EventHandler<RTCPeerConnectionState> connectionStateChanged)
         {
             this.connectionStateChanged = connectionStateChanged;
         }
-        public async Task start(String data)
+
+        public async Task start(string data)
         {
             var pc = await CreatePeerConnection();
 
@@ -36,35 +38,43 @@ namespace Zal.Functions.MajorFunctions
                 await FrontendGlobalClass.Instance.serverSocket.socketio.EmitAsync("offer_failed");
                 return;
             }
+
             var answer = pc.createAnswer();
             //await pc.setLocalDescription(answer);
             await FrontendGlobalClass.Instance.serverSocket.socketio.EmitAsync("accept_answer", answer.toJSON());
         }
+
         private async Task<RTCPeerConnection?> CreatePeerConnection()
         {
             RTCConfiguration config = new RTCConfiguration
             {
-                iceServers = new List<RTCIceServer> { new RTCIceServer { urls = "stun:stun.relay.metered.ca:80" },
-              new RTCIceServer {
-    urls= "turn:global.relay.metered.ca:80",
-    username= "1e0b3b6edb6997a73313ef82",
-    credential= "i27Gzv1zV/ClbtLM",
-  },
-  new RTCIceServer {
-    urls= "turn:global.relay.metered.ca:80?transport=tcp",
-    username= "1e0b3b6edb6997a73313ef82",
-    credential= "i27Gzv1zV/ClbtLM",
-  },
-  new RTCIceServer {
-    urls= "turn:global.relay.metered.ca:443",
-    username= "1e0b3b6edb6997a73313ef82",
-    credential= "i27Gzv1zV/ClbtLM",
-  },
-  new RTCIceServer {
-    urls= "turns:global.relay.metered.ca:443?transport=tcp",
-    username= "1e0b3b6edb6997a73313ef82",
-    credential= "i27Gzv1zV/ClbtLM",
-  },
+                iceServers = new List<RTCIceServer>
+                {
+                    new RTCIceServer { urls = "stun:stun.relay.metered.ca:80" },
+                    new RTCIceServer
+                    {
+                        urls = "turn:global.relay.metered.ca:80",
+                        username = "1e0b3b6edb6997a73313ef82",
+                        credential = "i27Gzv1zV/ClbtLM",
+                    },
+                    new RTCIceServer
+                    {
+                        urls = "turn:global.relay.metered.ca:80?transport=tcp",
+                        username = "1e0b3b6edb6997a73313ef82",
+                        credential = "i27Gzv1zV/ClbtLM",
+                    },
+                    new RTCIceServer
+                    {
+                        urls = "turn:global.relay.metered.ca:443",
+                        username = "1e0b3b6edb6997a73313ef82",
+                        credential = "i27Gzv1zV/ClbtLM",
+                    },
+                    new RTCIceServer
+                    {
+                        urls = "turns:global.relay.metered.ca:443?transport=tcp",
+                        username = "1e0b3b6edb6997a73313ef82",
+                        credential = "i27Gzv1zV/ClbtLM",
+                    },
                 }
             };
             var pc = new RTCPeerConnection(config);
@@ -73,9 +83,9 @@ namespace Zal.Functions.MajorFunctions
             dataChannel = dc;
             dataChannel.onmessage += (datachan, type, data) =>
             {
-                System.Diagnostics.Debug.WriteLine("message");
+                Debug.WriteLine("message");
                 string message = Encoding.UTF8.GetString(data);
-                var parsedMessage = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, object>>(message);
+                var parsedMessage = JsonConvert.DeserializeObject<Dictionary<string, object>>(message);
                 WebrtcData webrtcData = new WebrtcData();
                 webrtcData.data = parsedMessage["data"];
                 webrtcData.name = (string)parsedMessage["name"];
@@ -93,7 +103,6 @@ namespace Zal.Functions.MajorFunctions
                     {
                         await FrontendGlobalClass.Instance.notificationsManager.broadcastNotificationsToMobile();
                     });
-
                 }
 
                 if (state == RTCPeerConnectionState.failed)
@@ -110,19 +119,18 @@ namespace Zal.Functions.MajorFunctions
                     FrontendGlobalClass.Instance.backend?.stopFps();
                     GlobalClass.Instance.processesGetter.resetSentIcons();
                 }
-
             };
 
             return pc;
         }
+
         private async Task messageReceivedAsync(WebrtcData messageData)
         {
             if (messageData.name == "get_gpu_processes")
             {
-
                 try
                 {
-                    var data = Newtonsoft.Json.JsonConvert.SerializeObject(FrontendGlobalClass.Instance.backend.getGpuProcesses());
+                    var data = JsonConvert.SerializeObject(FrontendGlobalClass.Instance.backend.getGpuProcesses());
                     sendMessage("gpu_processes", data);
                 }
                 catch (Exception e)
@@ -133,7 +141,7 @@ namespace Zal.Functions.MajorFunctions
             }
             else if (messageData.name == "start_fps")
             {
-                FrontendGlobalClass.Instance.backend?.startFps(Int32.Parse(messageData.data.ToString()), FrontendGlobalClass.Instance.shouldLogFpsData);
+                FrontendGlobalClass.Instance.backend?.startFps(int.Parse(messageData.data.ToString()), FrontendGlobalClass.Instance.shouldLogFpsData);
                 FrontendGlobalClass.Instance.backend.fpsDataReceived += (sender, e) =>
                 {
                     sendMessage("fps_data", e);
@@ -145,12 +153,12 @@ namespace Zal.Functions.MajorFunctions
             }
             else if (messageData.name == "edit_notification")
             {
-                var data = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, object>>(messageData.data.ToString());
+                var data = JsonConvert.DeserializeObject<Dictionary<string, object>>(messageData.data.ToString());
                 FrontendGlobalClass.Instance.notificationsManager.editNotification(data);
             }
             else if (messageData.name == "new_notification")
             {
-                var data = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, object>>(messageData.data.ToString());
+                var data = JsonConvert.DeserializeObject<Dictionary<string, object>>(messageData.data.ToString());
                 FrontendGlobalClass.Instance.notificationsManager.newNotification(data);
             }
             else if (messageData.name == "restart_admin")
@@ -160,11 +168,11 @@ namespace Zal.Functions.MajorFunctions
                 var proc = new Process
                 {
                     StartInfo =
-                                {
-                                      FileName = selfPath,
-                                       UseShellExecute = true,
-                                        Verb = "runas"
-                                }
+                    {
+                        FileName = selfPath,
+                        UseShellExecute = true,
+                        Verb = "runas"
+                    }
                 };
 
                 try
@@ -187,7 +195,7 @@ namespace Zal.Functions.MajorFunctions
                 var processpath = ProcesspathGetter.load(messageData.data.ToString());
                 if (processpath != null)
                 {
-                    System.Diagnostics.Process.Start(processpath);
+                    Process.Start(processpath);
                     sendMessage("information_text", $"{messageData.data} launched!");
                 }
                 else
@@ -207,11 +215,12 @@ namespace Zal.Functions.MajorFunctions
             }
             else if (messageData.name == "kill_process")
             {
-                var pids = Newtonsoft.Json.JsonConvert.DeserializeObject<List<int>>(messageData.data.ToString());
+                var pids = JsonConvert.DeserializeObject<List<int>>(messageData.data.ToString());
                 foreach (var pid in pids)
                 {
-                    System.Diagnostics.Process.GetProcessById(pid).Kill();
+                    Process.GetProcessById(pid).Kill();
                 }
+
                 sendMessage("information_text", $"Process killed!");
 
             }
@@ -231,7 +240,7 @@ namespace Zal.Functions.MajorFunctions
             var map = new Dictionary<string, object>();
             map["data"] = data;
             map["name"] = name;
-            var compressed = Newtonsoft.Json.JsonConvert.SerializeObject(map);
+            var compressed = JsonConvert.SerializeObject(map);
             dataChannel?.send(compressed);
         }
     }

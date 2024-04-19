@@ -8,15 +8,16 @@ namespace Zal.HelperFunctions
 {
     public class ProcessesGetter
     {
-        SocketIOClient.SocketIO client = new SocketIOClient.SocketIO($"http://localhost:6511/");
-        private Dictionary<string, TaskCompletionSource<string>> taskCompletionSources = new Dictionary<string, TaskCompletionSource<string>>();
+        readonly SocketIOClient.SocketIO client = new SocketIOClient.SocketIO($"http://localhost:6511/");
+        private readonly Dictionary<string, TaskCompletionSource<string>> taskCompletionSources = new Dictionary<string, TaskCompletionSource<string>>();
         public Dictionary<string, object> data = new Dictionary<string, object>();
 
         //this list contains the names of processes that we've already loaded and sent to the phone.
         //this is to save network bandwidth as icons are quite large (i think about 5-10kb each),
         //so we cache the icons in the mobile app, and when the app disconnects, we reset this list
         //so that we send icons to the app once again when app reconnects.
-        private List<string> loadedIcons = new List<string>();
+        private readonly List<string> loadedIcons = new List<string>();
+
         public ProcessesGetter()
         {
             client.On("process_icon", async response =>
@@ -32,10 +33,12 @@ namespace Zal.HelperFunctions
             });
             client.ConnectAsync();
         }
+
         public void resetSentIcons()
         {
             loadedIcons.Clear();
         }
+
         public async Task<string?> getFileIcon(string filepath)
         {
             var tcs = new TaskCompletionSource<string?>();
@@ -54,6 +57,7 @@ namespace Zal.HelperFunctions
                 return await tcs.Task;
             }
         }
+
         public async Task update()
         {
             Dictionary<string, object> result = new Dictionary<string, object>();
@@ -83,7 +87,7 @@ namespace Zal.HelperFunctions
                         //when the app connects to this program, we have to confidently reset the loadedIcons variable to make sure
                         //the app receives the process icons.
                         if (false)
-                        //if (loadedIcons.Contains(processName) == false)
+                            //if (loadedIcons.Contains(processName) == false)
                         {
                             var filepath = process.MainModule.FileName;
                             var icon = await getFileIcon(filepath);
@@ -92,18 +96,18 @@ namespace Zal.HelperFunctions
                                 processData["icon"] = icon;
                                 loadedIcons.Add(processName);
                             }
-
                         }
                     }
                     catch (Exception c)
                     {
                         // loadedIcons.Add(processName);
                     }
+
                     result[processName] = processData;
                 }
             }
+
             data = result;
         }
-
     }
 }

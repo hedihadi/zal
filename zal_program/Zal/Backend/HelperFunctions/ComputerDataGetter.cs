@@ -13,18 +13,18 @@ namespace Zal.HelperFunctions
     public class computerDataGetter
     {
 
-        private cpuInfo? cpuInfo;
-        private List<crystalDiskData>? crystalDiskDatas;
-        private List<ramPieceData>? ramPiecesData;
+        private readonly cpuInfo? cpuInfo;
+        private readonly List<crystalDiskData>? crystalDiskDatas;
+        private readonly List<ramPieceData>? ramPiecesData;
         //this variable holds the network speed that the user has chosen as primary.
-        private networkSpeed primarynetworkSpeed = new networkSpeed(download: 0, upload: 0);
+        private readonly networkSpeed primarynetworkSpeed = new networkSpeed(download: 0, upload: 0);
 
-        private NetworkSpeedGetter networkSpeedGetter = new NetworkSpeedGetter();
+        private readonly NetworkSpeedGetter networkSpeedGetter = new NetworkSpeedGetter();
         //disabled fps feature because it's buggy
         //public fpsDataGetter fpsDataGetter;
         //this variable holds the processes and how much % gpu they use. we use this data to determine which process is a game. and get the fps data from it.
-        private Dictionary<int, double> processesGpuUsage = new Dictionary<int, double>();
-        private Computer computer = new Computer
+        private readonly Dictionary<int, double> processesGpuUsage = new Dictionary<int, double>();
+        private readonly Computer computer = new Computer
         {
             IsCpuEnabled = true,
             IsGpuEnabled = true,
@@ -81,8 +81,6 @@ namespace Zal.HelperFunctions
             {
                 Logger.LogError("error getting crystalDiskData", ex);
             }
-
-
         }
         public string getEntireComputerData()
         {
@@ -131,7 +129,6 @@ namespace Zal.HelperFunctions
                     {
                         Logger.LogError("error parsing cpuData", ex);
                     }
-
                 }
                 else if (hardware.HardwareType.ToString().ToLower().Contains("gpu"))
                 //else if (gpuTypes.Contains(hardware.HardwareType))
@@ -146,7 +143,6 @@ namespace Zal.HelperFunctions
                     {
                         Logger.LogError("error parsing gpuData", ex);
                     }
-
                 }
                 else if (hardware.HardwareType == HardwareType.Memory)
                 {
@@ -158,7 +154,6 @@ namespace Zal.HelperFunctions
                     {
                         Logger.LogError("error parsing ramData", ex);
                     }
-
                 }
                 else if (hardware.HardwareType == HardwareType.Motherboard)
                 {
@@ -170,14 +165,12 @@ namespace Zal.HelperFunctions
                     {
                         Logger.LogError("error parsing motherboardData", ex);
                     }
-
                 }
 
                 else if (hardware.HardwareType == HardwareType.Storage)
                 {
                     try
                     {
-
                         var storage = new storageData(hardware, crystalDiskDatas);
                         computerData.storagesData.Add(storage);
                     }
@@ -185,7 +178,6 @@ namespace Zal.HelperFunctions
                     {
                         Logger.LogError("error parsing storageData", ex, dataToPrint: crystalDiskDatas);
                     }
-
                 }
             }
             try
@@ -232,17 +224,16 @@ namespace Zal.HelperFunctions
             }
             return computerData;
         }
-
     }
-
-
 }
+
 class UpdateVisitor : IVisitor
 {
     public void VisitComputer(IComputer computer)
     {
         computer.Traverse(this);
     }
+
     public void VisitHardware(IHardware hardware)
     {
         var attempts = 0;
@@ -258,11 +249,16 @@ class UpdateVisitor : IVisitor
                 attempts++;
             }
         }
+
         foreach (IHardware subHardware in hardware.SubHardware) subHardware.Accept(this);
     }
+
     public void VisitSensor(ISensor sensor)
     {
         Console.WriteLine(sensor);
     }
-    public void VisitParameter(IParameter parameter) { }
+
+    public void VisitParameter(IParameter parameter)
+    {
+    }
 }

@@ -18,13 +18,12 @@ namespace Zal.Functions.MajorFunctions
     {
         //if this is true, the loop will run every 1 second. if false, the loop will run every 5 seconds.
         private bool isMobileConnected = false;
-        private EventHandler<computerData> computerDataReceived;
-        private ChartsDataManager chartsDataManager = new ChartsDataManager();
+        private readonly EventHandler<computerData> computerDataReceived;
+        private readonly ChartsDataManager chartsDataManager = new ChartsDataManager();
         public DataManager(EventHandler<computerData> computerDataReceived)
         {
             this.computerDataReceived = computerDataReceived;
             startLoop();
-
         }
         public void setMobileConnectionState(bool state)
         {
@@ -60,7 +59,6 @@ namespace Zal.Functions.MajorFunctions
                 }
 
                 return data;
-
             }
 
             catch (Exception e)
@@ -89,7 +87,6 @@ namespace Zal.Functions.MajorFunctions
         }
         private async Task sendDataToMobile()
         {
-
             var data = await getBackendData();
             var compressedData = CompressGzip(Newtonsoft.Json.JsonConvert.SerializeObject(data));
             FrontendGlobalClass.Instance.webrtc?.sendMessage("pc_data", compressedData);
@@ -110,14 +107,16 @@ namespace Zal.Functions.MajorFunctions
                 return base64Json;
             }
         }
-
     }
 }
 
 class ChartsDataManager
 {
-    private Dictionary<String, List<object>> data = new Dictionary<String, List<object>>();
-    public ChartsDataManager() { }
+    private readonly Dictionary<string, List<object>> data = new Dictionary<string, List<object>>();
+
+    public ChartsDataManager()
+    {
+    }
 
     public async Task<Dictionary<string, List<object>>> updateAsync(computerData computerData)
     {
@@ -129,21 +128,26 @@ class ChartsDataManager
             data["gpuTemperature"] = addElementToList(data.GetValueOrDefault("gpuTemperature", []), primaryGpu.temperature);
             data["gpuPower"] = addElementToList(data.GetValueOrDefault("gpuPower", []), primaryGpu.power);
         }
+
         if (computerData.cpuData != null)
         {
             data["cpuLoad"] = addElementToList(data.GetValueOrDefault("cpuLoad", []), computerData.cpuData.load);
             data["cpuTemperature"] = addElementToList(data.GetValueOrDefault("cpuTemperature", []), computerData.cpuData.temperature);
         }
+
         if (computerData.ramData != null)
         {
             data["ramPercentage"] = addElementToList(data.GetValueOrDefault("ramPercentage", []), computerData.ramData.memoryUsedPercentage);
         }
+
         if (computerData.primaryNetworkSpeed != null)
         {
             data["networkDownload"] = addElementToList(data.GetValueOrDefault("networkDownload", []), computerData.primaryNetworkSpeed.download / 1024 / 1024);
         }
+
         return data;
     }
+
     public static async Task<gpuData?> getPrimaryGpu(computerData computerData)
     {
         var primaryGpuName = LocalDatabase.Instance.readKey("primaryGpu");
@@ -156,6 +160,7 @@ class ChartsDataManager
                 return gpu;
             }
         }
+
         Logger.Log($"failed to find gpu object by name {primaryGpuName}, will try to get first gpu");
         if (computerData.gpuData.Count != 0)
         {
@@ -167,7 +172,8 @@ class ChartsDataManager
             return null;
         }
     }
-    private List<object> addElementToList(List<object>? oldList, object element)
+
+    private static List<object> addElementToList(List<object>? oldList, object element)
     {
         var maxElements = 60;
 
@@ -177,8 +183,7 @@ class ChartsDataManager
         {
             newList.RemoveAt(0);
         }
+
         return newList;
-
-
     }
 }

@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Zal.Constants.Models
 {
     public class crystalDiskData
     {
         public bool isNvme = false;
-        public Dictionary<String, dynamic> info { get; set; }
+        public Dictionary<string, dynamic> info { get; set; }
         public List<smartAttribute> smartAttributes { get; set; }
     }
+
     public class smartAttribute
     {
         private string _attributeName;
@@ -20,10 +17,11 @@ namespace Zal.Constants.Models
         public int? worstValue { get; set; }
         public int? threshold { get; set; }
         public long? rawValue { get; set; }
+
         public string attributeName
         {
             get => _attributeName;
-            set => _attributeName = value?.Replace("'", "").Replace("\"","");
+            set => _attributeName = value?.Replace("'", "").Replace("\"", "");
         }
     }
 }

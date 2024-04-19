@@ -12,16 +12,18 @@ namespace Zal.Functions.MajorFunctions
         public event EventHandler<ServerSocketConnectionState> connectionStateChanged;
         public SocketIOClient.SocketIO socketio;
         public bool isConnected = false;
+
         public ServerSocket(EventHandler<ServerSocketConnectionState> stateChanged)
         {
             connectionStateChanged = stateChanged;
             setupSocketio();
         }
+
         private async void setupSocketio()
         {
 
             var uid = FirebaseUI.Instance.Client.User.Uid;
-            String? idToken;
+            string? idToken;
             try
             {
                 idToken = await FirebaseUI.Instance.Client.User.GetIdTokenAsync();
@@ -33,17 +35,17 @@ namespace Zal.Functions.MajorFunctions
             }
 
             socketio = new SocketIOClient.SocketIO($"https://api.zalapp.com",
-                 new SocketIOOptions
-                 {
-                     Query = new List<KeyValuePair<string, string>>
-                          {
-                             new KeyValuePair<string, string>("uid", uid),
-                             new KeyValuePair<string, string>("idToken", idToken),
-                              new KeyValuePair<string, string>("type","0"),
-                              new KeyValuePair<string, string>("version","1"),
-                              new KeyValuePair<string, string>("computerName","default")
-                          }
-                 });
+                new SocketIOOptions
+                {
+                    Query = new List<KeyValuePair<string, string>>
+                    {
+                        new KeyValuePair<string, string>("uid", uid),
+                        new KeyValuePair<string, string>("idToken", idToken),
+                        new KeyValuePair<string, string>("type", "0"),
+                        new KeyValuePair<string, string>("version", "1"),
+                        new KeyValuePair<string, string>("computerName", "default")
+                    }
+                });
 
             socketio.On("room_clients", response =>
             {
@@ -76,10 +78,10 @@ namespace Zal.Functions.MajorFunctions
             };
             connectToServer();
         }
+
         private async void connectToServer()
         {
             connectionStateChanged.Invoke(null, ServerSocketConnectionState.Connecting);
-
 
             if (isConnected)
             {
@@ -87,17 +89,15 @@ namespace Zal.Functions.MajorFunctions
                 isConnected = false;
                 return;
             }
+
             try
             {
-
                 socketio.ConnectAsync();
-
             }
             catch (Exception ex)
             {
                 connectToServer();
             }
-
         }
     }
 }

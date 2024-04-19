@@ -14,14 +14,14 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
     {
         //this function is based on this https://github.com/GameTechDev/PresentMon/issues/189
         //and some modifications to make the data to be parsed easier from c# side.
-        public static Dictionary<String, Dictionary<string, dynamic>> getProcessesGpuUsage(bool skipBlackListedProcesses = true)
+        public static Dictionary<string, Dictionary<string, dynamic>> getProcessesGpuUsage(bool skipBlackListedProcesses = true)
         {
-            Dictionary<String, Dictionary<string, dynamic>> result = new Dictionary<String, Dictionary<string, dynamic>>();
+            Dictionary<string, Dictionary<string, dynamic>> result = new Dictionary<string, Dictionary<string, dynamic>>();
             var rawData = getRawDataFromPowershell();
             var processInfos = GlobalClass.Instance.getProcessInfos();
             foreach (var process in rawData)
             {
-                Dictionary<String, dynamic> data = new Dictionary<String, dynamic>();
+                Dictionary<string, dynamic> data = new Dictionary<string, dynamic>();
                 var splittedData = process.Split(',');
                 int pid = int.Parse(splittedData[0].Split('_')[1]);
 
@@ -30,7 +30,10 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
                 {
                     usage = double.Parse(splittedData[1]);
                 }
-                catch { }
+                catch
+                {
+                }
+
                 if (usage == 0) continue;
 
                 var p = Process.GetProcessById(pid);
@@ -57,6 +60,7 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
                 {
                     foundProcessInfo = null;
                 }
+
                 if (foundProcessInfo != null)
                 {
                     if (skipBlackListedProcesses)
@@ -64,8 +68,10 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
                         if (foundProcessInfo.isBlacklisted == true) continue;
                     }
 
-
-                    if (foundProcessInfo.displayName != null) { data["name"] = foundProcessInfo.displayName; }
+                    if (foundProcessInfo.displayName != null)
+                    {
+                        data["name"] = foundProcessInfo.displayName;
+                    }
                 }
 
                 try
@@ -74,16 +80,17 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
                 }
                 catch
                 {
-
-
                 }
+
                 result[p.ProcessName] = data;
             }
+
             return result;
         }
-        private static List<String> getRawDataFromPowershell()
+
+        private static List<string> getRawDataFromPowershell()
         {
-            List<String> result = new List<String>();
+            List<string> result = new List<string>();
             using (PowerShell PowerShellInstance = PowerShell.Create())
             {
                 // Add the PowerShell script
@@ -111,9 +118,8 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
                     }
                 }
             }
+
             return result;
         }
-
-
     }
 }
