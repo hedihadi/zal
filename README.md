@@ -6,7 +6,7 @@ Zal uses Python, C#, Dart & Flutter under the hood.
 
 | Folder       | Description                                        |
 | ------------ | -------------------------------------------------- |
-| python_scripts  | ??????                   |
+| python_scripts  | this folder contains some python scripts. the scripts are converted into executables and used as resources inside zal_program|
 | zal_app      | Source code for Zal application for Android & IOS. |
 | zal_program  | The front-end and back-end of Zal for Windows.     |
 
