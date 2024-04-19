@@ -9,7 +9,7 @@ namespace Zal.HelperFunctions.SpecificFunctions
         public static List<monitorData>? getmonitorData()
         {
             var result = new List<monitorData>();
-            Screen[] screens = Screen.AllScreens;
+            var screens = Screen.AllScreens;
             foreach (var screen in screens)
             {
                 var data = new monitorData

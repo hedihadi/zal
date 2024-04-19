@@ -45,7 +45,7 @@ public static class ProcessExtensions
                 Process.GetProcessById(Convert.ToInt32(mo["ProcessID"])))
             .ToList();
         processes.Add(process);
-        Process[] processesByName = Process.GetProcessesByName(process.ProcessName);
+        var processesByName = Process.GetProcessesByName(process.ProcessName);
         foreach (var processByName in processesByName)
         {
             processes.Add(processByName);

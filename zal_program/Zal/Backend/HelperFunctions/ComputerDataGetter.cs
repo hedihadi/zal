@@ -94,16 +94,16 @@ namespace Zal.HelperFunctions
         public string getEntireComputerData()
         {
             computer.Accept(new UpdateVisitor());
-            Dictionary<string, object> result = new Dictionary<string, object>();
+            var result = new Dictionary<string, object>();
             foreach (var hardware in computer.Hardware)
             {
-                Dictionary<string, object> data = new Dictionary<string, object>
+                var data = new Dictionary<string, object>
                 {
                     ["type"] = hardware.HardwareType.ToString(),
                 };
                 foreach (var sensor in hardware.Sensors)
                 {
-                    Dictionary<string, object> sensorData = new Dictionary<string, object>
+                    var sensorData = new Dictionary<string, object>
                     {
                         ["type"] = sensor.SensorType.ToString(),
                         ["value"] = sensor.Value.ToString(),
@@ -145,7 +145,7 @@ namespace Zal.HelperFunctions
                     }
                 }
                 else if (hardware.HardwareType.ToString().ToLower().Contains("gpu"))
-                    //else if (gpuTypes.Contains(hardware.HardwareType))
+                //else if (gpuTypes.Contains(hardware.HardwareType))
                 {
                     try
                     {
@@ -197,7 +197,7 @@ namespace Zal.HelperFunctions
 
             try
             {
-                List<monitorData>? monitorsData = monitorDataGetter.getmonitorData();
+                var monitorsData = monitorDataGetter.getmonitorData();
                 computerData.monitorsData = monitorsData;
             }
             catch (Exception ex)

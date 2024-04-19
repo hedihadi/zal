@@ -241,8 +241,8 @@ namespace ZalConsole.HelperFunctions
         }
         private List<FileData> getDrives()
         {
-            DriveInfo[] drives = DriveInfo.GetDrives();
-            List<FileData> result = new List<FileData>();
+            var drives = DriveInfo.GetDrives();
+            var result = new List<FileData>();
             foreach (var drive in drives)
             {
                 var data = new FileData

@@ -59,7 +59,7 @@ namespace Zal.HelperFunctions.SpecificFunctions
 
         private static List<crystalDiskData> parseCrystaldiskInfoOutput(string filePath)
         {
-            List<crystalDiskData> hardwareList = new List<crystalDiskData>();
+            var hardwareList = new List<crystalDiskData>();
             crystalDiskData currentHardware = null;
 
             foreach (var line in File.ReadLines(filePath))
@@ -121,7 +121,7 @@ namespace Zal.HelperFunctions.SpecificFunctions
 
                     if (line.Contains("Drive Letter :"))
                     {
-                        List<string> driveLetters = ParseDriveLettersFromString(line);
+                        var driveLetters = ParseDriveLettersFromString(line);
                         if (driveLetters.Count != 0)
                         {
                             currentHardware.info.Add("driveLetters", driveLetters);
@@ -176,7 +176,7 @@ namespace Zal.HelperFunctions.SpecificFunctions
                     }
                     else if (currentHardware.smartAttributes != null && currentHardware.isNvme == false)
                     {
-                        string[] parts = line.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                        var parts = line.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                         var attributeName = string.Join(" ", parts, 5, parts.Length - 5);
                         if (attributeName.Contains("Temperature"))
                         {
@@ -206,7 +206,7 @@ namespace Zal.HelperFunctions.SpecificFunctions
                     }
                     else if (currentHardware.smartAttributes != null && currentHardware.isNvme == true)
                     {
-                        string[] parts = line.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                        var parts = line.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                         var attributeName = string.Join(" ", parts, 2, parts.Length - 2);
                         if (attributeName.Contains("Temperature"))
                         {
@@ -248,7 +248,7 @@ namespace Zal.HelperFunctions.SpecificFunctions
 
         private static List<string> ParseDriveLettersFromString(string input)
         {
-            List<string> driveLetters = new List<string>();
+            var driveLetters = new List<string>();
 
             // Use a regular expression to match drive letters
             var regex = new Regex(@"[A-Za-z]:");

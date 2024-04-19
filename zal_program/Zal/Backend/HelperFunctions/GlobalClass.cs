@@ -206,7 +206,7 @@ namespace ZalConsole.HelperFunctions
             }
 
             // Filter the partitions based on the specified disk number
-            List<ManagementObject> filteredPartitions = new List<ManagementObject>();
+            var filteredPartitions = new List<ManagementObject>();
             foreach (ManagementObject partition in win32DiskPartitions)
             {
                 // Adjust the property name based on the actual property for the disk number

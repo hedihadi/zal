@@ -107,7 +107,7 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
 
             var interfaces
                 = NetworkInterface.GetAllNetworkInterfaces();
-            List<networkInterfaceData> data = new List<networkInterfaceData>();
+            var data = new List<networkInterfaceData>();
 
             foreach (var ni in interfaces)
             {

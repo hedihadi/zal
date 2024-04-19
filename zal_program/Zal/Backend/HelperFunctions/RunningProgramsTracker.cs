@@ -95,8 +95,8 @@ namespace ZalConsole.HelperFunctions
 
         private List<string> getRunningProcesses()
         {
-            List<string> result = new List<string>();
-            Process[] processes = Process.GetProcesses();
+            var result = new List<string>();
+            var processes = Process.GetProcesses();
             // Iterate through each process
             var gpuProcesses = GpuUtilizationGetter.getProcessesGpuUsage(skipBlackListedProcesses: false);
             var processInfos = GlobalClass.Instance.getProcessInfos();

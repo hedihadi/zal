@@ -16,12 +16,12 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
         //and some modifications to make the data to be parsed easier from c# side.
         public static Dictionary<string, Dictionary<string, dynamic>> getProcessesGpuUsage(bool skipBlackListedProcesses = true)
         {
-            Dictionary<string, Dictionary<string, dynamic>> result = new Dictionary<string, Dictionary<string, dynamic>>();
+            var result = new Dictionary<string, Dictionary<string, dynamic>>();
             var rawData = getRawDataFromPowershell();
             var processInfos = GlobalClass.Instance.getProcessInfos();
             foreach (var process in rawData)
             {
-                Dictionary<string, dynamic> data = new Dictionary<string, dynamic>();
+                var data = new Dictionary<string, dynamic>();
                 var splittedData = process.Split(',');
                 var pid = int.Parse(splittedData[0].Split('_')[1]);
 
@@ -96,7 +96,7 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
 
         private static List<string> getRawDataFromPowershell()
         {
-            List<string> result = new List<string>();
+            var result = new List<string>();
             using (var PowerShellInstance = PowerShell.Create())
             {
                 // Add the PowerShell script
@@ -107,7 +107,7 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
                 PowerShellInstance.AddScript(script);
 
                 // Invoke execution on the PowerShell object
-                Collection<PSObject> PSOutput = PowerShellInstance.Invoke();
+                var PSOutput = PowerShellInstance.Invoke();
 
                 // Check for errors
                 if (PowerShellInstance.Streams.Error.Count > 0)
