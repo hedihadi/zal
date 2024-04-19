@@ -52,10 +52,8 @@ namespace Zal.HelperFunctions
                 // Timeout occurred
                 return null;
             }
-            else
-            {
-                return await tcs.Task;
-            }
+
+            return await tcs.Task;
         }
 
         public async Task update()

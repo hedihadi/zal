@@ -167,11 +167,9 @@ internal class ChartsDataManager
         {
             return computerData.gpuData.First();
         }
-        else
-        {
-            Logger.Log("available gpu is 0, will return no gpu");
-            return null;
-        }
+
+        Logger.Log("available gpu is 0, will return no gpu");
+        return null;
     }
 
     private static List<object> addElementToList(List<object>? oldList, object element)

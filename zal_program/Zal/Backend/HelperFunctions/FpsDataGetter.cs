@@ -40,8 +40,7 @@ namespace Zal.HelperFunctions
             var frac = realIndex - index;
             if (index + 1 < elements.Length)
                 return elements[index] * (1 - frac) + elements[index + 1] * frac;
-            else
-                return elements[index];
+            return elements[index];
         }
 
         public void disposeIt()
@@ -162,10 +161,8 @@ namespace Zal.HelperFunctions
 
                             continue;
                         }
-                        else
-                        {
-                            Logger.Log("msBetweenPresents not digits");
-                        }
+
+                        Logger.Log("msBetweenPresents not digits");
                     }
                     else
                     {
