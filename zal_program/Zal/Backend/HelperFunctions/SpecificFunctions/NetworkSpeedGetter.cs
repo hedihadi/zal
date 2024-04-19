@@ -90,8 +90,8 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
                 if (i % 10 == 0)
                 {
                     // ~1 second
-                    var brSec = readsBr.Sum() / readsBs.Count();
-                    var bsSec = readsBs.Sum() / readsBs.Count();
+                    var brSec = readsBr.Sum() / readsBs.Count;
+                    var bsSec = readsBs.Sum() / readsBs.Count;
                     var s = new networkSpeed((int)brSec, (int)bsSec);
                     primaryNetworkSpeed = s;
                 }
