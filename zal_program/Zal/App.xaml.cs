@@ -35,12 +35,12 @@ namespace Zal
             {
                 ApiKey = "AIzaSyDSj8N7DH3jtMOAa4hd7ytqMq2H_8iprmc",
                 AuthDomain = "zal1-353509.firebaseapp.com",
-                Providers = new FirebaseAuthProvider[]
-                {
+                Providers =
+                [
                     new GoogleProvider(),
 
-                    new EmailProvider()
-                },
+                    new EmailProvider(),
+                ],
                 PrivacyPolicyUrl = "https://github.com/step-up-labs/firebase-authentication-dotnet",
                 TermsOfServiceUrl = "https://github.com/step-up-labs/firebase-database-dotnet",
                 IsAnonymousAllowed = false,

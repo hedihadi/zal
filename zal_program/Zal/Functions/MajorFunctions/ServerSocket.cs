@@ -39,11 +39,11 @@ namespace Zal.Functions.MajorFunctions
                 {
                     Query = new List<KeyValuePair<string, string>>
                     {
-                        new KeyValuePair<string, string>("uid", uid),
-                        new KeyValuePair<string, string>("idToken", idToken),
-                        new KeyValuePair<string, string>("type", "0"),
-                        new KeyValuePair<string, string>("version", "1"),
-                        new KeyValuePair<string, string>("computerName", "default")
+                        new("uid", uid),
+                        new("idToken", idToken),
+                        new("type", "0"),
+                        new("version", "1"),
+                        new("computerName", "default")
                     }
                 });
 

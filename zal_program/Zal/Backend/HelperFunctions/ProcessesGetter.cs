@@ -8,15 +8,15 @@ namespace Zal.HelperFunctions
 {
     public class ProcessesGetter
     {
-        private readonly SocketIOClient.SocketIO client = new SocketIOClient.SocketIO("http://localhost:6511/");
-        private readonly Dictionary<string, TaskCompletionSource<string>> taskCompletionSources = new Dictionary<string, TaskCompletionSource<string>>();
-        public Dictionary<string, object> data = new Dictionary<string, object>();
+        private readonly SocketIOClient.SocketIO client = new("http://localhost:6511/");
+        private readonly Dictionary<string, TaskCompletionSource<string>> taskCompletionSources = new();
+        public Dictionary<string, object> data = new();
 
         //this list contains the names of processes that we've already loaded and sent to the phone.
         //this is to save network bandwidth as icons are quite large (i think about 5-10kb each),
         //so we cache the icons in the mobile app, and when the app disconnects, we reset this list
         //so that we send icons to the app once again when app reconnects.
-        private readonly List<string> loadedIcons = new List<string>();
+        private readonly List<string> loadedIcons = [];
 
         public ProcessesGetter()
         {

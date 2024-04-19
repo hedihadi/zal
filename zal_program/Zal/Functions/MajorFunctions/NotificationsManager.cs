@@ -11,7 +11,7 @@ namespace Zal.Functions.MajorFunctions
 {
     public class NotificationsManager
     {
-        private readonly List<NotificationData> notifications = new List<NotificationData>();
+        private readonly List<NotificationData> notifications = [];
         private readonly List<NotificationWithTimestamp> notificationTimestamps = [];
 
         public NotificationsManager()

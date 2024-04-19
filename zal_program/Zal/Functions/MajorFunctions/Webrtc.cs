@@ -48,34 +48,37 @@ namespace Zal.Functions.MajorFunctions
         {
             var config = new RTCConfiguration
             {
-                iceServers = new List<RTCIceServer>
-                {
-                    new RTCIceServer { urls = "stun:stun.relay.metered.ca:80" },
-                    new RTCIceServer
+                iceServers =
+                [
+                    new()
+                    {
+                        urls = "stun:stun.relay.metered.ca:80"
+                    },
+                    new()
                     {
                         urls = "turn:global.relay.metered.ca:80",
                         username = "1e0b3b6edb6997a73313ef82",
                         credential = "i27Gzv1zV/ClbtLM",
                     },
-                    new RTCIceServer
+                    new()
                     {
                         urls = "turn:global.relay.metered.ca:80?transport=tcp",
                         username = "1e0b3b6edb6997a73313ef82",
                         credential = "i27Gzv1zV/ClbtLM",
                     },
-                    new RTCIceServer
+                    new()
                     {
                         urls = "turn:global.relay.metered.ca:443",
                         username = "1e0b3b6edb6997a73313ef82",
                         credential = "i27Gzv1zV/ClbtLM",
                     },
-                    new RTCIceServer
+                    new()
                     {
                         urls = "turns:global.relay.metered.ca:443?transport=tcp",
                         username = "1e0b3b6edb6997a73313ef82",
                         credential = "i27Gzv1zV/ClbtLM",
                     },
-                }
+                ]
             };
             var pc = new RTCPeerConnection(config);
 
@@ -184,7 +187,6 @@ namespace Zal.Functions.MajorFunctions
                 }
                 catch
                 {
-
                 }
             }
             else if (messageData.name == "change_primary_network")
@@ -224,7 +226,6 @@ namespace Zal.Functions.MajorFunctions
                 }
 
                 sendMessage("information_text", "Process killed!");
-
             }
             else
             {

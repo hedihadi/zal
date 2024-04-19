@@ -11,10 +11,10 @@ namespace Zal.Constants.Models
         public uint temperature;
         public uint load;
         public ulong power;
-        public Dictionary<string, dynamic> powers = new Dictionary<string, dynamic>();
-        public Dictionary<string, dynamic> loads = new Dictionary<string, dynamic>();
-        public Dictionary<string, dynamic> voltages = new Dictionary<string, dynamic>();
-        public Dictionary<string, dynamic> clocks = new Dictionary<string, dynamic>();
+        public Dictionary<string, dynamic> powers = new();
+        public Dictionary<string, dynamic> loads = new();
+        public Dictionary<string, dynamic> voltages = new();
+        public Dictionary<string, dynamic> clocks = new();
 
         public cpuData(IHardware hardware, cpuInfo? cpuInfo)
         {

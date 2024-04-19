@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace Zal.Constants.Models
 {
@@ -20,8 +20,8 @@ namespace Zal.Constants.Models
 
         public computerData()
         {
-            gpuData = new List<gpuData>();
-            storagesData = new List<storageData>();
+            gpuData = [];
+            storagesData = [];
         }
     }
 }

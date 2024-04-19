@@ -161,12 +161,12 @@ namespace Zal.HelperFunctions.SpecificFunctions
                     ///////////////////
                     else if ((line.Contains("ID Cur Wor Thr RawValues(6) Attribute Name")))
                     {
-                        currentHardware.smartAttributes = new List<smartAttribute>();
+                        currentHardware.smartAttributes = [];
                         continue; // Skip header line
                     }
                     else if (line.Contains("ID RawValues(6) Attribute Name"))
                     {
-                        currentHardware.smartAttributes = new List<smartAttribute>();
+                        currentHardware.smartAttributes = [];
                         currentHardware.isNvme = true;
                         continue; // Skip header line
                     }
