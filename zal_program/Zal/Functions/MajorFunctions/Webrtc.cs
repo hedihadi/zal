@@ -223,7 +223,7 @@ namespace Zal.Functions.MajorFunctions
                     Process.GetProcessById(pid).Kill();
                 }
 
-                sendMessage("information_text", $"Process killed!");
+                sendMessage("information_text", "Process killed!");
 
             }
             else

@@ -34,7 +34,7 @@ namespace Zal.Functions.MajorFunctions
                 return;
             }
 
-            socketio = new SocketIOClient.SocketIO($"https://api.zalapp.com",
+            socketio = new SocketIOClient.SocketIO("https://api.zalapp.com",
                 new SocketIOOptions
                 {
                     Query = new List<KeyValuePair<string, string>>

@@ -83,10 +83,10 @@ namespace Zal.HelperFunctions
             }
             catch (Exception ex)
             {
-                Logger.LogError($"error running presentmon", ex);
+                Logger.LogError("error running presentmon", ex);
             }
 
-            Task.Run(async () => { await parseIncomingPresentmonData(); });
+            Task.Run(parseIncomingPresentmonData);
         }
 
         private static string getTimestamp()

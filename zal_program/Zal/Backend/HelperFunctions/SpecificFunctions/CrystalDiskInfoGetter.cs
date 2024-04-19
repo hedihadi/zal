@@ -38,7 +38,7 @@ namespace Zal.HelperFunctions.SpecificFunctions
             }
             catch (Exception ex)
             {
-                Logger.LogError($"error running crystaldiskInfo process", ex);
+                Logger.LogError("error running crystaldiskInfo process", ex);
             }
 
             try
@@ -51,7 +51,7 @@ namespace Zal.HelperFunctions.SpecificFunctions
             }
             catch (Exception ex)
             {
-                Logger.LogError($"error parsing crystaldiskInfo data", ex);
+                Logger.LogError("error parsing crystaldiskInfo data", ex);
             }
 
             return null;
