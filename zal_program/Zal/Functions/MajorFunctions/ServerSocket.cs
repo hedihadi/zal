@@ -1,4 +1,4 @@
-﻿using Firebase.Auth.UI;
+using Firebase.Auth.UI;
 using SocketIOClient;
 using System;
 using System.Collections.Generic;
@@ -50,7 +50,7 @@ namespace Zal.Functions.MajorFunctions
             socketio.On("room_clients", response =>
             {
 
-                List<int> parsedData = response.GetValue<List<int>>();
+                var parsedData = response.GetValue<List<int>>();
                 Logger.Log($"socketio room_clients {string.Join<int>(",", parsedData)}");
                 // if the data is 1, that means the client type is 1, which means this client is a phone
                 if (parsedData.Contains(1))

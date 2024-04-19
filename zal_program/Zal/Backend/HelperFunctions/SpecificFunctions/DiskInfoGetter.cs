@@ -23,7 +23,7 @@ namespace Zal.HelperFunctions.SpecificFunctions
                     totalSize = Convert.ToInt64(disk["Size"]),
                 };
 
-                foreach (ManagementObject partition in GlobalClass.Instance.getWin32DiskPartitions(diskNumber))
+                foreach (var partition in GlobalClass.Instance.getWin32DiskPartitions(diskNumber))
                 {
 
                     var partitionInfo = new partitionInfo();
@@ -57,7 +57,7 @@ namespace Zal.HelperFunctions.SpecificFunctions
         //this is a fallback function in case crystalDiskData is not available
         private static string GetDriveLetter(ManagementObject partition)
         {
-            using (ManagementObjectSearcher searcher = new ManagementObjectSearcher($"ASSOCIATORS OF {{Win32_DiskPartition.DeviceID='{partition["DeviceID"]}'}} WHERE AssocClass=Win32_LogicalDiskToPartition"))
+            using (var searcher = new ManagementObjectSearcher($"ASSOCIATORS OF {{Win32_DiskPartition.DeviceID='{partition["DeviceID"]}'}} WHERE AssocClass=Win32_LogicalDiskToPartition"))
             {
                 foreach (ManagementObject logicalDisk in searcher.Get())
                 {
@@ -96,13 +96,13 @@ namespace Zal.HelperFunctions.SpecificFunctions
                 var index = Convert.ToInt32(disk["Index"]);
                 if (index == diskNumber)
                 {
-                    ManagementObjectSearcher partitionSearcher = new ManagementObjectSearcher($"ASSOCIATORS OF {{Win32_DiskDrive.DeviceID='{disk["DeviceID"]}'}} WHERE AssocClass=Win32_DiskDriveToDiskPartition");
+                    var partitionSearcher = new ManagementObjectSearcher($"ASSOCIATORS OF {{Win32_DiskDrive.DeviceID='{disk["DeviceID"]}'}} WHERE AssocClass=Win32_DiskDriveToDiskPartition");
 
                     ulong totalFreeSpace = 0;
 
                     foreach (ManagementObject partition in partitionSearcher.Get())
                     {
-                        ManagementObjectSearcher logicalDiskSearcher = new ManagementObjectSearcher($"ASSOCIATORS OF {{Win32_DiskPartition.DeviceID='{partition["DeviceID"]}'}} WHERE AssocClass=Win32_LogicalDiskToPartition");
+                        var logicalDiskSearcher = new ManagementObjectSearcher($"ASSOCIATORS OF {{Win32_DiskPartition.DeviceID='{partition["DeviceID"]}'}} WHERE AssocClass=Win32_LogicalDiskToPartition");
 
                         foreach (ManagementObject logicalDisk in logicalDiskSearcher.Get())
                         {

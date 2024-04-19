@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -91,7 +91,7 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
         private static List<string> getRawDataFromPowershell()
         {
             List<string> result = new List<string>();
-            using (PowerShell PowerShellInstance = PowerShell.Create())
+            using (var PowerShellInstance = PowerShell.Create())
             {
                 // Add the PowerShell script
                 var script = "$counter = Get-Counter '\\GPU Engine(*engtype_3D)\\Utilization Percentage';" +
@@ -111,7 +111,7 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
                 else
                 {
                     // Output the results
-                    foreach (PSObject outputItem in PSOutput)
+                    foreach (var outputItem in PSOutput)
                     {
                         result.Add(outputItem.ToString());
                     }

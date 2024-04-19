@@ -1,4 +1,4 @@
-﻿using Firebase.Auth.UI;
+using Firebase.Auth.UI;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -24,7 +24,7 @@ namespace Zal.Functions.MajorFunctions
         public static async Task<HttpResponseMessage> SendDataToDatabase(string route, Dictionary<string, dynamic> data = null)
         {
             // Assuming FirebaseAuth is a class with a static property 'Instance' and 'Instance.TokenProvider' is a property returning a token.
-            string idToken = await FirebaseUI.Instance.Client.User.GetIdTokenAsync();
+            var idToken = await FirebaseUI.Instance.Client.User.GetIdTokenAsync();
 
             var databaseUrl = "https://zalapp.com/api"; // Replace this with your database URL
             var url = $"{databaseUrl}/{route}";

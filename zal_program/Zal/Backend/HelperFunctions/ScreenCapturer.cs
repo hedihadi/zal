@@ -1,4 +1,4 @@
-﻿using SharpDX.Direct3D11;
+using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using SharpDX;
 using System;
@@ -34,8 +34,8 @@ namespace ZalConsole.HelperFunctions
             var output1 = output.QueryInterface<Output1>();
 
             // Width/Height of desktop to capture
-            int width = output.Description.DesktopBounds.Right;
-            int height = output.Description.DesktopBounds.Bottom;
+            var width = output.Description.DesktopBounds.Right;
+            var height = output.Description.DesktopBounds.Bottom;
 
 
             // Create Staging texture CPU-accessible

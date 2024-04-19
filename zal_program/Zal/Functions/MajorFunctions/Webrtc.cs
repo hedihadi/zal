@@ -28,7 +28,7 @@ namespace Zal.Functions.MajorFunctions
         {
             var pc = await CreatePeerConnection();
 
-            RTCSessionDescriptionInit answerInit = JsonConvert.DeserializeObject<RTCSessionDescriptionInit>(data);
+            var answerInit = JsonConvert.DeserializeObject<RTCSessionDescriptionInit>(data);
 
             var res = pc.setRemoteDescription(answerInit);
             if (res != SetDescriptionResultEnum.OK)
@@ -46,7 +46,7 @@ namespace Zal.Functions.MajorFunctions
 
         private async Task<RTCPeerConnection?> CreatePeerConnection()
         {
-            RTCConfiguration config = new RTCConfiguration
+            var config = new RTCConfiguration
             {
                 iceServers = new List<RTCIceServer>
                 {

@@ -104,7 +104,7 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
             if (!NetworkInterface.GetIsNetworkAvailable())
                 return new List<networkInterfaceData>();
 
-            NetworkInterface[] interfaces
+            var interfaces
                 = NetworkInterface.GetAllNetworkInterfaces();
             List<networkInterfaceData> data = new List<networkInterfaceData>();
 

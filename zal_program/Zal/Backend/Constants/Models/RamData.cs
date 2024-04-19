@@ -1,4 +1,4 @@
-﻿using LibreHardwareMonitor.Hardware;
+using LibreHardwareMonitor.Hardware;
 using System.Collections.Generic;
 
 namespace Zal.Constants.Models
@@ -13,7 +13,7 @@ namespace Zal.Constants.Models
         public ramData(IHardware hardware, List<ramPieceData>? ramPiecesData)
         {
             this.ramPiecesData = ramPiecesData;
-            foreach (ISensor sensor in hardware.Sensors)
+            foreach (var sensor in hardware.Sensors)
             {
                 if (sensor.SensorType == SensorType.Data && sensor.Name == "Memory Used")
                 {

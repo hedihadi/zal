@@ -9,7 +9,7 @@ namespace Zal
 
         public static void LogError(string message, Exception ex, object dataToPrint = null)
         {
-            string stringifiedData = Newtonsoft.Json.JsonConvert.SerializeObject(dataToPrint);
+            var stringifiedData = Newtonsoft.Json.JsonConvert.SerializeObject(dataToPrint);
             var text = dataToPrint == null ? "" : stringifiedData;
             Log($"{message},,error:{ex.Message},,stack:{ex.StackTrace},,{text}");
         }

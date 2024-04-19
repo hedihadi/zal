@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -160,7 +160,7 @@ namespace ZalConsole.HelperFunctions
         {
             if (win32DiskDrives == null)
             {
-                ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_DiskDrive");
+                var searcher = new ManagementObjectSearcher("SELECT * FROM Win32_DiskDrive");
                 win32DiskDrives = searcher.Get();
                 Task.Run(async () =>
                 {
@@ -196,7 +196,7 @@ namespace ZalConsole.HelperFunctions
         {
             if (win32DiskPartitions == null)
             {
-                ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_DiskPartition");
+                var searcher = new ManagementObjectSearcher("SELECT * FROM Win32_DiskPartition");
                 win32DiskPartitions = searcher.Get();
                 Task.Run(async () =>
                 {
@@ -225,8 +225,8 @@ namespace ZalConsole.HelperFunctions
         {
             if (win32DiskPartitionsForFreeDiskSpace == null)
             {
-                ManagementScope scope = new ManagementScope(@"\\.\root\cimv2");
-                ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_DiskDrive");
+                var scope = new ManagementScope(@"\\.\root\cimv2");
+                var searcher = new ManagementObjectSearcher("SELECT * FROM Win32_DiskDrive");
                 scope.Connect();
                 searcher.Scope = scope;
                 win32DiskPartitionsForFreeDiskSpace = searcher.Get();
