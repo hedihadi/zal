@@ -56,9 +56,9 @@ namespace Zal
 
         public object readKey(string key)
         {
-            if (data.ContainsKey(key))
+            if (data.TryGetValue(key, out var keyValue))
             {
-                return data[key];
+                return keyValue;
             }
 
             return null;
