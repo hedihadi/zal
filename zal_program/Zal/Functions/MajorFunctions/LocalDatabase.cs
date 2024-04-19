@@ -20,7 +20,7 @@ namespace Zal
         public static async Task Initialize()
         {
             var text = await GlobalClass.Instance.readTextFromDocumentFolder("database.json");
-            if (text != null && text != "")
+            if (!string.IsNullOrEmpty(text))
             {
                 try
                 {
@@ -82,7 +82,6 @@ namespace Zal
         private static void WriteAsync(string text)
         {
             GlobalClass.Instance.saveTextToDocumentFolder("database.json", text);
-
         }
     }
 }
