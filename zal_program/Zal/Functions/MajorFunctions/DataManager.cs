@@ -122,7 +122,6 @@ internal class ChartsDataManager
     public async Task<Dictionary<string, List<object>>> updateAsync(computerData computerData)
     {
         var primaryGpu = await getPrimaryGpu(computerData);
-        var empty = new List<object>();
         if (primaryGpu != null)
         {
             data["gpuLoad"] = addElementToList(data.GetValueOrDefault("gpuLoad", []), primaryGpu.corePercentage);

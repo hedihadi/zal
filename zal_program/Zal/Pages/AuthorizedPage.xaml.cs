@@ -100,7 +100,6 @@ namespace Zal
                         {
                             var primaryGpu = LocalDatabase.Instance.readKey("primaryGpu");
 
-
                             if (primaryGpu == null)
                             {
                                 Logger.Log($"setting primary gpu to {data.gpuData.First().name}");

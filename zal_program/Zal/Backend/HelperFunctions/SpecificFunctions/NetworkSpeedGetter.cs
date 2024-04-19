@@ -49,7 +49,6 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
             }
 
             // Select desired NIC
-            var a = primaryNetwork;
             var nic = networkInterfaces.SingleOrDefault(n => n.Name == primaryNetwork);
             if (nic == null)
             {

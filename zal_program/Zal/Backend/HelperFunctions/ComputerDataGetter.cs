@@ -12,18 +12,21 @@ namespace Zal.HelperFunctions
 {
     public class computerDataGetter
     {
-
         private readonly cpuInfo? cpuInfo;
         private readonly List<crystalDiskData>? crystalDiskDatas;
+
         private readonly List<ramPieceData>? ramPiecesData;
+
         //this variable holds the network speed that the user has chosen as primary.
         private readonly networkSpeed primarynetworkSpeed = new networkSpeed(download: 0, upload: 0);
 
         private readonly NetworkSpeedGetter networkSpeedGetter = new NetworkSpeedGetter();
+
         //disabled fps feature because it's buggy
         //public fpsDataGetter fpsDataGetter;
         //this variable holds the processes and how much % gpu they use. we use this data to determine which process is a game. and get the fps data from it.
         private readonly Dictionary<int, double> processesGpuUsage = new Dictionary<int, double>();
+
         private readonly Computer computer = new Computer
         {
             IsCpuEnabled = true,
@@ -34,6 +37,7 @@ namespace Zal.HelperFunctions
             IsNetworkEnabled = true,
             IsStorageEnabled = true
         };
+
         public computerDataGetter()
         {
             //fpsDataGetter = new fpsDataGetter(client);
@@ -50,10 +54,12 @@ namespace Zal.HelperFunctions
                     attempts++;
                 }
             }
+
             if (attempts == 5)
             {
                 Logger.Log("error running computer.open, attempted 5 times and failed");
             }
+
             computer.Accept(new UpdateVisitor());
 
             //below code is run only once during the lifetime of this program. this is to reduce load.
@@ -65,6 +71,7 @@ namespace Zal.HelperFunctions
             {
                 Logger.LogError("error getting cpuInfo", ex);
             }
+
             try
             {
                 ramPiecesData = ramPieceDataGetter.GetRamPiecesData();
@@ -73,6 +80,7 @@ namespace Zal.HelperFunctions
             {
                 Logger.LogError("error getting ramPiecesData", ex);
             }
+
             try
             {
                 crystalDiskDatas = CrystaldiskInfoGetter.getcrystalDiskData();
@@ -82,9 +90,9 @@ namespace Zal.HelperFunctions
                 Logger.LogError("error getting crystalDiskData", ex);
             }
         }
+
         public string getEntireComputerData()
         {
-            var computerData = new computerData();
             computer.Accept(new UpdateVisitor());
             Dictionary<string, object> result = new Dictionary<string, object>();
             foreach (var hardware in computer.Hardware)
@@ -105,9 +113,11 @@ namespace Zal.HelperFunctions
 
                 result.Add(hardware.Name, data);
             }
+
             var stringifiedData = Newtonsoft.Json.JsonConvert.SerializeObject(result);
             return stringifiedData;
         }
+
         public async Task<computerData> getcomputerDataAsync()
         {
             var computerData = new computerData();
@@ -119,10 +129,10 @@ namespace Zal.HelperFunctions
             {
                 Logger.Log("warning getting computer data, computerHardware count is 0");
             }
+
             foreach (var hardware in computer.Hardware)
             {
                 //Console.WriteLine($"name:{hardware.Name},type:{hardware.HardwareType}");
-                var gpuTypes = new HardwareType[] { HardwareType.GpuNvidia, HardwareType.GpuIntel, HardwareType.GpuAmd };
                 if (hardware.HardwareType == HardwareType.Cpu)
                 {
                     try
@@ -135,7 +145,7 @@ namespace Zal.HelperFunctions
                     }
                 }
                 else if (hardware.HardwareType.ToString().ToLower().Contains("gpu"))
-                //else if (gpuTypes.Contains(hardware.HardwareType))
+                    //else if (gpuTypes.Contains(hardware.HardwareType))
                 {
                     try
                     {
@@ -184,6 +194,7 @@ namespace Zal.HelperFunctions
                     }
                 }
             }
+
             try
             {
                 List<monitorData>? monitorsData = monitorDataGetter.getmonitorData();
@@ -193,6 +204,7 @@ namespace Zal.HelperFunctions
             {
                 Logger.LogError("error parsing monitorData", ex);
             }
+
             try
             {
                 var batteryData = batteryDataGetter.getbatteryData();
@@ -202,6 +214,7 @@ namespace Zal.HelperFunctions
             {
                 Logger.LogError("error parsing batteryData", ex);
             }
+
             try
             {
                 computerData.processesGpuUsage = processesGpuUsage;
@@ -210,6 +223,7 @@ namespace Zal.HelperFunctions
             {
                 Logger.LogError("error parsing processesGpuUsage", ex);
             }
+
             try
             {
                 computerData.primaryNetworkSpeed = networkSpeedGetter.primaryNetworkSpeed;
@@ -218,6 +232,7 @@ namespace Zal.HelperFunctions
             {
                 Logger.LogError("error getting primary network speed", ex);
             }
+
             try
             {
                 computerData.networkInterfaces = networkSpeedGetter.networkInterfaceDatas;
@@ -226,6 +241,7 @@ namespace Zal.HelperFunctions
             {
                 Logger.LogError("error getting primary network speed", ex);
             }
+
             return computerData;
         }
     }
