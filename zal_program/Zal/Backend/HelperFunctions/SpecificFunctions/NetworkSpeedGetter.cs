@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.NetworkInformation;
@@ -42,7 +42,6 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
 
         private async Task getPrimaryNetworkSpeedAsync(string? primaryNetwork)
         {
-
             //var nics = networkInterfaces();
             if (networkInterfaces == null)
             {
@@ -112,14 +111,16 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
             foreach (var ni in interfaces)
             {
                 var stats = ni.GetIPv4Statistics();
-                var info = new networkInterfaceData();
-                info.name = ni.Name;
-                info.description = ni.Description;
-                info.status = ni.OperationalStatus.ToString();
-                info.id = ni.Id;
-                info.bytesReceived = stats.BytesReceived;
-                info.bytesSent = stats.BytesSent;
-                info.isPrimary = primaryNetwork == ni.Name;
+                var info = new networkInterfaceData
+                {
+                    name = ni.Name,
+                    description = ni.Description,
+                    status = ni.OperationalStatus.ToString(),
+                    id = ni.Id,
+                    bytesReceived = stats.BytesReceived,
+                    bytesSent = stats.BytesSent,
+                    isPrimary = primaryNetwork == ni.Name,
+                };
                 data.Add(info);
             }
 

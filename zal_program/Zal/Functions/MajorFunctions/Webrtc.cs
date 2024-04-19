@@ -86,9 +86,11 @@ namespace Zal.Functions.MajorFunctions
                 Debug.WriteLine("message");
                 var message = Encoding.UTF8.GetString(data);
                 var parsedMessage = JsonConvert.DeserializeObject<Dictionary<string, object>>(message);
-                var webrtcData = new WebrtcData();
-                webrtcData.data = parsedMessage["data"];
-                webrtcData.name = (string)parsedMessage["name"];
+                var webrtcData = new WebrtcData
+                {
+                    data = parsedMessage["data"],
+                    name = (string)parsedMessage["name"],
+                };
                 messageReceivedAsync(webrtcData);
             };
             pc.onconnectionstatechange += (state) =>
@@ -237,9 +239,11 @@ namespace Zal.Functions.MajorFunctions
 
         public void sendMessage(string name, object data)
         {
-            var map = new Dictionary<string, object>();
-            map["data"] = data;
-            map["name"] = name;
+            var map = new Dictionary<string, object>
+            {
+                ["data"] = data,
+                ["name"] = name,
+            };
             var compressed = JsonConvert.SerializeObject(map);
             dataChannel?.send(compressed);
         }

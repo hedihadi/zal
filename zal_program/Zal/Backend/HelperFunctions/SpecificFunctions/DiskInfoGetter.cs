@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Management;
 using System.Text.RegularExpressions;
@@ -17,9 +17,11 @@ namespace Zal.HelperFunctions.SpecificFunctions
                 var diskIndex = Convert.ToInt32(disk["Index"]);
                 if (diskIndex != diskNumber) continue;
 
-                var diskInfo = new diskInfo();
-                diskInfo.diskNumber = Convert.ToInt32(disk["Index"]);
-                diskInfo.totalSize = Convert.ToInt64(disk["Size"]);
+                var diskInfo = new diskInfo
+                {
+                    diskNumber = Convert.ToInt32(disk["Index"]),
+                    totalSize = Convert.ToInt64(disk["Size"]),
+                };
 
                 foreach (ManagementObject partition in GlobalClass.Instance.getWin32DiskPartitions(diskNumber))
                 {

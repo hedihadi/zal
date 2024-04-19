@@ -12,11 +12,13 @@ namespace Zal.HelperFunctions.SpecificFunctions
             ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_PhysicalMemory");
             foreach (ManagementObject obj in searcher.Get())
             {
-                var ramData = new ramPieceData();
-                ramData.capacity = (ulong)obj["Capacity"];
-                ramData.manufacturer = (string)obj["Manufacturer"];
-                ramData.partNumber = (string)obj["PartNumber"];
-                ramData.speed = (uint)obj["Speed"];
+                var ramData = new ramPieceData
+                {
+                    capacity = (ulong)obj["Capacity"],
+                    manufacturer = (string)obj["Manufacturer"],
+                    partNumber = (string)obj["PartNumber"],
+                    speed = (uint)obj["Speed"],
+                };
                 data.Add(ramData);
             }
             return data;

@@ -1,4 +1,4 @@
-﻿using Firebase.Auth.UI;
+using Firebase.Auth.UI;
 using Microsoft.Win32;
 using SIPSorcery.Net;
 using System;
@@ -147,8 +147,10 @@ namespace Zal
                     ListBox.Items.RemoveAt(ListBox.Items.Count - 1);
                 }
 
-                var block = new TextBlock();
-                block.Text = $"{DateTime.Now.ToString("h:mm:ss tt")} - {text}";
+                var block = new TextBlock
+                {
+                    Text = $"{DateTime.Now.ToString("h:mm:ss tt")} - {text}",
+                };
                 ListBox.Items.Insert(0, block);
             }));
         }
@@ -171,9 +173,11 @@ namespace Zal
                             Console.WriteLine("File downloaded successfully.");
 
                             var p = new Process();
-                            var pi = new ProcessStartInfo();
-                            pi.UseShellExecute = true;
-                            pi.FileName = fileName;
+                            var pi = new ProcessStartInfo
+                            {
+                                UseShellExecute = true,
+                                FileName = fileName,
+                            };
                             p.StartInfo = pi;
                             p.Start();
                         }

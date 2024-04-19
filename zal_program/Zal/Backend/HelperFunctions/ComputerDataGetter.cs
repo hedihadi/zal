@@ -1,4 +1,4 @@
-﻿using LibreHardwareMonitor.Hardware;
+using LibreHardwareMonitor.Hardware;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -89,13 +89,17 @@ namespace Zal.HelperFunctions
             Dictionary<string, object> result = new Dictionary<string, object>();
             foreach (IHardware hardware in computer.Hardware)
             {
-                Dictionary<string, object> data = new Dictionary<string, object>();
-                data["type"] = hardware.HardwareType.ToString();
+                Dictionary<string, object> data = new Dictionary<string, object>
+                {
+                    ["type"] = hardware.HardwareType.ToString(),
+                };
                 foreach (var sensor in hardware.Sensors)
                 {
-                    Dictionary<string, object> sensorData = new Dictionary<string, object>();
-                    sensorData["type"] = sensor.SensorType.ToString();
-                    sensorData["value"] = sensor.Value.ToString();
+                    Dictionary<string, object> sensorData = new Dictionary<string, object>
+                    {
+                        ["type"] = sensor.SensorType.ToString(),
+                        ["value"] = sensor.Value.ToString(),
+                    };
                     data[sensor.Name] = sensorData;
                 }
 
