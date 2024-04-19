@@ -1,4 +1,4 @@
-﻿using Firebase.Auth.Providers;
+using Firebase.Auth.Providers;
 using Firebase.Auth.Repository;
 using Firebase.Auth.UI;
 using System.Threading;
@@ -11,7 +11,7 @@ namespace Zal
     /// </summary>
     public partial class App : Application
     {
-        private static Mutex _mutex = null;
+        private static Mutex _mutex;
 
         protected override void OnStartup(StartupEventArgs e)
         {

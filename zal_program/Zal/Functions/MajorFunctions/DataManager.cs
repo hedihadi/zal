@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -17,7 +17,7 @@ namespace Zal.Functions.MajorFunctions
     public class DataManager
     {
         //if this is true, the loop will run every 1 second. if false, the loop will run every 5 seconds.
-        private bool isMobileConnected = false;
+        private bool isMobileConnected;
         private readonly EventHandler<computerData> computerDataReceived;
         private readonly ChartsDataManager chartsDataManager = new ChartsDataManager();
         public DataManager(EventHandler<computerData> computerDataReceived)

@@ -1,4 +1,4 @@
-﻿using Firebase.Auth;
+using Firebase.Auth;
 using Firebase.Auth.UI;
 using System.Text;
 using System.Windows;
@@ -11,7 +11,7 @@ namespace Zal
     /// </summary>
     public partial class LoginPage : Page
     {
-        private bool isLogin = false;
+        private bool isLogin;
         public LoginPage()
         {
             InitializeComponent();

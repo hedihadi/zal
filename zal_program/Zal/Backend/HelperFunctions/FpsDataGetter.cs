@@ -1,7 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using ZalConsole.HelperFunctions;
@@ -12,12 +11,12 @@ namespace Zal.HelperFunctions
     {
         private Process? presentmonProcess;
         private readonly Task fpsTask;
-        private bool isDisposed = false;
+        private bool isDisposed;
         public event EventHandler<dynamic> sendFpsData;
         private readonly List<double> fpsDatas = [];
         private readonly int processId;
         private readonly Stopwatch stopwatch = new Stopwatch();
-        private bool shouldLog = false;
+        private bool shouldLog;
 
         public FpsDataGetter()
         {
@@ -78,7 +77,6 @@ namespace Zal.HelperFunctions
             presentmonProcess = new Process { StartInfo = startInfo };
             try
             {
-
                 presentmonProcess.Start();
             }
             catch (Exception ex)
@@ -91,7 +89,6 @@ namespace Zal.HelperFunctions
 
         private static string getTimestamp()
         {
-
             return (new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds()).ToString();
         }
 
