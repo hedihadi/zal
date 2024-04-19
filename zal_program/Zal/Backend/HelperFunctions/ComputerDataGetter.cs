@@ -1,4 +1,4 @@
-using LibreHardwareMonitor.Hardware;
+﻿using LibreHardwareMonitor.Hardware;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -84,7 +84,7 @@ namespace Zal.HelperFunctions
         }
         public string getEntireComputerData()
         {
-            computerData computerData = new computerData();
+            var computerData = new computerData();
             computer.Accept(new UpdateVisitor());
             Dictionary<string, object> result = new Dictionary<string, object>();
             foreach (IHardware hardware in computer.Hardware)
@@ -106,7 +106,7 @@ namespace Zal.HelperFunctions
         }
         public async Task<computerData> getcomputerDataAsync()
         {
-            computerData computerData = new computerData();
+            var computerData = new computerData();
             computer.Accept(new UpdateVisitor());
             GlobalClass.Instance.processesGetter.update();
             computerData.isAdminstrator = IsAdminstratorChecker.IsAdministrator();
@@ -191,7 +191,7 @@ namespace Zal.HelperFunctions
             }
             try
             {
-                batteryData? batteryData = batteryDataGetter.getbatteryData();
+                var batteryData = batteryDataGetter.getbatteryData();
                 computerData.batteryData = batteryData;
             }
             catch (Exception ex)

@@ -64,8 +64,8 @@ namespace Zal.HelperFunctions
             var allProcesses = Process.GetProcesses();
             foreach (var process in allProcesses)
             {
-                string processName = process.ProcessName;
-                long ramUsageBytes = process.WorkingSet64;
+                var processName = process.ProcessName;
+                var ramUsageBytes = process.WorkingSet64;
                 Dictionary<string, object> processData = new Dictionary<string, object>();
                 if (result.ContainsKey(processName))
                 {

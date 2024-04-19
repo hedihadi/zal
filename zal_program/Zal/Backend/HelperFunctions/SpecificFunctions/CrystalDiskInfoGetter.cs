@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -22,7 +22,7 @@ namespace Zal.HelperFunctions.SpecificFunctions
 
             var filePath = GlobalClass.Instance.extractZipFromResourcesAndGetFilepathWithinTheExtract("DiskInfo.zip", "diskInfo.exe");
 
-            ProcessStartInfo startInfo = new ProcessStartInfo
+            var startInfo = new ProcessStartInfo
             {
                 FileName = filePath,
                 RedirectStandardOutput = true,
@@ -44,7 +44,7 @@ namespace Zal.HelperFunctions.SpecificFunctions
             try
             {
                 process.WaitForExit();
-                string resultPath = Path.Combine(Path.GetDirectoryName(filePath), "diskInfo.txt");
+                var resultPath = Path.Combine(Path.GetDirectoryName(filePath), "diskInfo.txt");
                 var diskInfos = parseCrystaldiskInfoOutput(resultPath);
                 process.Close();
                 return diskInfos;
@@ -62,7 +62,7 @@ namespace Zal.HelperFunctions.SpecificFunctions
             List<crystalDiskData> hardwareList = new List<crystalDiskData>();
             crystalDiskData currentHardware = null;
 
-            foreach (string line in File.ReadLines(filePath))
+            foreach (var line in File.ReadLines(filePath))
             {
                 if (line.StartsWith(" (0"))
                 {
@@ -84,7 +84,7 @@ namespace Zal.HelperFunctions.SpecificFunctions
 
                     if (line.Contains("Buffer Size :") && line.Contains("Unknown") == false)
                     {
-                        string hoursString = Regex.Match(line.Split(':')[1].Trim(), @"\d+").Value;
+                        var hoursString = Regex.Match(line.Split(':')[1].Trim(), @"\d+").Value;
                         if (!string.IsNullOrEmpty(hoursString))
                         {
                             currentHardware.info.Add("bufferSize", int.Parse(hoursString));
@@ -93,7 +93,7 @@ namespace Zal.HelperFunctions.SpecificFunctions
 
                     if (line.Contains("Transfer Mode :"))
                     {
-                        string text = line.Split(':')[1];
+                        var text = line.Split(':')[1];
 
                         currentHardware.info.Add("transferMode", text.Split('|'));
                     }
@@ -110,7 +110,7 @@ namespace Zal.HelperFunctions.SpecificFunctions
 
                     if (line.Contains("Power On Hours :"))
                     {
-                        string hoursString = Regex.Match(line.Split(':')[1].Trim(), @"\d+").Value;
+                        var hoursString = Regex.Match(line.Split(':')[1].Trim(), @"\d+").Value;
                         if (!string.IsNullOrEmpty(hoursString))
                         {
                             currentHardware.info.Add("powerOnHours", int.Parse(hoursString));
@@ -128,7 +128,7 @@ namespace Zal.HelperFunctions.SpecificFunctions
 
                     if (line.Contains("Power On Count :"))
                     {
-                        string hoursString = Regex.Match(line.Split(':')[1].Trim(), @"\d+").Value;
+                        var hoursString = Regex.Match(line.Split(':')[1].Trim(), @"\d+").Value;
                         if (!string.IsNullOrEmpty(hoursString))
                         {
                             currentHardware.info.Add("powerOnCount", int.Parse(hoursString));
@@ -137,14 +137,14 @@ namespace Zal.HelperFunctions.SpecificFunctions
 
                     if (line.Contains("Health Status :"))
                     {
-                        string hoursString = Regex.Match(line.Split(':')[1].Trim(), @"\d+").Value;
+                        var hoursString = Regex.Match(line.Split(':')[1].Trim(), @"\d+").Value;
                         if (!string.IsNullOrEmpty(hoursString))
                         {
                             currentHardware.info.Add("healthPercentage", int.Parse(hoursString));
                         }
 
-                        Regex regex = new Regex("[a-zA-Z]+");
-                        Match match = regex.Match(line.Split(':')[1].Trim());
+                        var regex = new Regex("[a-zA-Z]+");
+                        var match = regex.Match(line.Split(':')[1].Trim());
                         if (match.Success)
                         {
                             currentHardware.info.Add("healthText", match.Value);
@@ -191,7 +191,7 @@ namespace Zal.HelperFunctions.SpecificFunctions
                             Console.WriteLine(c.Message);
                         }
 
-                        smartAttribute smartAttribute = new smartAttribute
+                        var smartAttribute = new smartAttribute
                         {
                             id = parts[0],
                             currentValue = int.Parse(parts[1].Replace("_", "")),
@@ -221,7 +221,7 @@ namespace Zal.HelperFunctions.SpecificFunctions
                             Console.WriteLine(c.Message);
                         }
 
-                        smartAttribute smartAttribute = new smartAttribute
+                        var smartAttribute = new smartAttribute
                         {
                             id = parts[0],
                             rawValue = rawValue,
@@ -249,8 +249,8 @@ namespace Zal.HelperFunctions.SpecificFunctions
             List<string> driveLetters = new List<string>();
 
             // Use a regular expression to match drive letters
-            Regex regex = new Regex(@"[A-Za-z]:");
-            MatchCollection matches = regex.Matches(input);
+            var regex = new Regex(@"[A-Za-z]:");
+            var matches = regex.Matches(input);
 
             foreach (Match match in matches)
             {

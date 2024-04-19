@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Management;
 using System.Text.RegularExpressions;
@@ -14,17 +14,17 @@ namespace Zal.HelperFunctions.SpecificFunctions
             foreach (ManagementObject disk in GlobalClass.Instance.getWin32DiskDrives())
             {
                 //iterate until we get the disk number we want
-                int diskIndex = Convert.ToInt32(disk["Index"]);
+                var diskIndex = Convert.ToInt32(disk["Index"]);
                 if (diskIndex != diskNumber) continue;
 
-                diskInfo diskInfo = new diskInfo();
+                var diskInfo = new diskInfo();
                 diskInfo.diskNumber = Convert.ToInt32(disk["Index"]);
                 diskInfo.totalSize = Convert.ToInt64(disk["Size"]);
 
                 foreach (ManagementObject partition in GlobalClass.Instance.getWin32DiskPartitions(diskNumber))
                 {
 
-                    partitionInfo partitionInfo = new partitionInfo();
+                    var partitionInfo = new partitionInfo();
                     if (crystalDiskData != null)
                     {
 
@@ -69,12 +69,12 @@ namespace Zal.HelperFunctions.SpecificFunctions
 
         private static DriveInfo? GetDriveByLetter(string driveName)
         {
-            foreach (DriveInfo drive in DriveInfo.GetDrives())
+            foreach (var drive in DriveInfo.GetDrives())
             {
-                string pattern = "[^a-zA-Z]";
-                string replacement = "";
-                Regex regex = new Regex(pattern);
-                string driveLetter = regex.Replace(drive.Name, replacement);
+                var pattern = "[^a-zA-Z]";
+                var replacement = "";
+                var regex = new Regex(pattern);
+                var driveLetter = regex.Replace(drive.Name, replacement);
                 if (driveLetter == driveName)
                 {
                     return drive;

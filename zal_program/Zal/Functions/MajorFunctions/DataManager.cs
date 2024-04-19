@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -94,17 +94,17 @@ namespace Zal.Functions.MajorFunctions
 
         private static string CompressGzip(string text)
         {
-            byte[] enCodedJson = Encoding.UTF8.GetBytes(text);
+            var enCodedJson = Encoding.UTF8.GetBytes(text);
 
-            using (MemoryStream memoryStream = new MemoryStream())
+            using (var memoryStream = new MemoryStream())
             {
-                using (GZipStream gzipStream = new GZipStream(memoryStream, CompressionMode.Compress))
+                using (var gzipStream = new GZipStream(memoryStream, CompressionMode.Compress))
                 {
                     gzipStream.Write(enCodedJson, 0, enCodedJson.Length);
                 }
 
-                byte[] gZipJson = memoryStream.ToArray();
-                string base64Json = Convert.ToBase64String(gZipJson);
+                var gZipJson = memoryStream.ToArray();
+                var base64Json = Convert.ToBase64String(gZipJson);
                 return base64Json;
             }
         }

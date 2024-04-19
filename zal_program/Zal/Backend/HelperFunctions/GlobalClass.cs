@@ -31,7 +31,7 @@ namespace ZalConsole.HelperFunctions
             var filePath = Path.Combine(directory, filename);
             try
             {
-                using (StreamWriter writer = new StreamWriter(filePath))
+                using (var writer = new StreamWriter(filePath))
                 {
                     writer.Write(data);
                 }
@@ -61,7 +61,7 @@ namespace ZalConsole.HelperFunctions
                     File.Create(filePath).Close(); // Close the file stream immediately after creating it
                 }
 
-                using (StreamReader reader = new StreamReader(filePath))
+                using (var reader = new StreamReader(filePath))
                 {
                     var data = await reader.ReadToEndAsync();
                     return data;
@@ -141,7 +141,7 @@ namespace ZalConsole.HelperFunctions
         {
             var filePath = extractZipFromResourcesAndGetFilepathWithinTheExtract("get_process_icon.zip", "get_process_icon.exe");
 
-            Process process = new Process();
+            var process = new Process();
             process.StartInfo.FileName = filePath;
             process.StartInfo.Arguments = $"\"{fileName}\"";
             process.StartInfo.UseShellExecute = false;
@@ -150,7 +150,7 @@ namespace ZalConsole.HelperFunctions
             process.StartInfo.CreateNoWindow = true;
             process.Start();
             //* Read the output (or the error)
-            string output = process.StandardOutput.ReadToEnd();
+            var output = process.StandardOutput.ReadToEnd();
             process.WaitForExit();
             output = output.Replace("\r\n", "");
             return output;
@@ -178,13 +178,13 @@ namespace ZalConsole.HelperFunctions
         {
             if (processInfos == null)
             {
-                string jsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources\\Processes.json");
+                var jsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources\\Processes.json");
 
                 // Check if the file exists
                 if (File.Exists(jsonFilePath))
                 {
                     // Read the contents of the JSON file
-                    string jsonContent = File.ReadAllText(jsonFilePath);
+                    var jsonContent = File.ReadAllText(jsonFilePath);
                     processInfos = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ProcessInfo>>(jsonContent);
                 }
             }
@@ -210,7 +210,7 @@ namespace ZalConsole.HelperFunctions
             foreach (ManagementObject partition in win32DiskPartitions)
             {
                 // Adjust the property name based on the actual property for the disk number
-                int currentDiskNumber = Convert.ToInt32(partition["DiskIndex"]);
+                var currentDiskNumber = Convert.ToInt32(partition["DiskIndex"]);
 
                 if (currentDiskNumber == diskNumber)
                 {

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -23,7 +23,7 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
             {
                 Dictionary<string, dynamic> data = new Dictionary<string, dynamic>();
                 var splittedData = process.Split(',');
-                int pid = int.Parse(splittedData[0].Split('_')[1]);
+                var pid = int.Parse(splittedData[0].Split('_')[1]);
 
                 double usage = 1;
                 try
@@ -94,10 +94,10 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
             using (PowerShell PowerShellInstance = PowerShell.Create())
             {
                 // Add the PowerShell script
-                string script = "$counter = Get-Counter '\\GPU Engine(*engtype_3D)\\Utilization Percentage';" +
-                                "foreach ($sample in $counter.CounterSamples) {" +
-                                "$sample.InstanceName + ',' + $sample.CookedValue" +
-                                "}";
+                var script = "$counter = Get-Counter '\\GPU Engine(*engtype_3D)\\Utilization Percentage';" +
+                             "foreach ($sample in $counter.CounterSamples) {" +
+                             "$sample.InstanceName + ',' + $sample.CookedValue" +
+                             "}";
                 PowerShellInstance.AddScript(script);
 
                 // Invoke execution on the PowerShell object

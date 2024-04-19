@@ -46,7 +46,7 @@ namespace Zal
 
         private void setupTrayMenu()
         {
-            NotifyIcon ni = new NotifyIcon();
+            var ni = new NotifyIcon();
             ni.Icon = System.Drawing.Icon.ExtractAssociatedIcon(Process.GetCurrentProcess().MainModule.FileName);
             ni.Visible = true;
             var trayMenu = new ContextMenuStrip();

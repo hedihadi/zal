@@ -16,7 +16,7 @@ namespace Zal.HelperFunctions.SpecificFunctions
 
         public IList<int>? getFocusedWindowProcessId()
         {
-            IntPtr hwnd = GetForegroundWindow();
+            var hwnd = GetForegroundWindow();
 
             // The foreground window can be NULL in certain circumstances,
             // such as when a window is losing activation.

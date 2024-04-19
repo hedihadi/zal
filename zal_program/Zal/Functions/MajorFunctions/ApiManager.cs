@@ -1,4 +1,4 @@
-using Firebase.Auth.UI;
+﻿using Firebase.Auth.UI;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -11,9 +11,9 @@ namespace Zal.Functions.MajorFunctions
     {
         public static async Task SendAlertToMobile(NotificationData notification, double value)
         {
-            string displayName = $"{notification.childKey.displayName ?? notification.key.ToString()} {ConvertCamelToSpaced(notification.childKey.keyName)}";
-            string factorTypeText = notification.factorType == NotificationFactorType.Lower ? "fell below" : "reached";
-            string body = $"{displayName} {factorTypeText} {FormatDouble(value)}{notification.childKey.unit}";
+            var displayName = $"{notification.childKey.displayName ?? notification.key.ToString()} {ConvertCamelToSpaced(notification.childKey.keyName)}";
+            var factorTypeText = notification.factorType == NotificationFactorType.Lower ? "fell below" : "reached";
+            var body = $"{displayName} {factorTypeText} {FormatDouble(value)}{notification.childKey.unit}";
 
             await SendDataToDatabase("pc_message", new Dictionary<string, dynamic>
         {
@@ -26,10 +26,10 @@ namespace Zal.Functions.MajorFunctions
             // Assuming FirebaseAuth is a class with a static property 'Instance' and 'Instance.TokenProvider' is a property returning a token.
             string idToken = await FirebaseUI.Instance.Client.User.GetIdTokenAsync();
 
-            string databaseUrl = "https://zalapp.com/api"; // Replace this with your database URL
-            string url = $"{databaseUrl}/{route}";
+            var databaseUrl = "https://zalapp.com/api"; // Replace this with your database URL
+            var url = $"{databaseUrl}/{route}";
 
-            string json = data != null ? JsonConvert.SerializeObject(data) : "{}";
+            var json = data != null ? JsonConvert.SerializeObject(data) : "{}";
 
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
@@ -41,7 +41,7 @@ namespace Zal.Functions.MajorFunctions
         }
         private static string FormatDouble(double number)
         {
-            string formattedString = number.ToString((number == (int)number) ? "F0" : "F1");
+            var formattedString = number.ToString((number == (int)number) ? "F0" : "F1");
             return formattedString.EndsWith(".0") ? formattedString.Split('.')[0] : formattedString;
         }
 
@@ -50,10 +50,10 @@ namespace Zal.Functions.MajorFunctions
             if (string.IsNullOrEmpty(camelCase))
                 return camelCase;
 
-            StringBuilder spacedString = new StringBuilder();
+            var spacedString = new StringBuilder();
             spacedString.Append(camelCase[0]);
 
-            for (int i = 1; i < camelCase.Length; i++)
+            for (var i = 1; i < camelCase.Length; i++)
             {
                 if (char.IsUpper(camelCase[i]))
                 {

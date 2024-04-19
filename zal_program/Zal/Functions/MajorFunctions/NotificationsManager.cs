@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -160,7 +160,7 @@ namespace Zal.Functions.MajorFunctions
                 }
 
                 ///if [isDataAboveValue] is true, that means we theoretically should send the notification
-                bool isDataAboveValue = false;
+                var isDataAboveValue = false;
 
                 ///determining [isDataAboveValue]
                 if (notification.factorType == NotificationFactorType.Higher)

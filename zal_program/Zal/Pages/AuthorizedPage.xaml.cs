@@ -110,7 +110,7 @@ namespace Zal
                             else
                             {
                                 //check if the primary gpu exists inside this data, this is a useful check in case of the user changed their gpu
-                                bool doesPrimaryGpuExist = false;
+                                var doesPrimaryGpuExist = false;
                                 foreach (var gpu in data.gpuData)
                                 {
                                     if (gpu.name == primaryGpu.ToString())
@@ -147,7 +147,7 @@ namespace Zal
                     ListBox.Items.RemoveAt(ListBox.Items.Count - 1);
                 }
 
-                TextBlock block = new TextBlock();
+                var block = new TextBlock();
                 block.Text = $"{DateTime.Now.ToString("h:mm:ss tt")} - {text}";
                 ListBox.Items.Insert(0, block);
             }));
@@ -155,23 +155,23 @@ namespace Zal
 
         private async Task checkForUpdates()
         {
-            string latestVersion = new WebClient().DownloadString("https://zalapp.com/program-version");
+            var latestVersion = new WebClient().DownloadString("https://zalapp.com/program-version");
             var currentVersion = System.Windows.Forms.Application.ProductVersion;
             if (latestVersion != currentVersion)
             {
                 var dialog = System.Windows.Forms.MessageBox.Show("New update is available! do you want to update?", "Zal", MessageBoxButtons.YesNo);
                 if (dialog == DialogResult.Yes)
                 {
-                    using (WebClient webClient = new WebClient())
+                    using (var webClient = new WebClient())
                     {
                         try
                         {
-                            string fileName = Path.Combine(Path.GetTempPath(), "zal.msi");
+                            var fileName = Path.Combine(Path.GetTempPath(), "zal.msi");
                             webClient.DownloadFile("https://zalapp.com/zal.msi", fileName);
                             Console.WriteLine("File downloaded successfully.");
 
-                            Process p = new Process();
-                            ProcessStartInfo pi = new ProcessStartInfo();
+                            var p = new Process();
+                            var pi = new ProcessStartInfo();
                             pi.UseShellExecute = true;
                             pi.FileName = fileName;
                             p.StartInfo = pi;
@@ -192,7 +192,7 @@ namespace Zal
             //replace false with saved settings
             runAtStartup.IsChecked = runOnStartup;
 
-            RegistryKey rk = Registry.CurrentUser.OpenSubKey
+            var rk = Registry.CurrentUser.OpenSubKey
                 ("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
 
             if (runOnStartup)

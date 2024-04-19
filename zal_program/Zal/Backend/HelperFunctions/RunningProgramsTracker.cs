@@ -80,7 +80,7 @@ namespace ZalConsole.HelperFunctions
         private string loadJson()
         {
             var directory = getJsonPath();
-            using (StreamReader fs = File.OpenText(Path.Combine(directory, "processes.json")))
+            using (var fs = File.OpenText(Path.Combine(directory, "processes.json")))
             {
                 return fs.ReadToEnd();
             }
@@ -105,15 +105,15 @@ namespace ZalConsole.HelperFunctions
                 result.Add(gpuProcess.Value["name"]);
             }
 
-            foreach (Process process in processes)
+            foreach (var process in processes)
             {
                 // Check if the process has a main window title
                 if (!string.IsNullOrEmpty(process.MainWindowTitle))
                 {
                     try
                     {
-                        FileVersionInfo fileVersionInfo = FileVersionInfo.GetVersionInfo(process.MainModule.FileName);
-                        string fileDescription = fileVersionInfo.FileDescription;
+                        var fileVersionInfo = FileVersionInfo.GetVersionInfo(process.MainModule.FileName);
+                        var fileDescription = fileVersionInfo.FileDescription;
                         if (fileDescription == "") continue;
                         var foundProcessInfo = processInfos.Where((a) => a.name == fileDescription).ToList().FirstOrDefault();
                         if (foundProcessInfo != null && foundProcessInfo.isBlacklisted)

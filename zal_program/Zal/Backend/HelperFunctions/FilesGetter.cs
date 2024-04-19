@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
@@ -178,7 +178,7 @@ namespace ZalConsole.HelperFunctions
         private List<FileData> getDirectoryFiles(string path)
         {
             var result = new List<FileData>();
-            DirectoryInfo info = new DirectoryInfo(path);
+            var info = new DirectoryInfo(path);
             if (info.Exists)
             {
 
@@ -189,7 +189,7 @@ namespace ZalConsole.HelperFunctions
                     {
                         continue;
                     }
-                    FileData filed = new FileData();
+                    var filed = new FileData();
                     filed.name = file.Name;
                     filed.extension = file.Extension;
                     filed.directory = file.DirectoryName;
@@ -206,7 +206,7 @@ namespace ZalConsole.HelperFunctions
         private List<FileData> getDirectoryFolders(string path)
         {
             var result = new List<FileData>();
-            DirectoryInfo info = new DirectoryInfo(path);
+            var info = new DirectoryInfo(path);
             if (info.Exists)
             {
 
@@ -217,7 +217,7 @@ namespace ZalConsole.HelperFunctions
                     {
                         continue;
                     }
-                    FileData folder = new FileData();
+                    var folder = new FileData();
                     folder.directory = path;
                     folder.name = directory.Name;
                     folder.fileType = "folder";
@@ -231,8 +231,8 @@ namespace ZalConsole.HelperFunctions
         }
         public static long ConvertToUnixTimestamp(DateTime date)
         {
-            DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-            TimeSpan diff = date.ToUniversalTime() - origin;
+            var origin = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+            var diff = date.ToUniversalTime() - origin;
             return ((long)diff.TotalMilliseconds);
         }
         private List<FileData> getDrives()
@@ -241,7 +241,7 @@ namespace ZalConsole.HelperFunctions
             List<FileData> result = new List<FileData>();
             foreach (var drive in drives)
             {
-                FileData data = new FileData();
+                var data = new FileData();
                 data.label = drive.VolumeLabel;
                 data.name = drive.Name;
                 data.fileType = "folder";

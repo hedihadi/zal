@@ -84,9 +84,9 @@ namespace Zal.Functions.MajorFunctions
             dataChannel.onmessage += (datachan, type, data) =>
             {
                 Debug.WriteLine("message");
-                string message = Encoding.UTF8.GetString(data);
+                var message = Encoding.UTF8.GetString(data);
                 var parsedMessage = JsonConvert.DeserializeObject<Dictionary<string, object>>(message);
-                WebrtcData webrtcData = new WebrtcData();
+                var webrtcData = new WebrtcData();
                 webrtcData.data = parsedMessage["data"];
                 webrtcData.name = (string)parsedMessage["name"];
                 messageReceivedAsync(webrtcData);
@@ -163,7 +163,7 @@ namespace Zal.Functions.MajorFunctions
             }
             else if (messageData.name == "restart_admin")
             {
-                string selfPath = Process.GetCurrentProcess().MainModule.FileName;
+                var selfPath = Process.GetCurrentProcess().MainModule.FileName;
 
                 var proc = new Process
                 {

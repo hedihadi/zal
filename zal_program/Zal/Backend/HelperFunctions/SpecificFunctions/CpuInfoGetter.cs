@@ -14,7 +14,7 @@ namespace Zal.HelperFunctions.SpecificcomputerDataFunctions
                                     .Get()
                                     .Cast<ManagementObject>()
                                     .First();
-            cpuInfo cpuInfo = new cpuInfo();
+            var cpuInfo = new cpuInfo();
             cpuInfo.socket = (string)cpu["SocketDesignation"];
             cpuInfo.name = (string)cpu["Name"];
             cpuInfo.speed = (uint)cpu["MaxClockSpeed"];
