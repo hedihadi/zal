@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using SIPSorcery.Net;
 using System;
 using System.Collections.Generic;
@@ -14,8 +14,8 @@ namespace Zal.Functions.MajorFunctions
 {
     public class Webrtc
     {
-        readonly RTCPeerConnection? pc;
-        RTCDataChannel? dataChannel;
+        private readonly RTCPeerConnection? pc;
+        private RTCDataChannel? dataChannel;
         public event EventHandler<RTCPeerConnectionState> connectionStateChanged;
         public event EventHandler<WebrtcData> messageReceivedEvent;
 

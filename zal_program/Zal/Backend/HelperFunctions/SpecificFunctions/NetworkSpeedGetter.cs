@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.NetworkInformation;
@@ -9,7 +9,7 @@ using Zal.Constants.Models;
 
 namespace ZalConsole.HelperFunctions.SpecificFunctions
 {
-    class NetworkSpeedGetter
+    internal class NetworkSpeedGetter
     {
         public networkSpeed primaryNetworkSpeed;
         private readonly Timer networkInterfaceTimer;

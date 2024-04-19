@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -16,8 +16,8 @@ namespace Zal.HelperFunctions
         public event EventHandler<dynamic> sendFpsData;
         private readonly List<double> fpsDatas = [];
         private readonly int processId;
-        readonly Stopwatch stopwatch = new Stopwatch();
-        bool shouldLog = false;
+        private readonly Stopwatch stopwatch = new Stopwatch();
+        private bool shouldLog = false;
 
         public FpsDataGetter()
         {

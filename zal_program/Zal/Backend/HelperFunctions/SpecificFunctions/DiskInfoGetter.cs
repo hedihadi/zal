@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Management;
 using System.Text.RegularExpressions;
@@ -7,7 +7,7 @@ using ZalConsole.HelperFunctions;
 
 namespace Zal.HelperFunctions.SpecificFunctions
 {
-     class diskInfoGetter
+    internal class diskInfoGetter
     {
         static public diskInfo GetdiskInfo(int diskNumber,crystalDiskData? crystalDiskData)
         {
@@ -78,7 +78,7 @@ namespace Zal.HelperFunctions.SpecificFunctions
                 if (driveLetter == driveName)
                 {
                     return drive;
-                 
+
                 }
             }
             return null;

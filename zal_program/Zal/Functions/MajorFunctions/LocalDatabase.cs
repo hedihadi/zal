@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,7 +8,7 @@ namespace Zal
 {
     public class LocalDatabase
     {
-        readonly Dictionary<string, object> data = new Dictionary<string, object>();
+        private readonly Dictionary<string, object> data = new Dictionary<string, object>();
         private static LocalDatabase instance;
         private readonly SemaphoreSlim _writeSemaphore = new SemaphoreSlim(1);
 

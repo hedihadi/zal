@@ -1,9 +1,9 @@
-﻿using System.Windows.Forms;
+using System.Windows.Forms;
 using Zal.Constants.Models;
 
 namespace Zal.HelperFunctions.SpecificFunctions
 {
-    class batteryDataGetter
+    internal class batteryDataGetter
     {
         public static batteryData getbatteryData()
         {

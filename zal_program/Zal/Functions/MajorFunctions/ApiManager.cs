@@ -1,4 +1,4 @@
-﻿using Firebase.Auth.UI;
+using Firebase.Auth.UI;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -44,7 +44,8 @@ namespace Zal.Functions.MajorFunctions
             string formattedString = number.ToString((number == (int)number) ? "F0" : "F1");
             return formattedString.EndsWith(".0") ? formattedString.Split('.')[0] : formattedString;
         }
-        static string ConvertCamelToSpaced(string camelCase)
+
+        private static string ConvertCamelToSpaced(string camelCase)
         {
             if (string.IsNullOrEmpty(camelCase))
                 return camelCase;

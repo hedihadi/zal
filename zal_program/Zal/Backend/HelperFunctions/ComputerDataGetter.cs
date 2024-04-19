@@ -1,4 +1,4 @@
-﻿using LibreHardwareMonitor.Hardware;
+using LibreHardwareMonitor.Hardware;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -227,7 +227,7 @@ namespace Zal.HelperFunctions
     }
 }
 
-class UpdateVisitor : IVisitor
+internal class UpdateVisitor : IVisitor
 {
     public void VisitComputer(IComputer computer)
     {

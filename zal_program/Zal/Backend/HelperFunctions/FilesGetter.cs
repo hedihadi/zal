@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
@@ -8,8 +8,9 @@ namespace ZalConsole.HelperFunctions
     public class FilesGetter
     {
         ///used to send file to mobile, this can be used to stop sending the file.
-        readonly CancellationTokenSource cts;
-        readonly int chunkSize = 153600;
+        private readonly CancellationTokenSource cts;
+
+        private readonly int chunkSize = 153600;
         // SocketIOClient.SocketIO client;
         //var client;
         // public FilesGetter(SocketIOClient.SocketIO client) {

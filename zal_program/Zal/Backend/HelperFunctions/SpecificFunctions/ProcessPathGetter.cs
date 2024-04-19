@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.IO;
 
 namespace Zal.HelperFunctions.SpecificFunctions
 {
-    class ProcesspathGetter
+    internal class ProcesspathGetter
     {
         ///saves process path
         public static void save(string name, string processPath)

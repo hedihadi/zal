@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -10,7 +10,7 @@ using Zal.HelperFunctions.SpecificFunctions;
 
 namespace ZalConsole.HelperFunctions.SpecificFunctions
 {
-    class GpuUtilizationGetter
+    internal class GpuUtilizationGetter
     {
         //this function is based on this https://github.com/GameTechDev/PresentMon/issues/189
         //and some modifications to make the data to be parsed easier from c# side.
@@ -107,7 +107,6 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
                 if (PowerShellInstance.Streams.Error.Count > 0)
                 {
                     Logger.Log($"error in powershell output: ```{PowerShellInstance.Streams.Error[0].Exception}```,```{PowerShellInstance.Streams.Error[0].ErrorDetails},{PowerShellInstance.Streams.Error[0].ScriptStackTrace}```, data: ```{Newtonsoft.Json.JsonConvert.SerializeObject(PSOutput.ToArray().Select(e => e.ToString()).ToList())}```");
-
                 }
                 else
                 {

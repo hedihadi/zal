@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Management;
 using Zal.Constants.Models;
 
 namespace Zal.HelperFunctions.SpecificFunctions
 {
-    class ramPieceDataGetter
+    internal class ramPieceDataGetter
     {
          public static List<ramPieceData> GetRamPiecesData()
         {

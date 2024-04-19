@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -46,7 +46,7 @@ namespace Zal.Functions.MajorFunctions
             }
         }
 
-        async Task setBasicNotificatons()
+        private async Task setBasicNotificatons()
         {
 
             await addNewNotification(new NotificationData(

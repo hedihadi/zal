@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -9,7 +9,7 @@ using ZalConsole.HelperFunctions;
 
 namespace Zal.HelperFunctions.SpecificFunctions
 {
-    class CrystaldiskInfoGetter
+    internal class CrystaldiskInfoGetter
     {
         static public List<crystalDiskData>? getcrystalDiskData()
         {
@@ -244,7 +244,7 @@ namespace Zal.HelperFunctions.SpecificFunctions
             return hardwareList;
         }
 
-        static List<string> ParseDriveLettersFromString(string input)
+        private static List<string> ParseDriveLettersFromString(string input)
         {
             List<string> driveLetters = new List<string>();
 
