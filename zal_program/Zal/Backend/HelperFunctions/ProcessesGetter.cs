@@ -9,8 +9,8 @@ namespace Zal.HelperFunctions
     public class ProcessesGetter
     {
         private readonly SocketIOClient.SocketIO client = new("http://localhost:6511/");
-        private readonly Dictionary<string, TaskCompletionSource<string>> taskCompletionSources = new();
-        public Dictionary<string, object> data = new();
+        private readonly Dictionary<string, TaskCompletionSource<string>> taskCompletionSources = [];
+        public Dictionary<string, object> data = [];
 
         //this list contains the names of processes that we've already loaded and sent to the phone.
         //this is to save network bandwidth as icons are quite large (i think about 5-10kb each),

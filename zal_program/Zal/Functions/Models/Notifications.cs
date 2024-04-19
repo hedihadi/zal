@@ -57,9 +57,11 @@ namespace Zal.Functions.Models
 
         public Dictionary<string, object> ToDictionary()
         {
-            var result = new Dictionary<string, object>();
-            result.Add("keyName", keyName);
-            result.Add("unit", unit);
+            var result = new Dictionary<string, object>
+            {
+                { "keyName", keyName },
+                { "unit", unit }
+            };
 
             if (displayName != null)
             {
@@ -143,13 +145,15 @@ namespace Zal.Functions.Models
 
         public Dictionary<string, object> ToDictionary()
         {
-            var result = new Dictionary<string, object>();
-            result.Add("key", key.ToString());
-            result.Add("childKey", childKey.ToDictionary());
-            result.Add("factorType", factorType.ToString());
-            result.Add("factorValue", factorValue);
-            result.Add("secondsThreshold", secondsThreshold);
-            result.Add("suspended", suspended);
+            var result = new Dictionary<string, object>
+            {
+                { "key", key.ToString() },
+                { "childKey", childKey.ToDictionary() },
+                { "factorType", factorType.ToString() },
+                { "factorValue", factorValue },
+                { "secondsThreshold", secondsThreshold },
+                { "suspended", suspended }
+            };
 
             return result;
         }

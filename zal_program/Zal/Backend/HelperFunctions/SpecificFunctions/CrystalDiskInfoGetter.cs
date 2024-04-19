@@ -75,7 +75,7 @@ namespace Zal.HelperFunctions.SpecificFunctions
 
                     currentHardware = new crystalDiskData
                     {
-                        info = new Dictionary<string, dynamic>(),
+                        info = [],
                     };
                 }
                 else if (currentHardware != null)

@@ -9,7 +9,7 @@ namespace Zal
 {
     public class LocalDatabase
     {
-        private readonly Dictionary<string, object> data = new();
+        private readonly Dictionary<string, object> data = [];
         private static LocalDatabase instance;
         private readonly SemaphoreSlim _writeSemaphore = new(1);
 
@@ -39,7 +39,7 @@ namespace Zal
                 }
             }
 
-            instance = new LocalDatabase(new Dictionary<string, object>());
+            instance = new LocalDatabase([]);
         }
 
         public static LocalDatabase Instance
