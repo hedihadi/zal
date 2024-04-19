@@ -9,11 +9,10 @@ namespace Zal.HelperFunctions.SpecificFunctions
 {
     internal class diskInfoGetter
     {
-        static public diskInfo GetdiskInfo(int diskNumber,crystalDiskData? crystalDiskData)
+        public static diskInfo GetdiskInfo(int diskNumber, crystalDiskData? crystalDiskData)
         {
             foreach (ManagementObject disk in GlobalClass.Instance.getWin32DiskDrives())
             {
-
                 //iterate until we get the disk number we want
                 int diskIndex = Convert.ToInt32(disk["Index"]);
                 if (diskIndex != diskNumber) continue;
@@ -36,37 +35,38 @@ namespace Zal.HelperFunctions.SpecificFunctions
                             partitionInfo.freeSpace = driveInfo.TotalFreeSpace;
                             partitionInfo.label = driveInfo.VolumeLabel;
                         }
-
-
                     }
                     else
                     {
 
                     }
+
                     partitionInfo.size = Convert.ToInt64(partition["Size"]);
                     diskInfo.partitions.Add(partitionInfo);
                 }
 
                 diskInfo.freeSpace = GetFreeSpaceForDisk(diskNumber);
                 return diskInfo;
-
             }
 
             return null;
         }
+
         //this is a fallback function in case crystalDiskData is not available
-        static private string GetDriveLetter(ManagementObject partition)
+        private static string GetDriveLetter(ManagementObject partition)
         {
             using (ManagementObjectSearcher searcher = new ManagementObjectSearcher($"ASSOCIATORS OF {{Win32_DiskPartition.DeviceID='{partition["DeviceID"]}'}} WHERE AssocClass=Win32_LogicalDiskToPartition"))
             {
                 foreach (ManagementObject logicalDisk in searcher.Get())
                 {
 
-                    return logicalDisk["DeviceID"].ToString().Replace(":","");
+                    return logicalDisk["DeviceID"].ToString().Replace(":", "");
                 }
             }
+
             return "";
         }
+
         private static DriveInfo? GetDriveByLetter(string driveName)
         {
             foreach (DriveInfo drive in DriveInfo.GetDrives())
@@ -81,9 +81,11 @@ namespace Zal.HelperFunctions.SpecificFunctions
 
                 }
             }
+
             return null;
         }
-        static private ulong GetFreeSpaceForDisk(int diskNumber)
+
+        private static ulong GetFreeSpaceForDisk(int diskNumber)
         {
 
             var managementObjectDisks = GlobalClass.Instance.getWin32DiskPartitionsForFreeDiskSpace();
@@ -112,7 +114,5 @@ namespace Zal.HelperFunctions.SpecificFunctions
 
             return 0;
         }
-
     }
-
 }

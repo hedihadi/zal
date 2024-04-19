@@ -11,7 +11,7 @@ namespace Zal.HelperFunctions.SpecificFunctions
 {
     internal class CrystaldiskInfoGetter
     {
-        static public List<crystalDiskData>? getcrystalDiskData()
+        public static List<crystalDiskData>? getcrystalDiskData()
         {
             if (IsAdminstratorChecker.IsAdministrator() == false)
             {
@@ -57,7 +57,7 @@ namespace Zal.HelperFunctions.SpecificFunctions
             return null;
         }
 
-        static private List<crystalDiskData> parseCrystaldiskInfoOutput(string filePath)
+        private static List<crystalDiskData> parseCrystaldiskInfoOutput(string filePath)
         {
             List<crystalDiskData> hardwareList = new List<crystalDiskData>();
             crystalDiskData currentHardware = null;
