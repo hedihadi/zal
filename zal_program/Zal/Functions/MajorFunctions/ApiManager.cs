@@ -48,7 +48,9 @@ namespace Zal.Functions.MajorFunctions
         private static string ConvertCamelToSpaced(string camelCase)
         {
             if (string.IsNullOrEmpty(camelCase))
+            {
                 return camelCase;
+            }
 
             var spacedString = new StringBuilder();
             spacedString.Append(camelCase[0]);

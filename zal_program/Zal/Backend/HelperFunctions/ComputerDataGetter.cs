@@ -254,7 +254,10 @@ internal class UpdateVisitor : IVisitor
             }
         }
 
-        foreach (var subHardware in hardware.SubHardware) subHardware.Accept(this);
+        foreach (var subHardware in hardware.SubHardware)
+        {
+            subHardware.Accept(this);
+        }
     }
 
     public void VisitSensor(ISensor sensor)

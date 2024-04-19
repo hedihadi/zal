@@ -34,7 +34,10 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
                 {
                 }
 
-                if (usage == 0) continue;
+                if (usage == 0)
+                {
+                    continue;
+                }
 
                 var p = Process.GetProcessById(pid);
                 try
@@ -65,7 +68,10 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
                 {
                     if (skipBlackListedProcesses)
                     {
-                        if (foundProcessInfo.isBlacklisted == true) continue;
+                        if (foundProcessInfo.isBlacklisted == true)
+                        {
+                            continue;
+                        }
                     }
 
                     if (foundProcessInfo.displayName != null)

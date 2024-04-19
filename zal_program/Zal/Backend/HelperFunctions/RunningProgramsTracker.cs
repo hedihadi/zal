@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -114,7 +114,11 @@ namespace ZalConsole.HelperFunctions
                     {
                         var fileVersionInfo = FileVersionInfo.GetVersionInfo(process.MainModule.FileName);
                         var fileDescription = fileVersionInfo.FileDescription;
-                        if (fileDescription == "") continue;
+                        if (fileDescription == "")
+                        {
+                            continue;
+                        }
+
                         var foundProcessInfo = processInfos.Where((a) => a.name == fileDescription).ToList().FirstOrDefault();
                         if (foundProcessInfo != null && foundProcessInfo.isBlacklisted)
                         {

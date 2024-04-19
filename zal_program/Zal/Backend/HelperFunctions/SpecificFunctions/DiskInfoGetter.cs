@@ -15,7 +15,10 @@ namespace Zal.HelperFunctions.SpecificFunctions
             {
                 //iterate until we get the disk number we want
                 var diskIndex = Convert.ToInt32(disk["Index"]);
-                if (diskIndex != diskNumber) continue;
+                if (diskIndex != diskNumber)
+                {
+                    continue;
+                }
 
                 var diskInfo = new diskInfo
                 {

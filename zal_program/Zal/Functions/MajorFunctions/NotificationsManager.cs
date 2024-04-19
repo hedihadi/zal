@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -80,14 +80,20 @@ namespace Zal.Functions.MajorFunctions
 
         public async Task checkNotifications(computerData data)
         {
-            if (notifications.Count == 0) return;
+            if (notifications.Count == 0)
+            {
+                return;
+            }
 
             var serializedData = Newtonsoft.Json.JsonConvert.SerializeObject(data);
             var dictionaryData = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, object>>(serializedData);
 
             foreach (var notification in notifications)
             {
-                if (notification.suspended) continue;
+                if (notification.suspended)
+                {
+                    continue;
+                }
 
                 double? currentValue = null;
                 string? id = null;
@@ -127,14 +133,26 @@ namespace Zal.Functions.MajorFunctions
                     if (keyName == "totalUpload")
                     {
                         var primaryInterface = data.networkInterfaces.Where(network => network.isPrimary).FirstOrDefault();
-                        if (primaryInterface != null) currentValue = bytesToGB(primaryInterface.bytesSent);
-                        else currentValue = 0;
+                        if (primaryInterface != null)
+                        {
+                            currentValue = bytesToGB(primaryInterface.bytesSent);
+                        }
+                        else
+                        {
+                            currentValue = 0;
+                        }
                     }
                     else if (keyName == "totalDownload")
                     {
                         var primaryInterface = data.networkInterfaces.Where(network => network.isPrimary).FirstOrDefault();
-                        if (primaryInterface != null) currentValue = bytesToGB(primaryInterface.bytesReceived);
-                        else currentValue = 0;
+                        if (primaryInterface != null)
+                        {
+                            currentValue = bytesToGB(primaryInterface.bytesReceived);
+                        }
+                        else
+                        {
+                            currentValue = 0;
+                        }
                     }
                     else if (keyName == "downloadSpeed")
                     {
@@ -165,11 +183,17 @@ namespace Zal.Functions.MajorFunctions
                 ///determining [isDataAboveValue]
                 if (notification.factorType == NotificationFactorType.Higher)
                 {
-                    if (currentValue >= notification.factorValue) isDataAboveValue = true;
+                    if (currentValue >= notification.factorValue)
+                    {
+                        isDataAboveValue = true;
+                    }
                 }
                 else
                 {
-                    if (currentValue <= notification.factorValue) isDataAboveValue = true;
+                    if (currentValue <= notification.factorValue)
+                    {
+                        isDataAboveValue = true;
+                    }
                 }
 
                 if (isDataAboveValue)

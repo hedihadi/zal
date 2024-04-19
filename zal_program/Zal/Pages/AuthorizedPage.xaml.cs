@@ -200,9 +200,13 @@ namespace Zal
                 ("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
 
             if (runOnStartup)
+            {
                 rk.SetValue("Zal", Process.GetCurrentProcess().MainModule.FileName);
+            }
             else
+            {
                 rk.DeleteValue("Zal", false);
+            }
         }
 
         private void LogoutClicked(object sender, RoutedEventArgs e)
