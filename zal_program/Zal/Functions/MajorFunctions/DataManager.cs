@@ -1,10 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using Zal;
 using Zal.Constants.Models;
 using Zal.MajorFunctions;
@@ -17,9 +18,9 @@ namespace Zal.Functions.MajorFunctions
     public class DataManager
     {
         //if this is true, the loop will run every 1 second. if false, the loop will run every 5 seconds.
-        private bool isMobileConnected = false;
+        private bool isMobileConnected;
         private readonly EventHandler<computerData> computerDataReceived;
-        private readonly ChartsDataManager chartsDataManager = new ChartsDataManager();
+        private readonly ChartsDataManager chartsDataManager = new();
         public DataManager(EventHandler<computerData> computerDataReceived)
         {
             this.computerDataReceived = computerDataReceived;
@@ -77,8 +78,8 @@ namespace Zal.Functions.MajorFunctions
                 data["charts"] = await chartsDataManager.updateAsync(computerData);
 
                 //this whole thing is just to replace the gpus with only the primary gpu
-                var serializedComputerData = Newtonsoft.Json.JsonConvert.SerializeObject(computerData);
-                var dictionaryComputerData = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, object>>(serializedComputerData);
+                var serializedComputerData = JsonConvert.SerializeObject(computerData);
+                var dictionaryComputerData = JsonConvert.DeserializeObject<Dictionary<string, object>>(serializedComputerData);
                 dictionaryComputerData["gpuData"] = await ChartsDataManager.getPrimaryGpu(computerData);
                 dictionaryComputerData["availableGpus"] = computerData.gpuData.Select(gpu => gpu.name).ToList();
                 data["computerData"] = dictionaryComputerData;
@@ -88,40 +89,36 @@ namespace Zal.Functions.MajorFunctions
         private async Task sendDataToMobile()
         {
             var data = await getBackendData();
-            var compressedData = CompressGzip(Newtonsoft.Json.JsonConvert.SerializeObject(data));
+            var compressedData = CompressGzip(JsonConvert.SerializeObject(data));
             FrontendGlobalClass.Instance.webrtc?.sendMessage("pc_data", compressedData);
         }
-        static string CompressGzip(string text)
-        {
-            byte[] enCodedJson = Encoding.UTF8.GetBytes(text);
 
-            using (MemoryStream memoryStream = new MemoryStream())
+        private static string CompressGzip(string text)
+        {
+            var enCodedJson = Encoding.UTF8.GetBytes(text);
+
+            using (var memoryStream = new MemoryStream())
             {
-                using (GZipStream gzipStream = new GZipStream(memoryStream, CompressionMode.Compress))
+                using (var gzipStream = new GZipStream(memoryStream, CompressionMode.Compress))
                 {
                     gzipStream.Write(enCodedJson, 0, enCodedJson.Length);
                 }
 
-                byte[] gZipJson = memoryStream.ToArray();
-                string base64Json = Convert.ToBase64String(gZipJson);
+                var gZipJson = memoryStream.ToArray();
+                var base64Json = Convert.ToBase64String(gZipJson);
                 return base64Json;
             }
         }
     }
 }
 
-class ChartsDataManager
+internal class ChartsDataManager
 {
-    private readonly Dictionary<string, List<object>> data = new Dictionary<string, List<object>>();
-
-    public ChartsDataManager()
-    {
-    }
+    private readonly Dictionary<string, List<object>> data = [];
 
     public async Task<Dictionary<string, List<object>>> updateAsync(computerData computerData)
     {
         var primaryGpu = await getPrimaryGpu(computerData);
-        var empty = new List<object>();
         if (primaryGpu != null)
         {
             data["gpuLoad"] = addElementToList(data.GetValueOrDefault("gpuLoad", []), primaryGpu.corePercentage);
@@ -166,11 +163,9 @@ class ChartsDataManager
         {
             return computerData.gpuData.First();
         }
-        else
-        {
-            Logger.Log("available gpu is 0, will return no gpu");
-            return null;
-        }
+
+        Logger.Log("available gpu is 0, will return no gpu");
+        return null;
     }
 
     private static List<object> addElementToList(List<object>? oldList, object element)

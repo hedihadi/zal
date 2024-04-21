@@ -1,4 +1,4 @@
-﻿using LibreHardwareMonitor.Hardware;
+using LibreHardwareMonitor.Hardware;
 
 namespace Zal.Constants.Models
 {
@@ -23,7 +23,7 @@ namespace Zal.Constants.Models
                 return;
             }
 
-            foreach (ISensor sensor in hardware.Sensors)
+            foreach (var sensor in hardware.Sensors)
             {
                 if (sensor.SensorType == SensorType.Clock && sensor.Name == "GPU Core")
                 {

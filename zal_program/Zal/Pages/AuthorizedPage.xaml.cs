@@ -1,6 +1,3 @@
-﻿using Firebase.Auth.UI;
-using Microsoft.Win32;
-using SIPSorcery.Net;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -13,9 +10,15 @@ using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Media;
 using Windows.UI.Notifications;
+using Firebase.Auth.UI;
+using Microsoft.Win32;
+using Newtonsoft.Json;
+using SIPSorcery.Net;
 using Zal.Functions.Models;
 using Zal.MajorFunctions;
 using Application = System.Windows.Application;
+using Clipboard = System.Windows.Clipboard;
+using MessageBox = System.Windows.Forms.MessageBox;
 
 namespace Zal
 {
@@ -100,7 +103,6 @@ namespace Zal
                         {
                             var primaryGpu = LocalDatabase.Instance.readKey("primaryGpu");
 
-
                             if (primaryGpu == null)
                             {
                                 Logger.Log($"setting primary gpu to {data.gpuData.First().name}");
@@ -110,7 +112,7 @@ namespace Zal
                             else
                             {
                                 //check if the primary gpu exists inside this data, this is a useful check in case of the user changed their gpu
-                                bool doesPrimaryGpuExist = false;
+                                var doesPrimaryGpuExist = false;
                                 foreach (var gpu in data.gpuData)
                                 {
                                     if (gpu.name == primaryGpu.ToString())
@@ -147,39 +149,43 @@ namespace Zal
                     ListBox.Items.RemoveAt(ListBox.Items.Count - 1);
                 }
 
-                TextBlock block = new TextBlock();
-                block.Text = $"{DateTime.Now.ToString("h:mm:ss tt")} - {text}";
+                var block = new TextBlock
+                {
+                    Text = $"{DateTime.Now.ToString("h:mm:ss tt")} - {text}",
+                };
                 ListBox.Items.Insert(0, block);
             }));
         }
 
         private async Task checkForUpdates()
         {
-            string latestVersion = new WebClient().DownloadString("https://zalapp.com/program-version");
+            var latestVersion = new WebClient().DownloadString("https://zalapp.com/program-version");
             var currentVersion = System.Windows.Forms.Application.ProductVersion;
             if (latestVersion != currentVersion)
             {
-                var dialog = System.Windows.Forms.MessageBox.Show("New update is available! do you want to update?", "Zal", MessageBoxButtons.YesNo);
+                var dialog = MessageBox.Show("New update is available! do you want to update?", "Zal", MessageBoxButtons.YesNo);
                 if (dialog == DialogResult.Yes)
                 {
-                    using (WebClient webClient = new WebClient())
+                    using (var webClient = new WebClient())
                     {
                         try
                         {
-                            string fileName = Path.Combine(Path.GetTempPath(), "zal.msi");
+                            var fileName = Path.Combine(Path.GetTempPath(), "zal.msi");
                             webClient.DownloadFile("https://zalapp.com/zal.msi", fileName);
                             Console.WriteLine("File downloaded successfully.");
 
-                            Process p = new Process();
-                            ProcessStartInfo pi = new ProcessStartInfo();
-                            pi.UseShellExecute = true;
-                            pi.FileName = fileName;
+                            var p = new Process();
+                            var pi = new ProcessStartInfo
+                            {
+                                UseShellExecute = true,
+                                FileName = fileName,
+                            };
                             p.StartInfo = pi;
                             p.Start();
                         }
                         catch (Exception ex)
                         {
-                            System.Windows.Forms.MessageBox.Show("An error occurred updating Zal: " + ex.Message);
+                            MessageBox.Show("An error occurred updating Zal: " + ex.Message);
                         }
                     }
                 }
@@ -192,13 +198,17 @@ namespace Zal
             //replace false with saved settings
             runAtStartup.IsChecked = runOnStartup;
 
-            RegistryKey rk = Registry.CurrentUser.OpenSubKey
+            var rk = Registry.CurrentUser.OpenSubKey
                 ("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
 
             if (runOnStartup)
+            {
                 rk.SetValue("Zal", Process.GetCurrentProcess().MainModule.FileName);
+            }
             else
+            {
                 rk.DeleteValue("Zal", false);
+            }
         }
 
         private void LogoutClicked(object sender, RoutedEventArgs e)
@@ -214,7 +224,7 @@ namespace Zal
         private async void copyBackendData(object sender, RoutedEventArgs e)
         {
             var data = await FrontendGlobalClass.Instance.dataManager.getBackendData();
-            System.Windows.Clipboard.SetText(Newtonsoft.Json.JsonConvert.SerializeObject(data));
+            Clipboard.SetText(JsonConvert.SerializeObject(data));
 
             var toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastImageAndText02);
 
@@ -227,7 +237,7 @@ namespace Zal
         private void copyRawBackendData(object sender, RoutedEventArgs e)
         {
             var data = FrontendGlobalClass.Instance.backend.getEntireComputerData();
-            System.Windows.Clipboard.SetText(Newtonsoft.Json.JsonConvert.SerializeObject(data));
+            Clipboard.SetText(JsonConvert.SerializeObject(data));
 
             var toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastImageAndText02);
 

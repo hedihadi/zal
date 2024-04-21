@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -63,7 +63,7 @@ namespace ZalConsole.HelperFunctions
 
                     if (processesThatStillRunning.Count != 0)
                     {
-                        var response = await ApiManager.SendDataToDatabase("program-times", new Dictionary<string, object>()
+                        var response = await ApiManager.SendDataToDatabase("program-times", new Dictionary<string, object>
                         {
                             { "programs", processesThatStillRunning }
                         });
@@ -80,7 +80,7 @@ namespace ZalConsole.HelperFunctions
         private string loadJson()
         {
             var directory = getJsonPath();
-            using (StreamReader fs = File.OpenText(Path.Combine(directory, "processes.json")))
+            using (var fs = File.OpenText(Path.Combine(directory, "processes.json")))
             {
                 return fs.ReadToEnd();
             }
@@ -95,8 +95,8 @@ namespace ZalConsole.HelperFunctions
 
         private List<string> getRunningProcesses()
         {
-            List<string> result = new List<string>();
-            Process[] processes = Process.GetProcesses();
+            var result = new List<string>();
+            var processes = Process.GetProcesses();
             // Iterate through each process
             var gpuProcesses = GpuUtilizationGetter.getProcessesGpuUsage(skipBlackListedProcesses: false);
             var processInfos = GlobalClass.Instance.getProcessInfos();
@@ -105,17 +105,21 @@ namespace ZalConsole.HelperFunctions
                 result.Add(gpuProcess.Value["name"]);
             }
 
-            foreach (Process process in processes)
+            foreach (var process in processes)
             {
                 // Check if the process has a main window title
                 if (!string.IsNullOrEmpty(process.MainWindowTitle))
                 {
                     try
                     {
-                        FileVersionInfo fileVersionInfo = FileVersionInfo.GetVersionInfo(process.MainModule.FileName);
-                        string fileDescription = fileVersionInfo.FileDescription;
-                        if (fileDescription == "") continue;
-                        var foundProcessInfo = processInfos.Where((a) => a.name == fileDescription).ToList().FirstOrDefault();
+                        var fileVersionInfo = FileVersionInfo.GetVersionInfo(process.MainModule.FileName);
+                        var fileDescription = fileVersionInfo.FileDescription;
+                        if (fileDescription == "")
+                        {
+                            continue;
+                        }
+
+                        var foundProcessInfo = processInfos.Where(a => a.name == fileDescription).ToList().FirstOrDefault();
                         if (foundProcessInfo != null && foundProcessInfo.isBlacklisted)
                         {
                             continue;
@@ -126,7 +130,6 @@ namespace ZalConsole.HelperFunctions
                     }
                     catch
                     {
-                        continue;
                     }
                 }
             }

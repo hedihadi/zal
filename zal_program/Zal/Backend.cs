@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using Zal.Constants.Models;
 using Zal.HelperFunctions;
 using ZalConsole.HelperFunctions.SpecificFunctions;
@@ -9,9 +10,9 @@ namespace Zal
 {
     public class Backend
     {
-        readonly computerDataGetter computerDataGetter = null;
+        private readonly computerDataGetter computerDataGetter;
         public event EventHandler<string> fpsDataReceived;
-        readonly FpsDataGetter fpsDataGetter = new FpsDataGetter();
+        private readonly FpsDataGetter fpsDataGetter = new();
 
         public Backend()
         {
@@ -49,7 +50,7 @@ namespace Zal
                 fpsDataGetter.startPresentmon(pid, logFps);
                 fpsDataGetter.sendFpsData += (sender, fpsData) =>
                 {
-                    var data = Newtonsoft.Json.JsonConvert.SerializeObject(fpsData);
+                    var data = JsonConvert.SerializeObject(fpsData);
                     fpsDataReceived.Invoke(this, data);
                 };
             });

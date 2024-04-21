@@ -1,7 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Zal.Constants.Models;
 using Zal.Functions.Models;
 using Zal.MajorFunctions;
@@ -11,7 +13,7 @@ namespace Zal.Functions.MajorFunctions
 {
     public class NotificationsManager
     {
-        private readonly List<NotificationData> notifications = new List<NotificationData>();
+        private readonly List<NotificationData> notifications = [];
         private readonly List<NotificationWithTimestamp> notificationTimestamps = [];
 
         public NotificationsManager()
@@ -26,7 +28,7 @@ namespace Zal.Functions.MajorFunctions
             {
                 try
                 {
-                    var parsedData = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(data);
+                    var parsedData = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(data);
                     foreach (var notif in parsedData)
                     {
                         await addNewNotification(NotificationData.FromDictionary(notif));
@@ -46,7 +48,7 @@ namespace Zal.Functions.MajorFunctions
             }
         }
 
-        async Task setBasicNotificatons()
+        private async Task setBasicNotificatons()
         {
 
             await addNewNotification(new NotificationData(
@@ -80,14 +82,20 @@ namespace Zal.Functions.MajorFunctions
 
         public async Task checkNotifications(computerData data)
         {
-            if (notifications.Count == 0) return;
+            if (notifications.Count == 0)
+            {
+                return;
+            }
 
-            var serializedData = Newtonsoft.Json.JsonConvert.SerializeObject(data);
-            var dictionaryData = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, object>>(serializedData);
+            var serializedData = JsonConvert.SerializeObject(data);
+            var dictionaryData = JsonConvert.DeserializeObject<Dictionary<string, object>>(serializedData);
 
             foreach (var notification in notifications)
             {
-                if (notification.suspended) continue;
+                if (notification.suspended)
+                {
+                    continue;
+                }
 
                 double? currentValue = null;
                 string? id = null;
@@ -97,19 +105,19 @@ namespace Zal.Functions.MajorFunctions
                 {
                     id = $"gpuData.{notification.childKey.keyName}";
                     var primaryGpu = await ChartsDataManager.getPrimaryGpu(data);
-                    var serializedGpu = Newtonsoft.Json.JsonConvert.SerializeObject(primaryGpu);
-                    var dictionaryGpu = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, object>>(serializedGpu);
+                    var serializedGpu = JsonConvert.SerializeObject(primaryGpu);
+                    var dictionaryGpu = JsonConvert.DeserializeObject<Dictionary<string, object>>(serializedGpu);
                     currentValue = Convert.ToDouble(dictionaryGpu[notification.childKey.keyName]);
                 }
                 else if (notification.key == NotificationKey.Cpu)
                 {
                     id = $"cpuData.{notification.childKey.keyName}";
-                    currentValue = (double?)((Newtonsoft.Json.Linq.JObject)(dictionaryData["cpuData"]))[notification.childKey.keyName];
+                    currentValue = (double?)((JObject)(dictionaryData["cpuData"]))[notification.childKey.keyName];
                 }
                 else if (notification.key == NotificationKey.Ram)
                 {
                     id = $"ramData.{notification.childKey.keyName}";
-                    currentValue = (double?)((Newtonsoft.Json.Linq.JObject)(dictionaryData["ramData"]))[notification.childKey.keyName];
+                    currentValue = (double?)((JObject)(dictionaryData["ramData"]))[notification.childKey.keyName];
 
                 }
                 else if (notification.key == NotificationKey.Storage)
@@ -127,14 +135,26 @@ namespace Zal.Functions.MajorFunctions
                     if (keyName == "totalUpload")
                     {
                         var primaryInterface = data.networkInterfaces.Where(network => network.isPrimary).FirstOrDefault();
-                        if (primaryInterface != null) currentValue = bytesToGB(primaryInterface.bytesSent);
-                        else currentValue = 0;
+                        if (primaryInterface != null)
+                        {
+                            currentValue = bytesToGB(primaryInterface.bytesSent);
+                        }
+                        else
+                        {
+                            currentValue = 0;
+                        }
                     }
                     else if (keyName == "totalDownload")
                     {
                         var primaryInterface = data.networkInterfaces.Where(network => network.isPrimary).FirstOrDefault();
-                        if (primaryInterface != null) currentValue = bytesToGB(primaryInterface.bytesReceived);
-                        else currentValue = 0;
+                        if (primaryInterface != null)
+                        {
+                            currentValue = bytesToGB(primaryInterface.bytesReceived);
+                        }
+                        else
+                        {
+                            currentValue = 0;
+                        }
                     }
                     else if (keyName == "downloadSpeed")
                     {
@@ -160,16 +180,22 @@ namespace Zal.Functions.MajorFunctions
                 }
 
                 ///if [isDataAboveValue] is true, that means we theoretically should send the notification
-                bool isDataAboveValue = false;
+                var isDataAboveValue = false;
 
                 ///determining [isDataAboveValue]
                 if (notification.factorType == NotificationFactorType.Higher)
                 {
-                    if (currentValue >= notification.factorValue) isDataAboveValue = true;
+                    if (currentValue >= notification.factorValue)
+                    {
+                        isDataAboveValue = true;
+                    }
                 }
                 else
                 {
-                    if (currentValue <= notification.factorValue) isDataAboveValue = true;
+                    if (currentValue <= notification.factorValue)
+                    {
+                        isDataAboveValue = true;
+                    }
                 }
 
                 if (isDataAboveValue)
@@ -191,7 +217,7 @@ namespace Zal.Functions.MajorFunctions
 
         private async Task saveNotifications()
         {
-            var data = Newtonsoft.Json.JsonConvert.SerializeObject(notifications);
+            var data = JsonConvert.SerializeObject(notifications);
             GlobalClass.Instance.saveTextToDocumentFolder("notifications", data);
         }
 
@@ -211,7 +237,7 @@ namespace Zal.Functions.MajorFunctions
         public async Task editNotification(Dictionary<string, object> notificationData)
         {
             var type = notificationData["type"].ToString();
-            var notification = NotificationData.FromDictionary(Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, object>>(notificationData["notification"].ToString()));
+            var notification = NotificationData.FromDictionary(JsonConvert.DeserializeObject<Dictionary<string, object>>(notificationData["notification"].ToString()));
             var foundNotification = notifications.FirstOrDefault(n => n.getKey() == notification.getKey());
 
             if (foundNotification != null)
@@ -242,7 +268,7 @@ namespace Zal.Functions.MajorFunctions
             {
                 if (FrontendGlobalClass.Instance.webrtc.isConnected())
                 {
-                    var data = Newtonsoft.Json.JsonConvert.SerializeObject(notifications);
+                    var data = JsonConvert.SerializeObject(notifications);
                     //for some reason, without this delay the mobile app won't receive the notifications.
                     await Task.Delay(2000);
                     FrontendGlobalClass.Instance.webrtc.sendMessage("notifications", data);

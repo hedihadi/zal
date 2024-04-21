@@ -1,12 +1,15 @@
-﻿using SharpDX.Direct3D11;
-using SharpDX.DXGI;
-using SharpDX;
 using System;
 using System.Diagnostics;
-using System.Drawing.Imaging;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Threading;
 using System.Threading.Tasks;
+using SharpDX;
+using SharpDX.Direct3D11;
+using SharpDX.DXGI;
+using Device = SharpDX.Direct3D11.Device;
+using MapFlags = SharpDX.Direct3D11.MapFlags;
+using ResultCode = SharpDX.DXGI.ResultCode;
 
 namespace ZalConsole.HelperFunctions
 {
@@ -17,10 +20,6 @@ namespace ZalConsole.HelperFunctions
         private bool _run, _init;
         public int Size { get; private set; }
 
-        public ScreenCapturer()
-        {
-        }
-
         public void Start(int frameRate = 30)
         {
             _run = true;
@@ -28,14 +27,14 @@ namespace ZalConsole.HelperFunctions
             //Get first adapter
             var adapter = factory.GetAdapter1(0);
             //Get device from adapter
-            var device = new SharpDX.Direct3D11.Device(adapter);
+            var device = new Device(adapter);
             //Get front buffer of the adapter
             var output = adapter.GetOutput(0);
             var output1 = output.QueryInterface<Output1>();
 
             // Width/Height of desktop to capture
-            int width = output.Description.DesktopBounds.Right;
-            int height = output.Description.DesktopBounds.Bottom;
+            var width = output.Description.DesktopBounds.Right;
+            var height = output.Description.DesktopBounds.Bottom;
 
 
             // Create Staging texture CPU-accessible
@@ -71,7 +70,7 @@ namespace ZalConsole.HelperFunctions
                                 device.ImmediateContext.CopyResource(screenTexture2D, screenTexture);
 
                             // Get the desktop capture texture
-                            var mapSource = device.ImmediateContext.MapSubresource(screenTexture, 0, MapMode.Read, SharpDX.Direct3D11.MapFlags.None);
+                            var mapSource = device.ImmediateContext.MapSubresource(screenTexture, 0, MapMode.Read, MapFlags.None);
 
                             // Create Drawing.Bitmap
                             using (var bitmap = new Bitmap(width, height, PixelFormat.Format32bppArgb))
@@ -82,7 +81,7 @@ namespace ZalConsole.HelperFunctions
                                 var mapDest = bitmap.LockBits(boundsRect, ImageLockMode.WriteOnly, bitmap.PixelFormat);
                                 var sourcePtr = mapSource.DataPointer;
                                 var destPtr = mapDest.Scan0;
-                                for (int y = 0; y < height; y++)
+                                for (var y = 0; y < height; y++)
                                 {
                                     // Copy a single line
                                     Utilities.CopyMemory(destPtr, sourcePtr, width * 4);
@@ -114,7 +113,7 @@ namespace ZalConsole.HelperFunctions
                         }
                         catch (SharpDXException e)
                         {
-                            if (e.ResultCode.Code != SharpDX.DXGI.ResultCode.WaitTimeout.Result.Code)
+                            if (e.ResultCode.Code != ResultCode.WaitTimeout.Result.Code)
                             {
                                 Trace.TraceError(e.Message);
                                 Trace.TraceError(e.StackTrace);

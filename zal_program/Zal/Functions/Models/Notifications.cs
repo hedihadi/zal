@@ -1,6 +1,7 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Zal.Functions.Models
 {
@@ -56,9 +57,11 @@ namespace Zal.Functions.Models
 
         public Dictionary<string, object> ToDictionary()
         {
-            var result = new Dictionary<string, object>();
-            result.Add("keyName", keyName);
-            result.Add("unit", unit);
+            var result = new Dictionary<string, object>
+            {
+                { "keyName", keyName },
+                { "unit", unit }
+            };
 
             if (displayName != null)
             {
@@ -68,7 +71,7 @@ namespace Zal.Functions.Models
             return result;
         }
 
-        public static NotificationKeyWithUnit FromDictionary(Newtonsoft.Json.Linq.JObject map)
+        public static NotificationKeyWithUnit FromDictionary(JObject map)
         {
             return new NotificationKeyWithUnit(
                 map["keyName"]?.ToString() ?? string.Empty,
@@ -142,13 +145,15 @@ namespace Zal.Functions.Models
 
         public Dictionary<string, object> ToDictionary()
         {
-            var result = new Dictionary<string, object>();
-            result.Add("key", key.ToString());
-            result.Add("childKey", childKey.ToDictionary());
-            result.Add("factorType", factorType.ToString());
-            result.Add("factorValue", factorValue);
-            result.Add("secondsThreshold", secondsThreshold);
-            result.Add("suspended", suspended);
+            var result = new Dictionary<string, object>
+            {
+                { "key", key.ToString() },
+                { "childKey", childKey.ToDictionary() },
+                { "factorType", factorType.ToString() },
+                { "factorValue", factorValue },
+                { "secondsThreshold", secondsThreshold },
+                { "suspended", suspended }
+            };
 
             return result;
         }
@@ -157,7 +162,7 @@ namespace Zal.Functions.Models
         {
             return new NotificationData(
                 Enum.Parse<NotificationKey>(map["key"].ToString()),
-                NotificationKeyWithUnit.FromDictionary((Newtonsoft.Json.Linq.JObject)map["childKey"]),
+                NotificationKeyWithUnit.FromDictionary((JObject)map["childKey"]),
                 Enum.Parse<NotificationFactorType>(map["factorType"].ToString()),
                 Convert.ToDouble(map["factorValue"]),
                 Convert.ToInt32(map["secondsThreshold"]),

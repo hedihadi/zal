@@ -1,8 +1,8 @@
-﻿using System.Security.Principal;
+using System.Security.Principal;
 
 namespace Zal.HelperFunctions.SpecificFunctions
 {
-     class IsAdminstratorChecker
+    internal class IsAdminstratorChecker
     {
         public static bool IsAdministrator()
         {

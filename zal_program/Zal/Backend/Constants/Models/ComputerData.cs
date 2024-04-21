@@ -20,8 +20,8 @@ namespace Zal.Constants.Models
 
         public computerData()
         {
-            gpuData = new List<gpuData>();
-            storagesData = new List<storageData>();
+            gpuData = [];
+            storagesData = [];
         }
     }
 }

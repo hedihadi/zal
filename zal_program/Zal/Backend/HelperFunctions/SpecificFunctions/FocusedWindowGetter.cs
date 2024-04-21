@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -16,12 +16,15 @@ namespace Zal.HelperFunctions.SpecificFunctions
 
         public IList<int>? getFocusedWindowProcessId()
         {
-            IntPtr hwnd = GetForegroundWindow();
+            var hwnd = GetForegroundWindow();
 
             // The foreground window can be NULL in certain circumstances,
             // such as when a window is losing activation.
             if (hwnd == IntPtr.Zero)
+            {
                 return null;
+            }
+
             GetWindowThreadProcessId(hwnd, out var pid);
             var proc = Process.GetProcessById(((int)pid));
 
@@ -42,7 +45,7 @@ public static class ProcessExtensions
                 Process.GetProcessById(Convert.ToInt32(mo["ProcessID"])))
             .ToList();
         processes.Add(process);
-        Process[] processesByName = Process.GetProcessesByName(process.ProcessName);
+        var processesByName = Process.GetProcessesByName(process.ProcessName);
         foreach (var processByName in processesByName)
         {
             processes.Add(processByName);

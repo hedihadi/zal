@@ -1,7 +1,7 @@
-﻿using Firebase.Auth.UI;
-using SocketIOClient;
 using System;
 using System.Collections.Generic;
+using Firebase.Auth.UI;
+using SocketIOClient;
 using Zal.Functions.Models;
 using Zal.MajorFunctions;
 
@@ -11,7 +11,7 @@ namespace Zal.Functions.MajorFunctions
     {
         public event EventHandler<ServerSocketConnectionState> connectionStateChanged;
         public SocketIOClient.SocketIO socketio;
-        public bool isConnected = false;
+        public bool isConnected;
 
         public ServerSocket(EventHandler<ServerSocketConnectionState> stateChanged)
         {
@@ -34,24 +34,24 @@ namespace Zal.Functions.MajorFunctions
                 return;
             }
 
-            socketio = new SocketIOClient.SocketIO($"https://api.zalapp.com",
+            socketio = new SocketIOClient.SocketIO("https://api.zalapp.com",
                 new SocketIOOptions
                 {
                     Query = new List<KeyValuePair<string, string>>
                     {
-                        new KeyValuePair<string, string>("uid", uid),
-                        new KeyValuePair<string, string>("idToken", idToken),
-                        new KeyValuePair<string, string>("type", "0"),
-                        new KeyValuePair<string, string>("version", "1"),
-                        new KeyValuePair<string, string>("computerName", "default")
+                        new("uid", uid),
+                        new("idToken", idToken),
+                        new("type", "0"),
+                        new("version", "1"),
+                        new("computerName", "default")
                     }
                 });
 
             socketio.On("room_clients", response =>
             {
 
-                List<int> parsedData = response.GetValue<List<int>>();
-                Logger.Log($"socketio room_clients {string.Join<int>(",", parsedData)}");
+                var parsedData = response.GetValue<List<int>>();
+                Logger.Log($"socketio room_clients {string.Join(",", parsedData)}");
                 // if the data is 1, that means the client type is 1, which means this client is a phone
                 if (parsedData.Contains(1))
                 {
@@ -94,7 +94,7 @@ namespace Zal.Functions.MajorFunctions
             {
                 socketio.ConnectAsync();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 connectToServer();
             }

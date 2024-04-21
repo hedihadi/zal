@@ -1,8 +1,8 @@
-﻿using Firebase.Auth.Providers;
-using Firebase.Auth.Repository;
-using Firebase.Auth.UI;
 using System.Threading;
 using System.Windows;
+using Firebase.Auth.Providers;
+using Firebase.Auth.Repository;
+using Firebase.Auth.UI;
 
 namespace Zal
 {
@@ -11,7 +11,7 @@ namespace Zal
     /// </summary>
     public partial class App : Application
     {
-        private static Mutex _mutex = null;
+        private static Mutex _mutex;
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -35,12 +35,12 @@ namespace Zal
             {
                 ApiKey = "AIzaSyDSj8N7DH3jtMOAa4hd7ytqMq2H_8iprmc",
                 AuthDomain = "zal1-353509.firebaseapp.com",
-                Providers = new FirebaseAuthProvider[]
-                {
+                Providers =
+                [
                     new GoogleProvider(),
 
-                    new EmailProvider()
-                },
+                    new EmailProvider(),
+                ],
                 PrivacyPolicyUrl = "https://github.com/step-up-labs/firebase-authentication-dotnet",
                 TermsOfServiceUrl = "https://github.com/step-up-labs/firebase-database-dotnet",
                 IsAnonymousAllowed = false,
