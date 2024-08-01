@@ -1,6 +1,3 @@
-﻿using Firebase.Auth.UI;
-using Microsoft.Win32;
-using SIPSorcery.Net;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -12,6 +9,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Media;
+using Firebase.Auth.UI;
+using Microsoft.Win32;
+using SIPSorcery.Net;
 using Windows.UI.Notifications;
 using Zal.Functions.Models;
 using Zal.MajorFunctions;
@@ -29,6 +29,8 @@ namespace Zal
 
         private async Task initialize()
         {
+            var ip = Zal.Backend.HelperFunctions.SpecificFunctions.IpGetter.getIp();
+            ipText.Text = $"Your Local Address: {ip}";
             await LocalDatabase.Initialize();
             var user = FirebaseUI.Instance.Client.User;
             userName.Text = $"Welcome, {user.Info.DisplayName}.";
@@ -84,56 +86,61 @@ namespace Zal
                         });
                     }
                 }
+
                 , async (sender, data) =>
                 {
-                    if (GpusList.Items.IsEmpty)
+                    Dispatcher.Invoke(() =>
                     {
-                        GpusList.Items.Clear();
-                        foreach (var gpu in data.gpuData)
+                        if (GpusList.Items.IsEmpty)
                         {
-                            GpusList.Items.Add(gpu.name);
-                            Logger.Log($"detected gpu:{gpu.name}");
-                        }
-
-                        //if primary gpu is not set, set it.
-                        if (data.gpuData.Count != 0)
-                        {
-                            var primaryGpu = LocalDatabase.Instance.readKey("primaryGpu");
-
-
-                            if (primaryGpu == null)
+                            GpusList.Items.Clear();
+                            foreach (var gpu in data.gpuData)
                             {
-                                Logger.Log($"setting primary gpu to {data.gpuData.First().name}");
-                                await LocalDatabase.Instance.writeKey("primaryGpu", data.gpuData.First().name);
-                                GpusList.SelectedItem = data.gpuData.First().name;
+                                GpusList.Items.Add(gpu.name);
+                                Logger.Log($"detected gpu:{gpu.name}");
                             }
-                            else
-                            {
-                                //check if the primary gpu exists inside this data, this is a useful check in case of the user changed their gpu
-                                bool doesPrimaryGpuExist = false;
-                                foreach (var gpu in data.gpuData)
-                                {
-                                    if (gpu.name == primaryGpu.ToString())
-                                    {
-                                        doesPrimaryGpuExist = true;
-                                        Logger.Log($"detected primary gpu:{gpu.name}");
-                                        GpusList.SelectedItem = gpu.name;
-                                    }
-                                }
 
-                                if (doesPrimaryGpuExist == false)
+                            //if primary gpu is not set, set it.
+                            if (data.gpuData.Count != 0)
+                            {
+                                var primaryGpu = LocalDatabase.Instance.readKey("primaryGpu");
+
+
+                                if (primaryGpu == null)
                                 {
-                                    Logger.Log($"primary gpu not found, setting this gpu as default:{data.gpuData.First().name}");
-                                    //reset primary gpu
-                                    await LocalDatabase.Instance.writeKey("primaryGpu", data.gpuData.First().name);
+                                    Logger.Log($"setting primary gpu to {data.gpuData.First().name}");
+                                    LocalDatabase.Instance.writeKey("primaryGpu", data.gpuData.First().name);
                                     GpusList.SelectedItem = data.gpuData.First().name;
                                 }
+                                else
+                                {
+                                    //check if the primary gpu exists inside this data, this is a useful check in case of the user changed their gpu
+                                    bool doesPrimaryGpuExist = false;
+                                    foreach (var gpu in data.gpuData)
+                                    {
+                                        if (gpu.name == primaryGpu.ToString())
+                                        {
+                                            doesPrimaryGpuExist = true;
+                                            Logger.Log($"detected primary gpu:{gpu.name}");
+                                            GpusList.SelectedItem = gpu.name;
+                                        }
+                                    }
+
+                                    if (doesPrimaryGpuExist == false)
+                                    {
+                                        Logger.Log($"primary gpu not found, setting this gpu as default:{data.gpuData.First().name}");
+                                        //reset primary gpu
+                                        LocalDatabase.Instance.writeKey("primaryGpu", data.gpuData.First().name);
+                                        GpusList.SelectedItem = data.gpuData.First().name;
+                                    }
+                                }
                             }
+                            // GpusList.SelectedItem = primaryGpu;
                         }
-                        // GpusList.SelectedItem = primaryGpu;
-                    }
+                    });
                 }
-            );
+
+                );
 
             Logger.Log("program started");
         }

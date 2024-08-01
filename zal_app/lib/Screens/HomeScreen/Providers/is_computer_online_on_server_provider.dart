@@ -17,6 +17,12 @@ final _roomClientsProvider = FutureProvider<StreamData>((ref) {
   final sub = ref.listen(computerSocketStreamProvider, (prev, cur) {
     if (cur.value?.type == StreamDataType.RoomClients) ref.state = cur;
   });
-  ref.onDispose(() => sub.close());
+  final sub2 = ref.listen(computerLocalSocketStreamProvider, (prev, cur) {
+    if (cur.value?.type == StreamDataType.RoomClients) ref.state = cur;
+  });
+  ref.onDispose(() {
+    sub.close();
+    sub2.close();
+  });
   return ref.future;
 });

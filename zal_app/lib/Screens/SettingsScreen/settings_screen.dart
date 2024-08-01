@@ -4,6 +4,7 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sizer/sizer.dart';
 import 'package:zal/Screens/HomeScreen/Providers/computer_data_provider.dart';
 import 'package:zal/Screens/SettingsScreen/Widgets/select_primary_network_screen.dart';
 import 'package:zal/Widgets/SettingsUI/custom_setting_ui.dart';
@@ -23,6 +24,7 @@ final revenueCatIdProvider = FutureProvider((ref) => Purchases.appUserID);
 class SettingsScreen extends ConsumerWidget {
   SettingsScreen({super.key});
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController localConnectionAddressController = TextEditingController();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.read(screenViewProvider("settings"));
@@ -45,6 +47,36 @@ class SettingsScreen extends ConsumerWidget {
           SectionSettingUi(
             children: [
               SwitchSettingUi(
+                value: settings?['useLocalConnection'] ?? false,
+                onChanged: (value) => ref.read(settingsProvider.notifier).updateSettings('useLocalConnection', value),
+                title: "Local Connection",
+                subtitle:
+                    "If you have trouble connecting through Internet, enable this option. but your phone must be connected to the same network as your PC.",
+                icon: const Icon(FontAwesomeIcons.house),
+              ),
+              if (settings?['useLocalConnection'] == true)
+                CustomSettingUi(
+                  title: "Your Local Address",
+                  subtitle:
+                      "if Local Connection is enabled, you must provide this address. you can find the address by checking Zal on your PC. it's written at the bottom right corner.",
+                  icon: const Icon(FontAwesomeIcons.house),
+                  child: SizedBox(
+                    width: 35.w,
+                    child: TextField(
+                      controller: TextEditingController(text: settings?['localConnectionAddress'])
+                        ..selection = TextSelection.collapsed(offset: settings?['localConnectionAddress'].length ?? 0),
+                      onChanged: (value) {
+                        ref.read(settingsProvider.notifier).updateSettings('localConnectionAddress', value);
+                      },
+                    ),
+                  ),
+                ),
+            ],
+          ),
+
+          SectionSettingUi(
+            children: [
+              SwitchSettingUi(
                 title: "Send Analytics",
                 subtitle:
                     "your data will be used to see how the App\nbehaves on different PC Specs,this is \nextremely helpful to me, please leave it ON.",
@@ -61,7 +93,7 @@ class SettingsScreen extends ConsumerWidget {
                   child: TextButton(
                       onPressed: () async {
                         await ConsentInformation.instance.reset();
-                        AdmobConsentHelper().initialize(forced:true);
+                        AdmobConsentHelper().initialize(forced: true);
                       },
                       child: const Text("choose")),
                 ),

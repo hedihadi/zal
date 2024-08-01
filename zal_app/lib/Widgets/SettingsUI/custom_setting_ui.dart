@@ -38,7 +38,7 @@ class _CustomSettingUiState extends ConsumerState<CustomSettingUi> {
                     widget.subtitle,
                     overflow: TextOverflow.fade,
                     softWrap: true,
-                    maxLines: 3,
+                    maxLines: 6,
                     style: Theme.of(context).textTheme.labelSmall,
                   )
                 ],
@@ -46,7 +46,7 @@ class _CustomSettingUiState extends ConsumerState<CustomSettingUi> {
             ],
           ),
         ),
-        Expanded(child: widget.child),
+        widget.child,
       ],
     );
   }

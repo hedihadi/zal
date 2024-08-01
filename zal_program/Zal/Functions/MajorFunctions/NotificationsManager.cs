@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,7 +22,7 @@ namespace Zal.Functions.MajorFunctions
         private async Task initialize()
         {
             var data = await GlobalClass.Instance.readTextFromDocumentFolder("notifications");
-            if (data != null)
+            if (data != null && data != "")
             {
                 try
                 {

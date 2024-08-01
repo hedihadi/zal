@@ -69,12 +69,14 @@ class ConnectionEstablishment {
   final bool isWebrtcConnected;
   final bool hasReceivedData;
   final bool shouldShowConnectedWidget;
+  final bool isConnectedToLocalServer;
   ConnectionEstablishment({
     required this.isConnectedToServer,
     required this.isComputerOnlineOnServer,
     required this.isWebrtcConnected,
     required this.hasReceivedData,
     required this.shouldShowConnectedWidget,
+    required this.isConnectedToLocalServer,
   });
 
   @override
@@ -86,12 +88,18 @@ class ConnectionEstablishment {
         other.isComputerOnlineOnServer == isComputerOnlineOnServer &&
         other.isWebrtcConnected == isWebrtcConnected &&
         other.hasReceivedData == hasReceivedData &&
-        other.shouldShowConnectedWidget == shouldShowConnectedWidget;
+        other.shouldShowConnectedWidget == shouldShowConnectedWidget &&
+        other.isConnectedToLocalServer == isConnectedToLocalServer;
   }
 
   @override
   int get hashCode {
-    return isConnectedToServer.hashCode ^ isComputerOnlineOnServer.hashCode ^ isWebrtcConnected.hashCode ^ hasReceivedData.hashCode;
+    return isConnectedToServer.hashCode ^
+        isComputerOnlineOnServer.hashCode ^
+        isWebrtcConnected.hashCode ^
+        hasReceivedData.hashCode ^
+        shouldShowConnectedWidget.hashCode ^
+        isConnectedToLocalServer.hashCode;
   }
 }
 
@@ -520,9 +528,9 @@ class ProgramTime {
 class SocketObject {
   late Socket socket;
   Timer? timer;
-  SocketObject(String uid, String idToken) {
+  SocketObject(String? localSocketAddress, String? uid, String? idToken) {
     socket = io(
-      dotenv.env['SERVER'] == 'production' ? 'https://api.zalapp.com' : 'http://192.168.0.120:5000',
+      localSocketAddress ?? (dotenv.env['SERVER'] == 'production' ? 'https://api.zalapp.com' : 'http://192.168.0.120:5000'),
       <String, dynamic>{
         'transports': ['websocket'],
         'query': {
@@ -542,6 +550,7 @@ class SocketObject {
       print('error $a');
     });
     socket.onConnect((_) {
+      print("hi");
       //join the room
       // joinRoom();
       //send a keep_alive event so the pc starts sending data

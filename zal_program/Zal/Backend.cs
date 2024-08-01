@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Zal.Constants.Models;
@@ -7,13 +7,13 @@ using ZalConsole.HelperFunctions.SpecificFunctions;
 
 namespace Zal
 {
-    public class Backend
+    public class BackendManager
     {
         readonly computerDataGetter computerDataGetter = null;
         public event EventHandler<string> fpsDataReceived;
         readonly FpsDataGetter fpsDataGetter = new FpsDataGetter();
 
-        public Backend()
+        public BackendManager()
         {
             try
             {

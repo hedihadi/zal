@@ -96,7 +96,12 @@ class WebRtcNotifier extends StateNotifier<WebrtcProviderModel> {
         'data': data,
       },
     );
-    webrtc.sendMessage(compressedData);
+    if (ref.read(localSocketObjectProvider)?.socket.connected ?? false) {
+      ref.read(localSocketObjectProvider.notifier).state?.socket.emit('message', compressedData);
+    }
+    try {
+      webrtc.sendMessage(compressedData);
+    } catch (c) {}
   }
 
   messageReceived(RTCDataChannelMessage data) {

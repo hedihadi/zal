@@ -12,6 +12,7 @@ import 'package:zal/Screens/CanRunGameScreen/can_run_game_screen.dart';
 import 'package:zal/Screens/FilesScreen/files_screen.dart';
 import 'package:zal/Screens/HomeScreen/Providers/computer_data_provider.dart';
 import 'package:zal/Screens/HomeScreen/Providers/consumer_times_provider.dart';
+import 'package:zal/Screens/HomeScreen/Providers/home_screen_providers.dart';
 import 'package:zal/Screens/MainScreen/main_screen_providers.dart';
 import 'package:zal/Screens/ProgramsTimeScreen/programs_time_provider.dart';
 import 'package:zal/Screens/HomeScreen/Providers/webrtc_provider.dart';
@@ -47,6 +48,7 @@ class AuthorizedScreen extends ConsumerWidget {
     ref.read(todayConsumerTimeProvider);
     ref.read(programIconsProvider);
     ref.read(areProcessesRunningProvider);
+    ref.read(computerLocalSocketStreamProvider);
     ref.watch(connectionEstablishmentFixerProvider);
     final index = ref.watch(bottomNavigationbarIndexProvider);
     return Scaffold(

@@ -1,6 +1,6 @@
-﻿using SIPSorcery.Net;
 using System;
 using System.Threading.Tasks;
+using SIPSorcery.Net;
 using Zal.Constants.Models;
 using Zal.Functions.MajorFunctions;
 using Zal.Functions.Models;
@@ -12,7 +12,8 @@ namespace Zal.MajorFunctions
     {
         private static FrontendGlobalClass? instance;
         public ServerSocket serverSocket;
-        public Backend backend;
+        public LocalSocket localSocket;
+        public BackendManager backend;
         public Webrtc webrtc;
         public DataManager dataManager;
         public NotificationsManager notificationsManager;
@@ -25,8 +26,9 @@ namespace Zal.MajorFunctions
             )
         {
             // Initialization code here
-            backend = new Backend();
+            backend = new BackendManager();
             serverSocket = new ServerSocket(socketServerConnectionStateChanged);
+            localSocket = new LocalSocket();
             webrtc = new Webrtc(webrtcConnectionStateChanged);
             dataManager = new DataManager(computerDataReceived);
             notificationsManager = new NotificationsManager();

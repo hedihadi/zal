@@ -89,5 +89,15 @@ namespace Zal {
                 return ((byte[])(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] server {
+            get {
+                object obj = ResourceManager.GetObject("server", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
     }
 }

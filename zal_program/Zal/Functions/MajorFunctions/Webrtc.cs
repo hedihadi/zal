@@ -1,10 +1,10 @@
-﻿using Newtonsoft.Json;
-using SIPSorcery.Net;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using SIPSorcery.Net;
 using Zal.Functions.Models;
 using Zal.HelperFunctions.SpecificFunctions;
 using Zal.MajorFunctions;
@@ -124,7 +124,7 @@ namespace Zal.Functions.MajorFunctions
             return pc;
         }
 
-        private async Task messageReceivedAsync(WebrtcData messageData)
+        public async Task messageReceivedAsync(WebrtcData messageData)
         {
             if (messageData.name == "get_gpu_processes")
             {
@@ -242,6 +242,7 @@ namespace Zal.Functions.MajorFunctions
             map["name"] = name;
             var compressed = JsonConvert.SerializeObject(map);
             dataChannel?.send(compressed);
+            FrontendGlobalClass.Instance.localSocket.sendMessage(compressed);
         }
     }
 }

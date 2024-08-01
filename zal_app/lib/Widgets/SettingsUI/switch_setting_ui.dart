@@ -16,25 +16,26 @@ class SwitchSettingUi extends ConsumerWidget {
       children: [
         icon,
         SizedBox(width: 2.w),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(title),
-            Wrap(
-              children: [
-                Text(
-                  subtitle,
-                  overflow: TextOverflow.fade,
-                  softWrap: true,
-                  maxLines: 3,
-                  style: Theme.of(context).textTheme.labelSmall,
-                )
-              ],
-            ),
-          ],
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(title),
+              Wrap(
+                children: [
+                  Text(
+                    subtitle,
+                    overflow: TextOverflow.fade,
+                    softWrap: true,
+                    maxLines: 3,
+                    style: Theme.of(context).textTheme.labelSmall,
+                  )
+                ],
+              ),
+            ],
+          ),
         ),
-        const Spacer(),
         Switch(value: value, onChanged: (value) => onChanged.call(value)),
       ],
     );
