@@ -21,7 +21,7 @@ import 'Functions/theme.dart';
 
 final _revenueCatConfiguration = PurchasesConfiguration(Platform.isAndroid ? 'goog_xokAwGykaqKIgLAIODrNHTTMnxF' : 'appl_eqiIImrSxvAweggWipqxMOgYidj');
 Future<void> main() async {
-  Gemini.init(apiKey: 'AIzaSyCAsBp3Ol_W-3zaS6AFI5eJfs8hvr3VDPo');
+  ///  Gemini.init(apiKey: 'AIzaSyBsKXTuGncs19jZmUxalT7g9RLfp6hTtBU');
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: Platform.isAndroid ? DefaultFirebaseOptions.android : DefaultFirebaseOptions.ios);
   final dir = await getApplicationDocumentsDirectory();
@@ -40,7 +40,7 @@ Future<void> main() async {
   };
 
   runApp(ProviderScope(
-    child: Sizer(builder: (context, orientation, deviceType) {
+    child: Sizer(builder: (context, orientation, screenType) {
       return const App();
     }),
   ));
@@ -136,7 +136,7 @@ class _AppState extends ConsumerState<App> {
       //),
       darkTheme: AppTheme.darkTheme.copyWith(
         inputDecorationTheme: AppTheme.darkTheme.inputDecorationTheme
-            .copyWith(focusedBorder: AppTheme.darkTheme.inputDecorationTheme.focusedBorder!.copyWith(borderSide: BorderSide.none)),
+            .copyWith(focusedBorder: AppTheme.darkTheme.inputDecorationTheme.focusedBorder?.copyWith(borderSide: BorderSide.none)),
         textTheme: AppTheme.darkTheme.textTheme.copyWith(
           labelSmall: AppTheme.darkTheme.textTheme.labelSmall!.copyWith(fontWeight: FontWeight.w300),
           titleLarge: GoogleFonts.bebasNeueTextTheme(AppTheme.darkTheme.textTheme).titleLarge,

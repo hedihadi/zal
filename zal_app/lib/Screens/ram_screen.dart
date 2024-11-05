@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:zal/Functions/utils.dart';
-import 'package:zal/Screens/HomeScreen/Providers/computer_data_provider.dart';
+import 'package:zal/Screens/ConnectedScreen/connected_screen_providers.dart';
 import 'package:zal/Widgets/chart_widget.dart';
 import 'package:zal/Widgets/inline_ad.dart';
 import 'package:zal/Widgets/staggered_gridview.dart';
@@ -122,10 +122,10 @@ class RamScreen extends ConsumerWidget {
                     child: Padding(
                       padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 1.w),
                       child: Table(
-                        //columnWidths: {
-                        //  0: IntrinsicColumnWidth(),
-                        //  1: FlexColumnWidth(),
-                        //},
+                        columnWidths: const {
+                          0: IntrinsicColumnWidth(),
+                          1: FlexColumnWidth(),
+                        },
                         children: <TableRow>[
                           tableRow(
                             context,

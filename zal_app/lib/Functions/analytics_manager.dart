@@ -122,7 +122,7 @@ class AnalyticsManager {
 
   static Future<void> logEvent(
     String name, {
-    Map<String, dynamic> options = const {},
+    Map<String, Object> options = const {},
 
     /// if true, we will send this event whether the user has disabled analytics or not.
     bool ignoreSettings = false,

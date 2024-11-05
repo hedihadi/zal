@@ -42,10 +42,10 @@ class ChartWidget extends ConsumerWidget {
               plotAreaBorderWidth: 0,
               primaryYAxis: NumericAxis(
                   isVisible: !compact,
-                  visibleMaximum: maxYAxisNumber,
+                  initialVisibleMaximum: maxYAxisNumber,
                   labelFormat: '{value}${yAxisLabel ?? ""}',
                   interval: getYAxisInterval(),
-                  visibleMinimum: minYAxisNumber,
+                  initialVisibleMinimum: minYAxisNumber,
                   majorGridLines: const MajorGridLines(width: 0)),
               primaryXAxis: NumericAxis(isVisible: false),
               series: <CartesianSeries>[

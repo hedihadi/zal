@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zal/Functions/models.dart';
+import 'package:zal/Screens/ConnectedScreen/connected_screen_providers.dart';
 import 'package:zal/Screens/FpsScreen/fps_screen.dart';
 import 'package:zal/Screens/FpsScreen/fps_screen_providers.dart';
-import 'package:zal/Screens/HomeScreen/Providers/computer_data_provider.dart';
-import 'package:zal/Screens/HomeScreen/Providers/home_screen_providers.dart';
 import 'package:zal/Widgets/card_widget.dart';
 
 class FpsWidget extends ConsumerWidget {

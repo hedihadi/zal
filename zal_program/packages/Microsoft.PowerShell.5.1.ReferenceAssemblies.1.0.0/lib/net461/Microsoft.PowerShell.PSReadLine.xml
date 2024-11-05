@@ -1,0 +1,2539 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Microsoft.Powershell.PSReadline</name>
+    </assembly>
+    <members>
+        <member name="T:System.Runtime.InteropServices.OSPlatform">
+            <summary>
+            Enum for supported OSPlatform
+            </summary>
+        </member>
+        <member name="F:System.Runtime.InteropServices.OSPlatform.Windows">
+            <summary>
+            Windows
+            </summary>
+        </member>
+        <member name="T:System.Runtime.InteropServices.RuntimeInformation">
+            <summary>
+            RuntimeInformation class
+            </summary>
+        </member>
+        <member name="M:System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform)">
+            <summary>
+            Return whether the OS is requested platform.
+            Since this module is inbox in Windows, we always return true and only support passing Windows.
+            </summary>
+        </member>
+        <member name="T:Microsoft.PowerShell.PSConsoleReadLine">
+            <summary/>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.SelfInsert(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Insert the key.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.RevertLine(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Reverts all of the input to the current input.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.CancelLine(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Cancel the current input, leaving the input on the screen,
+            but returns back to the host so the prompt is evaluated again.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ForwardDeleteLine(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Like ForwardKillLine - deletes text from the point to the end of the line,
+            but does not put the deleted text in the kill ring.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.BackwardDeleteLine(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Like BackwardKillLine - deletes text from the point to the start of the line,
+            but does not put the deleted text in the kill ring.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.BackwardDeleteChar(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Delete the character before the cursor.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.DeleteChar(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Delete the character under the cursor.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.DeleteCharOrExit(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Delete the character under the cursor, or if the line is empty, exit the process.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.AcceptLine(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Attempt to execute the current input.  If the current input is incomplete (for
+            example there is a missing closing parenthesis, bracket, or quote, then the
+            continuation prompt is displayed on the next line and PSReadLine waits for
+            keys to edit the current input.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ValidateAndAcceptLine(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Attempt to execute the current input.  If the current input is incomplete (for
+            example there is a missing closing parenthesis, bracket, or quote, then the
+            continuation prompt is displayed on the next line and PSReadLine waits for
+            keys to edit the current input.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.AcceptAndGetNext(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Attempt to execute the current input.  If it can be executed (like AcceptLine),
+            then recall the next item from history the next time ReadLine is called.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.AddLine(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            The continuation prompt is displayed on the next line and PSReadLine waits for
+            keys to edit the current input.  This is useful to enter multi-line input as
+            a single command even when a single line is complete input by itself.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.InsertLineAbove(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            A new empty line is created above the current line regardless of where the cursor
+            is on the current line.  The cursor moves to the beginning of the new line.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.InsertLineBelow(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            A new empty line is created below the current line regardless of where the cursor
+            is on the current line.  The cursor moves to the beginning of the new line.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.TabCompleteNext(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Attempt to complete the text surrounding the cursor with the next
+            available completion.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.TabCompletePrevious(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Attempt to complete the text surrounding the cursor with the previous
+            available completion.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.Complete(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Attempt to perform completion on the text surrounding the cursor.
+            If there are multiple possible completions, the longest unambiguous
+            prefix is used for completion.  If trying to complete the longest
+            unambiguous completion, a list of possible completions is displayed.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.MenuComplete(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Attempt to perform completion on the text surrounding the cursor.
+            If there are multiple possible completions, the longest unambiguous
+            prefix is used for completion.  If trying to complete the longest
+            unambiguous completion, a list of possible completions is displayed.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.PossibleCompletions(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Display the list of possible completions.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViTabCompleteNext(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Ends the current edit group, if needed, and invokes TabCompleteNext.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViTabCompletePrevious(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Ends the current edit group, if needed, and invokes TabCompletePrevious.
+            </summary>
+        </member>
+        <member name="T:Microsoft.PowerShell.PSConsoleReadLine.HistoryItem">
+            <summary>
+            History details including the command line, source, and start and approximate execution time.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSConsoleReadLine.HistoryItem.CommandLine">
+            <summary>
+            The command line, or if multiple lines, the lines joined
+            with a newline.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSConsoleReadLine.HistoryItem.StartTime">
+            <summary>
+            The time at which the command was added to history in UTC.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSConsoleReadLine.HistoryItem.ApproximateElapsedTime">
+            <summary>
+            The approximate elapsed time (includes time to invoke Prompt).
+            The value can be 0 ticks if if accessed before PSReadLine
+            gets a chance to set it.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSConsoleReadLine.HistoryItem.FromOtherSession">
+            <summary>
+            True if the command was from another running session
+            (as opposed to read from the history file at startup.)
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSConsoleReadLine.HistoryItem.FromHistoryFile">
+            <summary>
+            True if the command was read in from the history file at startup.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.AddToHistory(System.String)">
+            <summary>
+            Add a command to the history - typically used to restore
+            history from a previous session.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ClearHistory(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Clears history in PSReadLine.  This does not affect PowerShell history.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.GetHistoryItems">
+            <summary>
+            Return a collection of history items.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.PreviousHistory(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Replace the current input with the 'previous' item from PSReadLine history.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.NextHistory(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Replace the current input with the 'next' item from PSReadLine history.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.BeginningOfHistory(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Move to the first item in the history.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.EndOfHistory(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Move to the last item (the current input) in the history.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.HistorySearchBackward(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Replace the current input with the 'previous' item from PSReadLine history
+            that matches the characters between the start and the input and the cursor.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.HistorySearchForward(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Replace the current input with the 'next' item from PSReadLine history
+            that matches the characters between the start and the input and the cursor.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ForwardSearchHistory(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Perform an incremental forward search through history.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ReverseSearchHistory(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Perform an incremental backward search through history.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.SetDefaultBindings(Microsoft.PowerShell.EditMode)">
+            <summary>
+            Helper to set bindings based on EditMode
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.GetDisplayGrouping(System.String)">
+            <summary>
+            Used to group the built in functions for help and Get-PSReadLineKeyHander output.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ShowKeyBindings(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Show all bound keys.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.WhatIsKey(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Read a key and tell me what the key is bound to.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.SetDefaultViBindings">
+            <summary>
+            Sets up the key bindings for vi operations.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.SetMark(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Mark the current location of the cursor for use in a subsequent editing command.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ExchangePointAndMark(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            The cursor is placed at the location of the mark and the mark is moved
+            to the location of the cursor.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ClearKillRing">
+            <summary>
+            The contents of the kill ring are cleared.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.KillLine(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Clear the input from the cursor to the end of the input.  The cleared text is placed
+            in the kill ring.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.BackwardKillLine(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Clear the input from the start of the input to the cursor.  The cleared text is placed
+            in the kill ring.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.KillWord(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Clear the input from the cursor to the end of the current word.  If the cursor
+            is between words, the input is cleared from the cursor to the end of the next word.
+            The cleared text is placed in the kill ring.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ShellKillWord(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Clear the input from the cursor to the end of the current word.  If the cursor
+            is between words, the input is cleared from the cursor to the end of the next word.
+            The cleared text is placed in the kill ring.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.BackwardKillWord(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Clear the input from the start of the current word to the cursor.  If the cursor
+            is between words, the input is cleared from the start of the previous word to the
+            cursor.  The cleared text is placed in the kill ring.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.UnixWordRubout(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Clear the input from the start of the current word to the cursor.  If the cursor
+            is between words, the input is cleared from the start of the previous word to the
+            cursor.  The cleared text is placed in the kill ring.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ShellBackwardKillWord(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Clear the input from the start of the current word to the cursor.  If the cursor
+            is between words, the input is cleared from the start of the previous word to the
+            cursor.  The cleared text is placed in the kill ring.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.KillRegion(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Kill the text between the cursor and the mark.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.Yank(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Add the most recently killed text to the input.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.YankPop(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            If the previous operation was Yank or YankPop, replace the previously yanked
+            text with the next killed text from the kill ring.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.YankNthArg(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Yank the first argument (after the command) from the previous history line.
+            With an argument, yank the nth argument (starting from 0), if the argument
+            is negative, start from the last argument.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.YankLastArg(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Yank the last argument from the previous history line.  With an argument,
+            the first time it is invoked, behaves just like YankNthArg.  If invoked
+            multiple times, instead it iterates through history and arg sets the direction
+            (negative reverses the direction.)
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.SelectBackwardChar(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Adjust the current selection to include the previous character.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.SelectForwardChar(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Adjust the current selection to include the next character.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.SelectBackwardWord(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Adjust the current selection to include the previous word.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.SelectNextWord(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Adjust the current selection to include the next word.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.SelectForwardWord(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Adjust the current selection to include the next word using ForwardWord.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.SelectShellForwardWord(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Adjust the current selection to include the next word using ShellForwardWord.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.SelectShellNextWord(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Adjust the current selection to include the next word using ShellNextWord.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.SelectShellBackwardWord(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Adjust the current selection to include the previous word using ShellBackwardWord.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.SelectAll(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Select the entire line.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.SelectLine(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Adjust the current selection to include from the cursor to the end of the line.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.SelectBackwardsLine(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Adjust the current selection to include from the cursor to the start of the line.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.Paste(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Paste text from the system clipboard.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.Copy(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Copy selected region to the system clipboard.  If no region is selected, copy the whole line.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.CopyOrCancelLine(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            If text is selected, copy to the clipboard, otherwise cancel the line.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.Cut(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Delete selected region placing deleted text in the system clipboard.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.EndOfLine(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            If the input has multiple lines, move to the end of the current line,
+            or if already at the end of the line, move to the end of the input.
+            If the input has a single line, move to the end of the input.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.BeginningOfLine(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            If the input has multiple lines, move to the start of the current line,
+            or if already at the start of the line, move to the start of the input.
+            If the input has a single line, move to the start of the input.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ForwardChar(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Move the cursor one character to the right.  This may move the cursor to the next
+            line of multi-line input.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.BackwardChar(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Move the cursor one character to the left.  This may move the cursor to the previous
+            line of multi-line input.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.PreviousLine(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Move the cursor to the previous line.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.NextLine(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Move the cursor to the next line.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.NextWord(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Move the cursor forward to the start of the next word.
+            Word boundaries are defined by a configurable set of characters.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ShellNextWord(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Move the cursor forward to the end of the current word, or if between words,
+            to the end of the next word.  Word boundaries are defined by PowerShell tokens.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ForwardWord(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Move the cursor forward to the end of the current word, or if between words,
+            to the end of the next word.  Word boundaries are defined by a configurable
+            set of characters.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ShellForwardWord(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Move the cursor forward to the start of the next word.
+            Word boundaries are defined by PowerShell tokens.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.BackwardWord(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Move the cursor back to the start of the current word, or if between words,
+            the start of the previous word.  Word boundaries are defined by a configurable
+            set of characters.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ShellBackwardWord(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Move the cursor back to the start of the current word, or if between words,
+            the start of the previous word.  Word boundaries are defined by PowerShell tokens.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.GotoBrace(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Go to the matching brace, paren, or square bracket.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ClearScreen(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Clear the screen and draw the current line at the top of the screen.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.CharacterSearch(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Read a character and search forward for the next occurence of that character.
+            If an argument is specified, search forward (or backward if negative) for the
+            nth occurence.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.CharacterSearchBackward(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Read a character and search backward for the next occurence of that character.
+            If an argument is specified, search backward (or forward if negative) for the
+            nth occurence.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViNextWord(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Move the cursor forward to the start of the next word.
+            Word boundaries are defined by a configurable set of characters.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViBackwardWord(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Move the cursor back to the start of the current word, or if between words,
+            the start of the previous word.  Word boundaries are defined by a configurable
+            set of characters.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViBackwardGlob(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Moves the cursor back to the beginning of the previous word, using only white space as delimiters.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViNextGlob(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Moves to the next word, using only white space as a word delimiter.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViEndOfGlob(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Moves the cursor to the end of the word, using only white space as delimiters.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViEndOfPreviousGlob(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Moves to the end of the previous word, using only white space as a word delimiter.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSConsoleReadLine.ViEndOfLineFactor">
+            <summary>
+            Returns 0 if the cursor is allowed to go past the last character in the line, -1 otherwise.
+            </summary>
+            <seealso cref="M:Microsoft.PowerShell.PSConsoleReadLine.ForwardChar(System.Nullable{System.ConsoleKeyInfo},System.Object)"/>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.MoveToEndOfLine(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Move the cursor to the end of the input.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.NextWordEnd(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Move the cursor forward to the end of the current word, or if between words,
+            to the end of the next word.  Word boundaries are defined by a configurable
+            set of characters.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.GotoColumn(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Move to the column indicated by arg.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.GotoFirstNonBlankOfLine(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Move the cursor to the first non-blank character in the line.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViGotoBrace(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Similar to <see cref="M:Microsoft.PowerShell.PSConsoleReadLine.GotoBrace(System.Nullable{System.ConsoleKeyInfo},System.Object)"/>, but is character based instead of token based.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.SetOptions(Microsoft.PowerShell.SetPSReadLineOption)">
+            <summary>
+            Helper function for the Set-PSReadLineOption cmdlet.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.GetOptions">
+            <summary>
+            Helper function for the Get-PSReadLineOption cmdlet.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.SetKeyHandler(System.String[],System.Management.Automation.ScriptBlock,System.String,System.String)">
+            <summary>
+            Helper function for the Set-PSReadLineKeyHandler cmdlet.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.SetKeyHandler(System.String[],System.Action{System.Nullable{System.ConsoleKeyInfo},System.Object},System.String,System.String)">
+            <summary>
+            Helper function for the Set-PSReadLineKeyHandler cmdlet.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.RemoveKeyHandler(System.String[])">
+            <summary>
+            Helper function for the Remove-PSReadLineKeyHandler cmdlet.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.GetKeyHandlers">
+            <summary>
+            Return all bound key handlers.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.GetKeyHandlers(System.Boolean,System.Boolean)">
+            <summary>
+            Helper function for the Get-PSReadLineKeyHandler cmdlet.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.Insert(System.Char)">
+            <summary>
+            Insert a character at the current position.  Supports undo.
+            </summary>
+            <param name="c">Character to insert</param>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.Insert(System.String)">
+            <summary>
+            Insert a string at the current position.  Supports undo.
+            </summary>
+            <param name="s">String to insert</param>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.Delete(System.Int32,System.Int32)">
+            <summary>
+            Delete some text at the given position.  Supports undo.
+            </summary>
+            <param name="start">The start position to delete</param>
+            <param name="length">The length to delete</param>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.Replace(System.Int32,System.Int32,System.String,System.Action{System.Nullable{System.ConsoleKeyInfo},System.Object},System.Object)">
+            <summary>
+            Replace some text at the given position.  Supports undo.
+            </summary>
+            <param name="start">The start position to replace</param>
+            <param name="length">The length to replace</param>
+            <param name="replacement">The replacement text</param>
+            <param name="instigator">The action that initiated the replace (used for undo)</param>
+            <param name="instigatorArg">The argument to the action that initiated the replace (used for undo)</param>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.GetBufferState(System.String@,System.Int32@)">
+            <summary>
+            Get the state of the buffer - the current input and the position of the cursor
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.GetBufferState(System.Management.Automation.Language.Ast@,System.Management.Automation.Language.Token[]@,System.Management.Automation.Language.ParseError[]@,System.Int32@)">
+            <summary>
+            Get the state of the buffer - the ast, tokens, errors, and position of the cursor
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.GetSelectionState(System.Int32@,System.Int32@)">
+            <summary>
+            Get the selection state of the buffer
+            </summary>
+            <param name="start">The start of the current selection or -1 if nothing is selected.</param>
+            <param name="length">The length of the current selection or -1 if nothing is selected.</param>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.SetCursorPosition(System.Int32)">
+            <summary>
+            Set the position of the cursor.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.TryGetArgAsInt(System.Object,System.Int32@,System.Int32)">
+            <summary>
+            A helper method when your function expects an optional int argument (e.g. from DigitArgument)
+            If there is not argument (it's null), returns true and sets numericArg to defaultNumericArg.
+            Dings and returns false if the argument is not an int (no conversion is attempted)
+            Otherwise returns true, and numericArg has the result.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ReadLine(System.Management.Automation.Runspaces.Runspace,System.Management.Automation.EngineIntrinsics)">
+            <summary>
+            Entry point - called from the PowerShell function PSConsoleHostReadLine
+            after the prompt has been displayed.
+            </summary>
+            <returns>The complete command line.</returns>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.Abort(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Abort current action, e.g. incremental history search.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.DigitArgument(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Start a new digit argument to pass to other functions.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.InvokePrompt(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Erases the current prompt and calls the prompt function to redisplay
+            the prompt.  Useful for custom key handlers that change state, e.g.
+            change the current directory.
+            </summary>
+        </member>
+        <member name="F:Microsoft.PowerShell.PSConsoleReadLine._searchHistoryBackward">
+            <summary>
+            Remembers last history search direction.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.RepeatLastCharSearch(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Repeat the last recorded character search.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.RepeatLastCharSearchBackwards(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Repeat the last recorded character search, but in the opposite direction.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.SearchChar(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Read the next character and then find it, going forward, and then back off a character.
+            This is for 't' functionality.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.SearchCharBackward(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Read the next character and then find it, going backward, and then back off a character.
+            This is for 'T' functionality.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.SearchCharWithBackoff(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Read the next character and then find it, going forward, and then back off a character.
+            This is for 't' functionality.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.SearchCharBackwardWithBackoff(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Read the next character and then find it, going backward, and then back off a character.
+            This is for 'T' functionality.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViExit(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Exits the shell.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.DeleteToEnd(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Delete to the end of the line.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.DeleteWord(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Delete the next word.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViDeleteGlob(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Delete the next glob (white space delimited word).
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.DeleteEndOfWord(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Delete to the end of the word.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViDeleteEndOfGlob(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Delete to the end of the word.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViDeleteToChar(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Deletes until given character.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViDeleteToChar(System.Char,System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Deletes until given character.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViDeleteToCharBackward(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Deletes backwards until given character.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViDeleteToCharBack(System.Char,System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Deletes backwards until given character.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViDeleteToBeforeChar(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Deletes until given character.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViDeleteToBeforeChar(System.Char,System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Deletes until given character.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViDeleteToBeforeCharBackward(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Deletes until given character.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.Ding(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Ring the bell.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViCommandMode(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Switch the current operating mode from Vi-Insert to Vi-Command.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViInsertMode(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Switch to Insert mode.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.InViCommandMode">
+            <summary>
+            Returns true if in Vi Command mode, otherwise false.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.InViInsertMode">
+            <summary>
+            Returns true if in Vi Insert mode, otherwise false.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.UseViCommandModeTables">
+            <summary>
+            Temporarily swap in Vi-Command dispatch tables. Used for setting handlers.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.UseViInsertModeTables">
+            <summary>
+            Temporarily swap in Vi-Insert dispatch tables. Used for setting handlers.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViInsertAtBegining(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Switch to Insert mode and position the cursor at the beginning of the line.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViInsertAtEnd(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Switch to Insert mode and position the cursor at the end of the line.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViInsertWithAppend(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Append from the current line position.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViInsertWithDelete(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Delete the current character and switch to Insert mode.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViAcceptLine(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Accept the line and switch to Insert mode.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.PrependAndAccept(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Prepend a '#' and accept the line.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.InvertCase(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Invert the case of the current character and move to the next one.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.SwapCharacters(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Swap the current character and the one before it.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.DeleteLineToFirstChar(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Deletes text from the cursor to the first non-blank character of the line.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.DeleteLine(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Deletes the current line, enabling undo.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.BackwardDeleteWord(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Deletes the previous word.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViBackwardDeleteGlob(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Deletes the previous word, using only white space as the word delimiter.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViDeleteBrace(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Find the matching brace, paren, or square bracket and delete all contents within, including the brace.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.DeleteRange(System.Int32,System.Int32,System.Action{System.Nullable{System.ConsoleKeyInfo},System.Object})">
+            <summary>
+            Delete all characters included in the supplied range.
+            </summary>
+            <param name="first">Index of where to begin the delete.</param>
+            <param name="last">Index of where to end the delete.</param>
+            <param name="action">Action that generated this request, used for repeat command ('.').</param>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViSearchHistoryBackward(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Prompts for a search string and initiates search upon AcceptLine.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.SearchForward(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Prompts for a search string and initiates search upon AcceptLine.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.RepeatSearch(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Repeat the last search in the same direction as before.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.RepeatSearchBackward(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Repeat the last search in the same direction as before.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.StartSearch(System.Boolean)">
+            <summary>
+            Prompts for a string for history searching.
+            </summary>
+            <param name="backward">True for searching backward in the history.</param>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.HistorySearch">
+            <summary>
+            Searches line history.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.RepeatLastCommand(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Repeat the last text modification.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViChord(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Chords in vi needs special handling because a numeric argument can be input between the 1st and 2nd key.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViDigitArgumentInChord(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Start a new digit argument to pass to other functions while in one of vi's chords.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViAcceptLineOrExit(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Like DeleteCharOrExit in Emacs mode, but accepts the line instead of deleting a character.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViInsertLine(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            A new line is inserted above the current line.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViAppendLine(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            A new line is inserted below the current line.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViJoinLines(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Joins the current line and the next line.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.Ding">
+            <summary>
+            Notify the user based on their preference for notification.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ScrollDisplayUp(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Scroll the display up one screen.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ScrollDisplayUpLine(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Scroll the display up one line.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ScrollDisplayDown(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Scroll the display down one screen.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ScrollDisplayDownLine(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Scroll the display down one line.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ScrollDisplayTop(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Scroll the display to the top.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ScrollDisplayToCursor(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Scroll the display to the cursor.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViReplaceLine(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Erase the entire command line.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ReplaceCharInPlace(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Replaces the current character with the next character typed.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViReplaceToChar(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Deletes until given character.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViReplaceToCharBackward(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Replaces until given character.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViReplaceToBeforeChar(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Replaces until given character.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViReplaceToBeforeCharBackward(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Replaces until given character.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.CaptureScreen(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Start interactive screen capture - up/down arrows select lines, enter copies
+            selected text to clipboard as text and html.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.Undo(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Undo a previous edit.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.Redo(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Undo an undo.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.UndoAll(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Undo all previous edits for line.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViEditVisually(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Edit the command line in a text editor specified by $env:EDITOR or $env:VISUAL.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.FindForwardWordPoint(System.String)">
+            <summary>
+            Find the end of the current/next word as defined by wordDelimiters and whitespace.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.FindNextWordPoint(System.String)">
+            <summary>
+            Find the start of the next word.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.FindBackwardWordPoint(System.String)">
+            <summary>
+            Find the beginning of the previous word.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViFindNextWordPoint(System.String)">
+            <summary>
+            Returns the position of the beginning of the next word as delimited by white space and delimiters.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViFindNextWordPoint(System.Int32,System.String)">
+            <summary>
+            Returns the position of the beginning of the next word as delimited by white space and delimiters.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.IsWhiteSpace(System.Int32)">
+            <summary>
+            Returns true of the character at the given position is white space.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViFindPreviousWordPoint(System.String)">
+            <summary>
+            Returns the beginning of the current/next word as defined by wordDelimiters and whitespace.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViFindPreviousWordPoint(System.Int32,System.String)">
+            <summary>
+            Returns the beginning of the current/previous word as defined by wordDelimiters and whitespace.
+            </summary>
+            <param name="i">Current cursor location.</param>
+            <param name="wordDelimiters">Characters used to delimit words.</param>
+            <returns>Location of the beginning of the previous word.</returns>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.FindPreviousWordFromWord(System.Int32,System.String)">
+            <summary>
+            Knowing that you're starting with a word, find the previous start of the next word.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.IsDelimiter(System.Int32,System.String)">
+            <summary>
+            Returns true if the cursor is on a word delimiter
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.IsDelimiter(System.Char,System.String)">
+            <summary>
+            Returns true if <paramref name="c"/> is in the set of <paramref name="wordDelimiters"/>.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.FindPreviousWordFromDelimiter(System.Int32,System.String)">
+            <summary>
+            Returns the cursor position of the beginning of the previous word when starting on a delimiter
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.FindPreviousWordFromWhiteSpace(System.Int32,System.String)">
+            <summary>
+            Returns the cursor position of the beginning of the previous word when starting on white space
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViFindPreviousGlob(System.Int32)">
+            <summary>
+            Returns the cursor position of the previous word from i, ignoring all delimiters other what white space
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViFindEndOfGlob">
+            <summary>
+            Finds the end of the current/next word as defined by whitespace.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViFindNextWordEnd(System.String)">
+            <summary>
+            Find the end of the current/next word as defined by wordDelimiters and whitespace.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViFindNextWordEnd(System.Int32,System.String)">
+            <summary>
+            Find the end of the current/next word as defined by wordDelimiters and whitespace.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViFindGlobEnd(System.Int32)">
+            <summary>
+            Return the last character in a white space defined word after skipping contiguous white space.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.PasteAfter(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Paste the clipboard after the cursor, moving the cursor to the end of the pasted text.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.PasteBefore(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Paste the clipboard before the cursor, moving the cursor to the end of the pasted text.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViYankLine(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Yank the entire buffer.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViYankRight(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Yank character(s) under and to the right of the cursor.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViYankLeft(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Yank character(s) to the left of the cursor.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViYankToEndOfLine(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Yank from the cursor to the end of the buffer.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViYankPreviousWord(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Yank the word(s) before the cursor.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViYankNextWord(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Yank the word(s) after the cursor.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViYankEndOfWord(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Yank from the cursor to the end of the word(s).
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViYankEndOfGlob(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Yank from the cursor to the end of the WORD(s).
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViYankBeginningOfLine(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Yank from the beginning of the buffer to the cursor.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViYankToFirstChar(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Yank from the first non-whitespace character to the cursor.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViYankPercent(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Yank to/from matching brace.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViYankPreviousGlob(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Yank from beginning of the WORD(s) to cursor.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.PSConsoleReadLine.ViYankNextGlob(System.Nullable{System.ConsoleKeyInfo},System.Object)">
+            <summary>
+            Yank from cursor to the start of the next WORD(s).
+            </summary>
+        </member>
+        <member name="F:Microsoft.PowerShell.PSConsoleReadLineOptions.DefaultMaximumHistoryCount">
+            <summary>
+            The maximum number of commands to store in the history.
+            </summary>
+        </member>
+        <member name="F:Microsoft.PowerShell.PSConsoleReadLineOptions.DefaultMaximumKillRingCount">
+            <summary>
+            The maximum number of items to store in the kill ring.
+            </summary>
+        </member>
+        <member name="F:Microsoft.PowerShell.PSConsoleReadLineOptions.DefaultHistorySearchCursorMovesToEnd">
+            <summary>
+            In Emacs, when searching history, the cursor doesn't move.
+            In 4NT, the cursor moves to the end.  This option allows
+            for either behavior.
+            </summary>
+        </member>
+        <member name="F:Microsoft.PowerShell.PSConsoleReadLineOptions.DefaultShowToolTips">
+            <summary>
+            When displaying possible completions, either display
+            tooltips or display just the completions.
+            </summary>
+        </member>
+        <member name="F:Microsoft.PowerShell.PSConsoleReadLineOptions.DefaultDingTone">
+            <summary>
+            When ringing the bell, what frequency do we use?
+            </summary>
+        </member>
+        <member name="F:Microsoft.PowerShell.PSConsoleReadLineOptions.DefaultBellStyle">
+            <summary>
+            When ringing the bell, what should be done?
+            </summary>
+        </member>
+        <member name="F:Microsoft.PowerShell.PSConsoleReadLineOptions.DefaultAnsiEscapeTimeout">
+            <summary>
+            How long in milliseconds should we wait before concluding
+            the input is not an escape sequence?
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSConsoleReadLineOptions.ExtraPromptLineCount">
+            <summary>
+            Prompts are typically 1 line, but sometimes they may span lines.  This
+            count is used to make sure we can display the full prompt after showing
+            ambiguous completions
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSConsoleReadLineOptions.AddToHistoryHandler">
+            <summary>
+            This handler is called before adding a command line to history.
+            The return value indicates if the command line should be added
+            to history or not.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSConsoleReadLineOptions.CommandValidationHandler">
+            <summary>
+            This handler is called from ValidateAndAcceptLine.
+            If an exception is thrown, validation fails and the error is reported.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSConsoleReadLineOptions.CommandsToValidateScriptBlockArguments">
+             <summary>
+             Most commands do not accept script blocks, but for those that do,
+             we want to validate commands in the script block arguments.
+             Unfortunately, we can't know how the argument is used.  In the worst
+             case, for commands like Get-ADUser, the script block actually
+             specifies a different language.
+            
+             Because we can't know ahead of time all of the commands that do
+             odd things with script blocks, we create a white-list of commands
+             that do invoke the script block - this covers the most useful cases.
+             </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSConsoleReadLineOptions.HistoryNoDuplicates">
+            <summary>
+            When true, duplicates will not be recalled from history more than once.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSConsoleReadLineOptions.DingDuration">
+            <summary>
+            When ringing the bell, how long (in ms)?
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSConsoleReadLineOptions.HistorySavePath">
+            <summary>
+            The path to the saved history.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSConsoleReadLineOptions.AnsiEscapeTimeout">
+            <summary>
+            How long in milliseconds should we wait before concluding
+            the input is not an escape sequence?
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSConsoleReadLineOptions.PromptText">
+            <summary>
+            This is the text you want turned red on parse errors, but must
+            occur immediately before the cursor when readline starts.
+            If the prompt function is pure, this value can be inferred, e.g.
+            the default prompt will use "> " for this value.
+            </summary>
+        </member>
+        <member name="T:Microsoft.PowerShell.ConsoleKeyChordConverter">
+            <summary>
+            A helper class for converting strings to ConsoleKey chords.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.ConsoleKeyChordConverter.Convert(System.String)">
+            <summary>
+            Converts a string to a sequence of ConsoleKeyInfo.
+            Sequences are separated by ','.
+            Modifiers appear before the modified key and are separated by '+'.
+            Examples:
+                Ctrl+X
+                Ctrl+D,M
+                Escape,X
+            </summary>
+        </member>
+        <member name="T:Microsoft.PowerShell.KeyHandlerGroup">
+            <summary>
+            A group used for sorting key handlers.
+            </summary>
+        </member>
+        <member name="F:Microsoft.PowerShell.KeyHandlerGroup.Basic">
+            <summary>Basic editing functions</summary>
+        </member>
+        <member name="F:Microsoft.PowerShell.KeyHandlerGroup.CursorMovement">
+            <summary>Cursor movement functions</summary>
+        </member>
+        <member name="F:Microsoft.PowerShell.KeyHandlerGroup.History">
+            <summary>History functions</summary>
+        </member>
+        <member name="F:Microsoft.PowerShell.KeyHandlerGroup.Completion">
+            <summary>Completion functions</summary>
+        </member>
+        <member name="F:Microsoft.PowerShell.KeyHandlerGroup.Miscellaneous">
+            <summary>Miscellaneous functions</summary>
+        </member>
+        <member name="F:Microsoft.PowerShell.KeyHandlerGroup.Selection">
+            <summary>Selection functions</summary>
+        </member>
+        <member name="F:Microsoft.PowerShell.KeyHandlerGroup.Search">
+            <summary>Search functions</summary>
+        </member>
+        <member name="F:Microsoft.PowerShell.KeyHandlerGroup.Custom">
+            <summary>User defined functions</summary>
+        </member>
+        <member name="T:Microsoft.PowerShell.KeyHandler">
+            <summary>
+            The class is used as the output type for the cmdlet Get-PSReadLineKeyHandler
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.KeyHandler.Key">
+            <summary>
+            The key that is bound or unbound.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.KeyHandler.Function">
+            <summary>
+            The name of the function that a key is bound to, if any.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.KeyHandler.Description">
+            <summary>
+            A short description of the behavior of the function.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.KeyHandler.Group">
+            <summary>
+            The group that this key handler belongs to.
+            </summary>
+        </member>
+        <member name="M:Microsoft.PowerShell.KeyHandler.GetGroupingDescription(Microsoft.PowerShell.KeyHandlerGroup)">
+            <summary>
+            Get the description of the group.
+            </summary>
+        </member>
+        <member name="T:Microsoft.PowerShell.PSReadLine.PSReadLineResources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.AbortDescription">
+            <summary>
+              Looks up a localized string similar to Abort the current operation, e.g. incremental history search.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.AcceptAndGetNextDescription">
+            <summary>
+              Looks up a localized string similar to Accept the current line and recall the next line from history after the current line finishes executing.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.AcceptLineDescription">
+            <summary>
+              Looks up a localized string similar to Accept the input or move to the next line if input is missing a closing token..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.AddLineDescription">
+            <summary>
+              Looks up a localized string similar to Move the cursor to the next line without attempting to execute the input.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.BackwardCharDescription">
+            <summary>
+              Looks up a localized string similar to Move the cursor back one character.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.BackwardDeleteCharDescription">
+            <summary>
+              Looks up a localized string similar to Delete the character before the cursor.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.BackwardDeleteLineDescription">
+            <summary>
+              Looks up a localized string similar to Delete text from the cursor to the start of the line.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.BackwardDeleteWordDescription">
+            <summary>
+              Looks up a localized string similar to Delete the previous word in the line..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.BackwardKillLineDescription">
+            <summary>
+              Looks up a localized string similar to Move the text from the cursor to the beginning of the line to the kill ring.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.BackwardKillWordDescription">
+            <summary>
+              Looks up a localized string similar to Move the text from the start of the current or previous word to the cursor to the kill ring.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.BackwardReplaceCharDescription">
+            <summary>
+              Looks up a localized string similar to Replaces the character in front of the cursor..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.BackwardWordDescription">
+            <summary>
+              Looks up a localized string similar to Move the cursor to the beginning of the current or previous word.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.BasicGrouping">
+            <summary>
+              Looks up a localized string similar to Basic editing functions.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.BeginningOfHistoryDescription">
+            <summary>
+              Looks up a localized string similar to Move to the first item in the history.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.BeginningOfLineDescription">
+            <summary>
+              Looks up a localized string similar to Move the cursor to the beginning of the line.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.CancelLineDescription">
+            <summary>
+              Looks up a localized string similar to Abort editing the current line and re-evaluate the prompt.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.CantTranslateKey">
+            <summary>
+              Looks up a localized string similar to Unable to translate &apos;{0}&apos; to virtual key code: {1}..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.CaptureScreenDescription">
+            <summary>
+              Looks up a localized string similar to Allows you to select multiple lines from the console using Shift+UpArrow/DownArrow and copy the selected lines to clipboard by pressing Enter..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.CharacterSearchBackwardDescription">
+            <summary>
+              Looks up a localized string similar to Read a character and move the cursor to the previous occurence of that character.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.CharacterSearchDescription">
+            <summary>
+              Looks up a localized string similar to Read a character and move the cursor to the next occurence of that character.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ChordWithTooManyKeys">
+            <summary>
+              Looks up a localized string similar to Chord can have at most two keys..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ClearHistoryDescription">
+            <summary>
+              Looks up a localized string similar to Remove all items from the command line history (not PowerShell history).
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ClearKillRingDescription">
+            <summary>
+              Looks up a localized string similar to Remove all items from the kill ring.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ClearScreenDescription">
+            <summary>
+              Looks up a localized string similar to Clear the screen and redraw the current line at the top of the screen.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.CommandNotFoundError">
+            <summary>
+              Looks up a localized string similar to Command &apos;{0}&apos; cannot be found..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.CompleteDescription">
+            <summary>
+              Looks up a localized string similar to Complete the input if there is a single completion, otherwise complete the input with common prefix for all completions.  Show possible completions if pressed a second time..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.CompletionGrouping">
+            <summary>
+              Looks up a localized string similar to Completion functions.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.CopyDescription">
+            <summary>
+              Looks up a localized string similar to Copy selected region to the system clipboard.  If no region is selected, copy the whole line.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.CopyOrCancelLineDescription">
+            <summary>
+              Looks up a localized string similar to Either copy selected text to the clipboard, or if no text is selected, cancel editing the line with CancelLine..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.CursorMovementGrouping">
+            <summary>
+              Looks up a localized string similar to Cursor movement functions.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.CustomActionDescription">
+            <summary>
+              Looks up a localized string similar to User defined action.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.CustomGrouping">
+            <summary>
+              Looks up a localized string similar to User defined functions.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.CutDescription">
+            <summary>
+              Looks up a localized string similar to Delete selected region placing deleted text in the system clipboard.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.DeleteCharDescription">
+            <summary>
+              Looks up a localized string similar to Delete the character under the cursor.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.DeleteCharOrExitDescription">
+            <summary>
+              Looks up a localized string similar to Delete the character under the cursor, or if the line is empty, exit the process..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.DeleteEndOfWordDescription">
+            <summary>
+              Looks up a localized string similar to Delete to the end of the current word, as delimited by white space and common delimiters..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.DeleteLineDescription">
+            <summary>
+              Looks up a localized string similar to Deletes the current line..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.DeleteLineToFirstCharDescription">
+            <summary>
+              Looks up a localized string similar to Deletes all of the line except for leading whitespace..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.DeleteToEndDescription">
+            <summary>
+              Looks up a localized string similar to Deletes from the cursor to the end of the line..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.DeleteToEndOfWordDescription">
+            <summary>
+              Looks up a localized string similar to Deletes from the cursor to the end of the current word..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.DeleteWordDescription">
+            <summary>
+              Looks up a localized string similar to Deletes the current word..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.DigitArgumentDescription">
+            <summary>
+              Looks up a localized string similar to Start or accumulate a numeric argument to other functions.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.DisplayAllPossibilities">
+            <summary>
+              Looks up a localized string similar to Display all {0} possibilities? (y or n) _.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.EmacsCtrlXDescription">
+            <summary>
+              Looks up a localized string similar to String is not used in the UI.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.EmacsMetaDescription">
+            <summary>
+              Looks up a localized string similar to String is not used in the UI.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.EndOfHistoryDescription">
+            <summary>
+              Looks up a localized string similar to Move to the last item (the current input) in the history.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.EndOfLineDescription">
+            <summary>
+              Looks up a localized string similar to Move the cursor to the end of the line.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ExchangePointAndMarkDescription">
+            <summary>
+              Looks up a localized string similar to Mark the location of the cursor and move the cursor to the position of the previous mark.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ForwardCharDescription">
+            <summary>
+              Looks up a localized string similar to Move the cursor forward one character.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ForwardDeleteLineDescription">
+            <summary>
+              Looks up a localized string similar to Delete text from the cursor to the end of the line.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ForwardSearchHistoryDescription">
+            <summary>
+              Looks up a localized string similar to Search history forward interactively.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ForwardWordDescription">
+            <summary>
+              Looks up a localized string similar to Move the cursor forward to the end of the current word, or if between words, to the end of the next word. .
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.GotoBraceDescription">
+            <summary>
+              Looks up a localized string similar to Go to matching brace.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.GotoColumnDescription">
+            <summary>
+              Looks up a localized string similar to Moves the cursor to the prescribed column..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.GotoFirstNonBlankOfLineDescription">
+            <summary>
+              Looks up a localized string similar to Positions the cursor at the first non-blank character..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.HistoryFileErrorFinalMessage">
+             <summary>
+               Looks up a localized string similar to This error will not be reported again in this session. Consider using a different path with:
+                Set-PSReadLineOption -HistorySavePath &lt;Path&gt;
+            Or not saving history with:
+                Set-PSReadLineOption -HistorySaveStyle SaveNothing.
+             </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.HistoryFileErrorMessage">
+            <summary>
+              Looks up a localized string similar to Error reading or writing history file &apos;{0}&apos;: {1}.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.HistoryGrouping">
+            <summary>
+              Looks up a localized string similar to History functions.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.HistorySearchBackwardDescription">
+            <summary>
+              Looks up a localized string similar to Search for the previous item in the history that starts with the current input - like PreviousHistory if the input is empty.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.HistorySearchForwardDescription">
+            <summary>
+              Looks up a localized string similar to Search for the next item in the history that starts with the current input - like NextHistory if the input is empty.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.IgnoreDescription">
+            <summary>
+              Looks up a localized string similar to String is not used in the UI.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.InsertCharacterDescription">
+            <summary>
+              Looks up a localized string similar to Delete the current character and insert the next character..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.InsertLineAboveDescription">
+            <summary>
+              Looks up a localized string similar to Inserts a new empty line above the current line without attempting to execute the input.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.InsertLineBelowDescription">
+            <summary>
+              Looks up a localized string similar to Inserts a new empty line below the current line without attempting to execute the input.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.InvalidColorParameter">
+            <summary>
+              Looks up a localized string similar to Parameter must be a ConsoleColor, ANSI escape sequence, or RGB value with optional leading &apos;#&apos;..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.InvalidModifier">
+            <summary>
+              Looks up a localized string similar to Duplicate or invalid modifier token &apos;{0}&apos; for key &apos;{1}&apos;..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.InvalidSequence">
+            <summary>
+              Looks up a localized string similar to Invalid sequence &apos;{0}&apos;..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.InvertCaseDescription">
+            <summary>
+              Looks up a localized string similar to Inverts the case of the current character and advances the cursor..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.InvokePromptDescription">
+            <summary>
+              Looks up a localized string similar to Erases the current prompt and calls the prompt function to redisplay the prompt.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.KeyIsUnbound">
+            <summary>
+              Looks up a localized string similar to Key is unbound.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.KillLineDescription">
+            <summary>
+              Looks up a localized string similar to Move the text from the cursor to the end of the input to the kill ring.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.KillRegionDescription">
+            <summary>
+              Looks up a localized string similar to Kill the text between the cursor and the mark.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.KillWordDescription">
+            <summary>
+              Looks up a localized string similar to Move the text from the cursor to the end of the current or next word to the kill ring.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.MenuCompleteDescription">
+            <summary>
+              Looks up a localized string similar to Complete the input if there is a single completion, otherwise complete the input by selecting from a menu of possible completions..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.MiscellaneousGrouping">
+            <summary>
+              Looks up a localized string similar to Miscellaneous functions.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.MoveToEndOfLineDescription">
+            <summary>
+              Looks up a localized string similar to Move to the end of the line..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.NextHistoryDescription">
+            <summary>
+              Looks up a localized string similar to Replace the input with the next item in the history.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.NextLineDescription">
+            <summary>
+              Looks up a localized string similar to Move the cursor to the next line if the input has multiple lines..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.NextWordDescription">
+            <summary>
+              Looks up a localized string similar to Move the cursor forward to the start of the next word.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.NextWordEndDescription">
+            <summary>
+              Looks up a localized string similar to Moves the cursor forward to the end of the next word..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.NotInViMode">
+            <summary>
+              Looks up a localized string similar to The -ViMode parameter was used, but the current EditMode is not Vi..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.OopsAnErrorMessage1">
+             <summary>
+               Looks up a localized string similar to 
+            Oops, something went wrong.  Please report this bug with the details below.
+            Report on GitHub: https://github.com/lzybkr/PSReadLine/issues/new.
+             </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.OopsAnErrorMessage2">
+             <summary>
+               Looks up a localized string similar to -----------------------------------------------------------------------
+            Last {0} Keys:
+            {1}
+            
+            Exception:
+            {2}
+            -----------------------------------------------------------------------.
+             </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.OopsCustomHandlerException">
+            <summary>
+              Looks up a localized string similar to An exception occurred in custom key handler, see $error for more information: {0}.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.PasteAfterDescription">
+            <summary>
+              Looks up a localized string similar to Write the contents of the local clipboard after the cursor..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.PasteBeforeDescription">
+            <summary>
+              Looks up a localized string similar to Write the contents of the local clipboard before the cursor..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.PasteDescription">
+            <summary>
+              Looks up a localized string similar to Paste text from the system clipboard.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.PossibleCompletionsDescription">
+            <summary>
+              Looks up a localized string similar to Display the possible completions without changing the input.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.PrependAndAcceptDescription">
+            <summary>
+              Looks up a localized string similar to Inserts the entered character at the beginning and accepts the line..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.PreviousHistoryDescription">
+            <summary>
+              Looks up a localized string similar to Replace the input with the previous item in the history.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.PreviousLineDescription">
+            <summary>
+              Looks up a localized string similar to Move the cursor to the previous line if the input has multiple lines..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.RedoDescription">
+            <summary>
+              Looks up a localized string similar to Redo an undo.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.RepeatLastCharSearchBackwardsDescription">
+            <summary>
+              Looks up a localized string similar to Repeat the last recorded character search in the opposite direction..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.RepeatLastCharSearchDescription">
+            <summary>
+              Looks up a localized string similar to Repeat the last recorded character search..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.RepeatLastCommandDescription">
+            <summary>
+              Looks up a localized string similar to Repeats the last modification command..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.RepeatLastSearchDescription">
+            <summary>
+              Looks up a localized string similar to Repeats the last search..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.RepeatSearchBackwardDescription">
+            <summary>
+              Looks up a localized string similar to Repeat the last search, but in the opposite direction..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.RepeatSearchDescription">
+            <summary>
+              Looks up a localized string similar to Repeat the last search..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ReplaceCharDescription">
+            <summary>
+              Looks up a localized string similar to Replace the current character with the next set of characters typed..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ReplaceCharInPlaceDescription">
+            <summary>
+              Looks up a localized string similar to Replace the current character with only one character..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ReplacementLengthInvalid">
+            <summary>
+              Looks up a localized string similar to length is not valid.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ReverseSearchHistoryDescription">
+            <summary>
+              Looks up a localized string similar to Search history backwards interactively.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.RevertLineDescription">
+            <summary>
+              Looks up a localized string similar to Equivalent to undo all edits (clears the line except lines imported from history).
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ScrollDisplayDownDescription">
+            <summary>
+              Looks up a localized string similar to Scroll the display down one screen.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ScrollDisplayDownLineDescription">
+            <summary>
+              Looks up a localized string similar to Scroll the display down one line.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ScrollDisplayToCursorDescription">
+            <summary>
+              Looks up a localized string similar to Scroll the display to the cursor.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ScrollDisplayTopDescription">
+            <summary>
+              Looks up a localized string similar to Scroll the display to the top.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ScrollDisplayUpDescription">
+            <summary>
+              Looks up a localized string similar to Scroll the display up one screen.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ScrollDisplayUpLineDescription">
+            <summary>
+              Looks up a localized string similar to Scroll the display up one line.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.SearchBackwardCharDescription">
+            <summary>
+              Looks up a localized string similar to Searches backward for the prescribed character..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.SearchCharBackwardDescription">
+            <summary>
+              Looks up a localized string similar to Move to the previous occurrence of the specified character..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.SearchCharBackwardWithBackoffDescription">
+            <summary>
+              Looks up a localized string similar to Move to the previous occurrence of the specified character and then forward one character..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.SearchCharDescription">
+            <summary>
+              Looks up a localized string similar to Move to the next occurrence of the specified character..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.SearchCharWithBackoffDescription">
+            <summary>
+              Looks up a localized string similar to Move to he next occurrence of the specified character and then back one character..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.SearchDescription">
+            <summary>
+              Looks up a localized string similar to Searches for the prescribed character in the prescribed direction..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.SearchForwardDescription">
+            <summary>
+              Looks up a localized string similar to Prompts for a search string and initiates a search upon AcceptLine..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.SearchGrouping">
+            <summary>
+              Looks up a localized string similar to Search functions.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.SelectAllDescription">
+            <summary>
+              Looks up a localized string similar to Select the entire line. Moves the cursor to the end of the line.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.SelectBackwardCharDescription">
+            <summary>
+              Looks up a localized string similar to Adjust the current selection to include the previous character.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.SelectBackwardsLineDescription">
+            <summary>
+              Looks up a localized string similar to Adjust the current selection to include from the cursor to the end of the line.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.SelectBackwardWordDescription">
+            <summary>
+              Looks up a localized string similar to Adjust the current selection to include the previous word.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.SelectForwardCharDescription">
+            <summary>
+              Looks up a localized string similar to Adjust the current selection to include the next character.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.SelectForwardWordDescription">
+            <summary>
+              Looks up a localized string similar to Adjust the current selection to include the next word using ForwardWord.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.SelectionGrouping">
+            <summary>
+              Looks up a localized string similar to Selection functions.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.SelectLineDescription">
+            <summary>
+              Looks up a localized string similar to Adjust the current selection to include from the cursor to the start of the line.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.SelectNextWordDescription">
+            <summary>
+              Looks up a localized string similar to Adjust the current selection to include the next word.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.SelectShellBackwardWordDescription">
+            <summary>
+              Looks up a localized string similar to Adjust the current selection to include the previous word using ShellBackwardWord.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.SelectShellForwardWordDescription">
+            <summary>
+              Looks up a localized string similar to Adjust the current selection to include the next word using ShellForwardWord.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.SelectShellNextWordDescription">
+            <summary>
+              Looks up a localized string similar to Adjust the current selection to include the next word using ShellNextWord.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.SelfInsertDescription">
+            <summary>
+              Looks up a localized string similar to Insert the key typed.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.SetMarkDescription">
+            <summary>
+              Looks up a localized string similar to Mark the location of the cursor.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ShellBackwardKillWordDescription">
+            <summary>
+              Looks up a localized string similar to Move the text from the cursor to the start of the current or previous token to the kill ring.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ShellBackwardWordDescription">
+            <summary>
+              Looks up a localized string similar to Move the cursor to the beginning of the current or previous token or start of the line.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ShellForwardWordDescription">
+            <summary>
+              Looks up a localized string similar to Move the cursor to the beginning of the next token or end of line.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ShellKillWordDescription">
+            <summary>
+              Looks up a localized string similar to Move the text from the cursor to the end of the current or next token to the kill ring.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ShellNextWordDescription">
+            <summary>
+              Looks up a localized string similar to Move the cursor to the end of the current token.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ShowKeyBindingsDescription">
+            <summary>
+              Looks up a localized string similar to Show all key bindings.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.StartOutOfRange">
+            <summary>
+              Looks up a localized string similar to &apos;start&apos; cannot be less than zero or greater than the length of the buffer.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.SwapCharactersDescription">
+            <summary>
+              Looks up a localized string similar to Swap the current character with the character before it..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.TabCompleteNextDescription">
+            <summary>
+              Looks up a localized string similar to Complete the input using the next completion.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.TabCompletePreviousDescription">
+            <summary>
+              Looks up a localized string similar to Complete the input using the previous completion.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.UndoAllDescription">
+            <summary>
+              Looks up a localized string similar to Undoes all commands for this line..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.UndoDescription">
+            <summary>
+              Looks up a localized string similar to Undo a previous edit.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.UnixWordRuboutDescription">
+            <summary>
+              Looks up a localized string similar to Move the text from the cursor to the start of the current or previous whitespace delimited word to the kill ring.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.UnrecognizedKey">
+            <summary>
+              Looks up a localized string similar to Unrecognized key &apos;{0}&apos;. Please use a character literal or a well-known key name from the System.ConsoleKey enumeration..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ValidateAndAcceptLineDescription">
+             <summary>
+               Looks up a localized string similar to Accept the input or move to the next line if input is missing a closing token.
+            If there are other parse errors, unresolved commands, or incorrect parameters, show the error and continue editing..
+             </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViAcceptLineDescription">
+            <summary>
+              Looks up a localized string similar to Accept the line and switch to Vi&apos;s insert mode..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViAcceptLineOrExitDescription">
+            <summary>
+              Looks up a localized string similar to If the line is empty, exit, otherwise accept the line as input..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViAppendAtEndDescription">
+            <summary>
+              Looks up a localized string similar to Switches to insert mode after positioning the cursor past the end of the line..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViAppendLineDescription">
+            <summary>
+              Looks up a localized string similar to Appends a new multi-line edit mode line to the current line..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViBackwardDeleteGlobDescription">
+            <summary>
+              Looks up a localized string similar to Delete backward to the beginning of the previous word, as delimited by white space..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViBackwardGlobDescription">
+            <summary>
+              Looks up a localized string similar to Move the cursor to the beginning of the previous word, as delimited by white space..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViBackwardReplaceGlobDescription">
+            <summary>
+              Looks up a localized string similar to Delete backward to the beginning of the previous word, as delimited by white space, and enter insert mode..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViBackwardReplaceLineDescription">
+            <summary>
+              Looks up a localized string similar to Replaces the line left of the cursor and all of the way to the beginning..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViBackwardReplaceLineToFirstCharDescription">
+            <summary>
+              Looks up a localized string similar to Replaces the line left of the cursor and all but one character to the beginning of the line..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViBackwardReplaceWordDescription">
+            <summary>
+              Looks up a localized string similar to Replace the previous word..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViBackwardWordDescription">
+            <summary>
+              Looks up a localized string similar to Delete backward to the beginning of the previous word, as delimited by white space and common delimiters, and enter insert mode..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViCommandModeDescription">
+            <summary>
+              Looks up a localized string similar to Switch to VI&apos;s command mode..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViDeleteBraceDescription">
+            <summary>
+              Looks up a localized string similar to Deletes all characters between the cursor and the matching brace..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViDeleteEndOfGlobDescription">
+            <summary>
+              Looks up a localized string similar to Delete to the end of this word, as delimited by white space..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViDeleteGlobDescription">
+            <summary>
+              Looks up a localized string similar to Delete the current word, as delimited by white space..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViDeleteToBeforeCharBackwardDescription">
+            <summary>
+              Looks up a localized string similar to Deletes until given character..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViDeleteToBeforeCharDescription">
+            <summary>
+              Looks up a localized string similar to Deletes until given character..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViDeleteToCharBackwardDescription">
+            <summary>
+              Looks up a localized string similar to Deletes backwards until given character..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViDeleteToCharDescription">
+            <summary>
+              Looks up a localized string similar to Deletes until given character..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViDigitArgumentInChordDescription">
+            <summary>
+              Looks up a localized string similar to Handles the processing of a number argument after the first key of a chord..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViEditVisuallyDescription">
+            <summary>
+              Looks up a localized string similar to Invokes the console compatible editor specified by $env:VISUAL or $env:$EDITOR on the current command line..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViEndOfGlobDescription">
+            <summary>
+              Looks up a localized string similar to Move the cursor to the end this word, as delimited by white space..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViEndOfPreviousGlobDescription">
+            <summary>
+              Looks up a localized string similar to Moves to the end of the previous word, using only white space as a word delimiter..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViExitDescription">
+            <summary>
+              Looks up a localized string similar to Exit the shell..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViGotoBraceDescription">
+            <summary>
+              Looks up a localized string similar to Move the cursor to the matching brace..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViInsertAtBeginingDescription">
+            <summary>
+              Looks up a localized string similar to Moves the cursor to the beginning of the line and switches to insert mode..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViInsertAtEndDescription">
+            <summary>
+              Looks up a localized string similar to Moves the cursor to the end of the line and switches to insert mode..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViInsertLineDescription">
+            <summary>
+              Looks up a localized string similar to Inserts a new multi-line edit mode line in front of the current line..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViInsertModeDescription">
+            <summary>
+              Looks up a localized string similar to Switches to insert mode..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViInsertWithAppendDescription">
+            <summary>
+              Looks up a localized string similar to Switch to insert mode, appending at the current line position..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViInsertWithDeleteDescription">
+            <summary>
+              Looks up a localized string similar to Deletes the current character and switches to insert mode..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViJoinLinesDescription">
+            <summary>
+              Looks up a localized string similar to Joins the current multi-line edit mode line with the next..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViNextGlobDescription">
+            <summary>
+              Looks up a localized string similar to Move the cursor to the beginning of the next word, as delimited by white space..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViNextWordDescription">
+            <summary>
+              Looks up a localized string similar to Move the cursor to the beginning of the next word, as delimited by white space and common delimiters..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViReplaceBraceDescription">
+            <summary>
+              Looks up a localized string similar to Replace all characters between the current brace character and it&apos;s matching partner..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViReplaceEndOfGlobDescription">
+            <summary>
+              Looks up a localized string similar to Delete to the end of the word, as delimited by white space, and enter insert mode..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViReplaceEndOfWordDescription">
+            <summary>
+              Looks up a localized string similar to Delete to the end of the word, as delimited by white space and common delimiters, and enter insert mode..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViReplaceGlobDescription">
+            <summary>
+              Looks up a localized string similar to Delete to the beginning of the next word, as delimited by white space, and enter insert mode..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViReplaceLineDescription">
+            <summary>
+              Looks up a localized string similar to Repace the current line with the next set of characters typed..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViReplaceToBeforeCharBackwardDescription">
+            <summary>
+              Looks up a localized string similar to Replaces until given character..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViReplaceToBeforeCharDescription">
+            <summary>
+              Looks up a localized string similar to Replaces until given character..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViReplaceToCharBackwardDescription">
+            <summary>
+              Looks up a localized string similar to Replaces until given character..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViReplaceToCharDescription">
+            <summary>
+              Looks up a localized string similar to Deletes until given character..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViReplaceToEndDescription">
+            <summary>
+              Looks up a localized string similar to Replace the characters from the cursor position to the end of the line..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViReplaceUntilEscDescription">
+            <summary>
+              Looks up a localized string similar to Replace the current character until an escape is entered or the line is accepted..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViReplaceWordDescription">
+            <summary>
+              Looks up a localized string similar to Replace the current word..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViSearchHistoryBackwardDescription">
+            <summary>
+              Looks up a localized string similar to Starts a new search backward in the history..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViTabCompleteNextDescription">
+            <summary>
+              Looks up a localized string similar to Invokes TabCompleteNext after doing some vi-specific clean up..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViTabCompletePreviousDescription">
+            <summary>
+              Looks up a localized string similar to Invokes TabCompletePrevious after doing some vi-specific clean up..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViTransposeCharsDescription">
+            <summary>
+              Looks up a localized string similar to Transposes the current character with the next character in the line..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViYankBeginningOfLineDescription">
+            <summary>
+              Looks up a localized string similar to Place the characters before the cursor into the local clipboard..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViYankEndOfGlobDescription">
+            <summary>
+              Looks up a localized string similar to Place the characters from the cursor to the end of the next white space delimited word into the local clipboard..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViYankEndOfWordDescription">
+            <summary>
+              Looks up a localized string similar to Place the characters from the cursor to the end of the next word, as delimited by white space and common delimiters, into the local clipboard..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViYankLeftDescription">
+            <summary>
+              Looks up a localized string similar to Place the character to the left of the cursor into the local clipboard..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViYankLineDescription">
+            <summary>
+              Looks up a localized string similar to Place all characters in the current line into the local clipboard..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViYankNextGlobDescription">
+            <summary>
+              Looks up a localized string similar to Place all characters from the cursor to the end of the word, as delimited by white space, into the local clipboard..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViYankNextWordDescription">
+            <summary>
+              Looks up a localized string similar to Place all characters from the cursor to the end of the word, as delimited by white space and common delimiters, into the local clipboard..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViYankPercentDescription">
+            <summary>
+              Looks up a localized string similar to Place all characters between the matching brace and the cursor into the local clipboard..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViYankPreviousGlobDescription">
+            <summary>
+              Looks up a localized string similar to Place all characters from before the cursor to the beginning of the previous word, as delimited by white space, into the local clipboard..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViYankPreviousWordDescription">
+            <summary>
+              Looks up a localized string similar to Place all characters from before the cursor to the beginning of the previous word, as delimited by white space and common delimiters, into the local clipboard..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViYankRightDescription">
+            <summary>
+              Looks up a localized string similar to Place the character at the cursor into the local clipboard..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViYankToEndOfLineDescription">
+            <summary>
+              Looks up a localized string similar to Place all characters at and after the cursor into the local clipboard..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.ViYankToFirstCharDescription">
+            <summary>
+              Looks up a localized string similar to Place all characters before the cursor and to the 1st non-white space character into the local clipboard..
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.WhatIsKeyDescription">
+            <summary>
+              Looks up a localized string similar to Show the key binding for the next chord entered.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.YankDescription">
+            <summary>
+              Looks up a localized string similar to Copy the text from the current kill ring position to the input.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.YankLastArgDescription">
+            <summary>
+              Looks up a localized string similar to Copy the text of the last argument to the input.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.YankNthArgDescription">
+            <summary>
+              Looks up a localized string similar to Copy the text of the first argument to the input.
+            </summary>
+        </member>
+        <member name="P:Microsoft.PowerShell.PSReadLine.PSReadLineResources.YankPopDescription">
+            <summary>
+              Looks up a localized string similar to Replace the previously yanked text with the text from the next kill ring position.
+            </summary>
+        </member>
+    </members>
+</doc>

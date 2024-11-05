@@ -43,7 +43,7 @@ class AppTheme {
       navigationBarMutedUnselectedIcon: false,
       navigationBarIndicatorSchemeColor: SchemeColor.primary,
       navigationBarIndicatorOpacity: 1.00,
-      navigationBarBackgroundSchemeColor: SchemeColor.background,
+      navigationBarBackgroundSchemeColor: SchemeColor.error,
       navigationBarElevation: 0,
       navigationRailSelectedLabelSchemeColor: SchemeColor.primary,
       navigationRailMutedUnselectedLabel: false,

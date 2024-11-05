@@ -50,7 +50,7 @@ android {
 
     defaultConfig {
         applicationId "com.hedihadi.zal"
-        minSdkVersion 21
+        minSdkVersion 23
         multiDexEnabled true
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()

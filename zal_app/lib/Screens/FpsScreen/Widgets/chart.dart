@@ -40,7 +40,7 @@ class LineZoneChartWidget extends StatelessWidget {
             enabled: true,
             handleBuiltInTouches: false,
             touchTooltipData: BarTouchTooltipData(
-              tooltipBgColor: Theme.of(context).appBarTheme.backgroundColor,
+              getTooltipColor: (a) => Theme.of(context).appBarTheme.backgroundColor!,
             ),
           ),
           titlesData: FlTitlesData(

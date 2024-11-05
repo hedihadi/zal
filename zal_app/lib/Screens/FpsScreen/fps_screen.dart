@@ -14,9 +14,6 @@ import 'package:zal/Screens/FpsScreen/Widgets/select_gpu_process_widget.dart';
 import 'package:zal/Screens/FpsScreen/fps_screen_providers.dart';
 import 'package:sizer/sizer.dart';
 import 'package:zal/Screens/GpuScreen/Widgets/gpu_data_list_widget.dart';
-import 'package:zal/Screens/HomeScreen/Providers/computer_data_provider.dart';
-import 'package:zal/Screens/HomeScreen/Providers/webrtc_provider.dart';
-import 'package:zal/Screens/SettingsScreen/settings_providers.dart';
 import 'package:zal/Widgets/inline_ad.dart';
 import 'package:zal/Widgets/staggered_gridview.dart';
 
@@ -30,7 +27,6 @@ import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:zal/Functions/models.dart';
 import 'package:zal/Functions/utils.dart';
 import 'package:zal/Screens/FilesScreen/Providers/information_text_provider.dart';
-import 'package:zal/Screens/HomeScreen/Providers/computer_data_provider.dart';
 import 'package:zal/Screens/HomeScreen/Widgets/battery_widget.dart';
 import 'package:zal/Screens/HomeScreen/Widgets/cpu_widget.dart';
 import 'package:zal/Screens/HomeScreen/Widgets/fps_widget.dart';
@@ -40,10 +36,11 @@ import 'package:zal/Screens/HomeScreen/Widgets/network_widget.dart';
 import 'package:zal/Screens/HomeScreen/Widgets/ram_widget.dart';
 import 'package:zal/Screens/HomeScreen/Widgets/report_error_widget.dart';
 import 'package:zal/Screens/MainScreen/main_screen_providers.dart';
-import 'package:zal/Screens/ProgramsTimeScreen/Widgets/week_chart.dart';
 import 'package:zal/Widgets/inline_ad.dart';
 import 'package:zal/Widgets/staggered_gridview.dart';
 import 'package:timeago/timeago.dart' as timeago;
+
+import '../MainScreen/SettingsScreen/settings_providers.dart';
 
 enum SampleItem { itemOne, itemTwo, itemThree }
 
@@ -55,7 +52,7 @@ class FpsScreen extends ConsumerWidget {
     ref.read(screenViewProvider("fps"));
     return WillPopScope(
       onWillPop: () async {
-        ref.read(webrtcProvider.notifier).sendMessage('stop_fps', '');
+        ref.read(socketProvider.notifier).sendMessage('stop_fps', '');
         return true;
       },
       child: Scaffold(

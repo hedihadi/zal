@@ -7,7 +7,7 @@ import 'package:sizer/sizer.dart';
 import 'package:zal/Functions/models.dart';
 import 'package:zal/Screens/FilesScreen/Providers/directory_provider.dart';
 import 'package:zal/Screens/FilesScreen/Providers/move_file_provider.dart';
-import 'package:zal/Screens/HomeScreen/Providers/webrtc_provider.dart';
+import 'package:zal/Screens/MainScreen/main_screen_providers.dart';
 
 class MoveFileWidget extends ConsumerWidget {
   const MoveFileWidget({super.key});
@@ -37,7 +37,7 @@ class MoveFileWidget extends ConsumerWidget {
               onPressed: () {
                 final file = moveFileModel.file;
                 final currentFolderPath = ref.read(directoryProvider.notifier).getCurrentFolderPath();
-                ref.read(webrtcProvider.notifier).sendMessage(
+                ref.read(socketProvider.notifier).sendMessage(
                     moveFileModel.moveType == MoveFileType.move ? 'move_file' : 'copy_file',
                     jsonEncode({
                       'oldPath': "${file.directory}\\${file.name}",

@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:zal/Functions/utils.dart';
+import 'package:zal/Screens/ConnectedScreen/connected_screen_providers.dart';
 import 'package:zal/Screens/GpuScreen/Widgets/gpu_data_list_widget.dart';
-import 'package:zal/Screens/HomeScreen/Providers/computer_data_provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
-import 'package:zal/Screens/SettingsScreen/settings_providers.dart';
+import 'package:zal/Screens/MainScreen/SettingsScreen/settings_providers.dart';
 import 'package:zal/Widgets/chart_widget.dart';
 import 'package:zal/Widgets/inline_ad.dart';
 
@@ -24,8 +24,7 @@ class GpuScreen extends ConsumerWidget {
     final computerData = ref.watch(computerDataProvider).value;
     if (computerData == null) return Container();
     ref.read(screenViewProvider("gpu"));
-    final gpu=computerData.gpu;
-    if (gpu == null) return const Text("gpu doesn't exist");
+    final gpu = computerData.gpu;
     return Scaffold(
       appBar: AppBar(title: const Text("GPU")),
       body: ListView(

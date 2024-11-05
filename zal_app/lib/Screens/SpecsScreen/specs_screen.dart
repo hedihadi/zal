@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:zal/Functions/utils.dart';
-import 'package:zal/Screens/HomeScreen/Providers/computer_data_provider.dart';
-import 'package:zal/Screens/HomeScreen/Providers/home_screen_providers.dart';
 import 'package:sizer/sizer.dart';
+import 'package:zal/Screens/ConnectedScreen/connected_screen_providers.dart';
 
 import '../../Functions/analytics_manager.dart';
 

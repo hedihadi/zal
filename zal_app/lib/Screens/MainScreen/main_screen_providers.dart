@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -9,13 +10,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:logger/logger.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
+import 'package:socket_io_client/socket_io_client.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zal/Functions/models.dart';
 import 'package:zal/Functions/theme.dart';
-import 'package:zal/Screens/HomeScreen/Providers/webrtc_provider.dart';
-import 'package:zal/Screens/MainScreen/process_not_running_widget.dart';
+import 'package:zal/Functions/utils.dart';
+import 'package:zal/Screens/InitialConnectionScreen/initial_connection_screen_providers.dart';
+import 'package:zal/Screens/MainScreen/SettingsScreen/settings_providers.dart';
 import '../../Functions/analytics_manager.dart';
-import '../HomeScreen/Providers/home_screen_providers.dart';
 
 class IsUserPremiumNotifier extends StateNotifier<bool> {
   bool didSendUserData = false;
@@ -50,65 +52,77 @@ final isUserPremiumProvider = StateNotifierProvider<IsUserPremiumNotifier, bool>
 
 final contextProvider = StateProvider<BuildContext?>((ref) => null);
 
-final shouldShowUpdateDialogProvider = FutureProvider((ref) async {
-  DatabaseReference dbRef = FirebaseDatabase.instance.ref("app_minimum_build_version");
-  final minimumBuildVersion = ((await dbRef.get()).value as int);
-  PackageInfo packageInfo = await PackageInfo.fromPlatform();
-  if (int.parse(packageInfo.buildNumber) < minimumBuildVersion) {
-    ref.read(socketObjectProvider.notifier).state?.socket.disconnect();
-    AlertDialog alert = AlertDialog(
-      title: Text("new update!", style: GoogleFonts.bebasNeueTextTheme(AppTheme.darkTheme.textTheme).displayLarge),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Text("great news! a new update is available, please update your App to keep using Zal."),
-          ElevatedButton(
-              onPressed: () {
-                launchUrl(
-                  Uri.parse(Platform.isAndroid ? dotenv.env['GOOGLE_PLAY_URL']! : dotenv.env['APP_STORE_URL']!),
-                  mode: LaunchMode.externalNonBrowserApplication,
-                );
-              },
-              child: const Text("Update")),
-        ],
-      ),
-    );
-    final context = ref.read(contextProvider);
-    await showDialog(
-      context: context!,
-      builder: (BuildContext context) {
-        return alert;
-      },
-      barrierDismissible: false,
-    );
-  }
-  return true;
+final defaultComputerAddressProvider = StateProvider<String?>((ref) {
+  final settings = ref.watch(settingsProvider).valueOrNull;
+  final address = settings?['address'];
+  return address;
 });
 
-final isDialogShownProvider = StateProvider<bool>((ref) => false);
+class SocketObjectNotifier extends AsyncNotifier<SocketObject?> {
+  @override
+  Future<SocketObject?> build() async {
+    final address = ref.watch(defaultComputerAddressProvider);
+    if (address == null) return null;
+    return SocketObject(address, null, null);
+  }
 
-final areProcessesRunningProvider = FutureProvider<Map<String, bool>>((ref) {
-  final sub = ref.listen(webrtcProvider, (prev, cur) async {
-    if (cur.data?.type == WebrtcDataType.runningProcesses) {
-      final parsedData = Map<String, bool>.from(jsonDecode(cur.data!.data));
-      ref.state = AsyncData(parsedData);
-      if (parsedData.values.contains(false)) {
-        if (ref.read(isDialogShownProvider.notifier).state == false) {
-          ref.read(isDialogShownProvider.notifier).state = true;
-          await showDialog(
-            barrierDismissible: false,
-            context: ref.read(contextProvider)!,
-            builder: (BuildContext context) {
-              return const AlertDialog(
-                content: ProcessNotRunningWidget(),
-              );
-            },
-          );
-          ref.read(isDialogShownProvider.notifier).state = false;
-        }
+  sendMessage(String key, dynamic value) {
+    state.valueOrNull?.socket.emit(key, value);
+  }
+
+  disconnect() {
+    state.valueOrNull?.socket.dispose();
+    ref.invalidateSelf();
+  }
+}
+
+final socketProvider = AsyncNotifierProvider<SocketObjectNotifier, SocketObject?>(() {
+  return SocketObjectNotifier();
+});
+
+final socketStreamProvider = StreamProvider<SocketData>((ref) async* {
+  StreamController stream = StreamController();
+  showSnackbarLocal(String text) {
+    final context = ref.read(contextProvider);
+    if (context != null) showSnackbar(text, context);
+  }
+
+  final socket = ref.watch(socketProvider).valueOrNull;
+  if (socket != null) {
+    socket.socket.onConnect((data) {
+      //showSnackbarLocal("Server Connected");
+    });
+    socket.socket.onDisconnect((data) {
+      ref.read(isConnectedToServerProvider.notifier).state = false;
+      //ref.read(socketProvider).valueOrNull?.socket.connect();
+      showSnackbarLocal("Server Disconnected");
+    });
+    socket.socket.on("message", (data) {
+      // ref.read(webrtcProvider.notifier).messageReceived(RTCDataChannelMessage(data));
+    });
+    socket.socket.on("room_clients", (data) {
+      ref.read(isConnectedToServerProvider.notifier).state = (data as int) > 1;
+// stream.add(SocketData(type: SocketDataType.roomClients, data: data != 0 ? [0, 1] : [1]));
+    });
+    socket.socket.on('pc_data', (data) {
+      stream.add(SocketData(type: SocketDataType.pcData, data: data));
+    });
+    socket.socket.on('gpu_processes', (data) {
+      stream.add(SocketData(type: SocketDataType.gpuProcesses, data: data));
+    });
+    socket.socket.on('fps_data', (data) {
+      stream.add(SocketData(type: SocketDataType.fpsData, data: data));
+    });
+    socket.socket.on('process_icon', (data) {
+      stream.add(SocketData(type: SocketDataType.processIcon, data: data));
+    });
+    socket.socket.on('information_text', (data) {
+      stream.add(SocketData(type: SocketDataType.informationText, data: data));
+    });
+    await for (final value in stream.stream) {
+      if (value != null) {
+        yield value as SocketData;
       }
     }
-  });
-  ref.onDispose(() => sub.close());
-  return ref.future;
+  }
 });

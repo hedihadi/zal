@@ -101,7 +101,7 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
 
         private async Task<List<networkInterfaceData>> getNetworkInterfacesAsync()
         {
-            var primaryNetwork = LocalDatabase.Instance.readKey("primaryNetwork");
+            var primaryNetwork = (string?)LocalDatabase.Instance.readKey("primaryNetwork");
             if (!NetworkInterface.GetIsNetworkAvailable())
                 return new List<networkInterfaceData>();
 
@@ -123,11 +123,13 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
                 data.Add(info);
             }
 
-            data.Sort(delegate(networkInterfaceData c1, networkInterfaceData c2) { return c2.bytesReceived.CompareTo(c1.bytesReceived); });
+            data.Sort(delegate (networkInterfaceData c1, networkInterfaceData c2) { return c2.bytesReceived.CompareTo(c1.bytesReceived); });
             if (primaryNetwork == null)
             {
                 //if primary network interface isn't set, we'll set it to the network with highest downloaded bytes
                 await LocalDatabase.Instance.writeKey("primaryNetwork", data[0].name);
+                data[0].isPrimary = true;
+
                 primaryNetwork = data[0].name;
             }
 

@@ -5,8 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:zal/Functions/models.dart';
 import 'package:zal/Functions/utils.dart';
-import 'package:zal/Screens/HomeScreen/Providers/computer_data_provider.dart';
-import 'package:zal/Screens/SettingsScreen/settings_providers.dart';
 import 'package:zal/Widgets/chart_widget.dart';
 import 'package:zal/Widgets/inline_ad.dart';
 import 'package:zal/Widgets/staggered_gridview.dart';

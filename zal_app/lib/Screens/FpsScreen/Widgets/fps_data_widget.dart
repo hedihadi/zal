@@ -13,7 +13,7 @@ import 'package:zal/Screens/FpsScreen/Widgets/save_fps_widget.dart';
 import 'package:zal/Screens/FpsScreen/fps_screen.dart';
 import 'package:zal/Screens/FpsScreen/fps_screen_providers.dart';
 import 'package:sizer/sizer.dart';
-import 'package:zal/Screens/SettingsScreen/settings_providers.dart';
+import 'package:zal/Screens/MainScreen/SettingsScreen/settings_providers.dart';
 import 'package:zal/Widgets/chart_widget.dart';
 
 class FpsDataWidget extends ConsumerWidget {
@@ -131,7 +131,7 @@ class Linechart extends ConsumerWidget {
             lineTouchData: LineTouchData(
               touchTooltipData: LineTouchTooltipData(
                 maxContentWidth: 100,
-                tooltipBgColor: Colors.black,
+                getTooltipColor: (touchedSpot) => Colors.black,
                 getTooltipItems: (touchedSpots) {
                   return touchedSpots.map((LineBarSpot touchedSpot) {
                     final textStyle = TextStyle(

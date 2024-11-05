@@ -1,0 +1,240 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html oncontextmenu="return false" onmousewheel="return !event.shiftKey" onselectstart="return false" ondragover="return false">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>CrystalDiskInfo</title>
+  <!--[if lte IE 8 ]><script language="javascript" type="text/javascript" src="./flot/excanvas.min.js"></script><![endif]-->
+  <script language="javascript" type="text/javascript" src="./flot/jquery.min.js"></script>
+  <script language="javascript" type="text/javascript" src="./flot/jquery.flot.min.js"></script>
+  <link id="StyleSheet" href="Graph.css" rel="stylesheet" type="text/css" />
+</head>
+<body onresize="changeSize();" oncontextmenu="return false" onmousewheel="return !event.shiftKey" onselectstart="return false" ondragover="return false">
+<div id="mainMenu">
+  <ul id="menuBar">
+    <li id="LiAllOn" class="allOnOff"></li>
+    <li id="LiAllOff" class="allOnOff"></li>
+    <li id="LiRefresh" class="allOnOff"></li>
+    <li id="LiDisk0"><a href="#" id="Disk0"></a></li>
+    <li id="LiDisk1"><a href="#" id="Disk1"></a></li>
+    <li id="LiDisk2"><a href="#" id="Disk2"></a></li>
+    <li id="LiDisk3"><a href="#" id="Disk3"></a></li>
+    <li id="LiDisk4"><a href="#" id="Disk4"></a></li>
+    <li id="LiDisk5"><a href="#" id="Disk5"></a></li>
+    <li id="LiDisk6"><a href="#" id="Disk6"></a></li>
+    <li id="LiDisk7"><a href="#" id="Disk7"></a></li>
+    <li id="LiDisk8"><a href="#" id="Disk8"></a></li>
+    <li id="LiDisk9"><a href="#" id="Disk9"></a></li>
+    <li id="LiDisk10"><a href="#" id="Disk10"></a></li>
+    <li id="LiDisk11"><a href="#" id="Disk11"></a></li>
+    <li id="LiDisk12"><a href="#" id="Disk12"></a></li>
+    <li id="LiDisk13"><a href="#" id="Disk13"></a></li>
+    <li id="LiDisk14"><a href="#" id="Disk14"></a></li>
+    <li id="LiDisk15"><a href="#" id="Disk15"></a></li>
+    <li id="LiDisk16"><a href="#" id="Disk16"></a></li>
+    <li id="LiDisk17"><a href="#" id="Disk17"></a></li>
+    <li id="LiDisk18"><a href="#" id="Disk18"></a></li>
+    <li id="LiDisk19"><a href="#" id="Disk19"></a></li>
+    <li id="LiDisk20"><a href="#" id="Disk20"></a></li>
+    <li id="LiDisk21"><a href="#" id="Disk21"></a></li>
+    <li id="LiDisk22"><a href="#" id="Disk22"></a></li>
+    <li id="LiDisk23"><a href="#" id="Disk23"></a></li>
+    <li id="LiDisk24"><a href="#" id="Disk24"></a></li>
+    <li id="LiDisk25"><a href="#" id="Disk25"></a></li>
+    <li id="LiDisk26"><a href="#" id="Disk26"></a></li>
+    <li id="LiDisk27"><a href="#" id="Disk27"></a></li>
+    <li id="LiDisk28"><a href="#" id="Disk28"></a></li>
+    <li id="LiDisk29"><a href="#" id="Disk29"></a></li>
+    <li id="LiDisk30"><a href="#" id="Disk30"></a></li>
+    <li id="LiDisk31"><a href="#" id="Disk31"></a></li>
+    <li id="LiDisk32"><a href="#" id="Disk32"></a></li>
+    <li id="LiDisk33"><a href="#" id="Disk33"></a></li>
+    <li id="LiDisk34"><a href="#" id="Disk34"></a></li>
+    <li id="LiDisk35"><a href="#" id="Disk35"></a></li>
+    <li id="LiDisk36"><a href="#" id="Disk36"></a></li>
+    <li id="LiDisk37"><a href="#" id="Disk37"></a></li>
+    <li id="LiDisk38"><a href="#" id="Disk38"></a></li>
+    <li id="LiDisk39"><a href="#" id="Disk39"></a></li>
+    <li id="LiDisk40"><a href="#" id="Disk40"></a></li>
+    <li id="LiDisk41"><a href="#" id="Disk41"></a></li>
+    <li id="LiDisk42"><a href="#" id="Disk42"></a></li>
+    <li id="LiDisk43"><a href="#" id="Disk43"></a></li>
+    <li id="LiDisk44"><a href="#" id="Disk44"></a></li>
+    <li id="LiDisk45"><a href="#" id="Disk45"></a></li>
+    <li id="LiDisk46"><a href="#" id="Disk46"></a></li>
+    <li id="LiDisk47"><a href="#" id="Disk47"></a></li>
+    <li id="LiDisk48"><a href="#" id="Disk48"></a></li>
+    <li id="LiDisk49"><a href="#" id="Disk49"></a></li>
+    <li id="LiDisk50"><a href="#" id="Disk50"></a></li>
+    <li id="LiDisk51"><a href="#" id="Disk51"></a></li>
+    <li id="LiDisk52"><a href="#" id="Disk52"></a></li>
+    <li id="LiDisk53"><a href="#" id="Disk53"></a></li>
+    <li id="LiDisk54"><a href="#" id="Disk54"></a></li>
+    <li id="LiDisk55"><a href="#" id="Disk55"></a></li>
+    <li id="LiDisk56"><a href="#" id="Disk56"></a></li>
+    <li id="LiDisk57"><a href="#" id="Disk57"></a></li>
+    <li id="LiDisk58"><a href="#" id="Disk58"></a></li>
+    <li id="LiDisk59"><a href="#" id="Disk59"></a></li>
+    <li id="LiDisk60"><a href="#" id="Disk60"></a></li>
+    <li id="LiDisk61"><a href="#" id="Disk61"></a></li>
+    <li id="LiDisk62"><a href="#" id="Disk62"></a></li>
+    <li id="LiDisk63"><a href="#" id="Disk63"></a></li>
+    <li id="LiDisk64"><a href="#" id="Disk64"></a></li>
+    
+  </ul>
+<div id="select" style="margin-left: 10px;">
+<table>
+<tr>
+<td><a href="#" id="AllOn"></a></td>
+<td><a href="#" id="AllOff"></a></td>
+<td><a href="#" id="Reset"></a></td>
+<td>
+<select id="SelectAttributeId" title="Select Attribute ID" onchange="this.click()">
+  <option value="261" selected="selected">Reallocated Sectors Count</option>
+</select>
+</td>
+</tr>
+</table>
+</div>
+<div id="placeholder" style="margin:20px;width:600px;height:340px;"></div>
+<div id="overview" style="margin-left:20px;margin-right:20px;width:600px;height:40px"></div>
+<script id="source" language="javascript" type="text/javascript">
+
+function changeBackgroundImage(x)
+{
+	document.body.style.backgroundImage = x;
+}
+
+function updateData(x)
+{
+	d = eval(x);
+}
+
+function updateMainViewOptions(x)
+{
+	options = eval("(" + x + ")");
+}
+
+function updateOverViewOptions(x)
+{
+	overViewOptions = eval("(" + x + ")");
+}
+
+function reDraw()
+{
+	document.body.style.cursor = "wait";
+	plot = $.plot($("#placeholder"), d, options);
+	overview = $.plot($("#overview"), d, overViewOptions);
+	document.body.style.cursor = "auto";
+}
+
+var d = [[]];
+var options = {};
+var overViewOptions = {};
+var plot;
+var overview;
+
+function changeSize()
+{
+	var obj = document.getElementById("placeholder");
+	if(obj)
+	{
+		obj.style.width = (document.documentElement.clientWidth - 40) + "px";
+		obj.style.height = (document.documentElement.clientHeight - 150) + "px";
+	}
+	var obj = document.getElementById("overview");
+	if(obj)
+	{
+		obj.style.width = (document.documentElement.clientWidth - 40) + "px";
+	}
+
+	plot = $.plot($("#placeholder"), d, options);
+	overview = $.plot($("#overview"), d, overViewOptions);
+}
+
+// helper for returning the weekends in a period
+function weekendAreas(plotarea)
+{
+    var areas = [];
+    var d = new Date(plotarea.xmin);
+    // go to the first Saturday
+    d.setDate(d.getDate() - ((d.getDay() + 1) % 7))
+    d.setSeconds(0);
+    d.setMinutes(0);
+    d.setHours(0);
+
+    var i = d.getTime() - d.getTimezoneOffset() * 60 * 1000;
+    do {
+        // when we don't set y1 and y2 the rectangle
+        // automatically extends to infinity in those directions
+        areas.push({ x1: i, x2: i + 2 * 24 * 60 * 60 * 1000 });
+        i += 7 * 24 * 60 * 60 * 1000;
+    } while (i < plotarea.xmax);
+
+    return areas;
+}
+
+// now connect the two
+var internalSelection = false;
+
+$("#placeholder").bind("selected", function (event, area) {
+    // do the zooming
+    plot = $.plot($("#placeholder"), d,
+                  $.extend(true, {}, options, {
+                      xaxis: { min: area.x1, max: area.x2 },
+                      yaxis: { min: area.y1, max: area.y2 }
+                  }));
+    
+    if (internalSelection)
+        return; // prevent eternal loop
+    internalSelection = true;
+    overview.setSelection(area);
+    internalSelection = false;
+});
+
+$("#overview").bind("selected", function (event, area) {
+    if (internalSelection)
+        return;
+    internalSelection = true;
+    plot.setSelection(area);
+    internalSelection = false;
+});
+
+function showTooltip(x, y, contents) {
+    var str = "" + contents;
+    x = x - str.length * 6;
+    $('<div id="tooltip">' + contents + '</div>').css( {
+	position: 'absolute',
+        display: 'none',
+        top: y - 40,
+        left: x,
+        border: '1px solid #ddd',
+        padding: '4px',
+        'background-color': '#eee',
+        'font-size': '20px',
+       opacity: 0.90
+    }).appendTo("body").fadeIn(200);
+}
+
+var previousPoint = null;
+$("#placeholder").bind("plothover", function (event, pos, item) {
+    if (item) {
+        if (previousPoint != item.datapoint) {
+            previousPoint = item.datapoint;
+            
+            $("#tooltip").remove();
+            var x = item.datapoint[0].toFixed(2),
+                y = item.datapoint[1].toFixed(2);
+            
+            showTooltip(item.pageX, item.pageY, parseInt(y));
+        }
+    }
+    else {
+        $("#tooltip").remove();
+        previousPoint = null;
+    }
+});
+</script>
+<div id="complete"></div>
+</body>
+</html>

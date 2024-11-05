@@ -6,9 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sizer/sizer.dart';
 import 'package:zal/Functions/utils.dart';
-import 'package:zal/Screens/HomeScreen/Providers/computer_data_provider.dart';
-import 'package:zal/Screens/HomeScreen/Providers/home_screen_providers.dart';
-import 'package:zal/Screens/SettingsScreen/Widgets/select_primary_network_screen.dart';
+import 'package:zal/Screens/ConnectedScreen/connected_screen_providers.dart';
 import 'package:zal/Widgets/chart_widget.dart';
 import 'package:zal/Widgets/inline_ad.dart';
 
@@ -104,7 +102,7 @@ class NetworkScreen extends ConsumerWidget {
                   alignment: Alignment.centerRight,
                   child: TextButton.icon(
                       onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SelectPrimaryNetworkScreen()));
+                        //    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SelectPrimaryNetworkScreen()));
                       },
                       icon: const Icon(FontAwesomeIcons.gear),
                       label: const Text("Primary Network"))),

@@ -10,13 +10,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:zal/Functions/models.dart';
 import 'package:zal/Functions/utils.dart';
-import 'package:zal/Screens/AccountScreen/account_screen_providers.dart';
 import 'package:zal/Screens/CanRunGameScreen/can_run_game_provider.dart';
+import 'package:zal/Screens/ConnectedScreen/connected_screen_providers.dart';
 import 'package:zal/Screens/FpsScreen/Widgets/fps_screen_pc_widget.dart';
-import 'package:zal/Screens/HomeScreen/Providers/computer_data_provider.dart';
-import 'package:zal/Screens/HomeScreen/Providers/home_screen_providers.dart';
 import 'package:sizer/sizer.dart';
-import 'package:zal/Screens/SettingsScreen/settings_providers.dart';
 import 'package:zal/Widgets/inline_ad.dart';
 import '../../Functions/analytics_manager.dart';
 

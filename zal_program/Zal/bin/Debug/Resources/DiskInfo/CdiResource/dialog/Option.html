@@ -1,0 +1,384 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html oncontextmenu="return false" onmousewheel="return !event.shiftKey" onselectstart="return false" ondragover="return false">
+<head>
+<title>CrystalDiskInfo</title>
+<style type="text/css">
+body
+{
+	font-size: 14px;
+	text-align: center;
+	color: #000000;
+	background: #ffffff;
+	background-image: url("./image/background.png");
+  	font-family: "メイリオ", Meiryo, Tahoma;
+  	line-height: 1.3;
+}
+
+p
+{
+	margin: 5px;
+}
+
+th
+{
+	font-size: 14px;
+	background-image: url("./image/labelUnsupported.png");
+	background-position: center bottom;
+	background-repeat: no-repeat;
+	height: 24px;
+}
+
+a:link
+{
+	text-decoration: none;
+	color: #3333ff;
+}
+
+a:visited
+{
+	text-decoration: none;
+	color: #6666ff;
+}
+
+div.color
+{
+	display: block;
+	border: #cccccc 3px double;
+	background-color: #eeeeee;
+	width : 16px;
+	height: 16px;
+}
+
+div.valueC
+{
+	display: block;
+	text-align: center;
+	border-left: #cccccc 1px solid;
+	border-top: #f0f0f0 1px solid;
+	border-bottom: #dddddd 1px solid;
+	border-right: #f0f0f0 1px solid;
+	padding-left: 2px;
+	padding-right: 2px;
+	padding-top: 1px;
+	padding-bottom: 0px;
+	color: #111111;
+	font-family: monospace;
+	height: 18px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+div.valueL
+{
+	display: block;
+	text-align: left;
+	border-left: #cccccc 1px solid;
+	border-top: #f0f0f0 1px solid;
+	border-bottom: #dddddd 1px solid;
+	border-right: #f0f0f0 1px solid;
+	padding-left: 2px;
+	padding-right: 2px;
+	padding-top: 1px;
+	padding-bottom: 0px;
+	color: #111111;
+	font-family: "メイリオ", Meiryo, Tahoma;
+	height: 18px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	line-height: 1.2;
+	width: 404px;
+}
+
+a.buttonEnable
+{
+	color : #000000;
+	width : 120px;
+	height: 20px;
+	font-size: 14px;
+	padding-top: 4px;
+	display: block;
+	text-align: center;
+	text-decoration: none;
+	background-image: url(image/buttonEnable.png);
+}
+
+a:hover.buttonEnable
+{
+	background-image: url(image/buttonHover.png);
+}
+
+</style>
+<script id="source" language="javascript" type="text/javascript">
+function changeBackgroundColor(x)
+{
+	var arg = x.split(", ");
+	var id = "Color" + arg[0];
+	var color = arg[1];
+	
+	var obj = document.getElementById(id);
+	if(obj)
+	{
+		obj.style.backgroundColor = color;
+	}
+}
+
+function changeBackgroundImage(x)
+{
+	document.body.style.backgroundImage = x;
+}
+
+</script>
+</head>
+<body oncontextmenu="return false" onmousewheel="return !event.shiftKey" onselectstart="return false" ondragover="return false">
+<table width="416" border="0">
+  <tr>
+    <th colspan="12" id="LabelLineColor">&nbsp;</th>
+  </tr>
+  <tr>
+    <td width="16"><div align="center">1</div></td>
+    <td width="20"><div id="Color0" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select0"></a></div></td>
+    <td width="68"><div id="ColorCode0" class="valueC"></div></td>
+    <td width="16"><div align="center">17</div></td>
+    <td width="20"><div id="Color16" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select17"></a></div></td>
+    <td width="68"><div id="ColorCode16" class="valueC"></div></td>
+    <td width="16"><div align="center">33</div></td>
+    <td width="20"><div id="Color32" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select33"></a></div></td>
+    <td width="68"><div id="ColorCode32" class="valueC"></div></td>
+    <td width="16"><div align="center">49</div></td>
+    <td width="20"><div id="Color48" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select49"></a></div></td>
+    <td width="68"><div id="ColorCode48" class="valueC"></div></td>
+  </tr>
+  <tr>
+    <td><div align="center">2</div></td>
+    <td><div id="Color1" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select1"></a></div></td>
+    <td><div id="ColorCode1" class="valueC"></div></td>
+    <td><div align="center">18</div></td>
+    <td><div id="Color17" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select17"></a></div></td>
+    <td><div id="ColorCode17" class="valueC"></div></td>
+    <td><div align="center">34</div></td>
+    <td><div id="Color33" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select33"></a></div></td>
+    <td><div id="ColorCode33" class="valueC"></div></td>
+    <td><div align="center">50</div></td>
+    <td><div id="Color49" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select49"></a></div></td>
+    <td><div id="ColorCode49" class="valueC"></div></td>
+  </tr>
+  <tr>
+    <td><div align="center">3</div></td>
+    <td><div id="Color2" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select2"></a></div></td>
+    <td><div id="ColorCode2" class="valueC"></div></td>
+    <td><div align="center">19</div></td>
+    <td><div id="Color18" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select18"></a></div></td>
+    <td><div id="ColorCode18" class="valueC"></div></td>
+    <td><div align="center">35</div></td>
+    <td><div id="Color34" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select34"></a></div></td>
+    <td><div id="ColorCode34" class="valueC"></div></td>
+    <td><div align="center">51</div></td>
+    <td><div id="Color50" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select50"></a></div></td>
+    <td><div id="ColorCode50" class="valueC"></div></td>
+  </tr>
+  <tr>
+    <td><div align="center">4</div></td>
+    <td><div id="Color3" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select3"></a></div></td>
+    <td><div id="ColorCode3" class="valueC"></div></td>
+    <td><div align="center">20</div></td>
+    <td><div id="Color19" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select19"></a></div></td>
+    <td><div id="ColorCode19" class="valueC"></div></td>
+    <td><div align="center">36</div></td>
+    <td><div id="Color35" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select35"></a></div></td>
+    <td><div id="ColorCode35" class="valueC"></div></td>
+    <td><div align="center">52</div></td>
+    <td><div id="Color51" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select51"></a></div></td>
+    <td><div id="ColorCode51" class="valueC"></div></td>
+  </tr>
+  <tr>
+    <td><div align="center">5</div></td>
+    <td><div id="Color4" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select4"></a></div></td>
+    <td><div id="ColorCode4" class="valueC"></div></td>
+    <td><div align="center">21</div></td>
+    <td><div id="Color20" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select20"></a></div></td>
+    <td><div id="ColorCode20" class="valueC"></div></td>
+    <td><div align="center">37</div></td>
+    <td><div id="Color36" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select36"></a></div></td>
+    <td><div id="ColorCode36" class="valueC"></div></td>
+    <td><div align="center">53</div></td>
+    <td><div id="Color52" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select52"></a></div></td>
+    <td><div id="ColorCode52" class="valueC"></div></td>
+  </tr>
+  <tr>
+    <td><div align="center">6</div></td>
+    <td><div id="Color5" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select5"></a></div></td>
+    <td><div id="ColorCode5" class="valueC"></div></td>
+    <td><div align="center">22</div></td>
+    <td><div id="Color21" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select21"></a></div></td>
+    <td><div id="ColorCode21" class="valueC"></div></td>
+    <td><div align="center">38</div></td>
+    <td><div id="Color37" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select37"></a></div></td>
+    <td><div id="ColorCode37" class="valueC"></div></td>
+    <td><div align="center">54</div></td>
+    <td><div id="Color53" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select53"></a></div></td>
+    <td><div id="ColorCode53" class="valueC"></div></td>
+  </tr>
+  <tr>
+    <td><div align="center">7</div></td>
+    <td><div id="Color6" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select6"></a></div></td>
+    <td><div id="ColorCode6" class="valueC"></div></td>
+    <td><div align="center">23</div></td>
+    <td><div id="Color22" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select22"></a></div></td>
+    <td><div id="ColorCode22" class="valueC"></div></td>
+    <td><div align="center">39</div></td>
+    <td><div id="Color38" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select38"></a></div></td>
+    <td><div id="ColorCode38" class="valueC"></div></td>
+    <td><div align="center">55</div></td>
+    <td><div id="Color54" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select54"></a></div></td>
+    <td><div id="ColorCode54" class="valueC"></div></td>
+  </tr>
+  <tr>
+    <td><div align="center">8</div></td>
+    <td><div id="Color7" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select7"></a></div></td>
+    <td><div id="ColorCode7" class="valueC"></div></td>
+    <td><div align="center">24</div></td>
+    <td><div id="Color23" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select23"></a></div></td>
+    <td><div id="ColorCode23" class="valueC"></div></td>
+    <td><div align="center">40</div></td>
+    <td><div id="Color39" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select39"></a></div></td>
+    <td><div id="ColorCode39" class="valueC"></div></td>
+    <td><div align="center">56</div></td>
+    <td><div id="Color55" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select55"></a></div></td>
+    <td><div id="ColorCode55" class="valueC"></div></td>
+  </tr>
+  <tr>
+    <td><div align="center">9</div></td>
+    <td><div id="Color8" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select8"></a></div></td>
+    <td><div id="ColorCode8" class="valueC"></div></td>
+    <td><div align="center">25</div></td>
+    <td><div id="Color24" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select24"></a></div></td>
+    <td><div id="ColorCode24" class="valueC"></div></td>
+    <td><div align="center">41</div></td>
+    <td><div id="Color40" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select40"></a></div></td>
+    <td><div id="ColorCode40" class="valueC"></div></td>
+    <td><div align="center">57</div></td>
+    <td><div id="Color56" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select56"></a></div></td>
+    <td><div id="ColorCode56" class="valueC"></div></td>
+  </tr>
+  <tr>
+    <td><div align="center">10</div></td>
+    <td><div id="Color9" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select9"></a></div></td>
+    <td><div id="ColorCode9" class="valueC"></div></td>
+    <td><div align="center">26</div></td>
+    <td><div id="Color25" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select25"></a></div></td>
+    <td><div id="ColorCode25" class="valueC"></div></td>
+    <td><div align="center">42</div></td>
+    <td><div id="Color41" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select41"></a></div></td>
+    <td><div id="ColorCode41" class="valueC"></div></td>
+    <td><div align="center">58</div></td>
+    <td><div id="Color57" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select57"></a></div></td>
+    <td><div id="ColorCode57" class="valueC"></div></td>
+  </tr>
+  <tr>
+    <td><div align="center">11</div></td>
+    <td><div id="Color10" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select10"></a></div></td>
+    <td><div id="ColorCode10" class="valueC"></div></td>
+    <td><div align="center">27</div></td>
+    <td><div id="Color26" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select26"></a></div></td>
+    <td><div id="ColorCode26" class="valueC"></div></td>
+    <td><div align="center">43</div></td>
+    <td><div id="Color42" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select42"></a></div></td>
+    <td><div id="ColorCode42" class="valueC"></div></td>
+    <td><div align="center">59</div></td>
+    <td><div id="Color58" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select58"></a></div></td>
+    <td><div id="ColorCode58" class="valueC"></div></td>
+  </tr>
+  <tr>
+    <td><div align="center">12</div></td>
+    <td><div id="Color11" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select11"></a></div></td>
+    <td><div id="ColorCode11" class="valueC"></div></td>
+    <td><div align="center">28</div></td>
+    <td><div id="Color27" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select27"></a></div></td>
+    <td><div id="ColorCode27" class="valueC"></div></td>
+    <td><div align="center">44</div></td>
+    <td><div id="Color43" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select43"></a></div></td>
+    <td><div id="ColorCode43" class="valueC"></div></td>
+    <td><div align="center">60</div></td>
+    <td><div id="Color59" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select59"></a></div></td>
+    <td><div id="ColorCode59" class="valueC"></div></td>
+  </tr>
+  <tr>
+    <td><div align="center">13</div></td>
+    <td><div id="Color12" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select12"></a></div></td>
+    <td><div id="ColorCode12" class="valueC"></div></td>
+    <td><div align="center">29</div></td>
+    <td><div id="Color28" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select28"></a></div></td>
+    <td><div id="ColorCode28" class="valueC"></div></td>
+    <td><div align="center">45</div></td>
+    <td><div id="Color44" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select44"></a></div></td>
+    <td><div id="ColorCode44" class="valueC"></div></td>
+    <td><div align="center">61</div></td>
+    <td><div id="Color60" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select60"></a></div></td>
+    <td><div id="ColorCode60" class="valueC"></div></td>
+  </tr>
+  <tr>
+    <td><div align="center">14</div></td>
+    <td><div id="Color13" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select13"></a></div></td>
+    <td><div id="ColorCode13" class="valueC"></div></td>
+    <td><div align="center">30</div></td>
+    <td><div id="Color29" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select29"></a></div></td>
+    <td><div id="ColorCode29" class="valueC"></div></td>
+    <td><div align="center">46</div></td>
+    <td><div id="Color45" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select45"></a></div></td>
+    <td><div id="ColorCode45" class="valueC"></div></td>
+    <td><div align="center">62</div></td>
+    <td><div id="Color61" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select61"></a></div></td>
+    <td><div id="ColorCode61" class="valueC"></div></td>
+  </tr>
+    <tr>
+    <td><div align="center">15</div></td>
+    <td><div id="Color14" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select14"></a></div></td>
+    <td><div id="ColorCode14" class="valueC"></div></td>
+    <td><div align="center">31</div></td>
+    <td><div id="Color30" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select30"></a></div></td>
+    <td><div id="ColorCode30" class="valueC"></div></td>
+    <td><div align="center">47</div></td>
+    <td><div id="Color46" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select46"></a></div></td>
+    <td><div id="ColorCode46" class="valueC"></div></td>
+    <td><div align="center">63</div></td>
+    <td><div id="Color62" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select62"></a></div></td>
+    <td><div id="ColorCode62" class="valueC"></div></td>
+  </tr>
+    <tr>
+    <td><div align="center">16</div></td>
+    <td><div id="Color15" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select15"></a></div></td>
+    <td><div id="ColorCode15" class="valueC"></div></td>
+    <td><div align="center">32</div></td>
+    <td><div id="Color31" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select31"></a></div></td>
+    <td><div id="ColorCode31" class="valueC"></div></td>
+    <td><div align="center">48</div></td>
+    <td><div id="Color47" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select47"></a></div></td>
+    <td><div id="ColorCode47" class="valueC"></div></td>
+    <td><div align="center">64</div></td>
+    <td><div id="Color63" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select63"></a></div></td>
+    <td><div id="ColorCode63" class="valueC"></div></td>
+  </tr>
+  </table>  
+  
+<table border="0">
+  <tr>
+    <td width="108"><div id="LabelThreshold" align="right">Threshold</div></td>
+    <td width="20"><div id="Color128" class="color"><a href="#"><img src="image/blank.png" border="0" id="Select128"></a></div></td>
+    <td width="68"><div id="ColorCode128" class="valueC"></div></td>
+    <td width="204"><a href="#" id="Reset" class="buttonEnable">Reset</a></td>
+  </tr>
+</table>
+<hr width="450">
+<table width="450" border="0">
+<tr>
+  <th colspan="3" id="LabelBkImage">&nbsp;</th>
+  </tr>
+<tr>
+<td width="404"><div id="BkImage" class="valueL"></td>
+<td width="16"><a href="#"><img src="image/file.png" border="0" id="SelectBkImage"></a></td>
+<td width="16"><a href="#"><img src="image/nofile.png" border="0" id="NoBkImage"></a></td>
+</tr>
+</table>
+<div id="complete"></div>
+</body>
+</html>

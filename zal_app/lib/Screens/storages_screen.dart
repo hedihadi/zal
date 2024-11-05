@@ -7,8 +7,8 @@ import 'package:sizer/sizer.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:zal/Functions/models.dart';
 import 'package:zal/Functions/utils.dart';
+import 'package:zal/Screens/ConnectedScreen/connected_screen_providers.dart';
 import 'package:zal/Screens/FilesScreen/Providers/information_text_provider.dart';
-import 'package:zal/Screens/HomeScreen/Providers/computer_data_provider.dart';
 import 'package:zal/Screens/HomeScreen/Widgets/battery_widget.dart';
 import 'package:zal/Screens/HomeScreen/Widgets/cpu_widget.dart';
 import 'package:zal/Screens/HomeScreen/Widgets/gpu_widget.dart';
@@ -30,7 +30,6 @@ class StoragesScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.read(shouldShowUpdateDialogProvider);
     ref.read(informationTextProvider);
     final computerData = ref.watch(computerDataProvider);
     return computerData.when(

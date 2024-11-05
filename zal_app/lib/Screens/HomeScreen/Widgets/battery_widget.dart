@@ -3,18 +3,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:zal/Functions/models.dart';
 import 'package:zal/Functions/utils.dart';
-import 'package:zal/Screens/HomeScreen/Providers/computer_data_provider.dart';
 import 'package:zal/Widgets/card_widget.dart';
 import 'package:sizer/sizer.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../../../Widgets/horizontal_circle_progressbar.dart';
 
 class BatteryWidget extends ConsumerWidget {
-   BatteryWidget({super.key,required this.computerData});
-final ComputerData computerData;
+  const BatteryWidget({super.key, required this.computerData});
+  final ComputerData computerData;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
     if (computerData.battery.hasBattery) {
       final battery = computerData.battery;
       if (battery.hasBattery == false) return Container();

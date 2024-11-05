@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Zal;
 using Zal.Constants.Models;
+using Zal.Functions;
 using Zal.MajorFunctions;
 
 namespace Zal.Functions.MajorFunctions
@@ -35,16 +36,15 @@ namespace Zal.Functions.MajorFunctions
             await Task.Delay(2000);
             while (true)
             {
+                System.Diagnostics.Debug.WriteLine($"mobile conneciton:{isMobileConnected}");
+
                 if (isMobileConnected)
                 {
                     sendDataToMobile();
                 }
-                else
-                {
-                    getComputerDataAsync();
-                }
+
                 //wait before getting data again.
-                await Task.Delay(isMobileConnected ? 900 : 5000);
+                await Task.Delay(900);
             }
         }
         private async Task<computerData?> getComputerDataAsync()
@@ -55,7 +55,6 @@ namespace Zal.Functions.MajorFunctions
                 if (data != null)
                 {
                     computerDataReceived.Invoke(null, data);
-                    FrontendGlobalClass.Instance.notificationsManager.checkNotifications(data);
                 }
 
                 return data;
@@ -89,7 +88,7 @@ namespace Zal.Functions.MajorFunctions
         {
             var data = await getBackendData();
             var compressedData = CompressGzip(Newtonsoft.Json.JsonConvert.SerializeObject(data));
-            FrontendGlobalClass.Instance.webrtc?.sendMessage("pc_data", compressedData);
+            FrontendGlobalClass.Instance.localSocket?.sendMessage("pc_data", compressedData);
         }
         static string CompressGzip(string text)
         {
@@ -150,7 +149,7 @@ class ChartsDataManager
 
     public static async Task<gpuData?> getPrimaryGpu(computerData computerData)
     {
-        var primaryGpuName = LocalDatabase.Instance.readKey("primaryGpu");
+        var primaryGpuName = (string?)LocalDatabase.Instance.readKey("primaryGpu");
         gpuData? primaryGpu = null;
         //Logger.Log($"fetching primary gpu object from name {primaryGpuName}");
         foreach (var gpu in computerData.gpuData)

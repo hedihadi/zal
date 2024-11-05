@@ -1,66 +1,44 @@
 using System;
 using System.Threading.Tasks;
-using SIPSorcery.Net;
 using Zal.Constants.Models;
 using Zal.Functions.MajorFunctions;
 using Zal.Functions.Models;
-using ZalConsole.HelperFunctions;
 
 namespace Zal.MajorFunctions
 {
     public class FrontendGlobalClass
     {
         private static FrontendGlobalClass? instance;
-        public ServerSocket serverSocket;
         public LocalSocket localSocket;
         public BackendManager backend;
-        public Webrtc webrtc;
         public DataManager dataManager;
-        public NotificationsManager notificationsManager;
-        public RunningProgramsTracker runningProgramsTracker;
         public bool shouldLogFpsData = false;
-        private FrontendGlobalClass(EventHandler<RTCPeerConnectionState> webrtcConnectionStateChanged,
-            EventHandler<ServerSocketConnectionState> socketServerConnectionStateChanged,
+        private FrontendGlobalClass(
+            EventHandler<SocketConnectionState> socketConnectionStateChanged,
             EventHandler<computerData> computerDataReceived
 
             )
         {
             // Initialization code here
             backend = new BackendManager();
-            serverSocket = new ServerSocket(socketServerConnectionStateChanged);
-            localSocket = new LocalSocket();
-            webrtc = new Webrtc(webrtcConnectionStateChanged);
+            localSocket = new LocalSocket(stateChanged: socketConnectionStateChanged);
             dataManager = new DataManager(computerDataReceived);
-            notificationsManager = new NotificationsManager();
-            consumerTimeTask();
-            runningProgramsTracker = new RunningProgramsTracker();
 
 
         }
-        public static async void Initialize(EventHandler<RTCPeerConnectionState> webrtcConnectionStateChanged,
-            EventHandler<ServerSocketConnectionState> socketServerConnectionStateChanged,
+        public static async Task Initialize(
+            EventHandler<SocketConnectionState> socketConnectionStateChanged,
             //invoked when we retrieve computerData
             EventHandler<computerData> computerDataReceived
             )
         {
-            instance = new FrontendGlobalClass(webrtcConnectionStateChanged, socketServerConnectionStateChanged, computerDataReceived);
+            await LocalDatabase.Initialize();
+            instance = new FrontendGlobalClass(socketConnectionStateChanged, computerDataReceived);
 
 
         }
 
-        //this function notifies the server every 5 minutes, this is used to show app usage in the app
-        private async Task consumerTimeTask()
-        {
-            while (true)
-            {
-                //wait for 5 mintues
-                await Task.Delay(300000);
-                //send data to database
-                var response = await ApiManager.SendDataToDatabase("consumer-times");
-                Console.WriteLine(response);
 
-            }
-        }
         public static FrontendGlobalClass Instance
         {
             get

@@ -8,8 +8,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 import 'package:zal/Functions/models.dart';
 import 'package:zal/Functions/utils.dart';
-import 'package:zal/Screens/HomeScreen/Providers/computer_data_provider.dart';
-import 'package:zal/Screens/HomeScreen/Providers/webrtc_provider.dart';
+import 'package:zal/Screens/ConnectedScreen/connected_screen_providers.dart';
+import 'package:zal/Screens/MainScreen/main_screen_providers.dart';
 import 'package:zal/Screens/TaskManagerScreen/Widgets/taskmanager_table_widget.dart';
 import 'package:zal/Widgets/inline_ad.dart';
 import 'package:zal/Widgets/title_widget.dart';
@@ -104,7 +104,7 @@ class TaskManagerScreen extends ConsumerWidget {
                             onTap: () async {
                               bool response = await showConfirmDialog('are you sure?', 'do you want to kill ${process.name} process?', context);
                               if (response == false) return;
-                              ref.read(webrtcProvider.notifier).sendMessage('kill_process', jsonEncode(process.pids));
+                              ref.read(socketProvider.notifier).sendMessage('kill_process', jsonEncode(process.pids));
                             },
                             child: Padding(
                               padding: const EdgeInsets.all(5),

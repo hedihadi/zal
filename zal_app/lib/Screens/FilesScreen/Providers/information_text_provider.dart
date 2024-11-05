@@ -2,15 +2,14 @@ import 'package:color_print/color_print.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zal/Functions/models.dart';
 import 'package:zal/Functions/utils.dart';
-import 'package:zal/Screens/HomeScreen/Providers/webrtc_provider.dart';
 import 'package:zal/Screens/MainScreen/main_screen_providers.dart';
 
-final informationTextProvider = FutureProvider<WebrtcProviderModel>((ref) {
-  final sub = ref.listen(webrtcProvider, (prev, cur) {
-    if (cur.data?.type == WebrtcDataType.informationText) {
+final informationTextProvider = FutureProvider<SocketData>((ref) {
+  final sub = ref.listen(socketStreamProvider, (prev, cur) {
+    if (cur.valueOrNull?.type == SocketDataType.informationText) {
       final context = ref.read(contextProvider)!;
-      logInfo(cur.data?.data);
-      showSnackbar(cur.data!.data, context);
+      logInfo(cur.valueOrNull?.data);
+      showSnackbar(cur.valueOrNull!.data, context);
     }
   });
   ref.onDispose(() => sub.close());

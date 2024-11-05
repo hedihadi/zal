@@ -1,0 +1,160 @@
+*
+{
+	margin: 0px;
+	padding: 0px;
+}
+
+body
+{
+	color: #000000;
+	background: #ffffff;
+	background-image: url(image/background.png);
+	font-family: "メイリオ", Meiryo, Tahoma;
+	overflow: hidden;
+}
+
+select
+{
+	font-family: "メイリオ", Meiryo, Tahoma;
+	font-size: 100%;
+}
+
+.inline
+{
+	display: inline;
+}
+
+.double
+{
+	font-size: 24px;
+	font-weight: bold;
+	font-family: "メイリオ", Meiryo, Tahoma;
+	text-align: center;
+}
+
+a#AllOn
+{
+	vertical-align: bottom;
+	background-image: url(image/GraphAllOn.png);
+	opacity: 0.6;
+	filter: alpha(opacity=60);
+	display: block;
+	width: 24px;
+	height: 24px;
+}
+
+a:hover#AllOn
+{
+	background-image: url(image/GraphAllOn.png);
+	opacity: 1.0;
+	filter: alpha(opacity=100);
+	display: block;
+	width: 24px;
+	height: 24px;
+}
+
+a#AllOff
+{
+	vertical-align: bottom;
+	background-image: url(image/GraphAllOff.png);
+	opacity: 0.6;
+	filter: alpha(opacity=60);
+	display: block;
+	width: 24px;
+	height: 24px;
+}
+
+a:hover#AllOff
+{
+	background-image: url(image/GraphAllOff.png);
+	opacity: 1.0;
+	filter: alpha(opacity=100);
+	display: block;
+	width: 24px;
+	height: 24px;
+}
+
+a#Reset
+{
+	vertical-align: bottom;
+	background-image: url(image/GraphReset.png);
+	opacity: 0.6;
+	filter: alpha(opacity=60);
+	display: block;
+	width: 24px;
+	height: 24px;
+}
+
+a:hover#Reset
+{
+	background-image: url(image/GraphReset.png);
+	opacity: 1.0;
+	filter: alpha(opacity=100);
+	display: block;
+	width: 24px;
+	height: 24px;
+}
+
+
+#menuBar
+{
+	width: 100%;
+	list-style-type: none;
+	margin-bottom: 4px;
+	font-family: Verdana, Tahoma, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	line-height: 1.20;
+	text-align: center;
+	background: #cccccc url(image/graphMenuBar.png) repeat-x;
+	background-position: 0px 0px;
+	height: 20px;
+}
+
+#menuBar li
+{
+	display: inline;
+	font-size: 12px;
+	margin: 0px;
+	padding-top: 2px;
+	margin-top: 10px;
+}
+
+#menuBar li a
+{
+	float: left;
+	margin: 0px;
+	padding: 0px;
+	color: #666666;
+	text-decoration: none;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	width: 30px;
+	height: 20px;
+}
+
+#menuBar li a:hover
+{
+	color: #000000;
+	font-size: 14px;
+}
+
+#menuBar li a.selected 
+{
+	color: #333333;
+	background: url(check.png) no-repeat;
+	background-position: 20px 12px;
+}
+
+#menuBar li a.hidden
+{
+	visibility: hidden;
+	margin: 0px;
+	padding: 0px;
+	width: 0px;
+	height: 0px;
+}
+
+#menuBar li a.visible
+{
+	visibility: visible;
+}

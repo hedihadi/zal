@@ -8,19 +8,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sizer/sizer.dart';
 import 'package:zal/Functions/models.dart';
 import 'package:zal/Functions/theme.dart';
-import 'package:zal/Screens/SettingsScreen/settings_providers.dart';
+import 'dart:io' as io;
 
-WebrtcDataType convertStringToWebrtcDataType(String input) {
-  //first convert camel_case to camelCase
-  List<String> parts = input.split('_');
-  String result = parts[0];
-
-  for (int i = 1; i < parts.length; i++) {
-    result += parts[i][0].toUpperCase() + parts[i].substring(1);
-  }
-  //then get the data type from it
-  return WebrtcDataType.values.byName(result);
-}
+import 'package:zal/Screens/MainScreen/SettingsScreen/settings_providers.dart';
 
 ///converts minutes to hours and minutes,
 ///example: 40 -> 40 minutes, 75 -> 1 hour 15 minutes
@@ -153,6 +143,33 @@ Color getRamAmountColor(double megabytes) {
   } else {
     return Colors.orange;
   }
+}
+
+Future<String?> getLocalIpAddress() async {
+  final interfaces = await io.NetworkInterface.list(type: io.InternetAddressType.IPv4, includeLinkLocal: true);
+  String? address;
+  try {
+    // Try VPN connection first
+    io.NetworkInterface vpnInterface = interfaces.firstWhere((element) => element.name == "tun0");
+    address = vpnInterface.addresses.first.address;
+  } on StateError {
+    // Try wlan connection next
+    try {
+      io.NetworkInterface interface = interfaces.firstWhere((element) => element.name == "wlan0");
+      address = interface.addresses.first.address;
+    } catch (ex) {
+      // Try any other connection next
+      try {
+        io.NetworkInterface interface = interfaces.firstWhere((element) => !(element.name == "tun0" || element.name == "wlan0"));
+        address = interface.addresses.first.address;
+      } catch (ex) {
+        return null;
+      }
+    }
+  }
+
+  final ip = address.split('.')..removeLast();
+  return ip.join('.');
 }
 
 class HexColor extends Color {

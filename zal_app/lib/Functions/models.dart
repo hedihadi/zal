@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 import 'dart:collection';
 import 'dart:convert';
@@ -26,9 +27,8 @@ enum SortBy { Name, Memory }
 
 enum DataType { Hardwares, TaskManager }
 
-enum StreamDataType { RoomClients }
-
-enum WebrtcDataType {
+enum SocketDataType {
+  roomClients,
   pcData,
   notifications,
   drives,
@@ -61,6 +61,15 @@ enum SortFilesBy {
   dateModifiedDescending,
   dateCreatedAscending,
   dateCreatedDescending,
+}
+
+class ComputerAddress {
+  String name;
+  String ip;
+  ComputerAddress({
+    required this.name,
+    required this.ip,
+  });
 }
 
 class ConnectionEstablishment {
@@ -225,22 +234,12 @@ class FileData {
   factory FileData.fromJson(String source) => FileData.fromMap(json.decode(source));
 }
 
-class WebrtcData {
-  WebrtcDataType type;
-  String data;
-  WebrtcData({
+class SocketData {
+  SocketDataType type;
+  dynamic data;
+  SocketData({
     required this.data,
     required this.type,
-  });
-}
-
-class WebrtcProviderModel {
-  final bool isConnected;
-  final WebrtcData? data;
-
-  WebrtcProviderModel({
-    required this.isConnected,
-    this.data,
   });
 }
 
@@ -368,15 +367,6 @@ class ComputerDataWithBuildContext {
   ComputerDataWithBuildContext({
     required this.computerData,
     required this.context,
-  });
-}
-
-class StreamData {
-  StreamDataType type;
-  dynamic data;
-  StreamData({
-    required this.type,
-    required this.data,
   });
 }
 
@@ -549,8 +539,8 @@ class SocketObject {
     socket.on('connect_error', (a) {
       print('error $a');
     });
+    socket.onDisconnect((_) {});
     socket.onConnect((_) {
-      print("hi");
       //join the room
       // joinRoom();
       //send a keep_alive event so the pc starts sending data
@@ -1343,6 +1333,10 @@ class SmartAttribute {
 
 class DataIsNullException implements Exception {
   DataIsNullException();
+}
+
+class NetworkPrefixIsNull implements Exception {
+  NetworkPrefixIsNull();
 }
 
 class ComputerOfflineException implements Exception {

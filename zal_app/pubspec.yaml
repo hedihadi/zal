@@ -15,59 +15,60 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.7.4+28
+version: 2.0.0+29
 
 environment:
   sdk: ">=3.2.0 <4.0.0"
-
+dependency_overrides:
+      win32: ^5.5.4
 dependencies:
   flutter:
     sdk: flutter
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  intl: ^0.17.0
-  file: ^6.1.4
-  cloud_firestore: ^4.15.5
+  intl: ^0.19.0
+  file: ^7.0.1
+  cloud_firestore: ^5.4.4
   path_provider: ^2.1.0
   shared_preferences: ^2.0.9
-  sizer: ^2.0.13
-  firebase_analytics: ^10.1.0
-  flex_color_scheme: ^7.3.1
+  sizer: ^3.0.4
+  firebase_analytics: ^11.3.3
+  flex_color_scheme: ^8.0.0
   settings_ui: ^2.0.2
-  dependency_validator: ^3.0.0
-  firebase_core: ^2.19.0
+  dependency_validator: ^4.1.1
+  firebase_core: ^3.6.0
   pull_to_refresh: ^2.0.0
-  package_info_plus: ^4.1.0
-  upgrader: ^6.0.1
+  package_info_plus: ^8.1.0
+  upgrader: ^11.3.0
   in_app_purchase: ^3.1.5
-  purchases_flutter: ^6.0.0
-  google_fonts: ^4.0.4
-  firebase_messaging: ^14.6.3
+  purchases_flutter: ^8.2.0
+  google_fonts: ^6.2.1
+  firebase_messaging: ^15.1.3
   font_awesome_flutter: ^10.4.0
   flutter_riverpod: ^2.3.5
-  assorted_layout_widgets: ^8.0.4
-  socket_io_client: ^2.0.3+1
-  syncfusion_flutter_charts: ^21.2.4
-  syncfusion_flutter_gauges: ^21.2.4
+  assorted_layout_widgets: ^10.0.3
+  socket_io_client: ^3.0.1
+  syncfusion_flutter_charts: ^27.1.57
+  syncfusion_flutter_gauges: ^27.1.57
   flutter_staggered_grid_view: ^0.7.0
-  http: ^0.13.6
+  http: ^1.2.2
   animated_text_kit: ^4.2.2
   collection: ^1.17.1
   google_mobile_ads: ^5.0.0
   in_app_review: ^2.0.6
-  loader_overlay: ^2.3.2
+  loader_overlay: ^4.0.3
   timeago: ^3.3.0
-  firebase_auth: ^4.9.0
+  firebase_auth: ^5.3.1
   google_sign_in: ^6.1.5
-  firebase_database: ^10.3.1
+  firebase_database: ^11.1.4
   flutter_dotenv: ^5.1.0
-  flutter_local_notifications: ^16.3.0
-  fl_chart: ^0.66.2
+  flutter_local_notifications: ^18.0.0
+  fl_chart: ^0.69.0
   introduction_screen: ^3.1.12
   peerdart: ^0.5.2
   logger: ^2.0.2+1
   color_print: ^1.0.3
-  sidebarx: ^0.16.3
+  sidebarx: ^0.17.1
   open_file: ^3.3.2
   animated_bottom_navigation_bar: ^1.3.3
   hive: ^2.2.3
@@ -75,10 +76,10 @@ dependencies:
   flutter_gemini: ^2.0.3
 
 dev_dependencies:
-  flutter_lints: ^2.0.3
+  flutter_lints: ^4.0.0
   flutter_test:
     sdk: flutter
-  lints: ^2.1.1
+  lints: ^4.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

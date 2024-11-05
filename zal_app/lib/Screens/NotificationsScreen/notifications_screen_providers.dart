@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zal/Functions/models.dart';
-import 'package:zal/Screens/HomeScreen/Providers/computer_data_provider.dart';
-import 'package:zal/Screens/HomeScreen/Providers/webrtc_provider.dart';
-import 'package:zal/Screens/SettingsScreen/settings_providers.dart';
+import 'package:zal/Screens/ConnectedScreen/connected_screen_providers.dart';
+import 'package:zal/Screens/MainScreen/SettingsScreen/settings_providers.dart';
+import 'package:zal/Screens/MainScreen/main_screen_providers.dart';
 
 class NewNotificationsDataNotifier extends StateNotifier<NotificationData> {
   AutoDisposeStateNotifierProviderRef<NewNotificationsDataNotifier, NotificationData> ref;
@@ -118,10 +118,10 @@ final notificationsProvider = AsyncNotifierProvider<NotificationsNotifier, List<
 });
 
 ///this provider only updates if the data type is [StreamDataType.Notifications]
-final _notificationsDataProvider = FutureProvider<WebrtcData>((ref) {
-  final sub = ref.listen(webrtcProvider, (prev, cur) {
-    if (cur.data?.type == WebrtcDataType.notifications) {
-      ref.state = AsyncData(cur.data!);
+final _notificationsDataProvider = FutureProvider<SocketData>((ref) {
+  final sub = ref.listen(socketStreamProvider, (prev, cur) {
+    if (cur.valueOrNull?.type == SocketDataType.notifications) {
+      ref.state = AsyncData(cur.valueOrNull!);
     } else {}
   });
   ref.onDispose(() => sub.close());

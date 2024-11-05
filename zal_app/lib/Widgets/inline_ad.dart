@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:zal/Screens/MainScreen/SettingsScreen/settings_providers.dart';
 import 'package:zal/Screens/MainScreen/main_screen_providers.dart';
-import 'package:zal/Screens/SettingsScreen/settings_providers.dart';
 
 class InlineAd extends ConsumerStatefulWidget {
   const InlineAd({super.key, required this.adUnit});

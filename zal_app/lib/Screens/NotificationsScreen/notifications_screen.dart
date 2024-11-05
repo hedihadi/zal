@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:zal/Functions/utils.dart';
-import 'package:zal/Screens/HomeScreen/Providers/webrtc_provider.dart';
+import 'package:zal/Screens/MainScreen/main_screen_providers.dart';
 import 'package:zal/Screens/NotificationsScreen/Widgets/new_notification_screen.dart';
 import 'package:zal/Screens/NotificationsScreen/notifications_screen_providers.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -86,14 +86,14 @@ class NotificationsScreen extends ConsumerWidget {
                                 children: [
                                   ElevatedButton(
                                       onPressed: () {
-                                        ref.read(webrtcProvider.notifier).sendMessage('edit_notification',
+                                        ref.read(socketProvider.notifier).sendMessage('edit_notification',
                                             jsonEncode({'type': (notification.suspended ? 'unsuspend' : 'suspend'), 'notification': notification}));
                                       },
                                       child: Text(notification.suspended ? 'un-suspend' : 'suspend')),
                                   IconButton(
                                       onPressed: () {
                                         ref
-                                            .read(webrtcProvider.notifier)
+                                            .read(socketProvider.notifier)
                                             .sendMessage('edit_notification', jsonEncode({'type': 'delete', 'notification': notification}));
 
                                         ref.read(notificationsProvider.notifier).deleteNotification(notification);

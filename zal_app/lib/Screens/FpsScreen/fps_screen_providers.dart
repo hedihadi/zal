@@ -5,10 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:zal/Functions/theme.dart';
 import 'package:zal/Functions/utils.dart';
+import 'package:zal/Screens/ConnectedScreen/connected_screen_providers.dart';
 import 'package:zal/Screens/FpsScreen/Widgets/select_gpu_process_widget.dart';
-import 'package:zal/Screens/HomeScreen/Providers/computer_data_provider.dart';
-import 'package:zal/Screens/HomeScreen/Providers/home_screen_providers.dart';
-import 'package:zal/Screens/HomeScreen/Providers/webrtc_provider.dart';
 import 'package:zal/Screens/MainScreen/main_screen_providers.dart';
 import '../../Functions/models.dart';
 
@@ -45,7 +43,7 @@ class FpsDataNotifier extends AutoDisposeAsyncNotifier<FpsData> {
   }
 
   Future<void> showChooseGameDialog({bool dismissible = true}) async {
-    ref.read(webrtcProvider.notifier).sendMessage("get_gpu_processes", "");
+    ref.read(socketProvider.notifier).sendMessage("get_gpu_processes", "");
     // ref.invalidate(gpuProcessesProvider);
     final context = ref.read(contextProvider);
     AlertDialog alert = const AlertDialog(
@@ -82,9 +80,9 @@ class FpsDataNotifier extends AutoDisposeAsyncNotifier<FpsData> {
 }
 
 final _fpsDataProvider = FutureProvider<String>((ref) {
-  final sub = ref.listen(webrtcProvider, (prev, cur) {
-    if (cur.data?.type == WebrtcDataType.fpsData) {
-      ref.state = AsyncData(cur.data!.data);
+  final sub = ref.listen(socketStreamProvider, (prev, cur) {
+    if (cur.valueOrNull?.type == SocketDataType.fpsData) {
+      ref.state = AsyncData(cur.valueOrNull!.data);
     }
   });
   ref.onDispose(() => sub.close());
@@ -138,9 +136,9 @@ final fpsTimeElapsedProvider = AsyncNotifierProvider.autoDispose<FpsTimeElapsedN
 });
 
 final gpuProcessesProvider = FutureProvider<List<GpuProcess>>((ref) {
-  final sub = ref.listen(webrtcProvider, (prev, cur) {
-    if (cur.data?.type == WebrtcDataType.gpuProcesses) {
-      final parsedData = Map<String, dynamic>.from(jsonDecode(cur.data!.data));
+  final sub = ref.listen(socketStreamProvider, (prev, cur) {
+    if (cur.valueOrNull?.type == SocketDataType.gpuProcesses) {
+      final parsedData = Map<String, dynamic>.from(jsonDecode(cur.valueOrNull!.data));
       List<GpuProcess> processes = [];
       for (final data in parsedData.entries) {
         processes.add(GpuProcess.fromMap(data));

@@ -7,8 +7,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sizer/sizer.dart';
 import 'package:zal/Functions/models.dart';
 import 'package:zal/Functions/utils.dart';
-import 'package:zal/Screens/HomeScreen/Providers/computer_data_provider.dart';
-import 'package:zal/Screens/HomeScreen/Providers/webrtc_provider.dart';
+import 'package:zal/Screens/ConnectedScreen/connected_screen_providers.dart';
+import 'package:zal/Screens/MainScreen/main_screen_providers.dart';
 
 //this provider holds the data
 final _processIconProvider = StateProvider<Map<String, Uint8List>>((ref) => {});
@@ -78,43 +78,41 @@ class TaskmanagerTableWidget extends ConsumerWidget {
               ),
               Container(),
             ]),
-        ...processes
-            .map(
-              (process) => TableRow(
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(left: 2.w),
-                    child: ref.read(processIconProvider)[process.name] != null
-                        ? Image.memory(
-                            ref.read(processIconProvider)[process.name]!,
-                            gaplessPlayback: true,
-                            scale: 0.5,
-                          )
-                        : Image.asset("assets/images/icons/app.png"),
-                  ),
-                  Text(process.name, style: Theme.of(context).textTheme.titleSmall),
-                  Padding(
-                    padding: EdgeInsets.only(right: 3.w),
-                    child: Text("${process.cpuPercent.toStringAsFixed(1)}%",
-                        style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 17, color: getTemperatureColor(process.cpuPercent))),
-                  ),
-                  Text((process.memoryUsage * 1024 * 1024).toSize(decimals: 1),
-                      style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 17, color: getRamAmountColor(process.memoryUsage))),
-                  IconButton(
-                      onPressed: () async {
-                        bool response =
-                            await showConfirmDialog('are you sure?', '${process.name} will be killed, destroyed, absolutely annihilated.', context);
-                        if (response == false) return;
-                        ref.read(webrtcProvider.notifier).sendMessage('kill_process', jsonEncode(process.pids));
-                      },
-                      icon: Icon(
-                        FontAwesomeIcons.xmark,
-                        color: Theme.of(context).colorScheme.error,
-                      ))
-                ],
+        ...processes.map(
+          (process) => TableRow(
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(left: 2.w),
+                child: ref.read(processIconProvider)[process.name] != null
+                    ? Image.memory(
+                        ref.read(processIconProvider)[process.name]!,
+                        gaplessPlayback: true,
+                        scale: 0.5,
+                      )
+                    : Image.asset("assets/images/icons/app.png"),
               ),
-            )
-            .toList()
+              Text(process.name, style: Theme.of(context).textTheme.titleSmall),
+              Padding(
+                padding: EdgeInsets.only(right: 3.w),
+                child: Text("${process.cpuPercent.toStringAsFixed(1)}%",
+                    style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 17, color: getTemperatureColor(process.cpuPercent))),
+              ),
+              Text((process.memoryUsage * 1024 * 1024).toSize(decimals: 1),
+                  style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 17, color: getRamAmountColor(process.memoryUsage))),
+              IconButton(
+                  onPressed: () async {
+                    bool response =
+                        await showConfirmDialog('are you sure?', '${process.name} will be killed, destroyed, absolutely annihilated.', context);
+                    if (response == false) return;
+                    ref.read(socketProvider.notifier).sendMessage('kill_process', jsonEncode(process.pids));
+                  },
+                  icon: Icon(
+                    FontAwesomeIcons.xmark,
+                    color: Theme.of(context).colorScheme.error,
+                  ))
+            ],
+          ),
+        )
       ],
     );
   }

@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zal/Functions/models.dart';
-import 'package:zal/Screens/HomeScreen/Providers/webrtc_provider.dart';
+import 'package:zal/Screens/MainScreen/main_screen_providers.dart';
 
 class DirectoryProvider extends AsyncNotifier<List<FileData>> {
   bool didRequestInitialData = false;
@@ -101,7 +101,7 @@ class DirectoryProvider extends AsyncNotifier<List<FileData>> {
 
   refresh({FileData? folderToAdd}) {
     final folderPath = getCurrentFolderPath(folderToAdd: folderToAdd);
-    ref.read(webrtcProvider.notifier).sendMessage('get_directory', folderPath);
+    ref.read(socketProvider.notifier).sendMessage('get_directory', folderPath);
   }
 
   String getCurrentFolderPath({FileData? folderToAdd}) {
@@ -135,9 +135,11 @@ final directoryProvider = AsyncNotifierProvider<DirectoryProvider, List<FileData
   return DirectoryProvider();
 });
 
-final _directoryProvider = FutureProvider<WebrtcProviderModel>((ref) {
-  final sub = ref.listen(webrtcProvider, (prev, cur) {
-    if (cur.data?.type == WebrtcDataType.directory) ref.state = AsyncData(cur);
+final _directoryProvider = FutureProvider<SocketData>((ref) {
+  final sub = ref.listen(socketStreamProvider, (prev, cur) {
+    if (cur.valueOrNull != null) {
+      if (cur.valueOrNull?.type == SocketDataType.directory) ref.state = AsyncData(cur.valueOrNull!);
+    }
   });
   ref.onDispose(() => sub.close());
   return ref.future;

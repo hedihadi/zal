@@ -6,13 +6,11 @@ import 'package:assorted_layout_widgets/assorted_layout_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zal/Screens/AccountScreen/account_screen_providers.dart';
 import 'package:zal/Screens/CanRunGameScreen/can_run_game_provider.dart';
 import 'package:zal/Screens/CanRunGameScreen/result_widget.dart';
-import 'package:zal/Screens/HomeScreen/Providers/computer_data_provider.dart';
-import 'package:zal/Screens/HomeScreen/Providers/home_screen_providers.dart';
+import 'package:zal/Screens/ConnectedScreen/connected_screen_providers.dart';
 import 'package:sizer/sizer.dart';
-import 'package:zal/Screens/SettingsScreen/settings_providers.dart';
+import 'package:zal/Screens/MainScreen/SettingsScreen/settings_providers.dart';
 import 'package:zal/Widgets/inline_ad.dart';
 import '../../Functions/analytics_manager.dart';
 

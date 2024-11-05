@@ -1,4 +1,4 @@
 ﻿namespace Zal.Functions.Models
 {
-    public enum ServerSocketConnectionState { Connecting, Connected }
+    public enum SocketConnectionState { Connecting, Connected, Disconnected }
 }

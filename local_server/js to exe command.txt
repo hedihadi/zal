@@ -1,1 +1,5 @@
 pkg server.js --output server
+
+
+if pkg module not found, install with this command
+npm install -g @yao-pkg/pkg

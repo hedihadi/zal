@@ -6,8 +6,8 @@ import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:zal/Functions/models.dart';
-import 'package:zal/Screens/HomeScreen/Providers/webrtc_provider.dart';
 import 'package:open_file/open_file.dart';
+import 'package:zal/Screens/MainScreen/main_screen_providers.dart';
 
 class FileNotifier extends AsyncNotifier<FileProviderModel> {
   FileData? currentFile;
@@ -20,17 +20,17 @@ class FileNotifier extends AsyncNotifier<FileProviderModel> {
     final data = jsonDecode(model.data!.data);
     List<int>? missingChunks;
     bool isRebuilding = false;
-    if (model.data!.type == WebrtcDataType.file) {
+    if (model.data!.type == SocketDataType.file) {
       final byteOffset = data['ByteOffset'];
       if (byteOffset > lastBiggestByte) lastBiggestByte = byteOffset;
       await _saveChunkToFile(data['ByteOffset'], data['ChunkData']);
-    } else if (model.data!.type == WebrtcDataType.fileComplete) {
+    } else if (model.data!.type == SocketDataType.fileComplete) {
       //get the chunks that aren't here
       computerChunks.addAll(List<int>.from(data['sentChunks']));
       missingChunks = computerChunks.where((e) => !chunks.contains(e)).toList();
       if (missingChunks.isNotEmpty) {
         ref
-            .read(webrtcProvider.notifier)
+            .read(socketProvider.notifier)
             .sendMessage('get_file_missing_chunks', jsonEncode({'path': '${currentFile!.directory}/${currentFile!.name}', 'chunks': missingChunks}));
       } else {
         rebuildFile();
@@ -55,7 +55,7 @@ class FileNotifier extends AsyncNotifier<FileProviderModel> {
   }
 
   cancelTransfer() {
-    ref.read(webrtcProvider.notifier).sendMessage('cancel_file', '');
+    ref.read(socketProvider.notifier).sendMessage('cancel_file', '');
     currentFile = null;
   }
 
@@ -90,7 +90,7 @@ class FileNotifier extends AsyncNotifier<FileProviderModel> {
     ref.invalidateSelf();
     currentFile = file;
     // fileObject = File(await getCurrentFilePath());
-    ref.read(webrtcProvider.notifier).sendMessage('get_file', "${file.directory}/${file.name}");
+    ref.read(socketProvider.notifier).sendMessage('get_file', "${file.directory}/${file.name}");
   }
 
   Future<File> writeToFile(Uint8List chunk) async {
@@ -111,10 +111,10 @@ final fileProvider = AsyncNotifierProvider<FileNotifier, FileProviderModel>(() {
   return FileNotifier();
 });
 
-final _fileProvider = FutureProvider<WebrtcProviderModel>((ref) {
-  final sub = ref.listen(webrtcProvider, (prev, cur) {
-    if ([WebrtcDataType.file, WebrtcDataType.fileComplete].contains(cur.data?.type)) {
-      ref.state = AsyncData(cur);
+final _fileProvider = FutureProvider<SocketData>((ref) {
+  final sub = ref.listen(socketStreamProvider, (prev, cur) {
+    if ([SocketDataType.file, SocketDataType.fileComplete].contains(cur.valueOrNull?.type)) {
+      ref.state = AsyncData(cur.valueOrNull!);
     }
   });
   ref.onDispose(() => sub.close());

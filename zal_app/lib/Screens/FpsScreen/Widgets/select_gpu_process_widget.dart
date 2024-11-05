@@ -5,7 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sizer/sizer.dart';
 import 'package:zal/Functions/models.dart';
 import 'package:zal/Screens/FpsScreen/fps_screen_providers.dart';
-import 'package:zal/Screens/HomeScreen/Providers/webrtc_provider.dart';
+import 'package:zal/Screens/MainScreen/main_screen_providers.dart';
 
 class SelectGpuProcessWidget extends ConsumerWidget {
   const SelectGpuProcessWidget({super.key});
@@ -38,7 +38,7 @@ class SelectGpuProcessWidget extends ConsumerWidget {
                     if (value != null) {
                       ref.read(fpsDataProvider.notifier).reset();
                       ref.read(selectedGpuProcessProvider.notifier).state = value;
-                      ref.read(webrtcProvider.notifier).sendMessage("start_fps", value.pid.toString());
+                      ref.read(socketProvider.notifier).sendMessage("start_fps", value.pid.toString());
                       Navigator.of(context).pop();
                     }
                   },
@@ -62,7 +62,7 @@ class SelectGpuProcessWidget extends ConsumerWidget {
               ),
               IconButton(
                   onPressed: () {
-                    ref.read(webrtcProvider.notifier).sendMessage("get_gpu_processes", "");
+                    ref.read(socketProvider.notifier).sendMessage("get_gpu_processes", "");
 
                     ref.invalidate(selectedGpuProcessProvider);
                     ref.invalidate(gpuProcessesProvider);

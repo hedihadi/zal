@@ -7,7 +7,7 @@ import 'package:zal/Functions/models.dart';
 import 'package:zal/Functions/utils.dart';
 import 'package:zal/Screens/FilesScreen/Providers/directory_provider.dart';
 import 'package:zal/Screens/FilesScreen/Providers/move_file_provider.dart';
-import 'package:zal/Screens/HomeScreen/Providers/webrtc_provider.dart';
+import 'package:zal/Screens/MainScreen/main_screen_providers.dart';
 
 class FileWidget extends ConsumerWidget {
   FileWidget({super.key, required this.file, required this.grid});
@@ -119,7 +119,7 @@ class FileWidget extends ConsumerWidget {
             child: const Text('run'),
             onTap: () {
               final a = file;
-              ref.read(webrtcProvider.notifier).sendMessage('run_file', '${file.directory}\\${file.name}');
+              ref.read(socketProvider.notifier).sendMessage('run_file', '${file.directory}\\${file.name}');
             },
           ),
           PopupMenuItem<String>(
@@ -139,7 +139,7 @@ class FileWidget extends ConsumerWidget {
                       alignment: Alignment.topRight,
                       child: ElevatedButton(
                         onPressed: () {
-                          ref.read(webrtcProvider.notifier).sendMessage(
+                          ref.read(socketProvider.notifier).sendMessage(
                               'move_file',
                               jsonEncode({
                                 'oldPath': "${file.directory}\\${file.name}",
@@ -181,7 +181,7 @@ class FileWidget extends ConsumerWidget {
           PopupMenuItem<String>(
             child: const Text('delete'),
             onTap: () {
-              ref.read(webrtcProvider.notifier).sendMessage('delete_file', "${file.directory}\\${file.name}");
+              ref.read(socketProvider.notifier).sendMessage('delete_file', "${file.directory}\\${file.name}");
             },
           ),
         ],

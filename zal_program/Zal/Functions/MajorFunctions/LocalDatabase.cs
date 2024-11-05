@@ -41,7 +41,7 @@ namespace Zal
             instance = new LocalDatabase(new Dictionary<string, object>());
         }
 
-        public static LocalDatabase Instance
+        public  static  LocalDatabase Instance
         {
             get
             {
