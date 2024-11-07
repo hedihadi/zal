@@ -319,14 +319,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Zal.exe" size="75697112">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Zal.exe" size="75958744">
       <assemblyIdentity name="Zal" version="2.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>V92dwKLFjD0osWZNlVxB4grcb02mdOtUxd9yFCIH7AM=</dsig:DigestValue>
+        <dsig:DigestValue>P4u/c8yGV+SIZNMnZz/aUiTh1FOqGqbFyb/H9cGL9Kg=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -348,13 +348,13 @@
       <dsig:DigestValue>c0YNXMZ7ZzBYAXlKc9vphlBwC4wpeyYG6aRXcrAq3c4=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="Resources\white.ico" size="162686">
+  <file name="Resources\white.ico" size="105756">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>t5BbkepUeryokMtvhBKWlZL1/GlaibsYY0QZAWa92Ww=</dsig:DigestValue>
+      <dsig:DigestValue>8zedG/EkU4aSg8T8XH7B2KY6cDFcjUqTu7n2kV21FsU=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Zal.exe.config" size="805">

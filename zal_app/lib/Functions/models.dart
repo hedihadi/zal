@@ -70,6 +70,34 @@ class ComputerAddress {
     required this.name,
     required this.ip,
   });
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'name': name,
+      'ip': ip,
+    };
+  }
+
+  factory ComputerAddress.fromMap(Map<String, dynamic> map) {
+    return ComputerAddress(
+      name: map['name'] as String,
+      ip: map['ip'] as String,
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory ComputerAddress.fromJson(String source) => ComputerAddress.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  @override
+  bool operator ==(covariant ComputerAddress other) {
+    if (identical(this, other)) return true;
+
+    return other.name == name && other.ip == ip;
+  }
+
+  @override
+  int get hashCode => name.hashCode ^ ip.hashCode;
 }
 
 class ConnectionEstablishment {

@@ -6,6 +6,7 @@ import 'package:zal/Functions/models.dart';
 import 'package:zal/Screens/InitialConnectionScreen/Widgets/initial_connection_settings_screen.dart';
 import 'package:zal/Screens/InitialConnectionScreen/initial_connection_screen_providers.dart';
 import 'package:zal/Screens/MainScreen/SettingsScreen/settings_providers.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ChooseComputerWidget extends ConsumerWidget {
   const ChooseComputerWidget({super.key});
@@ -73,10 +74,9 @@ class ChooseComputerWidget extends ConsumerWidget {
                         alignment: Alignment.centerRight,
                         child: TextButton(
                           onPressed: () {
-                            ref.read(settingsProvider.notifier).updateSettings('address', computers[index].ip);
                             Navigator.pop(context);
                           },
-                          child: const Text("Select"),
+                          child: const Text("Connect"),
                         ),
                       ),
                     ),
@@ -85,6 +85,19 @@ class ChooseComputerWidget extends ConsumerWidget {
               ),
             );
           },
+        ),
+        const Divider(),
+        Wrap(
+          children: [
+            const Text("your phone must be connected to the same network as your PC"),
+            TextButton.icon(
+              onPressed: () {
+                launchUrl(Uri.parse("https://discord.gg/kfyZmqXjd6"), mode: LaunchMode.externalNonBrowserApplication);
+              },
+              label: const Text("Get help on Discord"),
+              icon: const Icon(FontAwesomeIcons.discord),
+            ),
+          ],
         ),
       ],
     );

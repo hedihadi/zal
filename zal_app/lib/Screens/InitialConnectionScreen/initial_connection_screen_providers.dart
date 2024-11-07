@@ -3,8 +3,10 @@ import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zal/Functions/models.dart';
 import 'package:zal/Functions/utils.dart';
+import 'package:zal/Screens/ConnectedScreen/connected_screen_providers.dart';
 import 'package:zal/Screens/MainScreen/SettingsScreen/settings_providers.dart';
 import 'package:http/http.dart' as http;
+import 'package:zal/Screens/MainScreen/main_screen_providers.dart';
 
 final isConnectedToServerProvider = StateProvider<bool>((ref) => false);
 final loadedComputerAddressesProvider = StateProvider<List<ComputerAddress>>((ref) => []);
@@ -19,7 +21,10 @@ final networkPrefixProvider = FutureProvider<String?>((ref) async {
 
 final localcomputerAddressesProvider = FutureProvider<List<ComputerAddress>?>((ref) async {
   ref.invalidate(loadedComputerAddressesProvider);
+  final isConnected = ref.watch(isConnectedToServerProvider);
+  if (isConnected) return ref.read(loadedComputerAddressesProvider);
   final settings = ref.watch(settingsProvider);
+  final ComputerAddress? address = settings.valueOrNull?['address'] == null ? null : ComputerAddress.fromJson(settings.valueOrNull?['address']);
   final networkPrefix = ref.watch(networkPrefixProvider);
   if (networkPrefix.isLoading || settings.isLoading) return null;
   if (networkPrefix.valueOrNull == null) throw NetworkPrefixIsNull();
@@ -35,10 +40,11 @@ final localcomputerAddressesProvider = FutureProvider<List<ComputerAddress>?>((r
         if (response.statusCode == 200) {
           final data = jsonDecode(response.body);
           if (data['server'] == 'Zal') {
-            ref.read(loadedComputerAddressesProvider.notifier).state = [
-              ...ref.read(loadedComputerAddressesProvider),
-              ComputerAddress(name: data['name'], ip: ip)
-            ];
+            final computerAddress = ComputerAddress(name: data['name'], ip: ip);
+            ref.read(loadedComputerAddressesProvider.notifier).state = [...ref.read(loadedComputerAddressesProvider), computerAddress];
+            if (computerAddress.name == address?.name) {
+              ref.read(socketProvider.notifier).connect(computerAddress);
+            }
             return;
           }
         }

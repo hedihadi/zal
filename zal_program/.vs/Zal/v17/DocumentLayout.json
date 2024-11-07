@@ -3,30 +3,27 @@
   "WorkspaceRootPath": "G:\\Projects\\Zal\\github-zal\\zal_program\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{CE867F95-D0CD-498E-8144-D8385B0BC1AF}|Zal\\Zal.csproj|G:\\Projects\\Zal\\github-zal\\zal_program\\zal\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{CE867F95-D0CD-498E-8144-D8385B0BC1AF}|Zal\\Zal.csproj|solutionrelative:zal\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{CE867F95-D0CD-498E-8144-D8385B0BC1AF}|Zal\\Zal.csproj|g:\\projects\\zal\\github-zal\\zal_program\\zal\\pages\\connectionsettingsform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{CE867F95-D0CD-498E-8144-D8385B0BC1AF}|Zal\\Zal.csproj|solutionrelative:zal\\pages\\connectionsettingsform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CE867F95-D0CD-498E-8144-D8385B0BC1AF}|Zal\\Zal.csproj|g:\\projects\\zal\\github-zal\\zal_program\\zal\\pages\\configurationsform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{CE867F95-D0CD-498E-8144-D8385B0BC1AF}|Zal\\Zal.csproj|G:\\Projects\\Zal\\github-zal\\zal_program\\zal\\pages\\configurationsform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{CE867F95-D0CD-498E-8144-D8385B0BC1AF}|Zal\\Zal.csproj|solutionrelative:zal\\pages\\configurationsform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CE867F95-D0CD-498E-8144-D8385B0BC1AF}|Zal\\Zal.csproj|g:\\projects\\zal\\github-zal\\zal_program\\zal\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{CE867F95-D0CD-498E-8144-D8385B0BC1AF}|Zal\\Zal.csproj|solutionrelative:zal\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
       "AbsoluteMoniker": "D:0:0:{00000000-0000-0000-0000-000000000000}|\u003CSolution\u003E|Zal||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CE867F95-D0CD-498E-8144-D8385B0BC1AF}|Zal\\Zal.csproj|g:\\projects\\zal\\github-zal\\zal_program\\zal\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{CE867F95-D0CD-498E-8144-D8385B0BC1AF}|Zal\\Zal.csproj|G:\\Projects\\Zal\\github-zal\\zal_program\\zal\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{CE867F95-D0CD-498E-8144-D8385B0BC1AF}|Zal\\Zal.csproj|solutionrelative:zal\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CE867F95-D0CD-498E-8144-D8385B0BC1AF}|Zal\\Zal.csproj|g:\\projects\\zal\\github-zal\\zal_program\\zal\\functions\\majorfunctions\\frontendglobalclass.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{CE867F95-D0CD-498E-8144-D8385B0BC1AF}|Zal\\Zal.csproj|G:\\Projects\\Zal\\github-zal\\zal_program\\zal\\functions\\majorfunctions\\frontendglobalclass.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{CE867F95-D0CD-498E-8144-D8385B0BC1AF}|Zal\\Zal.csproj|solutionrelative:zal\\functions\\majorfunctions\\frontendglobalclass.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CE867F95-D0CD-498E-8144-D8385B0BC1AF}|Zal\\Zal.csproj|g:\\projects\\zal\\github-zal\\zal_program\\zal\\||{B270807C-D8C6-49EB-8EBE-8E8D566637A1}|5e9a8ac2-4f34-4521-858f-4c248ba31532"
     }
   ],
   "DocumentGroupContainers": [
@@ -36,35 +33,34 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 5,
           "Children": [
             {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{e5c86464-96be-4d7c-9a8b-abcb3bbf5f92}"
+            },
+            {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "ConnectionSettingsForm.cs [Design]",
               "DocumentMoniker": "G:\\Projects\\Zal\\github-zal\\zal_program\\Zal\\Pages\\ConnectionSettingsForm.cs",
               "RelativeDocumentMoniker": "Zal\\Pages\\ConnectionSettingsForm.cs",
-              "ToolTip": "G:\\Projects\\Zal\\github-zal\\zal_program\\Zal\\Pages\\ConnectionSettingsForm.cs [Design]*",
-              "RelativeToolTip": "Zal\\Pages\\ConnectionSettingsForm.cs [Design]*",
+              "ToolTip": "G:\\Projects\\Zal\\github-zal\\zal_program\\Zal\\Pages\\ConnectionSettingsForm.cs [Design]",
+              "RelativeToolTip": "Zal\\Pages\\ConnectionSettingsForm.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-05T18:14:29.024Z",
               "EditorCaption": " [Design]"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "ConfigurationsForm.cs [Design]",
               "DocumentMoniker": "G:\\Projects\\Zal\\github-zal\\zal_program\\Zal\\Pages\\ConfigurationsForm.cs",
               "RelativeDocumentMoniker": "Zal\\Pages\\ConfigurationsForm.cs",
-              "ToolTip": "G:\\Projects\\Zal\\github-zal\\zal_program\\Zal\\Pages\\ConfigurationsForm.cs [Design]*",
-              "RelativeToolTip": "Zal\\Pages\\ConfigurationsForm.cs [Design]*",
+              "ToolTip": "G:\\Projects\\Zal\\github-zal\\zal_program\\Zal\\Pages\\ConfigurationsForm.cs [Design]",
+              "RelativeToolTip": "Zal\\Pages\\ConfigurationsForm.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-05T18:14:22.047Z",
-              "EditorCaption": " [Design]"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{e5c86464-96be-4d7c-9a8b-abcb3bbf5f92}"
+              "WhenOpened": "2024-11-05T18:14:22.047Z"
             },
             {
               "$type": "Document",
@@ -76,8 +72,7 @@
               "RelativeToolTip": "Zal\\Functions\\MajorFunctions\\FrontendGlobalClass.cs",
               "ViewState": "AgIAAAoAAAAAAAAAAADwvycAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-05T18:04:43.685Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-11-05T18:04:43.685Z"
             },
             {
               "$type": "Document",
@@ -85,8 +80,8 @@
               "Title": "MainForm.cs",
               "DocumentMoniker": "G:\\Projects\\Zal\\github-zal\\zal_program\\Zal\\MainForm.cs",
               "RelativeDocumentMoniker": "Zal\\MainForm.cs",
-              "ToolTip": "G:\\Projects\\Zal\\github-zal\\zal_program\\Zal\\MainForm.cs*",
-              "RelativeToolTip": "Zal\\MainForm.cs*",
+              "ToolTip": "G:\\Projects\\Zal\\github-zal\\zal_program\\Zal\\MainForm.cs",
+              "RelativeToolTip": "Zal\\MainForm.cs",
               "ViewState": "AgIAAFcAAAAAAAAAAAAswHcAAAALAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-05T18:02:59.316Z",
@@ -94,12 +89,12 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "MainForm.cs [Design]",
               "DocumentMoniker": "G:\\Projects\\Zal\\github-zal\\zal_program\\Zal\\MainForm.cs",
               "RelativeDocumentMoniker": "Zal\\MainForm.cs",
-              "ToolTip": "G:\\Projects\\Zal\\github-zal\\zal_program\\Zal\\MainForm.cs [Design]*",
-              "RelativeToolTip": "Zal\\MainForm.cs [Design]*",
+              "ToolTip": "G:\\Projects\\Zal\\github-zal\\zal_program\\Zal\\MainForm.cs [Design]",
+              "RelativeToolTip": "Zal\\MainForm.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-05T18:02:57.65Z",
               "EditorCaption": " [Design]"
@@ -113,8 +108,7 @@
               "ToolTip": "G:\\Projects\\Zal\\github-zal\\zal_program\\Zal\\Zal.csproj",
               "RelativeToolTip": "Zal\\Zal.csproj",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2024-11-05T18:01:11.497Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-11-05T18:01:11.497Z"
             }
           ]
         }

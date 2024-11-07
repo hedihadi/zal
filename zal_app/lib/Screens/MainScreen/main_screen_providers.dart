@@ -52,18 +52,19 @@ final isUserPremiumProvider = StateNotifierProvider<IsUserPremiumNotifier, bool>
 
 final contextProvider = StateProvider<BuildContext?>((ref) => null);
 
-final defaultComputerAddressProvider = StateProvider<String?>((ref) {
-  final settings = ref.watch(settingsProvider).valueOrNull;
-  final address = settings?['address'];
-  return address;
-});
-
 class SocketObjectNotifier extends AsyncNotifier<SocketObject?> {
+  ComputerAddress? currentAddress;
   @override
   Future<SocketObject?> build() async {
-    final address = ref.watch(defaultComputerAddressProvider);
-    if (address == null) return null;
-    return SocketObject(address, null, null);
+    return null;
+  }
+
+  connect(ComputerAddress address) {
+    if (currentAddress == address) return;
+    currentAddress = address;
+    ref.read(settingsProvider.notifier).updateSettings('address', address.toJson());
+
+    state = AsyncData(SocketObject(address.ip, null, null));
   }
 
   sendMessage(String key, dynamic value) {
@@ -71,6 +72,7 @@ class SocketObjectNotifier extends AsyncNotifier<SocketObject?> {
   }
 
   disconnect() {
+    currentAddress = null;
     state.valueOrNull?.socket.dispose();
     ref.invalidateSelf();
   }
@@ -90,6 +92,8 @@ final socketStreamProvider = StreamProvider<SocketData>((ref) async* {
   final socket = ref.watch(socketProvider).valueOrNull;
   if (socket != null) {
     socket.socket.onConnect((data) {
+      ref.read(isConnectedToServerProvider.notifier).state = true;
+
       //showSnackbarLocal("Server Connected");
     });
     socket.socket.onDisconnect((data) {
