@@ -76,7 +76,7 @@ namespace Zal.Pages
             await LocalDatabase.Instance.writeKey("runOnStartup", runOnStartupCheckbox.Checked ? "1" : "0");
             await LocalDatabase.Instance.writeKey("startMinimized", startMinimizedCheckbox.Checked ? "1" : "0");
             FrontendGlobalClass.Instance.localSocket.restartSocketio();
-            this.Hide();
+            Hide();
         }
 
         private async void gpusList_SelectedIndexChanged(object sender, EventArgs e)

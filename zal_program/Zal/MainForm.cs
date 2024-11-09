@@ -51,9 +51,9 @@ namespace Zal
                                  {
                                      Invoke(new Action(() =>
                                      {
-                                         this.Show();
-                                         this.WindowState = FormWindowState.Normal;
-                                         this.Activate();
+                                         Show();
+                                         WindowState = FormWindowState.Normal;
+                                         Activate();
                                      }));
                                  }
                              }
@@ -71,7 +71,7 @@ namespace Zal
         {
             ni = new NotifyIcon
             {
-                Icon = System.Drawing.Icon.ExtractAssociatedIcon(Process.GetCurrentProcess().MainModule.FileName),
+                Icon = Icon.ExtractAssociatedIcon(Process.GetCurrentProcess().MainModule.FileName),
                 Visible = true
             };
             var trayMenu = new ContextMenuStrip();
@@ -83,7 +83,7 @@ namespace Zal
                 };
             // Add items to the context menu
             trayMenu.Items.Add("Open", null, (sender, e) => Show());
-            trayMenu.Items.Add("Exit", null, (sender, e) => System.Windows.Forms.Application.Exit());
+            trayMenu.Items.Add("Exit", null, (sender, e) => Application.Exit());
             ni.ContextMenuStrip = trayMenu;
             ni.DoubleClick +=
                 delegate (object sender, EventArgs args)
@@ -95,7 +95,7 @@ namespace Zal
             if ((string?)LocalDatabase.Instance.readKey("startMinimized") == "1")
             {
                 if (launchedByStartup)
-                { this.Hide(); }
+                { Hide(); }
             }
         }
         private async void MainForm_Load(object sender, EventArgs e)
@@ -104,14 +104,14 @@ namespace Zal
 
             await FrontendGlobalClass.Initialize(socketConnectionStateChanged: (sender, state) =>
              {
-                 this.Invoke(new Action(() =>
+                 Invoke(new Action(() =>
                  {
                      mobileConnectionText.Text = state == Functions.Models.SocketConnectionState.Connected ? "Mobile connected" : "Mobile not connected";
                      mobileConnectionText.ForeColor = !(state == Functions.Models.SocketConnectionState.Connected) ? Color.FromKnownColor(KnownColor.IndianRed) : Color.FromKnownColor(KnownColor.ForestGreen);
                  }));
              }, computerDataReceived: (sender, data) =>
              {
-                 this.Invoke(new Action(() =>
+                 Invoke(new Action(() =>
                  {
                      gpuDatas = data.gpuData;
 
@@ -136,10 +136,10 @@ namespace Zal
         private async Task checkForUpdates()
         {
             var latestVersion = new WebClient().DownloadString("https://zalapp.com/program-version");
-            var currentVersion = System.Windows.Forms.Application.ProductVersion;
+            var currentVersion = Application.ProductVersion;
             if (latestVersion != currentVersion)
             {
-                var dialog = System.Windows.Forms.MessageBox.Show($"New update is available! do you want to update?\ncurrent version: {currentVersion}\nlatest version:{latestVersion}", "Zal", MessageBoxButtons.YesNo);
+                var dialog = MessageBox.Show($"New update is available! do you want to update?\ncurrent version: {currentVersion}\nlatest version:{latestVersion}", "Zal", MessageBoxButtons.YesNo);
                 if (dialog == DialogResult.Yes)
                 {
                     using (var webClient = new WebClient())
@@ -160,7 +160,7 @@ namespace Zal
                         }
                         catch (Exception ex)
                         {
-                            System.Windows.Forms.MessageBox.Show("An error occurred updating Zal: " + ex.Message);
+                            MessageBox.Show("An error occurred updating Zal: " + ex.Message);
                         }
                     }
                 }
@@ -188,13 +188,13 @@ namespace Zal
         private async void copyProcessedBackendDataToolStripMenuItem_ClickAsync(object sender, EventArgs e)
         {
             var data = await FrontendGlobalClass.Instance.dataManager.getBackendData();
-            System.Windows.Forms.Clipboard.SetText(Newtonsoft.Json.JsonConvert.SerializeObject(data));
+            Clipboard.SetText(Newtonsoft.Json.JsonConvert.SerializeObject(data));
         }
 
         private void copyRawBackendDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var data = FrontendGlobalClass.Instance.backend.getEntireComputerData();
-            System.Windows.Forms.Clipboard.SetText(Newtonsoft.Json.JsonConvert.SerializeObject(data));
+            Clipboard.SetText(Newtonsoft.Json.JsonConvert.SerializeObject(data));
 
         }
 
@@ -230,7 +230,7 @@ namespace Zal
 
                 if (m.WParam.ToInt32() == SC_MINIMIZE)
                 {
-                    this.Hide();
+                    Hide();
                     m.Result = IntPtr.Zero;
                     return;
                 }

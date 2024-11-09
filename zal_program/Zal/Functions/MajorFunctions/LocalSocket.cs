@@ -54,6 +54,7 @@ namespace Zal.Functions.MajorFunctions
                     pcName = "Default Computer";
                 }
             }
+
             pcName = string.Concat(pcName.Where(char.IsLetterOrDigit));
             var filePath = GlobalClass.Instance.getFilepathFromResources("server.exe");
             var startInfo = new ProcessStartInfo
@@ -71,7 +72,7 @@ namespace Zal.Functions.MajorFunctions
             };
             serverProcess.Exited += (sender, args) =>
             {
-                System.Diagnostics.Debug.WriteLine(args);
+                Debug.WriteLine(args);
             };
             try
             {
@@ -83,7 +84,7 @@ namespace Zal.Functions.MajorFunctions
                 Logger.LogError("error running server process", ex);
             }
 
-            var ip = Zal.Backend.HelperFunctions.SpecificFunctions.IpGetter.getIp();
+            var ip = Backend.HelperFunctions.SpecificFunctions.IpGetter.getIp();
             socketio = new SocketIOClient.SocketIO($"http://{ip}:{port}",
                 new SocketIOOptions
                 {
