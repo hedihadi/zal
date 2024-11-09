@@ -12,12 +12,13 @@ namespace Zal.HelperFunctions.SpecificFunctions
             var screens = Screen.AllScreens;
             foreach (var screen in screens)
             {
-                var data = new monitorData();
-                data.name = screen.DeviceName;
-                data.height = (uint)screen.Bounds.Height;
-                data.width = (uint)screen.Bounds.Width;
-                data.isPrimary = screen.Primary;
-                data.bitsPerPixel = (uint)screen.BitsPerPixel;
+                var data = new monitorData {
+                    name = screen.DeviceName,
+                    height = (uint)screen.Bounds.Height,
+                    width = (uint)screen.Bounds.Width,
+                    isPrimary = screen.Primary,
+                    bitsPerPixel = (uint)screen.BitsPerPixel,
+                };
                 result.Add(data);
             }
             return result;

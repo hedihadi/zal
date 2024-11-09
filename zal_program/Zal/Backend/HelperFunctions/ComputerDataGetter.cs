@@ -12,7 +12,6 @@ namespace Zal.HelperFunctions
 {
     public class computerDataGetter
     {
-
         private readonly cpuInfo? cpuInfo;
         private readonly List<crystalDiskData>? crystalDiskDatas;
         private readonly List<ramPieceData>? ramPiecesData;
@@ -89,13 +88,16 @@ namespace Zal.HelperFunctions
             var result = new Dictionary<string, object>();
             foreach (IHardware hardware in computer.Hardware)
             {
-                var data = new Dictionary<string, object>();
-                data["type"] = hardware.HardwareType.ToString();
+                var data = new Dictionary<string, object>
+                {
+                    ["type"] = hardware.HardwareType.ToString()
+                };
                 foreach (var sensor in hardware.Sensors)
                 {
-                    var sensorData = new Dictionary<string, object>();
-                    sensorData["type"] = sensor.SensorType.ToString();
-                    sensorData["value"] = sensor.Value.ToString();
+                    var sensorData = new Dictionary<string, object> {
+                        ["type"] = sensor.SensorType.ToString(),
+                        ["value"] = sensor.Value.ToString(),
+                    };
                     data[sensor.Name] = sensorData;
                 }
 

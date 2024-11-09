@@ -17,9 +17,10 @@ namespace Zal.HelperFunctions.SpecificFunctions
                 var diskIndex = Convert.ToInt32(disk["Index"]);
                 if (diskIndex != diskNumber) continue;
 
-                var diskInfo = new diskInfo();
-                diskInfo.diskNumber = Convert.ToInt32(disk["Index"]);
-                diskInfo.totalSize = Convert.ToInt64(disk["Size"]);
+                var diskInfo = new diskInfo {
+                    diskNumber = Convert.ToInt32(disk["Index"]),
+                    totalSize = Convert.ToInt64(disk["Size"]),
+                };
 
                 foreach (var partition in GlobalClass.Instance.getWin32DiskPartitions(diskNumber))
                 {

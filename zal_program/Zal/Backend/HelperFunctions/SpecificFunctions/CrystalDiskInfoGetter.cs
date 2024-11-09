@@ -72,8 +72,10 @@ namespace Zal.HelperFunctions.SpecificFunctions
                         hardwareList.Add(currentHardware);
                     }
 
-                    currentHardware = new crystalDiskData();
-                    currentHardware.info = new Dictionary<string, dynamic>();
+                    currentHardware = new crystalDiskData
+                    {
+                        info = new Dictionary<string, dynamic>()
+                    };
                 }
                 else if (currentHardware != null)
                 {

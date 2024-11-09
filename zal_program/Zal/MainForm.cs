@@ -31,7 +31,6 @@ namespace Zal
             InitializeComponent();
             Logger.ResetLog();
             pipeTask = StartPipeServer();
-
         }
 
         private Task StartPipeServer()
@@ -150,9 +149,10 @@ namespace Zal
                             Console.WriteLine("File downloaded successfully.");
 
                             var p = new Process();
-                            var pi = new ProcessStartInfo();
-                            pi.UseShellExecute = true;
-                            pi.FileName = fileName;
+                            var pi = new ProcessStartInfo {
+                                UseShellExecute = true,
+                                FileName = fileName,
+                            };
                             p.StartInfo = pi;
                             p.Start();
                         }

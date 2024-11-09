@@ -112,14 +112,15 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
             foreach (var ni in interfaces)
             {
                 var stats = ni.GetIPv4Statistics();
-                var info = new networkInterfaceData();
-                info.name = ni.Name;
-                info.description = ni.Description;
-                info.status = ni.OperationalStatus.ToString();
-                info.id = ni.Id;
-                info.bytesReceived = stats.BytesReceived;
-                info.bytesSent = stats.BytesSent;
-                info.isPrimary = primaryNetwork == ni.Name;
+                var info = new networkInterfaceData {
+                    name = ni.Name,
+                    description = ni.Description,
+                    status = ni.OperationalStatus.ToString(),
+                    id = ni.Id,
+                    bytesReceived = stats.BytesReceived,
+                    bytesSent = stats.BytesSent,
+                    isPrimary = primaryNetwork == ni.Name,
+                };
                 data.Add(info);
             }
 
