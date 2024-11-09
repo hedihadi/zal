@@ -77,7 +77,7 @@ namespace Zal.Functions.MajorFunctions
             }
             catch (Exception ex)
             {
-                Logger.LogError($"error running server process", ex);
+                Logger.LogError("error running server process", ex);
             }
 
 
@@ -209,11 +209,11 @@ namespace Zal.Functions.MajorFunctions
                     }
                     catch (Exception ex)
                     {
-                        sendMessage($"information_text", $"failed to kill a process,{ex.Message}");
+                        sendMessage("information_text", $"failed to kill a process,{ex.Message}");
                     }
                 }
 
-                sendMessage("information_text", $"Process killed!");
+                sendMessage("information_text", "Process killed!");
             });
 
             socketio.OnConnected += (sender, args) =>

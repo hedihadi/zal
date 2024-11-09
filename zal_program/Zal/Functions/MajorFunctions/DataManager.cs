@@ -114,10 +114,6 @@ internal class ChartsDataManager
 {
     private readonly Dictionary<string, List<object>> data = new Dictionary<string, List<object>>();
 
-    public ChartsDataManager()
-    {
-    }
-
     public async Task<Dictionary<string, List<object>>> updateAsync(computerData computerData)
     {
         var primaryGpu = await getPrimaryGpu(computerData);

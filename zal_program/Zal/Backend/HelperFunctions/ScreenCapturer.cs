@@ -17,10 +17,6 @@ namespace ZalConsole.HelperFunctions
         private bool _run, _init;
         public int Size { get; private set; }
 
-        public ScreenCapturer()
-        {
-        }
-
         public void Start(int frameRate = 30)
         {
             _run = true;
