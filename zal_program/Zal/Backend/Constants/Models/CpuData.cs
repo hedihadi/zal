@@ -21,7 +21,7 @@ namespace Zal.Constants.Models
             this.cpuInfo = cpuInfo;
             name = hardware.Name;
 
-            foreach (ISensor sensor in hardware.Sensors)
+            foreach (var sensor in hardware.Sensors)
             {
                 if (sensor.SensorType == SensorType.Power)
                 {

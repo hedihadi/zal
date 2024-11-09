@@ -86,7 +86,7 @@ namespace Zal.HelperFunctions
             var computerData = new computerData();
             computer.Accept(new UpdateVisitor());
             var result = new Dictionary<string, object>();
-            foreach (IHardware hardware in computer.Hardware)
+            foreach (var hardware in computer.Hardware)
             {
                 var data = new Dictionary<string, object>
                 {
@@ -117,7 +117,7 @@ namespace Zal.HelperFunctions
             {
                 Logger.Log("warning getting computer data, computerHardware count is 0");
             }
-            foreach (IHardware hardware in computer.Hardware)
+            foreach (var hardware in computer.Hardware)
             {
                 //Console.WriteLine($"name:{hardware.Name},type:{hardware.HardwareType}");
                 var gpuTypes = new HardwareType[] { HardwareType.GpuNvidia, HardwareType.GpuIntel, HardwareType.GpuAmd };
@@ -252,7 +252,7 @@ internal class UpdateVisitor : IVisitor
             }
         }
 
-        foreach (IHardware subHardware in hardware.SubHardware) subHardware.Accept(this);
+        foreach (var subHardware in hardware.SubHardware) subHardware.Accept(this);
     }
 
     public void VisitSensor(ISensor sensor)

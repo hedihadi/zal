@@ -95,7 +95,7 @@ namespace Zal.Functions.MajorFunctions
             socketio.On("room_clients", response =>
             {
 
-                int parsedData = response.GetValue<int>();
+                var parsedData = response.GetValue<int>();
                 Logger.Log($"local socketio room_clients {parsedData}");
                 // if the data is 1, that means w'ere the only one connected to this server. if it's more than 1, it means a mobile is connected to the server.
                 isMobileConnected = parsedData > 1;
@@ -106,7 +106,7 @@ namespace Zal.Functions.MajorFunctions
             {
 
 
-                int parsedData = response.GetValue<int>();
+                var parsedData = response.GetValue<int>();
                 Logger.Log($"local socketio room_clients {parsedData}");
                 // if the data is 1, that means w'ere the only one connected to this server. if it's more than 1, it means a mobile is connected to the server.
                 isMobileConnected = parsedData > 1;
@@ -167,13 +167,13 @@ namespace Zal.Functions.MajorFunctions
 
             socketio.On("change_primary_network", async response =>
             {
-                string parsedData = response.GetValue<string>();
+                var parsedData = response.GetValue<string>();
                 await LocalDatabase.Instance.writeKey("primaryNetwork", parsedData);
             });
 
             socketio.On("launch_app", response =>
             {
-                string parsedData = response.GetValue<string>();
+                var parsedData = response.GetValue<string>();
                 var processpath = ProcesspathGetter.load(parsedData);
                 if (processpath != null)
                 {
@@ -188,7 +188,7 @@ namespace Zal.Functions.MajorFunctions
 
             socketio.On("get_process_icon", async response =>
             {
-                string parsedData = response.GetValue<string>();
+                var parsedData = response.GetValue<string>();
                 var processpath = ProcesspathGetter.load(parsedData);
                 if (processpath != null)
                 {
@@ -199,7 +199,7 @@ namespace Zal.Functions.MajorFunctions
 
             socketio.On("kill_process", response =>
             {
-                string parsedData = response.GetValue<string>();
+                var parsedData = response.GetValue<string>();
                 var pids = JsonConvert.DeserializeObject<List<int>>(parsedData);
                 foreach (var pid in pids)
                 {

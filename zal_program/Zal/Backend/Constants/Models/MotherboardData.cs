@@ -10,7 +10,7 @@ namespace Zal.Constants.Models
         public motherboardData(IHardware hardware)
         {
             name = hardware.Name;
-            foreach (ISensor sensor in hardware.Sensors)
+            foreach (var sensor in hardware.Sensors)
             {
                 if (sensor.SensorType == SensorType.Temperature)
                 {
