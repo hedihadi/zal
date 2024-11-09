@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -13,7 +13,7 @@ namespace Zal.HelperFunctions
         public Dictionary<string, object> data = [];
 
         //this list contains the names of processes that we've already loaded and sent to the phone.
-        //this is to save network bandwidth as icons are quite large (i think about 5-10kb each),
+        //this is to save network bandwidth as icons are quite large (I think about 5-10kb each),
         //so we cache the icons in the mobile app, and when the app disconnects, we reset this list
         //so that we send icons to the app once again when app reconnects.
         private readonly List<string> loadedIcons = [];
@@ -81,11 +81,10 @@ namespace Zal.HelperFunctions
                     //get the process icon
                     try
                     {
-                        //i've disabled icon loading until further insight.
+                        //I've disabled icon loading until further insight.
                         //when the app connects to this program, we have to confidently reset the loadedIcons variable to make sure
                         //the app receives the process icons.
-                        if (false)
-                            //if (loadedIcons.Contains(processName) == false)
+                        /*if (loadedIcons.Contains(processName) == false)
                         {
                             var filepath = process.MainModule.FileName;
                             var icon = await getFileIcon(filepath);
@@ -94,7 +93,7 @@ namespace Zal.HelperFunctions
                                 processData["icon"] = icon;
                                 loadedIcons.Add(processName);
                             }
-                        }
+                        }*/
                     }
                     catch (Exception)
                     {

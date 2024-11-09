@@ -1,4 +1,4 @@
-﻿using LibreHardwareMonitor.Hardware;
+using LibreHardwareMonitor.Hardware;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -33,6 +33,7 @@ namespace Zal.HelperFunctions
             IsNetworkEnabled = true,
             IsStorageEnabled = true
         };
+
         public computerDataGetter()
         {
             //fpsDataGetter = new fpsDataGetter(client);
@@ -49,10 +50,12 @@ namespace Zal.HelperFunctions
                     attempts++;
                 }
             }
+
             if (attempts == 5)
             {
                 Logger.Log("error running computer.open, attempted 5 times and failed");
             }
+
             computer.Accept(new UpdateVisitor());
 
             //below code is run only once during the lifetime of this program. this is to reduce load.
@@ -64,6 +67,7 @@ namespace Zal.HelperFunctions
             {
                 Logger.LogError("error getting cpuInfo", ex);
             }
+
             try
             {
                 ramPiecesData = ramPieceDataGetter.GetRamPiecesData();
@@ -72,6 +76,7 @@ namespace Zal.HelperFunctions
             {
                 Logger.LogError("error getting ramPiecesData", ex);
             }
+
             try
             {
                 crystalDiskDatas = CrystaldiskInfoGetter.getcrystalDiskData();
@@ -81,6 +86,7 @@ namespace Zal.HelperFunctions
                 Logger.LogError("error getting crystalDiskData", ex);
             }
         }
+
         public string getEntireComputerData()
         {
             var computerData = new computerData();
@@ -94,7 +100,8 @@ namespace Zal.HelperFunctions
                 };
                 foreach (var sensor in hardware.Sensors)
                 {
-                    var sensorData = new Dictionary<string, object> {
+                    var sensorData = new Dictionary<string, object>
+                    {
                         ["type"] = sensor.SensorType.ToString(),
                         ["value"] = sensor.Value.ToString(),
                     };
@@ -103,9 +110,11 @@ namespace Zal.HelperFunctions
 
                 result.Add(hardware.Name, data);
             }
+
             var stringifiedData = Newtonsoft.Json.JsonConvert.SerializeObject(result);
             return stringifiedData;
         }
+
         public async Task<computerData> getcomputerDataAsync()
         {
             var computerData = new computerData();
@@ -117,10 +126,11 @@ namespace Zal.HelperFunctions
             {
                 Logger.Log("warning getting computer data, computerHardware count is 0");
             }
+
             foreach (var hardware in computer.Hardware)
             {
                 //Console.WriteLine($"name:{hardware.Name},type:{hardware.HardwareType}");
-                var gpuTypes = new HardwareType[] { HardwareType.GpuNvidia, HardwareType.GpuIntel, HardwareType.GpuAmd };
+                var gpuTypes = new[] { HardwareType.GpuNvidia, HardwareType.GpuIntel, HardwareType.GpuAmd };
                 if (hardware.HardwareType == HardwareType.Cpu)
                 {
                     try
@@ -182,6 +192,7 @@ namespace Zal.HelperFunctions
                     }
                 }
             }
+
             try
             {
                 var monitorsData = monitorDataGetter.getmonitorData();
@@ -191,6 +202,7 @@ namespace Zal.HelperFunctions
             {
                 Logger.LogError("error parsing monitorData", ex);
             }
+
             try
             {
                 var batteryData = batteryDataGetter.getbatteryData();
@@ -200,6 +212,7 @@ namespace Zal.HelperFunctions
             {
                 Logger.LogError("error parsing batteryData", ex);
             }
+
             try
             {
                 computerData.processesGpuUsage = processesGpuUsage;
@@ -208,6 +221,7 @@ namespace Zal.HelperFunctions
             {
                 Logger.LogError("error parsing processesGpuUsage", ex);
             }
+
             try
             {
                 computerData.primaryNetworkSpeed = networkSpeedGetter.primaryNetworkSpeed;
@@ -216,6 +230,7 @@ namespace Zal.HelperFunctions
             {
                 Logger.LogError("error getting primary network speed", ex);
             }
+
             try
             {
                 computerData.networkInterfaces = networkSpeedGetter.networkInterfaceDatas;
@@ -224,6 +239,7 @@ namespace Zal.HelperFunctions
             {
                 Logger.LogError("error getting primary network speed", ex);
             }
+
             return computerData;
         }
     }
@@ -252,7 +268,10 @@ internal class UpdateVisitor : IVisitor
             }
         }
 
-        foreach (var subHardware in hardware.SubHardware) subHardware.Accept(this);
+        foreach (var subHardware in hardware.SubHardware)
+        {
+            subHardware.Accept(this);
+        }
     }
 
     public void VisitSensor(ISensor sensor)

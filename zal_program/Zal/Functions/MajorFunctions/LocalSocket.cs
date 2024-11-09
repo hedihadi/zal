@@ -19,17 +19,18 @@ namespace Zal.Functions.MajorFunctions
         public bool isConnected;
         public bool isMobileConnected;
         private Process? serverProcess;
-        public LocalSocket(
-            EventHandler<SocketConnectionState> stateChanged
-            )
+
+        public LocalSocket(EventHandler<SocketConnectionState> stateChanged)
         {
             connectionStateChanged = stateChanged;
             setupSocketio();
         }
+
         public async void restartSocketio()
         {
             await setupSocketio();
         }
+
         private async Task killSocketProcess()
         {
             foreach (var process in Process.GetProcessesByName("server"))
@@ -37,6 +38,7 @@ namespace Zal.Functions.MajorFunctions
                 process.Kill();
             }
         }
+
         private async Task setupSocketio()
         {
             await killSocketProcess();
@@ -76,7 +78,6 @@ namespace Zal.Functions.MajorFunctions
             };
             try
             {
-
                 serverProcess.Start();
             }
             catch (Exception ex)
@@ -91,7 +92,6 @@ namespace Zal.Functions.MajorFunctions
                     Query = new List<KeyValuePair<string, string>>
                     {
                         //new KeyValuePair<string, string>("uid", uid),
-
                     }
                 });
 
@@ -151,11 +151,11 @@ namespace Zal.Functions.MajorFunctions
                 var proc = new Process
                 {
                     StartInfo =
-        {
-            FileName = selfPath,
-            UseShellExecute = true,
-            Verb = "runas"
-        }
+                    {
+                        FileName = selfPath,
+                        UseShellExecute = true,
+                        Verb = "runas"
+                    }
                 };
 
                 try
@@ -196,7 +196,11 @@ namespace Zal.Functions.MajorFunctions
                 if (processpath != null)
                 {
                     var icon = await GlobalClass.Instance.processesGetter.getFileIcon(processpath);
-                    sendMessage("process_icon", new Dictionary<string, string>() { { "name", parsedData }, { "icon", icon } });
+                    sendMessage("process_icon", new Dictionary<string, string>
+                    {
+                        { "name", parsedData },
+                        { "icon", icon }
+                    });
                 }
             });
 
@@ -234,7 +238,6 @@ namespace Zal.Functions.MajorFunctions
 
         private async void connectToServer()
         {
-
             if (isConnected)
             {
                 await socketio.DisconnectAsync();
@@ -251,7 +254,8 @@ namespace Zal.Functions.MajorFunctions
                 connectToServer();
             }
         }
-        public void sendMessage(String key, object data)
+
+        public void sendMessage(string key, object data)
         {
             socketio?.EmitAsync(key, data);
         }

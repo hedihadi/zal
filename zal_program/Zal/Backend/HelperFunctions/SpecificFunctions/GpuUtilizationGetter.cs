@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -33,7 +33,10 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
                 {
                 }
 
-                if (usage == 0) continue;
+                if (usage == 0)
+                {
+                    continue;
+                }
 
                 var p = Process.GetProcessById(pid);
                 try
@@ -53,7 +56,7 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
                 ProcessInfo foundProcessInfo;
                 try
                 {
-                    foundProcessInfo = processInfos.Where((a) => a.name == p.ProcessName).ToList().FirstOrDefault();
+                    foundProcessInfo = processInfos.Where(a => a.name == p.ProcessName).ToList().FirstOrDefault();
                 }
                 catch
                 {
@@ -64,7 +67,10 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
                 {
                     if (skipBlackListedProcesses)
                     {
-                        if (foundProcessInfo.isBlacklisted) continue;
+                        if (foundProcessInfo.isBlacklisted)
+                        {
+                            continue;
+                        }
                     }
 
                     if (foundProcessInfo.displayName != null)

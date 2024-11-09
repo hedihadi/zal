@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows.Forms;
 using Zal.MajorFunctions;
 
@@ -7,7 +7,8 @@ namespace Zal.Pages
     public partial class ConfigurationsForm : Form
     {
         private Func<System.Threading.Tasks.Task> setupRunOnStartup;
-        private System.Collections.Generic.List<Constants.Models.gpuData> gpuData;
+        private readonly System.Collections.Generic.List<Constants.Models.gpuData> gpuData;
+
         public ConfigurationsForm(Func<System.Threading.Tasks.Task> setupRunOnStartup, System.Collections.Generic.List<Constants.Models.gpuData> gpuData)
         {
             this.gpuData = gpuData;
@@ -82,7 +83,7 @@ namespace Zal.Pages
         private async void gpusList_SelectedIndexChanged(object sender, EventArgs e)
         {
             var selectedGpuName = gpusListbox.SelectedItem.ToString();
-            await LocalDatabase.Instance.writeKey("primaryGpu", selectedGpuName.ToString());
+            await LocalDatabase.Instance.writeKey("primaryGpu", selectedGpuName);
         }
 
         private void label2_Click(object sender, EventArgs e)
