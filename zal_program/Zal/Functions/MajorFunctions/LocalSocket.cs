@@ -64,8 +64,11 @@ namespace Zal.Functions.MajorFunctions
                 CreateNoWindow = true,
                 Arguments = $"{port} \"{pcName}\"",
             };
-            serverProcess = new Process { StartInfo = startInfo };
-            serverProcess.EnableRaisingEvents = true; // Enables the Exited event to be raised
+            serverProcess = new Process
+            {
+                StartInfo = startInfo,
+                EnableRaisingEvents = true // Enables the Exited event to be raised
+            };
             serverProcess.Exited += (sender, args) =>
             {
                 System.Diagnostics.Debug.WriteLine(args);
@@ -79,7 +82,6 @@ namespace Zal.Functions.MajorFunctions
             {
                 Logger.LogError("error running server process", ex);
             }
-
 
             var ip = Zal.Backend.HelperFunctions.SpecificFunctions.IpGetter.getIp();
             socketio = new SocketIOClient.SocketIO($"http://{ip}:{port}",
