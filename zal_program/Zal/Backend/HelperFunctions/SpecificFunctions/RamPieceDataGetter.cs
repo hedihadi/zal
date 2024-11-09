@@ -9,7 +9,7 @@ namespace Zal.HelperFunctions.SpecificFunctions
          public static List<ramPieceData> GetRamPiecesData()
         {
             var data = new List<ramPieceData>();
-            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_PhysicalMemory");
+            var searcher = new ManagementObjectSearcher("SELECT * FROM Win32_PhysicalMemory");
             foreach (ManagementObject obj in searcher.Get())
             {
                 var ramData = new ramPieceData();

@@ -82,7 +82,7 @@ namespace ZalConsole.HelperFunctions
                                 var mapDest = bitmap.LockBits(boundsRect, ImageLockMode.WriteOnly, bitmap.PixelFormat);
                                 var sourcePtr = mapSource.DataPointer;
                                 var destPtr = mapDest.Scan0;
-                                for (int y = 0; y < height; y++)
+                                for (var y = 0; y < height; y++)
                                 {
                                     // Copy a single line
                                     Utilities.CopyMemory(destPtr, sourcePtr, width * 4);

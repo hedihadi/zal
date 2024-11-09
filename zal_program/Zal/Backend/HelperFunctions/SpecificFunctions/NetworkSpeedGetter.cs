@@ -18,7 +18,7 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
 
         public NetworkSpeedGetter()
         {
-            networkSpeed s = new networkSpeed(0, 0);
+            var s = new networkSpeed(0, 0);
             primaryNetworkSpeed = s;
 
             //run code that gets networkInterfaces every 5 seconds
@@ -34,7 +34,7 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
             {
                 while (true)
                 {
-                    string? primaryNetwork = (string?)LocalDatabase.Instance.readKey("primaryNetwork");
+                    var primaryNetwork = (string?)LocalDatabase.Instance.readKey("primaryNetwork");
                     getPrimaryNetworkSpeedAsync(primaryNetwork);
                 }
             });
@@ -93,7 +93,7 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
                     // ~1 second
                     var brSec = readsBr.Sum() / readsBs.Count();
                     var bsSec = readsBs.Sum() / readsBs.Count();
-                    networkSpeed s = new networkSpeed((int)brSec, (int)bsSec);
+                    var s = new networkSpeed((int)brSec, (int)bsSec);
                     primaryNetworkSpeed = s;
                 }
             }
@@ -105,14 +105,14 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
             if (!NetworkInterface.GetIsNetworkAvailable())
                 return new List<networkInterfaceData>();
 
-            NetworkInterface[] interfaces
+            var interfaces
                 = NetworkInterface.GetAllNetworkInterfaces();
-            List<networkInterfaceData> data = new List<networkInterfaceData>();
+            var data = new List<networkInterfaceData>();
 
-            foreach (NetworkInterface ni in interfaces)
+            foreach (var ni in interfaces)
             {
                 var stats = ni.GetIPv4Statistics();
-                networkInterfaceData info = new networkInterfaceData();
+                var info = new networkInterfaceData();
                 info.name = ni.Name;
                 info.description = ni.Description;
                 info.status = ni.OperationalStatus.ToString();

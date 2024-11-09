@@ -40,14 +40,14 @@ namespace Zal
              {
                  while (true)
                  {
-                     using (NamedPipeServerStream pipeServer = new NamedPipeServerStream(PipeName, PipeDirection.In))
+                     using (var pipeServer = new NamedPipeServerStream(PipeName, PipeDirection.In))
                      {
                          try
                          {
                              pipeServer.WaitForConnection(); // Wait for a client to connect
-                             using (StreamReader reader = new StreamReader(pipeServer))
+                             using (var reader = new StreamReader(pipeServer))
                              {
-                                 string command = reader.ReadLine();
+                                 var command = reader.ReadLine();
                                  if (command == "SHOW")
                                  {
                                      Invoke(new Action(() =>
@@ -123,34 +123,34 @@ namespace Zal
 
         private void connectionSettingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ConnectionSettingsForm form2 = new ConnectionSettingsForm();
+            var form2 = new ConnectionSettingsForm();
             form2.Show();
         }
 
         private void configurationsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ConfigurationsForm form2 = new ConfigurationsForm(setupRunOnStartup, gpuDatas);
+            var form2 = new ConfigurationsForm(setupRunOnStartup, gpuDatas);
             form2.Show();
         }
         private async Task checkForUpdates()
         {
-            string latestVersion = new WebClient().DownloadString("https://zalapp.com/program-version");
+            var latestVersion = new WebClient().DownloadString("https://zalapp.com/program-version");
             var currentVersion = System.Windows.Forms.Application.ProductVersion;
             if (latestVersion != currentVersion)
             {
                 var dialog = System.Windows.Forms.MessageBox.Show($"New update is available! do you want to update?\ncurrent version: {currentVersion}\nlatest version:{latestVersion}", "Zal", MessageBoxButtons.YesNo);
                 if (dialog == DialogResult.Yes)
                 {
-                    using (WebClient webClient = new WebClient())
+                    using (var webClient = new WebClient())
                     {
                         try
                         {
-                            string fileName = Path.Combine(Path.GetTempPath(), "zal.msi");
+                            var fileName = Path.Combine(Path.GetTempPath(), "zal.msi");
                             webClient.DownloadFile("https://zalapp.com/zal.msi", fileName);
                             Console.WriteLine("File downloaded successfully.");
 
-                            Process p = new Process();
-                            ProcessStartInfo pi = new ProcessStartInfo();
+                            var p = new Process();
+                            var pi = new ProcessStartInfo();
                             pi.UseShellExecute = true;
                             pi.FileName = fileName;
                             p.StartInfo = pi;
@@ -168,9 +168,9 @@ namespace Zal
         {
             var runOnStartup = (string?)LocalDatabase.Instance.readKey("runOnStartup") == "1";
             //replace false with saved settings
-            RegistryKey rk = Registry.CurrentUser.OpenSubKey
+            var rk = Registry.CurrentUser.OpenSubKey
                 ("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-            string executablePath = $"\"{Process.GetCurrentProcess().MainModule.FileName}\" --startup";
+            var executablePath = $"\"{Process.GetCurrentProcess().MainModule.FileName}\" --startup";
             if (runOnStartup)
                 rk.SetValue("Zal", executablePath);
             else
@@ -210,7 +210,7 @@ namespace Zal
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            Process[] pname = Process.GetProcessesByName("server");
+            var pname = Process.GetProcessesByName("server");
             serverConnectionText.Text = pname.Length != 0 ? "Server running" : "Server not running";
             serverConnectionText.ForeColor = (pname.Length == 0) ? Color.FromKnownColor(KnownColor.IndianRed) : Color.FromKnownColor(KnownColor.ForestGreen);
 

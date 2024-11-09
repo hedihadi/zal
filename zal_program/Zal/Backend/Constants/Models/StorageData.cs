@@ -25,7 +25,7 @@ namespace Zal.Constants.Models
             crystalDiskData? crystalDiskData = null;
             if (crystalDiskDatas != null)
             {
-                foreach (crystalDiskData _crystalDiskData in crystalDiskDatas)
+                foreach (var _crystalDiskData in crystalDiskDatas)
                 {
                     if (_crystalDiskData.info["model"] == hardware.Name)
                     {

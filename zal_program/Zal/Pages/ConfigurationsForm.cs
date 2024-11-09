@@ -46,7 +46,7 @@ namespace Zal.Pages
                     else
                     {
                         //check if the primary gpu exists inside this data, this is a useful check in case of the user changed their gpu
-                        bool doesPrimaryGpuExist = false;
+                        var doesPrimaryGpuExist = false;
                         foreach (var gpu in gpuData)
                         {
                             if (gpu.name == primaryGpu.ToString())

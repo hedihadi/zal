@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using ZalConsole.HelperFunctions;
@@ -36,9 +35,9 @@ namespace Zal.HelperFunctions
         {
             var elements = seq.ToArray();
             Array.Sort(elements);
-            double realIndex = percentile * (elements.Length - 1);
-            int index = (int)realIndex;
-            double frac = realIndex - index;
+            var realIndex = percentile * (elements.Length - 1);
+            var index = (int)realIndex;
+            var frac = realIndex - index;
             if (index + 1 < elements.Length)
                 return elements[index] * (1 - frac) + elements[index + 1] * frac;
             else
@@ -67,7 +66,7 @@ namespace Zal.HelperFunctions
             //startFpsTimer();
             //kill any presentmon process that might be running
             var filePath = GlobalClass.Instance.getFilepathFromResources("presentmon.exe");
-            ProcessStartInfo startInfo = new ProcessStartInfo
+            var startInfo = new ProcessStartInfo
             {
                 FileName = filePath,
                 RedirectStandardOutput = true,
@@ -98,7 +97,7 @@ namespace Zal.HelperFunctions
         //chosenProcessName is the process that was used during the creation of this void, if the currentProcessName changes, this void will stop itself.
         private async Task parseIncomingPresentmonData()
         {
-            StreamReader reader = presentmonProcess.StandardOutput;
+            var reader = presentmonProcess.StandardOutput;
 
             while (!reader.EndOfStream)
             {
@@ -111,7 +110,7 @@ namespace Zal.HelperFunctions
                     }
 
                     //Thread.Sleep(30);
-                    string line = reader.ReadLine();
+                    var line = reader.ReadLine();
                     if (shouldLog) Logger.Log($"fpsData:{line}");
                     var msBetweenPresents = "";
                     try
@@ -125,7 +124,7 @@ namespace Zal.HelperFunctions
                     }
 
                     uint? processId = null;
-                    string? processName = line.Split(',')[0];
+                    var processName = line.Split(',')[0];
                     try
                     {
                         processId = uint.Parse(line.Split(',')[1]);

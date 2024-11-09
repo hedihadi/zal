@@ -56,7 +56,7 @@ namespace Zal.Functions.MajorFunctions
             }
             pcName = string.Concat(pcName.Where(char.IsLetterOrDigit));
             var filePath = GlobalClass.Instance.getFilepathFromResources("server.exe");
-            ProcessStartInfo startInfo = new ProcessStartInfo
+            var startInfo = new ProcessStartInfo
             {
                 FileName = filePath,
                 RedirectStandardOutput = true,
@@ -128,7 +128,7 @@ namespace Zal.Functions.MajorFunctions
 
             socketio.On("start_fps", response =>
             {
-                int data = int.Parse(response.GetValue<string>());
+                var data = int.Parse(response.GetValue<string>());
                 FrontendGlobalClass.Instance.backend?.startFps(data, FrontendGlobalClass.Instance.shouldLogFpsData);
                 FrontendGlobalClass.Instance.backend.fpsDataReceived += (sender, e) =>
                 {
@@ -144,7 +144,7 @@ namespace Zal.Functions.MajorFunctions
 
             socketio.On("restart_admin", response =>
             {
-                string selfPath = Process.GetCurrentProcess().MainModule.FileName;
+                var selfPath = Process.GetCurrentProcess().MainModule.FileName;
                 var proc = new Process
                 {
                     StartInfo =

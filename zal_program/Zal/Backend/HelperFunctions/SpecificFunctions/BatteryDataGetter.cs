@@ -7,9 +7,9 @@ namespace Zal.HelperFunctions.SpecificFunctions
     {
         public static batteryData getbatteryData()
         {
-            PowerStatus p = SystemInformation.PowerStatus;
+            var p = SystemInformation.PowerStatus;
 
-            int life = (int)(p.BatteryLifePercent * 100);
+            var life = (int)(p.BatteryLifePercent * 100);
 
             var data = new batteryData();
             data.hasBattery = p.BatteryChargeStatus != BatteryChargeStatus.NoSystemBattery;

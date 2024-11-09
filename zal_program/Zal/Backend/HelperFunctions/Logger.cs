@@ -9,8 +9,8 @@ namespace Zal
 
         public static void LogError(string message, Exception ex, object dataToPrint = null)
         {
-            string stringifiedData = Newtonsoft.Json.JsonConvert.SerializeObject(dataToPrint);
-            string text = dataToPrint == null ? "" : stringifiedData;
+            var stringifiedData = Newtonsoft.Json.JsonConvert.SerializeObject(dataToPrint);
+            var text = dataToPrint == null ? "" : stringifiedData;
             Log($"{message},,error:{ex.Message},,stack:{ex.StackTrace},,{text}");
         }
 
@@ -51,7 +51,7 @@ namespace Zal
         {
             lock (_locker)
             {
-                string formattedDate = DateTime.Now.ToString("HH:mm:ss");
+                var formattedDate = DateTime.Now.ToString("HH:mm:ss");
                 File.AppendAllText(logFilePath,
                     string.Format("DT: {1}{0}Msg: {2}{0}--------------------{0}",
                         Environment.NewLine, formattedDate, logMessage));

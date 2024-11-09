@@ -27,7 +27,7 @@ namespace Zal
                 SendShowSignal();
                 return; // Exit the new instance
             }
-            bool launchedByStartup = args.Contains("--startup");
+            var launchedByStartup = args.Contains("--startup");
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm(launchedByStartup));
@@ -36,10 +36,10 @@ namespace Zal
         {
             try
             {
-                using (NamedPipeClientStream pipeClient = new NamedPipeClientStream(".", PipeName, PipeDirection.Out))
+                using (var pipeClient = new NamedPipeClientStream(".", PipeName, PipeDirection.Out))
                 {
                     pipeClient.Connect(1000); // Attempt to connect to the server
-                    using (StreamWriter writer = new StreamWriter(pipeClient))
+                    using (var writer = new StreamWriter(pipeClient))
                     {
                         writer.WriteLine("SHOW");
                     }

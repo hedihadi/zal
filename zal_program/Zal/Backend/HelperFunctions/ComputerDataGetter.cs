@@ -84,16 +84,16 @@ namespace Zal.HelperFunctions
         }
         public string getEntireComputerData()
         {
-            computerData computerData = new computerData();
+            var computerData = new computerData();
             computer.Accept(new UpdateVisitor());
-            Dictionary<string, object> result = new Dictionary<string, object>();
+            var result = new Dictionary<string, object>();
             foreach (IHardware hardware in computer.Hardware)
             {
-                Dictionary<string, object> data = new Dictionary<string, object>();
+                var data = new Dictionary<string, object>();
                 data["type"] = hardware.HardwareType.ToString();
                 foreach (var sensor in hardware.Sensors)
                 {
-                    Dictionary<string, object> sensorData = new Dictionary<string, object>();
+                    var sensorData = new Dictionary<string, object>();
                     sensorData["type"] = sensor.SensorType.ToString();
                     sensorData["value"] = sensor.Value.ToString();
                     data[sensor.Name] = sensorData;
@@ -106,7 +106,7 @@ namespace Zal.HelperFunctions
         }
         public async Task<computerData> getcomputerDataAsync()
         {
-            computerData computerData = new computerData();
+            var computerData = new computerData();
             computer.Accept(new UpdateVisitor());
             GlobalClass.Instance.processesGetter.update();
             computerData.isAdminstrator = IsAdminstratorChecker.IsAdministrator();
@@ -182,7 +182,7 @@ namespace Zal.HelperFunctions
             }
             try
             {
-                List<monitorData>? monitorsData = monitorDataGetter.getmonitorData();
+                var monitorsData = monitorDataGetter.getmonitorData();
                 computerData.monitorsData = monitorsData;
             }
             catch (Exception ex)
@@ -191,7 +191,7 @@ namespace Zal.HelperFunctions
             }
             try
             {
-                batteryData? batteryData = batteryDataGetter.getbatteryData();
+                var batteryData = batteryDataGetter.getbatteryData();
                 computerData.batteryData = batteryData;
             }
             catch (Exception ex)

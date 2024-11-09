@@ -10,7 +10,7 @@ namespace Zal.HelperFunctions.SpecificFunctions
         {
             var directory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Zal", "programs_path");
             var folderPath = Directory.CreateDirectory(directory).FullName;
-            using (StreamWriter w = File.CreateText(Path.Combine(folderPath, name)))
+            using (var w = File.CreateText(Path.Combine(folderPath, name)))
             {
                 w.Write(processPath);
             }

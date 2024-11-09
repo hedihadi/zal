@@ -60,13 +60,13 @@ namespace Zal.HelperFunctions
 
         public async Task update()
         {
-            Dictionary<string, object> result = new Dictionary<string, object>();
+            var result = new Dictionary<string, object>();
             var allProcesses = Process.GetProcesses();
             foreach (var process in allProcesses)
             {
-                string processName = process.ProcessName;
-                long ramUsageBytes = process.WorkingSet64;
-                Dictionary<string, object> processData = new Dictionary<string, object>();
+                var processName = process.ProcessName;
+                var ramUsageBytes = process.WorkingSet64;
+                var processData = new Dictionary<string, object>();
                 if (result.ContainsKey(processName))
                 {
                     processData = (Dictionary<string, object>)result[processName];
