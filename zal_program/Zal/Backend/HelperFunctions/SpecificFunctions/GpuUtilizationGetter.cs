@@ -56,7 +56,7 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
                 ProcessInfo foundProcessInfo;
                 try
                 {
-                    foundProcessInfo = processInfos.Where((a) => a.name == p.ProcessName).ToList().FirstOrDefault();
+                    foundProcessInfo = processInfos.Where(a => a.name == p.ProcessName).ToList().FirstOrDefault();
                 }
                 catch
                 {

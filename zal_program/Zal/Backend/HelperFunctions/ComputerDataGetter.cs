@@ -130,7 +130,7 @@ namespace Zal.HelperFunctions
             foreach (var hardware in computer.Hardware)
             {
                 //Console.WriteLine($"name:{hardware.Name},type:{hardware.HardwareType}");
-                var gpuTypes = new HardwareType[] { HardwareType.GpuNvidia, HardwareType.GpuIntel, HardwareType.GpuAmd };
+                var gpuTypes = new[] { HardwareType.GpuNvidia, HardwareType.GpuIntel, HardwareType.GpuAmd };
                 if (hardware.HardwareType == HardwareType.Cpu)
                 {
                     try

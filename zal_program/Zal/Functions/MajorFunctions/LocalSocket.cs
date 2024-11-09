@@ -196,7 +196,7 @@ namespace Zal.Functions.MajorFunctions
                 if (processpath != null)
                 {
                     var icon = await GlobalClass.Instance.processesGetter.getFileIcon(processpath);
-                    sendMessage("process_icon", new Dictionary<string, string>()
+                    sendMessage("process_icon", new Dictionary<string, string>
                     {
                         { "name", parsedData },
                         { "icon", icon }

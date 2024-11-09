@@ -77,7 +77,7 @@ namespace Zal
             };
             var trayMenu = new ContextMenuStrip();
             trayMenu.Click +=
-                delegate(object sender, EventArgs args)
+                delegate
                 {
                     Show();
                     WindowState = FormWindowState.Normal;
@@ -87,7 +87,7 @@ namespace Zal
             trayMenu.Items.Add("Exit", null, (sender, e) => Application.Exit());
             ni.ContextMenuStrip = trayMenu;
             ni.DoubleClick +=
-                delegate(object sender, EventArgs args)
+                delegate
                 {
                     Show();
                     WindowState = FormWindowState.Normal;

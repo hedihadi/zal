@@ -83,7 +83,7 @@ namespace Zal.Pages
         private async void gpusList_SelectedIndexChanged(object sender, EventArgs e)
         {
             var selectedGpuName = gpusListbox.SelectedItem.ToString();
-            await LocalDatabase.Instance.writeKey("primaryGpu", selectedGpuName.ToString());
+            await LocalDatabase.Instance.writeKey("primaryGpu", selectedGpuName);
         }
 
         private void label2_Click(object sender, EventArgs e)
