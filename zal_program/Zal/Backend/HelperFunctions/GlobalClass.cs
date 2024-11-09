@@ -102,10 +102,7 @@ namespace ZalConsole.HelperFunctions
         {
             get
             {
-                if (instance == null)
-                {
-                    instance = new GlobalClass();
-                }
+                instance ??= new GlobalClass();
 
                 return instance;
             }

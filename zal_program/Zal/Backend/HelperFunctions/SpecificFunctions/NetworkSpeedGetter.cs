@@ -44,10 +44,7 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
         {
 
             //var nics = networkInterfaces();
-            if (networkInterfaces == null)
-            {
-                networkInterfaces = NetworkInterface.GetAllNetworkInterfaces().ToList();
-            }
+            networkInterfaces ??= NetworkInterface.GetAllNetworkInterfaces().ToList();
 
             // Select desired NIC
             var a = primaryNetwork;

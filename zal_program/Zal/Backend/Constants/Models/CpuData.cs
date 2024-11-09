@@ -60,15 +60,9 @@ namespace Zal.Constants.Models
                 else
                 {
                     var foundSensor = hardware.Sensors.FirstOrDefault(s => s.SensorType == SensorType.Temperature && s.Name.Contains("(Tctl/Tdie)"));
-                    if (foundSensor == null)
-                    {
-                        foundSensor = hardware.Sensors.FirstOrDefault(s => s.SensorType == SensorType.Temperature && s.Name.Contains("Average"));
-                    }
+                    foundSensor ??= hardware.Sensors.FirstOrDefault(s => s.SensorType == SensorType.Temperature && s.Name.Contains("Average"));
 
-                    if (foundSensor == null)
-                    {
-                        foundSensor = hardware.Sensors.FirstOrDefault(s => s.SensorType == SensorType.Temperature && s.Name.Contains("Core #1"));
-                    }
+                    foundSensor ??= hardware.Sensors.FirstOrDefault(s => s.SensorType == SensorType.Temperature && s.Name.Contains("Core #1"));
 
                     if (foundSensor != null)
                     {
