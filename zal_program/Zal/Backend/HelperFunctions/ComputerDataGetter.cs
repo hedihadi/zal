@@ -22,7 +22,7 @@ namespace Zal.HelperFunctions
         //disabled fps feature because it's buggy
         //public fpsDataGetter fpsDataGetter;
         //this variable holds the processes and how much % gpu they use. we use this data to determine which process is a game. and get the fps data from it.
-        private readonly Dictionary<int, double> processesGpuUsage = new();
+        private readonly Dictionary<int, double> processesGpuUsage = [];
         private readonly Computer computer = new()
         {
             IsCpuEnabled = true,

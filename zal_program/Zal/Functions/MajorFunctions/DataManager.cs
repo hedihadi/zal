@@ -112,7 +112,7 @@ namespace Zal.Functions.MajorFunctions
 
 internal class ChartsDataManager
 {
-    private readonly Dictionary<string, List<object>> data = new();
+    private readonly Dictionary<string, List<object>> data = [];
 
     public async Task<Dictionary<string, List<object>>> updateAsync(computerData computerData)
     {

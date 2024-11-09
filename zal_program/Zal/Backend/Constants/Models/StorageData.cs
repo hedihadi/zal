@@ -17,7 +17,7 @@ namespace Zal.Constants.Models
         //whether it's hdd, ssd, or external storage
         public string type { get; set; }
         public List<partitionInfo> partitions { get; } = [];
-        public Dictionary<string, dynamic> info = new();
+        public Dictionary<string, dynamic> info = [];
         public List<smartAttribute> smartAttributes = [];
         public storageData(IHardware hardware, List<crystalDiskData>? crystalDiskDatas)
         {
