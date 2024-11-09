@@ -22,7 +22,7 @@ namespace Zal
                 //Use this for daily log files : "Log" + DateTime.Now.ToString("yyyy-MM-dd") + ".txt";
                 WriteToLog(logMessage, logFilePath);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 //the irony, right? well I can't do much here
             }

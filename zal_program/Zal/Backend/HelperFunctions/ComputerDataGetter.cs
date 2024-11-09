@@ -44,7 +44,7 @@ namespace Zal.HelperFunctions
                     computer.Open();
                     break;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     attempts++;
                 }

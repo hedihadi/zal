@@ -243,7 +243,7 @@ namespace Zal.Functions.MajorFunctions
             {
                 socketio.ConnectAsync();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 connectToServer();
             }

@@ -72,7 +72,7 @@ namespace ZalConsole.HelperFunctions
                 // File not found
                 return null;
             }
-            catch (IOException c)
+            catch (IOException)
             {
                 // Error reading file, try to delete the file
                 try
@@ -121,7 +121,7 @@ namespace ZalConsole.HelperFunctions
             {
                 System.IO.Compression.ZipFile.ExtractToDirectory(zipFilepath, zipFileNameWithoutDotZip);
             }
-            catch (IOException c)
+            catch (IOException)
             {
 
             }

@@ -96,7 +96,7 @@ namespace Zal.HelperFunctions
                             }
                         }
                     }
-                    catch (Exception c)
+                    catch (Exception)
                     {
                         // loadedIcons.Add(processName);
                     }

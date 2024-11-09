@@ -58,9 +58,8 @@ namespace Zal.Constants.Models
                     {
                         temperature = (ulong)sensor.Value;
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
-
                     }
                 }
                 else if (sensor.SensorType == SensorType.Throughput && sensor.Name == "Read Rate")
@@ -72,11 +71,9 @@ namespace Zal.Constants.Models
                         {
                             readRate = ulong.Parse(sensor.Value.ToString().Split('.')[0]);
                         }
-
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
-
                     }
 
                 }
@@ -86,9 +83,8 @@ namespace Zal.Constants.Models
                     {
                         writeRate = (ulong)sensor.Value;
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
-
                     }
                 }
             }
