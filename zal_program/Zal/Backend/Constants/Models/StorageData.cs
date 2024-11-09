@@ -16,16 +16,16 @@ namespace Zal.Constants.Models
         public ulong? writeRate { get; set; }
         //whether it's hdd, ssd, or external storage
         public string type { get; set; }
-        public List<partitionInfo> partitions { get; } = new List<partitionInfo>();
-        public Dictionary<string, dynamic> info = new Dictionary<string, dynamic>();
-        public List<smartAttribute> smartAttributes = new List<smartAttribute>();
+        public List<partitionInfo> partitions { get; } = [];
+        public Dictionary<string, dynamic> info = [];
+        public List<smartAttribute> smartAttributes = [];
         public storageData(IHardware hardware, List<crystalDiskData>? crystalDiskDatas)
         {
             type = "External";
             crystalDiskData? crystalDiskData = null;
             if (crystalDiskDatas != null)
             {
-                foreach (crystalDiskData _crystalDiskData in crystalDiskDatas)
+                foreach (var _crystalDiskData in crystalDiskDatas)
                 {
                     if (_crystalDiskData.info["model"] == hardware.Name)
                     {
@@ -50,7 +50,7 @@ namespace Zal.Constants.Models
                 }
             }
 
-            foreach (ISensor sensor in hardware.Sensors)
+            foreach (var sensor in hardware.Sensors)
             {
                 if (sensor.SensorType == SensorType.Temperature)
                 {
@@ -58,9 +58,8 @@ namespace Zal.Constants.Models
                     {
                         temperature = (ulong)sensor.Value;
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
-
                     }
                 }
                 else if (sensor.SensorType == SensorType.Throughput && sensor.Name == "Read Rate")
@@ -72,11 +71,9 @@ namespace Zal.Constants.Models
                         {
                             readRate = ulong.Parse(sensor.Value.ToString().Split('.')[0]);
                         }
-
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
-
                     }
 
                 }
@@ -86,9 +83,8 @@ namespace Zal.Constants.Models
                     {
                         writeRate = (ulong)sensor.Value;
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
-
                     }
                 }
             }
@@ -129,5 +125,5 @@ public class diskInfo
     public int diskNumber { get; set; }
     public long totalSize { get; set; }
     public ulong freeSpace { get; set; }
-    public List<partitionInfo> partitions { get; } = new List<partitionInfo>();
+    public List<partitionInfo> partitions { get; } = [];
 }

@@ -11,17 +11,17 @@ namespace Zal.Constants.Models
         public uint temperature;
         public uint load;
         public ulong power;
-        public Dictionary<string, dynamic> powers = new Dictionary<string, dynamic>();
-        public Dictionary<string, dynamic> loads = new Dictionary<string, dynamic>();
-        public Dictionary<string, dynamic> voltages = new Dictionary<string, dynamic>();
-        public Dictionary<string, dynamic> clocks = new Dictionary<string, dynamic>();
+        public Dictionary<string, dynamic> powers = [];
+        public Dictionary<string, dynamic> loads = [];
+        public Dictionary<string, dynamic> voltages = [];
+        public Dictionary<string, dynamic> clocks = [];
 
         public cpuData(IHardware hardware, cpuInfo? cpuInfo)
         {
             this.cpuInfo = cpuInfo;
             name = hardware.Name;
 
-            foreach (ISensor sensor in hardware.Sensors)
+            foreach (var sensor in hardware.Sensors)
             {
                 if (sensor.SensorType == SensorType.Power)
                 {
@@ -60,15 +60,9 @@ namespace Zal.Constants.Models
                 else
                 {
                     var foundSensor = hardware.Sensors.FirstOrDefault(s => s.SensorType == SensorType.Temperature && s.Name.Contains("(Tctl/Tdie)"));
-                    if (foundSensor == null)
-                    {
-                        foundSensor = hardware.Sensors.FirstOrDefault(s => s.SensorType == SensorType.Temperature && s.Name.Contains("Average"));
-                    }
+                    foundSensor ??= hardware.Sensors.FirstOrDefault(s => s.SensorType == SensorType.Temperature && s.Name.Contains("Average"));
 
-                    if (foundSensor == null)
-                    {
-                        foundSensor = hardware.Sensors.FirstOrDefault(s => s.SensorType == SensorType.Temperature && s.Name.Contains("Core #1"));
-                    }
+                    foundSensor ??= hardware.Sensors.FirstOrDefault(s => s.SensorType == SensorType.Temperature && s.Name.Contains("Core #1"));
 
                     if (foundSensor != null)
                     {

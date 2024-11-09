@@ -20,10 +20,10 @@ namespace Zal
         private const int WM_SYSCOMMAND = 0x0112;
         private const int SC_MINIMIZE = 0xf020;
         private Task pipeTask;
-        List<gpuData> gpuDatas = new List<gpuData>();
-        NotifyIcon ni;
+        private List<gpuData> gpuDatas = [];
+        private NotifyIcon ni;
         private const string PipeName = "ZalAppPipe";
-        bool launchedByStartup;
+        private bool launchedByStartup;
         public MainForm(bool launchedByStartup)
         {
 
@@ -31,7 +31,6 @@ namespace Zal
             InitializeComponent();
             Logger.ResetLog();
             pipeTask = StartPipeServer();
-
         }
 
         private Task StartPipeServer()
@@ -40,21 +39,21 @@ namespace Zal
              {
                  while (true)
                  {
-                     using (NamedPipeServerStream pipeServer = new NamedPipeServerStream(PipeName, PipeDirection.In))
+                     using (var pipeServer = new NamedPipeServerStream(PipeName, PipeDirection.In))
                      {
                          try
                          {
                              pipeServer.WaitForConnection(); // Wait for a client to connect
-                             using (StreamReader reader = new StreamReader(pipeServer))
+                             using (var reader = new StreamReader(pipeServer))
                              {
-                                 string command = reader.ReadLine();
+                                 var command = reader.ReadLine();
                                  if (command == "SHOW")
                                  {
                                      Invoke(new Action(() =>
                                      {
-                                         this.Show();
-                                         this.WindowState = FormWindowState.Normal;
-                                         this.Activate();
+                                         Show();
+                                         WindowState = FormWindowState.Normal;
+                                         Activate();
                                      }));
                                  }
                              }
@@ -70,9 +69,11 @@ namespace Zal
         }
         private void setupTrayMenu()
         {
-            ni = new NotifyIcon();
-            ni.Icon = System.Drawing.Icon.ExtractAssociatedIcon(Process.GetCurrentProcess().MainModule.FileName);
-            ni.Visible = true;
+            ni = new NotifyIcon
+            {
+                Icon = Icon.ExtractAssociatedIcon(Process.GetCurrentProcess().MainModule.FileName),
+                Visible = true
+            };
             var trayMenu = new ContextMenuStrip();
             trayMenu.Click +=
                 delegate (object sender, EventArgs args)
@@ -82,7 +83,7 @@ namespace Zal
                 };
             // Add items to the context menu
             trayMenu.Items.Add("Open", null, (sender, e) => Show());
-            trayMenu.Items.Add("Exit", null, (sender, e) => System.Windows.Forms.Application.Exit());
+            trayMenu.Items.Add("Exit", null, (sender, e) => Application.Exit());
             ni.ContextMenuStrip = trayMenu;
             ni.DoubleClick +=
                 delegate (object sender, EventArgs args)
@@ -94,7 +95,7 @@ namespace Zal
             if ((string?)LocalDatabase.Instance.readKey("startMinimized") == "1")
             {
                 if (launchedByStartup)
-                { this.Hide(); }
+                { Hide(); }
             }
         }
         private async void MainForm_Load(object sender, EventArgs e)
@@ -103,14 +104,14 @@ namespace Zal
 
             await FrontendGlobalClass.Initialize(socketConnectionStateChanged: (sender, state) =>
              {
-                 this.Invoke(new Action(() =>
+                 Invoke(new Action(() =>
                  {
                      mobileConnectionText.Text = state == Functions.Models.SocketConnectionState.Connected ? "Mobile connected" : "Mobile not connected";
                      mobileConnectionText.ForeColor = !(state == Functions.Models.SocketConnectionState.Connected) ? Color.FromKnownColor(KnownColor.IndianRed) : Color.FromKnownColor(KnownColor.ForestGreen);
                  }));
              }, computerDataReceived: (sender, data) =>
              {
-                 this.Invoke(new Action(() =>
+                 Invoke(new Action(() =>
                  {
                      gpuDatas = data.gpuData;
 
@@ -123,42 +124,43 @@ namespace Zal
 
         private void connectionSettingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ConnectionSettingsForm form2 = new ConnectionSettingsForm();
+            var form2 = new ConnectionSettingsForm();
             form2.Show();
         }
 
         private void configurationsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ConfigurationsForm form2 = new ConfigurationsForm(setupRunOnStartup, gpuDatas);
+            var form2 = new ConfigurationsForm(setupRunOnStartup, gpuDatas);
             form2.Show();
         }
         private async Task checkForUpdates()
         {
-            string latestVersion = new WebClient().DownloadString("https://zalapp.com/program-version");
-            var currentVersion = System.Windows.Forms.Application.ProductVersion;
+            var latestVersion = new WebClient().DownloadString("https://zalapp.com/program-version");
+            var currentVersion = Application.ProductVersion;
             if (latestVersion != currentVersion)
             {
-                var dialog = System.Windows.Forms.MessageBox.Show($"New update is available! do you want to update?\ncurrent version: {currentVersion}\nlatest version:{latestVersion}", "Zal", MessageBoxButtons.YesNo);
+                var dialog = MessageBox.Show($"New update is available! do you want to update?\ncurrent version: {currentVersion}\nlatest version:{latestVersion}", "Zal", MessageBoxButtons.YesNo);
                 if (dialog == DialogResult.Yes)
                 {
-                    using (WebClient webClient = new WebClient())
+                    using (var webClient = new WebClient())
                     {
                         try
                         {
-                            string fileName = Path.Combine(Path.GetTempPath(), "zal.msi");
+                            var fileName = Path.Combine(Path.GetTempPath(), "zal.msi");
                             webClient.DownloadFile("https://zalapp.com/zal.msi", fileName);
                             Console.WriteLine("File downloaded successfully.");
 
-                            Process p = new Process();
-                            ProcessStartInfo pi = new ProcessStartInfo();
-                            pi.UseShellExecute = true;
-                            pi.FileName = fileName;
+                            var p = new Process();
+                            var pi = new ProcessStartInfo {
+                                UseShellExecute = true,
+                                FileName = fileName,
+                            };
                             p.StartInfo = pi;
                             p.Start();
                         }
                         catch (Exception ex)
                         {
-                            System.Windows.Forms.MessageBox.Show("An error occurred updating Zal: " + ex.Message);
+                            MessageBox.Show("An error occurred updating Zal: " + ex.Message);
                         }
                     }
                 }
@@ -168,9 +170,9 @@ namespace Zal
         {
             var runOnStartup = (string?)LocalDatabase.Instance.readKey("runOnStartup") == "1";
             //replace false with saved settings
-            RegistryKey rk = Registry.CurrentUser.OpenSubKey
+            var rk = Registry.CurrentUser.OpenSubKey
                 ("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-            string executablePath = $"\"{Process.GetCurrentProcess().MainModule.FileName}\" --startup";
+            var executablePath = $"\"{Process.GetCurrentProcess().MainModule.FileName}\" --startup";
             if (runOnStartup)
                 rk.SetValue("Zal", executablePath);
             else
@@ -186,13 +188,13 @@ namespace Zal
         private async void copyProcessedBackendDataToolStripMenuItem_ClickAsync(object sender, EventArgs e)
         {
             var data = await FrontendGlobalClass.Instance.dataManager.getBackendData();
-            System.Windows.Forms.Clipboard.SetText(Newtonsoft.Json.JsonConvert.SerializeObject(data));
+            Clipboard.SetText(Newtonsoft.Json.JsonConvert.SerializeObject(data));
         }
 
         private void copyRawBackendDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var data = FrontendGlobalClass.Instance.backend.getEntireComputerData();
-            System.Windows.Forms.Clipboard.SetText(Newtonsoft.Json.JsonConvert.SerializeObject(data));
+            Clipboard.SetText(Newtonsoft.Json.JsonConvert.SerializeObject(data));
 
         }
 
@@ -210,7 +212,7 @@ namespace Zal
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            Process[] pname = Process.GetProcessesByName("server");
+            var pname = Process.GetProcessesByName("server");
             serverConnectionText.Text = pname.Length != 0 ? "Server running" : "Server not running";
             serverConnectionText.ForeColor = (pname.Length == 0) ? Color.FromKnownColor(KnownColor.IndianRed) : Color.FromKnownColor(KnownColor.ForestGreen);
 
@@ -228,7 +230,7 @@ namespace Zal
 
                 if (m.WParam.ToInt32() == SC_MINIMIZE)
                 {
-                    this.Hide();
+                    Hide();
                     m.Result = IntPtr.Zero;
                     return;
                 }

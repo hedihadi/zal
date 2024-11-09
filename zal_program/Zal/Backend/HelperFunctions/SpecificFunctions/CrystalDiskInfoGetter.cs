@@ -9,11 +9,11 @@ using ZalConsole.HelperFunctions;
 
 namespace Zal.HelperFunctions.SpecificFunctions
 {
-    class CrystaldiskInfoGetter
+    internal class CrystaldiskInfoGetter
     {
-        static public List<crystalDiskData>? getcrystalDiskData()
+        public static List<crystalDiskData>? getcrystalDiskData()
         {
-            if (IsAdminstratorChecker.IsAdministrator() == false)
+            if (!IsAdminstratorChecker.IsAdministrator())
             {
                 //dont run if it's not running as adminstrator, because crystaldiskInfo don't work without it
                 Logger.Log("didn't run crystaldiskInfo, program isn't running as adminstrator");
@@ -22,7 +22,7 @@ namespace Zal.HelperFunctions.SpecificFunctions
 
             var filePath = GlobalClass.Instance.extractZipFromResourcesAndGetFilepathWithinTheExtract("DiskInfo.zip", "diskInfo.exe");
 
-            ProcessStartInfo startInfo = new ProcessStartInfo
+            var startInfo = new ProcessStartInfo
             {
                 FileName = filePath,
                 RedirectStandardOutput = true,
@@ -38,31 +38,31 @@ namespace Zal.HelperFunctions.SpecificFunctions
             }
             catch (Exception ex)
             {
-                Logger.LogError($"error running crystaldiskInfo process", ex);
+                Logger.LogError("error running crystaldiskInfo process", ex);
             }
 
             try
             {
                 process.WaitForExit();
-                string resultPath = Path.Combine(Path.GetDirectoryName(filePath), "diskInfo.txt");
+                var resultPath = Path.Combine(Path.GetDirectoryName(filePath), "diskInfo.txt");
                 var diskInfos = parseCrystaldiskInfoOutput(resultPath);
                 process.Close();
                 return diskInfos;
             }
             catch (Exception ex)
             {
-                Logger.LogError($"error parsing crystaldiskInfo data", ex);
+                Logger.LogError("error parsing crystaldiskInfo data", ex);
             }
 
             return null;
         }
 
-        static private List<crystalDiskData> parseCrystaldiskInfoOutput(string filePath)
+        private static List<crystalDiskData> parseCrystaldiskInfoOutput(string filePath)
         {
-            List<crystalDiskData> hardwareList = new List<crystalDiskData>();
+            var hardwareList = new List<crystalDiskData>();
             crystalDiskData currentHardware = null;
 
-            foreach (string line in File.ReadLines(filePath))
+            foreach (var line in File.ReadLines(filePath))
             {
                 if (line.StartsWith(" (0"))
                 {
@@ -72,8 +72,10 @@ namespace Zal.HelperFunctions.SpecificFunctions
                         hardwareList.Add(currentHardware);
                     }
 
-                    currentHardware = new crystalDiskData();
-                    currentHardware.info = new Dictionary<string, dynamic>();
+                    currentHardware = new crystalDiskData
+                    {
+                        info = []
+                    };
                 }
                 else if (currentHardware != null)
                 {
@@ -82,9 +84,9 @@ namespace Zal.HelperFunctions.SpecificFunctions
                         currentHardware.info.Add("model", line.Split(':')[1].Trim());
                     }
 
-                    if (line.Contains("Buffer Size :") && line.Contains("Unknown") == false)
+                    if (line.Contains("Buffer Size :") && !line.Contains("Unknown"))
                     {
-                        string hoursString = Regex.Match(line.Split(':')[1].Trim(), @"\d+").Value;
+                        var hoursString = Regex.Match(line.Split(':')[1].Trim(), @"\d+").Value;
                         if (!string.IsNullOrEmpty(hoursString))
                         {
                             currentHardware.info.Add("bufferSize", int.Parse(hoursString));
@@ -93,7 +95,7 @@ namespace Zal.HelperFunctions.SpecificFunctions
 
                     if (line.Contains("Transfer Mode :"))
                     {
-                        string text = line.Split(':')[1];
+                        var text = line.Split(':')[1];
 
                         currentHardware.info.Add("transferMode", text.Split('|'));
                     }
@@ -110,7 +112,7 @@ namespace Zal.HelperFunctions.SpecificFunctions
 
                     if (line.Contains("Power On Hours :"))
                     {
-                        string hoursString = Regex.Match(line.Split(':')[1].Trim(), @"\d+").Value;
+                        var hoursString = Regex.Match(line.Split(':')[1].Trim(), @"\d+").Value;
                         if (!string.IsNullOrEmpty(hoursString))
                         {
                             currentHardware.info.Add("powerOnHours", int.Parse(hoursString));
@@ -119,7 +121,7 @@ namespace Zal.HelperFunctions.SpecificFunctions
 
                     if (line.Contains("Drive Letter :"))
                     {
-                        List<string> driveLetters = ParseDriveLettersFromString(line);
+                        var driveLetters = ParseDriveLettersFromString(line);
                         if (driveLetters.Count != 0)
                         {
                             currentHardware.info.Add("driveLetters", driveLetters);
@@ -128,7 +130,7 @@ namespace Zal.HelperFunctions.SpecificFunctions
 
                     if (line.Contains("Power On Count :"))
                     {
-                        string hoursString = Regex.Match(line.Split(':')[1].Trim(), @"\d+").Value;
+                        var hoursString = Regex.Match(line.Split(':')[1].Trim(), @"\d+").Value;
                         if (!string.IsNullOrEmpty(hoursString))
                         {
                             currentHardware.info.Add("powerOnCount", int.Parse(hoursString));
@@ -137,14 +139,14 @@ namespace Zal.HelperFunctions.SpecificFunctions
 
                     if (line.Contains("Health Status :"))
                     {
-                        string hoursString = Regex.Match(line.Split(':')[1].Trim(), @"\d+").Value;
+                        var hoursString = Regex.Match(line.Split(':')[1].Trim(), @"\d+").Value;
                         if (!string.IsNullOrEmpty(hoursString))
                         {
                             currentHardware.info.Add("healthPercentage", int.Parse(hoursString));
                         }
 
-                        Regex regex = new Regex("[a-zA-Z]+");
-                        Match match = regex.Match(line.Split(':')[1].Trim());
+                        var regex = new Regex("[a-zA-Z]+");
+                        var match = regex.Match(line.Split(':')[1].Trim());
                         if (match.Success)
                         {
                             currentHardware.info.Add("healthText", match.Value);
@@ -159,12 +161,12 @@ namespace Zal.HelperFunctions.SpecificFunctions
                     ///////////////////
                     else if ((line.Contains("ID Cur Wor Thr RawValues(6) Attribute Name")))
                     {
-                        currentHardware.smartAttributes = new List<smartAttribute>();
+                        currentHardware.smartAttributes = [];
                         continue; // Skip header line
                     }
                     else if (line.Contains("ID RawValues(6) Attribute Name"))
                     {
-                        currentHardware.smartAttributes = new List<smartAttribute>();
+                        currentHardware.smartAttributes = [];
                         currentHardware.isNvme = true;
                         continue; // Skip header line
                     }
@@ -172,9 +174,9 @@ namespace Zal.HelperFunctions.SpecificFunctions
                     {
                         continue;
                     }
-                    else if (currentHardware.smartAttributes != null && currentHardware.isNvme == false)
+                    else if (currentHardware.smartAttributes != null && !currentHardware.isNvme)
                     {
-                        string[] parts = line.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                        var parts = line.Split([' '], StringSplitOptions.RemoveEmptyEntries);
                         var attributeName = string.Join(" ", parts, 5, parts.Length - 5);
                         if (attributeName.Contains("Temperature"))
                         {
@@ -191,7 +193,7 @@ namespace Zal.HelperFunctions.SpecificFunctions
                             Console.WriteLine(c.Message);
                         }
 
-                        smartAttribute smartAttribute = new smartAttribute
+                        var smartAttribute = new smartAttribute
                         {
                             id = parts[0],
                             currentValue = int.Parse(parts[1].Replace("_", "")),
@@ -202,9 +204,9 @@ namespace Zal.HelperFunctions.SpecificFunctions
                         };
                         currentHardware.smartAttributes.Add(smartAttribute);
                     }
-                    else if (currentHardware.smartAttributes != null && currentHardware.isNvme == true)
+                    else if (currentHardware.smartAttributes != null && currentHardware.isNvme)
                     {
-                        string[] parts = line.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                        var parts = line.Split([' '], StringSplitOptions.RemoveEmptyEntries);
                         var attributeName = string.Join(" ", parts, 2, parts.Length - 2);
                         if (attributeName.Contains("Temperature"))
                         {
@@ -221,7 +223,7 @@ namespace Zal.HelperFunctions.SpecificFunctions
                             Console.WriteLine(c.Message);
                         }
 
-                        smartAttribute smartAttribute = new smartAttribute
+                        var smartAttribute = new smartAttribute
                         {
                             id = parts[0],
                             rawValue = rawValue,
@@ -244,13 +246,13 @@ namespace Zal.HelperFunctions.SpecificFunctions
             return hardwareList;
         }
 
-        static List<string> ParseDriveLettersFromString(string input)
+        private static List<string> ParseDriveLettersFromString(string input)
         {
-            List<string> driveLetters = new List<string>();
+            var driveLetters = new List<string>();
 
             // Use a regular expression to match drive letters
-            Regex regex = new Regex(@"[A-Za-z]:");
-            MatchCollection matches = regex.Matches(input);
+            var regex = new Regex(@"[A-Za-z]:");
+            var matches = regex.Matches(input);
 
             foreach (Match match in matches)
             {

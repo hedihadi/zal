@@ -15,7 +15,7 @@ namespace ZalConsole.HelperFunctions
         private ManagementObjectCollection? win32DiskDrives;
         private ManagementObjectCollection? win32DiskPartitions;
         private ManagementObjectCollection? win32DiskPartitionsForFreeDiskSpace;
-        public ProcessesGetter processesGetter = new ProcessesGetter();
+        public ProcessesGetter processesGetter = new();
         private static GlobalClass instance;
         private List<ProcessInfo>? processInfos;
 
@@ -31,7 +31,7 @@ namespace ZalConsole.HelperFunctions
             var filePath = Path.Combine(directory, filename);
             try
             {
-                using (StreamWriter writer = new StreamWriter(filePath))
+                using (var writer = new StreamWriter(filePath))
                 {
                     writer.Write(data);
                 }
@@ -61,7 +61,7 @@ namespace ZalConsole.HelperFunctions
                     File.Create(filePath).Close(); // Close the file stream immediately after creating it
                 }
 
-                using (StreamReader reader = new StreamReader(filePath))
+                using (var reader = new StreamReader(filePath))
                 {
                     var data = await reader.ReadToEndAsync();
                     return data;
@@ -72,7 +72,7 @@ namespace ZalConsole.HelperFunctions
                 // File not found
                 return null;
             }
-            catch (IOException c)
+            catch (IOException)
             {
                 // Error reading file, try to delete the file
                 try
@@ -102,10 +102,7 @@ namespace ZalConsole.HelperFunctions
         {
             get
             {
-                if (instance == null)
-                {
-                    instance = new GlobalClass();
-                }
+                instance ??= new GlobalClass();
 
                 return instance;
             }
@@ -124,7 +121,7 @@ namespace ZalConsole.HelperFunctions
             {
                 System.IO.Compression.ZipFile.ExtractToDirectory(zipFilepath, zipFileNameWithoutDotZip);
             }
-            catch (IOException c)
+            catch (IOException)
             {
 
             }
@@ -141,7 +138,7 @@ namespace ZalConsole.HelperFunctions
         {
             var filePath = extractZipFromResourcesAndGetFilepathWithinTheExtract("get_process_icon.zip", "get_process_icon.exe");
 
-            Process process = new Process();
+            var process = new Process();
             process.StartInfo.FileName = filePath;
             process.StartInfo.Arguments = $"\"{fileName}\"";
             process.StartInfo.UseShellExecute = false;
@@ -150,7 +147,7 @@ namespace ZalConsole.HelperFunctions
             process.StartInfo.CreateNoWindow = true;
             process.Start();
             //* Read the output (or the error)
-            string output = process.StandardOutput.ReadToEnd();
+            var output = process.StandardOutput.ReadToEnd();
             process.WaitForExit();
             output = output.Replace("\r\n", "");
             return output;
@@ -160,7 +157,7 @@ namespace ZalConsole.HelperFunctions
         {
             if (win32DiskDrives == null)
             {
-                ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_DiskDrive");
+                var searcher = new ManagementObjectSearcher("SELECT * FROM Win32_DiskDrive");
                 win32DiskDrives = searcher.Get();
                 Task.Run(async () =>
                 {
@@ -178,13 +175,13 @@ namespace ZalConsole.HelperFunctions
         {
             if (processInfos == null)
             {
-                string jsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources\\Processes.json");
+                var jsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources\\Processes.json");
 
                 // Check if the file exists
                 if (File.Exists(jsonFilePath))
                 {
                     // Read the contents of the JSON file
-                    string jsonContent = File.ReadAllText(jsonFilePath);
+                    var jsonContent = File.ReadAllText(jsonFilePath);
                     processInfos = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ProcessInfo>>(jsonContent);
                 }
             }
@@ -196,7 +193,7 @@ namespace ZalConsole.HelperFunctions
         {
             if (win32DiskPartitions == null)
             {
-                ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_DiskPartition");
+                var searcher = new ManagementObjectSearcher("SELECT * FROM Win32_DiskPartition");
                 win32DiskPartitions = searcher.Get();
                 Task.Run(async () =>
                 {
@@ -206,11 +203,11 @@ namespace ZalConsole.HelperFunctions
             }
 
             // Filter the partitions based on the specified disk number
-            List<ManagementObject> filteredPartitions = new List<ManagementObject>();
+            var filteredPartitions = new List<ManagementObject>();
             foreach (ManagementObject partition in win32DiskPartitions)
             {
                 // Adjust the property name based on the actual property for the disk number
-                int currentDiskNumber = Convert.ToInt32(partition["DiskIndex"]);
+                var currentDiskNumber = Convert.ToInt32(partition["DiskIndex"]);
 
                 if (currentDiskNumber == diskNumber)
                 {
@@ -225,8 +222,8 @@ namespace ZalConsole.HelperFunctions
         {
             if (win32DiskPartitionsForFreeDiskSpace == null)
             {
-                ManagementScope scope = new ManagementScope(@"\\.\root\cimv2");
-                ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_DiskDrive");
+                var scope = new ManagementScope(@"\\.\root\cimv2");
+                var searcher = new ManagementObjectSearcher("SELECT * FROM Win32_DiskDrive");
                 scope.Connect();
                 searcher.Scope = scope;
                 win32DiskPartitionsForFreeDiskSpace = searcher.Get();

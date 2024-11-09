@@ -4,7 +4,7 @@ using Zal.Constants.Models;
 
 namespace Zal.HelperFunctions.SpecificcomputerDataFunctions
 {
-    class cpuInfoGetter
+    internal class cpuInfoGetter
     {
         public static cpuInfo getcpuInfo()
         {
@@ -14,15 +14,16 @@ namespace Zal.HelperFunctions.SpecificcomputerDataFunctions
                                     .Get()
                                     .Cast<ManagementObject>()
                                     .First();
-            cpuInfo cpuInfo = new cpuInfo();
-            cpuInfo.socket = (string)cpu["SocketDesignation"];
-            cpuInfo.name = (string)cpu["Name"];
-            cpuInfo.speed = (uint)cpu["MaxClockSpeed"];
-            cpuInfo.busSpeed = (uint)cpu["ExtClock"];
-            cpuInfo.l2Cache = (uint)cpu["L2CacheSize"] * (ulong)1024;
-            cpuInfo.l3Cache = (uint)cpu["L3CacheSize"] * (ulong)1024;
-            cpuInfo.cores = (uint)cpu["NumberOfCores"];
-            cpuInfo.threads = (uint)cpu["NumberOfLogicalProcessors"];
+            var cpuInfo = new cpuInfo {
+                socket = (string)cpu["SocketDesignation"],
+                name = (string)cpu["Name"],
+                speed = (uint)cpu["MaxClockSpeed"],
+                busSpeed = (uint)cpu["ExtClock"],
+                l2Cache = (uint)cpu["L2CacheSize"] * (ulong)1024,
+                l3Cache = (uint)cpu["L3CacheSize"] * (ulong)1024,
+                cores = (uint)cpu["NumberOfCores"],
+                threads = (uint)cpu["NumberOfLogicalProcessors"],
+            };
 
             cpuInfo.name =
                cpuInfo.name

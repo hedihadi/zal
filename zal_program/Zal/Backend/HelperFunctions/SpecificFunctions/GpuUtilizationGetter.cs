@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Management.Automation;
@@ -10,20 +9,20 @@ using Zal.HelperFunctions.SpecificFunctions;
 
 namespace ZalConsole.HelperFunctions.SpecificFunctions
 {
-    class GpuUtilizationGetter
+    internal class GpuUtilizationGetter
     {
         //this function is based on this https://github.com/GameTechDev/PresentMon/issues/189
         //and some modifications to make the data to be parsed easier from c# side.
         public static Dictionary<string, Dictionary<string, dynamic>> getProcessesGpuUsage(bool skipBlackListedProcesses = true)
         {
-            Dictionary<string, Dictionary<string, dynamic>> result = new Dictionary<string, Dictionary<string, dynamic>>();
+            var result = new Dictionary<string, Dictionary<string, dynamic>>();
             var rawData = getRawDataFromPowershell();
             var processInfos = GlobalClass.Instance.getProcessInfos();
             foreach (var process in rawData)
             {
-                Dictionary<string, dynamic> data = new Dictionary<string, dynamic>();
+                var data = new Dictionary<string, dynamic>();
                 var splittedData = process.Split(',');
-                int pid = int.Parse(splittedData[0].Split('_')[1]);
+                var pid = int.Parse(splittedData[0].Split('_')[1]);
 
                 double usage = 1;
                 try
@@ -65,7 +64,7 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
                 {
                     if (skipBlackListedProcesses)
                     {
-                        if (foundProcessInfo.isBlacklisted == true) continue;
+                        if (foundProcessInfo.isBlacklisted) continue;
                     }
 
                     if (foundProcessInfo.displayName != null)
@@ -90,18 +89,18 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
 
         private static List<string> getRawDataFromPowershell()
         {
-            List<string> result = new List<string>();
-            using (PowerShell PowerShellInstance = PowerShell.Create())
+            var result = new List<string>();
+            using (var PowerShellInstance = PowerShell.Create())
             {
                 // Add the PowerShell script
-                string script = "$counter = Get-Counter '\\GPU Engine(*engtype_3D)\\Utilization Percentage';" +
-                                "foreach ($sample in $counter.CounterSamples) {" +
-                                "$sample.InstanceName + ',' + $sample.CookedValue" +
-                                "}";
+                var script = "$counter = Get-Counter '\\GPU Engine(*engtype_3D)\\Utilization Percentage';" +
+                             "foreach ($sample in $counter.CounterSamples) {" +
+                             "$sample.InstanceName + ',' + $sample.CookedValue" +
+                             "}";
                 PowerShellInstance.AddScript(script);
 
                 // Invoke execution on the PowerShell object
-                Collection<PSObject> PSOutput = PowerShellInstance.Invoke();
+                var PSOutput = PowerShellInstance.Invoke();
 
                 // Check for errors
                 if (PowerShellInstance.Streams.Error.Count > 0)
@@ -112,7 +111,7 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
                 else
                 {
                     // Output the results
-                    foreach (PSObject outputItem in PSOutput)
+                    foreach (var outputItem in PSOutput)
                     {
                         result.Add(outputItem.ToString());
                     }

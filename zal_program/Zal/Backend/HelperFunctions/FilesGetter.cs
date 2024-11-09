@@ -8,8 +8,9 @@ namespace ZalConsole.HelperFunctions
     public class FilesGetter
     {
         ///used to send file to mobile, this can be used to stop sending the file.
-        readonly CancellationTokenSource cts;
-        readonly int chunkSize = 153600;
+        private readonly CancellationTokenSource cts;
+
+        private readonly int chunkSize = 153600;
         // SocketIOClient.SocketIO client;
         //var client;
         // public FilesGetter(SocketIOClient.SocketIO client) {
@@ -35,7 +36,7 @@ namespace ZalConsole.HelperFunctions
         //         catch(UnauthorizedAccessException) {
         //             await client.EmitAsync("information_text", "Access to path is denied.");
         //             return;
-        //         } 
+        //         }
         //         var files = getDirectoryFiles(path);
         //         Dictionary<string, dynamic> data = new Dictionary<string, dynamic>();
         //         var allFiles = folders.Concat(files).ToList();
@@ -69,7 +70,7 @@ namespace ZalConsole.HelperFunctions
         //                 byteOffset += bytesRead;
         //                 // Simulate some delay to avoid overwhelming the network
         //                 await Task.Delay(150);
-        //                
+        //
         //             }
         //
         //         }
@@ -91,7 +92,7 @@ namespace ZalConsole.HelperFunctions
         //                 string base64Chunk = Convert.ToBase64String(buffer, 0, bytesRead);
         //                 sendData("file", new { ByteOffset = chunk, ChunkData = base64Chunk });
         //                 await Task.Delay(150);
-        //                 
+        //
         //             }
         //         }
         //         await Task.Delay(150);
@@ -155,7 +156,7 @@ namespace ZalConsole.HelperFunctions
         //         {
         //             await client.EmitAsync("information_text", $"error performing action: {ex.Message}");
         //         }
-        //         
+        //
         //     });
         // }
         //void ProcessChunk(byte[] chunk, int bytesRead)
@@ -177,10 +178,9 @@ namespace ZalConsole.HelperFunctions
         private List<FileData> getDirectoryFiles(string path)
         {
             var result = new List<FileData>();
-            DirectoryInfo info = new DirectoryInfo(path);
+            var info = new DirectoryInfo(path);
             if (info.Exists)
             {
-
                 var files = info.GetFiles();
                 foreach (var file in files)
                 {
@@ -188,27 +188,28 @@ namespace ZalConsole.HelperFunctions
                     {
                         continue;
                     }
-                    FileData filed = new FileData();
-                    filed.name = file.Name;
-                    filed.extension = file.Extension;
-                    filed.directory = file.DirectoryName;
-                    filed.fileType = "file";
-                    filed.size = file.Length;
-                    filed.dateModified = ConvertToUnixTimestamp(file.LastWriteTime);
-                    filed.dateCreated = ConvertToUnixTimestamp(file.CreationTime);
+                    var filed = new FileData {
+                        name = file.Name,
+                        extension = file.Extension,
+                        directory = file.DirectoryName,
+                        fileType = "file",
+                        size = file.Length,
+                        dateModified = ConvertToUnixTimestamp(file.LastWriteTime),
+                        dateCreated = ConvertToUnixTimestamp(file.CreationTime),
+                    };
                     result.Add(filed);
 
                 }
             }
             return result;
         }
+
         private List<FileData> getDirectoryFolders(string path)
         {
             var result = new List<FileData>();
-            DirectoryInfo info = new DirectoryInfo(path);
+            var info = new DirectoryInfo(path);
             if (info.Exists)
             {
-
                 var directories = info.GetDirectories();
                 foreach (var directory in directories)
                 {
@@ -216,35 +217,39 @@ namespace ZalConsole.HelperFunctions
                     {
                         continue;
                     }
-                    FileData folder = new FileData();
-                    folder.directory = path;
-                    folder.name = directory.Name;
-                    folder.fileType = "folder";
-                    folder.dateCreated = ConvertToUnixTimestamp(directory.CreationTime);
-                    folder.dateModified = ConvertToUnixTimestamp(directory.LastWriteTime);
+                    var folder = new FileData {
+                        directory = path,
+                        name = directory.Name,
+                        fileType = "folder",
+                        dateCreated = ConvertToUnixTimestamp(directory.CreationTime),
+                        dateModified = ConvertToUnixTimestamp(directory.LastWriteTime),
+                    };
                     result.Add(folder);
 
                 }
             }
             return result;
         }
+
         public static long ConvertToUnixTimestamp(DateTime date)
         {
-            DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-            TimeSpan diff = date.ToUniversalTime() - origin;
+            var origin = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+            var diff = date.ToUniversalTime() - origin;
             return ((long)diff.TotalMilliseconds);
         }
+
         private List<FileData> getDrives()
         {
-            DriveInfo[] drives = DriveInfo.GetDrives();
-            List<FileData> result = new List<FileData>();
+            var drives = DriveInfo.GetDrives();
+            var result = new List<FileData>();
             foreach (var drive in drives)
             {
-                FileData data = new FileData();
-                data.label = drive.VolumeLabel;
-                data.name = drive.Name;
-                data.fileType = "folder";
-                data.size = drive.TotalSize - drive.AvailableFreeSpace;
+                var data = new FileData {
+                    label = drive.VolumeLabel,
+                    name = drive.Name,
+                    fileType = "folder",
+                    size = drive.TotalSize - drive.AvailableFreeSpace,
+                };
                 result.Add(data);
 
             }

@@ -5,12 +5,12 @@ namespace Zal
 {
     public static class Logger
     {
-        static readonly object _locker = new object();
+        private static readonly object _locker = new();
 
         public static void LogError(string message, Exception ex, object dataToPrint = null)
         {
-            string stringifiedData = Newtonsoft.Json.JsonConvert.SerializeObject(dataToPrint);
-            string text = dataToPrint == null ? "" : stringifiedData;
+            var stringifiedData = Newtonsoft.Json.JsonConvert.SerializeObject(dataToPrint);
+            var text = dataToPrint == null ? "" : stringifiedData;
             Log($"{message},,error:{ex.Message},,stack:{ex.StackTrace},,{text}");
         }
 
@@ -22,7 +22,7 @@ namespace Zal
                 //Use this for daily log files : "Log" + DateTime.Now.ToString("yyyy-MM-dd") + ".txt";
                 WriteToLog(logMessage, logFilePath);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 //the irony, right? well I can't do much here
             }
@@ -47,11 +47,11 @@ namespace Zal
             }
         }
 
-        static void WriteToLog(string logMessage, string logFilePath)
+        private static void WriteToLog(string logMessage, string logFilePath)
         {
             lock (_locker)
             {
-                string formattedDate = DateTime.Now.ToString("HH:mm:ss");
+                var formattedDate = DateTime.Now.ToString("HH:mm:ss");
                 File.AppendAllText(logFilePath,
                     string.Format("DT: {1}{0}Msg: {2}{0}--------------------{0}",
                         Environment.NewLine, formattedDate, logMessage));

@@ -11,11 +11,12 @@ namespace Zal
     {
         private static Mutex mutex;
         private const string PipeName = "ZalAppPipe";
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             bool createdNew;
             mutex = new Mutex(true, "ZalAppMutex", out createdNew); // Unique mutex name
@@ -26,7 +27,7 @@ namespace Zal
                 SendShowSignal();
                 return; // Exit the new instance
             }
-            bool launchedByStartup = args.Contains("--startup");
+            var launchedByStartup = args.Contains("--startup");
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm(launchedByStartup));
@@ -35,10 +36,10 @@ namespace Zal
         {
             try
             {
-                using (NamedPipeClientStream pipeClient = new NamedPipeClientStream(".", PipeName, PipeDirection.Out))
+                using (var pipeClient = new NamedPipeClientStream(".", PipeName, PipeDirection.Out))
                 {
                     pipeClient.Connect(1000); // Attempt to connect to the server
-                    using (StreamWriter writer = new StreamWriter(pipeClient))
+                    using (var writer = new StreamWriter(pipeClient))
                     {
                         writer.WriteLine("SHOW");
                     }

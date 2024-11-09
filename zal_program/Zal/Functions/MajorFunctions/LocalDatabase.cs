@@ -8,19 +8,19 @@ namespace Zal
 {
     public class LocalDatabase
     {
-        readonly Dictionary<string, object> data = new Dictionary<string, object>();
+        private readonly Dictionary<string, object> data = [];
         private static LocalDatabase instance;
-        private readonly SemaphoreSlim _writeSemaphore = new SemaphoreSlim(1);
+        private readonly SemaphoreSlim _writeSemaphore = new(1);
 
         private LocalDatabase(Dictionary<string, object> initData)
         {
             data = initData;
         }
 
-        public async static Task Initialize()
+        public static async Task Initialize()
         {
             var text = await GlobalClass.Instance.readTextFromDocumentFolder("database.json");
-            if (text != null && text != "")
+            if (!string.IsNullOrEmpty(text))
             {
                 try
                 {
@@ -30,7 +30,6 @@ namespace Zal
                         instance = new LocalDatabase(parsedData);
                         return;
                     }
-
                 }
                 catch (Exception ex)
                 {
@@ -38,7 +37,7 @@ namespace Zal
                 }
             }
 
-            instance = new LocalDatabase(new Dictionary<string, object>());
+            instance = new LocalDatabase([]);
         }
 
         public  static  LocalDatabase Instance
@@ -56,9 +55,9 @@ namespace Zal
 
         public object readKey(string key)
         {
-            if (data.ContainsKey(key))
+            if (data.TryGetValue(key, out var key1))
             {
-                return data[key];
+                return key1;
             }
 
             return null;
@@ -79,10 +78,9 @@ namespace Zal
             }
         }
 
-        static private void WriteAsync(string text)
+        private static void WriteAsync(string text)
         {
             GlobalClass.Instance.saveTextToDocumentFolder("database.json", text);
-
         }
     }
 }

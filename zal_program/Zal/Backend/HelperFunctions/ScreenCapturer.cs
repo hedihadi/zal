@@ -17,10 +17,6 @@ namespace ZalConsole.HelperFunctions
         private bool _run, _init;
         public int Size { get; private set; }
 
-        public ScreenCapturer()
-        {
-        }
-
         public void Start(int frameRate = 30)
         {
             _run = true;
@@ -34,8 +30,8 @@ namespace ZalConsole.HelperFunctions
             var output1 = output.QueryInterface<Output1>();
 
             // Width/Height of desktop to capture
-            int width = output.Description.DesktopBounds.Right;
-            int height = output.Description.DesktopBounds.Bottom;
+            var width = output.Description.DesktopBounds.Right;
+            var height = output.Description.DesktopBounds.Bottom;
 
 
             // Create Staging texture CPU-accessible
@@ -82,7 +78,7 @@ namespace ZalConsole.HelperFunctions
                                 var mapDest = bitmap.LockBits(boundsRect, ImageLockMode.WriteOnly, bitmap.PixelFormat);
                                 var sourcePtr = mapSource.DataPointer;
                                 var destPtr = mapDest.Scan0;
-                                for (int y = 0; y < height; y++)
+                                for (var y = 0; y < height; y++)
                                 {
                                     // Copy a single line
                                     Utilities.CopyMemory(destPtr, sourcePtr, width * 4);

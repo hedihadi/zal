@@ -16,8 +16,8 @@ namespace Zal.Functions.MajorFunctions
     {
         public event EventHandler<SocketConnectionState> connectionStateChanged;
         public SocketIOClient.SocketIO socketio;
-        public bool isConnected = false;
-        public bool isMobileConnected = false;
+        public bool isConnected;
+        public bool isMobileConnected;
         private Process? serverProcess;
         public LocalSocket(
             EventHandler<SocketConnectionState> stateChanged
@@ -54,9 +54,10 @@ namespace Zal.Functions.MajorFunctions
                     pcName = "Default Computer";
                 }
             }
+
             pcName = string.Concat(pcName.Where(char.IsLetterOrDigit));
             var filePath = GlobalClass.Instance.getFilepathFromResources("server.exe");
-            ProcessStartInfo startInfo = new ProcessStartInfo
+            var startInfo = new ProcessStartInfo
             {
                 FileName = filePath,
                 RedirectStandardOutput = true,
@@ -64,11 +65,14 @@ namespace Zal.Functions.MajorFunctions
                 CreateNoWindow = true,
                 Arguments = $"{port} \"{pcName}\"",
             };
-            serverProcess = new Process { StartInfo = startInfo };
-            serverProcess.EnableRaisingEvents = true; // Enables the Exited event to be raised
+            serverProcess = new Process
+            {
+                StartInfo = startInfo,
+                EnableRaisingEvents = true // Enables the Exited event to be raised
+            };
             serverProcess.Exited += (sender, args) =>
             {
-                System.Diagnostics.Debug.WriteLine(args);
+                Debug.WriteLine(args);
             };
             try
             {
@@ -77,11 +81,10 @@ namespace Zal.Functions.MajorFunctions
             }
             catch (Exception ex)
             {
-                Logger.LogError($"error running server process", ex);
+                Logger.LogError("error running server process", ex);
             }
 
-
-            var ip = Zal.Backend.HelperFunctions.SpecificFunctions.IpGetter.getIp();
+            var ip = Backend.HelperFunctions.SpecificFunctions.IpGetter.getIp();
             socketio = new SocketIOClient.SocketIO($"http://{ip}:{port}",
                 new SocketIOOptions
                 {
@@ -95,7 +98,7 @@ namespace Zal.Functions.MajorFunctions
             socketio.On("room_clients", response =>
             {
 
-                int parsedData = response.GetValue<int>();
+                var parsedData = response.GetValue<int>();
                 Logger.Log($"local socketio room_clients {parsedData}");
                 // if the data is 1, that means w'ere the only one connected to this server. if it's more than 1, it means a mobile is connected to the server.
                 isMobileConnected = parsedData > 1;
@@ -106,7 +109,7 @@ namespace Zal.Functions.MajorFunctions
             {
 
 
-                int parsedData = response.GetValue<int>();
+                var parsedData = response.GetValue<int>();
                 Logger.Log($"local socketio room_clients {parsedData}");
                 // if the data is 1, that means w'ere the only one connected to this server. if it's more than 1, it means a mobile is connected to the server.
                 isMobileConnected = parsedData > 1;
@@ -128,7 +131,7 @@ namespace Zal.Functions.MajorFunctions
 
             socketio.On("start_fps", response =>
             {
-                int data = int.Parse(response.GetValue<string>());
+                var data = int.Parse(response.GetValue<string>());
                 FrontendGlobalClass.Instance.backend?.startFps(data, FrontendGlobalClass.Instance.shouldLogFpsData);
                 FrontendGlobalClass.Instance.backend.fpsDataReceived += (sender, e) =>
                 {
@@ -144,7 +147,7 @@ namespace Zal.Functions.MajorFunctions
 
             socketio.On("restart_admin", response =>
             {
-                string selfPath = Process.GetCurrentProcess().MainModule.FileName;
+                var selfPath = Process.GetCurrentProcess().MainModule.FileName;
                 var proc = new Process
                 {
                     StartInfo =
@@ -167,13 +170,13 @@ namespace Zal.Functions.MajorFunctions
 
             socketio.On("change_primary_network", async response =>
             {
-                string parsedData = response.GetValue<string>();
+                var parsedData = response.GetValue<string>();
                 await LocalDatabase.Instance.writeKey("primaryNetwork", parsedData);
             });
 
             socketio.On("launch_app", response =>
             {
-                string parsedData = response.GetValue<string>();
+                var parsedData = response.GetValue<string>();
                 var processpath = ProcesspathGetter.load(parsedData);
                 if (processpath != null)
                 {
@@ -188,7 +191,7 @@ namespace Zal.Functions.MajorFunctions
 
             socketio.On("get_process_icon", async response =>
             {
-                string parsedData = response.GetValue<string>();
+                var parsedData = response.GetValue<string>();
                 var processpath = ProcesspathGetter.load(parsedData);
                 if (processpath != null)
                 {
@@ -199,7 +202,7 @@ namespace Zal.Functions.MajorFunctions
 
             socketio.On("kill_process", response =>
             {
-                string parsedData = response.GetValue<string>();
+                var parsedData = response.GetValue<string>();
                 var pids = JsonConvert.DeserializeObject<List<int>>(parsedData);
                 foreach (var pid in pids)
                 {
@@ -209,11 +212,11 @@ namespace Zal.Functions.MajorFunctions
                     }
                     catch (Exception ex)
                     {
-                        sendMessage($"information_text", $"failed to kill a process,{ex.Message}");
+                        sendMessage("information_text", $"failed to kill a process,{ex.Message}");
                     }
                 }
 
-                sendMessage("information_text", $"Process killed!");
+                sendMessage("information_text", "Process killed!");
             });
 
             socketio.OnConnected += (sender, args) =>
@@ -243,7 +246,7 @@ namespace Zal.Functions.MajorFunctions
             {
                 socketio.ConnectAsync();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 connectToServer();
             }

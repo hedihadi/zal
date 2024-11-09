@@ -12,19 +12,18 @@ namespace Zal.HelperFunctions
 {
     public class computerDataGetter
     {
-
         private readonly cpuInfo? cpuInfo;
         private readonly List<crystalDiskData>? crystalDiskDatas;
         private readonly List<ramPieceData>? ramPiecesData;
         //this variable holds the network speed that the user has chosen as primary.
-        private readonly networkSpeed primarynetworkSpeed = new networkSpeed(download: 0, upload: 0);
+        private readonly networkSpeed primarynetworkSpeed = new(download: 0, upload: 0);
 
-        private readonly NetworkSpeedGetter networkSpeedGetter = new NetworkSpeedGetter();
+        private readonly NetworkSpeedGetter networkSpeedGetter = new();
         //disabled fps feature because it's buggy
         //public fpsDataGetter fpsDataGetter;
         //this variable holds the processes and how much % gpu they use. we use this data to determine which process is a game. and get the fps data from it.
-        private readonly Dictionary<int, double> processesGpuUsage = new Dictionary<int, double>();
-        private readonly Computer computer = new Computer
+        private readonly Dictionary<int, double> processesGpuUsage = [];
+        private readonly Computer computer = new()
         {
             IsCpuEnabled = true,
             IsGpuEnabled = true,
@@ -45,7 +44,7 @@ namespace Zal.HelperFunctions
                     computer.Open();
                     break;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     attempts++;
                 }
@@ -84,18 +83,21 @@ namespace Zal.HelperFunctions
         }
         public string getEntireComputerData()
         {
-            computerData computerData = new computerData();
+            var computerData = new computerData();
             computer.Accept(new UpdateVisitor());
-            Dictionary<string, object> result = new Dictionary<string, object>();
-            foreach (IHardware hardware in computer.Hardware)
+            var result = new Dictionary<string, object>();
+            foreach (var hardware in computer.Hardware)
             {
-                Dictionary<string, object> data = new Dictionary<string, object>();
-                data["type"] = hardware.HardwareType.ToString();
+                var data = new Dictionary<string, object>
+                {
+                    ["type"] = hardware.HardwareType.ToString()
+                };
                 foreach (var sensor in hardware.Sensors)
                 {
-                    Dictionary<string, object> sensorData = new Dictionary<string, object>();
-                    sensorData["type"] = sensor.SensorType.ToString();
-                    sensorData["value"] = sensor.Value.ToString();
+                    var sensorData = new Dictionary<string, object> {
+                        ["type"] = sensor.SensorType.ToString(),
+                        ["value"] = sensor.Value.ToString(),
+                    };
                     data[sensor.Name] = sensorData;
                 }
 
@@ -106,7 +108,7 @@ namespace Zal.HelperFunctions
         }
         public async Task<computerData> getcomputerDataAsync()
         {
-            computerData computerData = new computerData();
+            var computerData = new computerData();
             computer.Accept(new UpdateVisitor());
             GlobalClass.Instance.processesGetter.update();
             computerData.isAdminstrator = IsAdminstratorChecker.IsAdministrator();
@@ -115,7 +117,7 @@ namespace Zal.HelperFunctions
             {
                 Logger.Log("warning getting computer data, computerHardware count is 0");
             }
-            foreach (IHardware hardware in computer.Hardware)
+            foreach (var hardware in computer.Hardware)
             {
                 //Console.WriteLine($"name:{hardware.Name},type:{hardware.HardwareType}");
                 var gpuTypes = new HardwareType[] { HardwareType.GpuNvidia, HardwareType.GpuIntel, HardwareType.GpuAmd };
@@ -182,7 +184,7 @@ namespace Zal.HelperFunctions
             }
             try
             {
-                List<monitorData>? monitorsData = monitorDataGetter.getmonitorData();
+                var monitorsData = monitorDataGetter.getmonitorData();
                 computerData.monitorsData = monitorsData;
             }
             catch (Exception ex)
@@ -191,7 +193,7 @@ namespace Zal.HelperFunctions
             }
             try
             {
-                batteryData? batteryData = batteryDataGetter.getbatteryData();
+                var batteryData = batteryDataGetter.getbatteryData();
                 computerData.batteryData = batteryData;
             }
             catch (Exception ex)
@@ -227,7 +229,7 @@ namespace Zal.HelperFunctions
     }
 }
 
-class UpdateVisitor : IVisitor
+internal class UpdateVisitor : IVisitor
 {
     public void VisitComputer(IComputer computer)
     {
@@ -250,7 +252,7 @@ class UpdateVisitor : IVisitor
             }
         }
 
-        foreach (IHardware subHardware in hardware.SubHardware) subHardware.Accept(this);
+        foreach (var subHardware in hardware.SubHardware) subHardware.Accept(this);
     }
 
     public void VisitSensor(ISensor sensor)

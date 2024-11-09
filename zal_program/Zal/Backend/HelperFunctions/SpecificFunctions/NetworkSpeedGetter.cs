@@ -9,7 +9,7 @@ using Zal.Constants.Models;
 
 namespace ZalConsole.HelperFunctions.SpecificFunctions
 {
-    class NetworkSpeedGetter
+    internal class NetworkSpeedGetter
     {
         public networkSpeed primaryNetworkSpeed;
         private readonly Timer networkInterfaceTimer;
@@ -18,7 +18,7 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
 
         public NetworkSpeedGetter()
         {
-            networkSpeed s = new networkSpeed(0, 0);
+            var s = new networkSpeed(0, 0);
             primaryNetworkSpeed = s;
 
             //run code that gets networkInterfaces every 5 seconds
@@ -34,7 +34,7 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
             {
                 while (true)
                 {
-                    string? primaryNetwork = (string?)LocalDatabase.Instance.readKey("primaryNetwork");
+                    var primaryNetwork = (string?)LocalDatabase.Instance.readKey("primaryNetwork");
                     getPrimaryNetworkSpeedAsync(primaryNetwork);
                 }
             });
@@ -44,10 +44,7 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
         {
 
             //var nics = networkInterfaces();
-            if (networkInterfaces == null)
-            {
-                networkInterfaces = NetworkInterface.GetAllNetworkInterfaces().ToList();
-            }
+            networkInterfaces ??= NetworkInterface.GetAllNetworkInterfaces().ToList();
 
             // Select desired NIC
             var a = primaryNetwork;
@@ -91,9 +88,9 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
                 if (i % 10 == 0)
                 {
                     // ~1 second
-                    var brSec = readsBr.Sum() / readsBs.Count();
-                    var bsSec = readsBs.Sum() / readsBs.Count();
-                    networkSpeed s = new networkSpeed((int)brSec, (int)bsSec);
+                    var brSec = readsBr.Sum() / readsBs.Count;
+                    var bsSec = readsBs.Sum() / readsBs.Count;
+                    var s = new networkSpeed((int)brSec, (int)bsSec);
                     primaryNetworkSpeed = s;
                 }
             }
@@ -103,23 +100,24 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
         {
             var primaryNetwork = (string?)LocalDatabase.Instance.readKey("primaryNetwork");
             if (!NetworkInterface.GetIsNetworkAvailable())
-                return new List<networkInterfaceData>();
+                return [];
 
-            NetworkInterface[] interfaces
+            var interfaces
                 = NetworkInterface.GetAllNetworkInterfaces();
-            List<networkInterfaceData> data = new List<networkInterfaceData>();
+            var data = new List<networkInterfaceData>();
 
-            foreach (NetworkInterface ni in interfaces)
+            foreach (var ni in interfaces)
             {
                 var stats = ni.GetIPv4Statistics();
-                networkInterfaceData info = new networkInterfaceData();
-                info.name = ni.Name;
-                info.description = ni.Description;
-                info.status = ni.OperationalStatus.ToString();
-                info.id = ni.Id;
-                info.bytesReceived = stats.BytesReceived;
-                info.bytesSent = stats.BytesSent;
-                info.isPrimary = primaryNetwork == ni.Name;
+                var info = new networkInterfaceData {
+                    name = ni.Name,
+                    description = ni.Description,
+                    status = ni.OperationalStatus.ToString(),
+                    id = ni.Id,
+                    bytesReceived = stats.BytesReceived,
+                    bytesSent = stats.BytesSent,
+                    isPrimary = primaryNetwork == ni.Name,
+                };
                 data.Add(info);
             }
 

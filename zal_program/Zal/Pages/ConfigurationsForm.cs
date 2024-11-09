@@ -6,8 +6,8 @@ namespace Zal.Pages
 {
     public partial class ConfigurationsForm : Form
     {
-        Func<System.Threading.Tasks.Task> setupRunOnStartup;
-        System.Collections.Generic.List<Constants.Models.gpuData> gpuData;
+        private Func<System.Threading.Tasks.Task> setupRunOnStartup;
+        private System.Collections.Generic.List<Constants.Models.gpuData> gpuData;
         public ConfigurationsForm(Func<System.Threading.Tasks.Task> setupRunOnStartup, System.Collections.Generic.List<Constants.Models.gpuData> gpuData)
         {
             this.gpuData = gpuData;
@@ -46,7 +46,7 @@ namespace Zal.Pages
                     else
                     {
                         //check if the primary gpu exists inside this data, this is a useful check in case of the user changed their gpu
-                        bool doesPrimaryGpuExist = false;
+                        var doesPrimaryGpuExist = false;
                         foreach (var gpu in gpuData)
                         {
                             if (gpu.name == primaryGpu.ToString())
@@ -57,7 +57,7 @@ namespace Zal.Pages
                             }
                         }
 
-                        if (doesPrimaryGpuExist == false)
+                        if (!doesPrimaryGpuExist)
                         {
                             Logger.Log($"primary gpu not found, setting this gpu as default:{gpuData[0].name}");
                             //reset primary gpu
@@ -76,7 +76,7 @@ namespace Zal.Pages
             await LocalDatabase.Instance.writeKey("runOnStartup", runOnStartupCheckbox.Checked ? "1" : "0");
             await LocalDatabase.Instance.writeKey("startMinimized", startMinimizedCheckbox.Checked ? "1" : "0");
             FrontendGlobalClass.Instance.localSocket.restartSocketio();
-            this.Hide();
+            Hide();
         }
 
         private async void gpusList_SelectedIndexChanged(object sender, EventArgs e)

@@ -36,7 +36,7 @@ namespace Zal.Pages
             LocalDatabase.Instance.writeKey("port", portTextBox.Text.Length == 0 ? null : portTextBox.Text);
             LocalDatabase.Instance.writeKey("pcName", pcNameTextBox.Text.Length == 0 ? null : pcNameTextBox.Text);
             FrontendGlobalClass.Instance.localSocket.restartSocketio();
-            this.Hide();
+            Hide();
         }
 
         private void pcNameTextBox_KeyPress(object sender, KeyPressEventArgs e)

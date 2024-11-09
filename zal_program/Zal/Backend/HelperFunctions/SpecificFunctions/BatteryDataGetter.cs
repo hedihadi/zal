@@ -3,19 +3,20 @@ using Zal.Constants.Models;
 
 namespace Zal.HelperFunctions.SpecificFunctions
 {
-    class batteryDataGetter
+    internal class batteryDataGetter
     {
         public static batteryData getbatteryData()
         {
-            PowerStatus p = SystemInformation.PowerStatus;
+            var p = SystemInformation.PowerStatus;
 
-            int life = (int)(p.BatteryLifePercent * 100);
+            var life = (int)(p.BatteryLifePercent * 100);
 
-            var data = new batteryData();
-            data.hasBattery = p.BatteryChargeStatus != BatteryChargeStatus.NoSystemBattery;
-            data.life = (uint)life;
-            data.isCharging = p.PowerLineStatus == PowerLineStatus.Online;
-            data.lifeRemaining = (uint)p.BatteryLifeRemaining;
+            var data = new batteryData {
+                hasBattery = p.BatteryChargeStatus != BatteryChargeStatus.NoSystemBattery,
+                life = (uint)life,
+                isCharging = p.PowerLineStatus == PowerLineStatus.Online,
+                lifeRemaining = (uint)p.BatteryLifeRemaining,
+            };
 
             return data;
         }

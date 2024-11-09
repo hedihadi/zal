@@ -3,14 +3,14 @@ using System.IO;
 
 namespace Zal.HelperFunctions.SpecificFunctions
 {
-    class ProcesspathGetter
+    internal class ProcesspathGetter
     {
         ///saves process path
         public static void save(string name, string processPath)
         {
             var directory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Zal", "programs_path");
             var folderPath = Directory.CreateDirectory(directory).FullName;
-            using (StreamWriter w = File.CreateText(Path.Combine(folderPath, name)))
+            using (var w = File.CreateText(Path.Combine(folderPath, name)))
             {
                 w.Write(processPath);
             }
