@@ -56,9 +56,9 @@ namespace Zal
 
         public object readKey(string key)
         {
-            if (data.ContainsKey(key))
+            if (data.TryGetValue(key, out var key1))
             {
-                return data[key];
+                return key1;
             }
 
             return null;
@@ -82,7 +82,6 @@ namespace Zal
         private static void WriteAsync(string text)
         {
             GlobalClass.Instance.saveTextToDocumentFolder("database.json", text);
-
         }
     }
 }
