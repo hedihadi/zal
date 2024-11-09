@@ -16,8 +16,8 @@ namespace Zal.Functions.MajorFunctions
     {
         public event EventHandler<SocketConnectionState> connectionStateChanged;
         public SocketIOClient.SocketIO socketio;
-        public bool isConnected = false;
-        public bool isMobileConnected = false;
+        public bool isConnected;
+        public bool isMobileConnected;
         private Process? serverProcess;
         public LocalSocket(
             EventHandler<SocketConnectionState> stateChanged

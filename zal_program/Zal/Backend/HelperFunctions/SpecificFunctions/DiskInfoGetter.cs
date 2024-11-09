@@ -36,10 +36,7 @@ namespace Zal.HelperFunctions.SpecificFunctions
                             partitionInfo.label = driveInfo.VolumeLabel;
                         }
                     }
-                    else
-                    {
 
-                    }
                     partitionInfo.size = Convert.ToInt64(partition["Size"]);
                     diskInfo.partitions.Add(partitionInfo);
                 }

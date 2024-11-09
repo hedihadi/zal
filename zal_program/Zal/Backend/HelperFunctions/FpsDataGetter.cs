@@ -11,12 +11,12 @@ namespace Zal.HelperFunctions
     {
         private Process? presentmonProcess;
         private readonly Task fpsTask;
-        private bool isDisposed = false;
+        private bool isDisposed;
         public event EventHandler<dynamic> sendFpsData;
         private readonly List<double> fpsDatas = [];
         private readonly int processId;
         private readonly Stopwatch stopwatch = new Stopwatch();
-        private bool shouldLog = false;
+        private bool shouldLog;
 
         public FpsDataGetter()
         {
@@ -40,8 +40,7 @@ namespace Zal.HelperFunctions
             var frac = realIndex - index;
             if (index + 1 < elements.Length)
                 return elements[index] * (1 - frac) + elements[index + 1] * frac;
-            else
-                return elements[index];
+            return elements[index];
         }
 
         public void disposeIt()
@@ -164,10 +163,8 @@ namespace Zal.HelperFunctions
 
                             continue;
                         }
-                        else
-                        {
-                            Logger.Log("msBetweenPresents not digits");
-                        }
+
+                        Logger.Log("msBetweenPresents not digits");
                     }
                     else
                     {

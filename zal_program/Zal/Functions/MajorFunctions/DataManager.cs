@@ -18,7 +18,7 @@ namespace Zal.Functions.MajorFunctions
     public class DataManager
     {
         //if this is true, the loop will run every 1 second. if false, the loop will run every 5 seconds.
-        private bool isMobileConnected = false;
+        private bool isMobileConnected;
         private readonly EventHandler<computerData> computerDataReceived;
         private readonly ChartsDataManager chartsDataManager = new ChartsDataManager();
         public DataManager(EventHandler<computerData> computerDataReceived)
@@ -166,11 +166,9 @@ internal class ChartsDataManager
         {
             return computerData.gpuData.First();
         }
-        else
-        {
-            Logger.Log("available gpu is 0, will return no gpu");
-            return null;
-        }
+
+        Logger.Log("available gpu is 0, will return no gpu");
+        return null;
     }
 
     private static List<object> addElementToList(List<object>? oldList, object element)
