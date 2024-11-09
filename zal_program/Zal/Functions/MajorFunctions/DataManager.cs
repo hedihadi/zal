@@ -90,7 +90,8 @@ namespace Zal.Functions.MajorFunctions
             var compressedData = CompressGzip(Newtonsoft.Json.JsonConvert.SerializeObject(data));
             FrontendGlobalClass.Instance.localSocket?.sendMessage("pc_data", compressedData);
         }
-        static string CompressGzip(string text)
+
+        private static string CompressGzip(string text)
         {
             byte[] enCodedJson = Encoding.UTF8.GetBytes(text);
 
@@ -109,7 +110,7 @@ namespace Zal.Functions.MajorFunctions
     }
 }
 
-class ChartsDataManager
+internal class ChartsDataManager
 {
     private readonly Dictionary<string, List<object>> data = new Dictionary<string, List<object>>();
 

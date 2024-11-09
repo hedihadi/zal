@@ -10,7 +10,7 @@ using Zal.HelperFunctions.SpecificFunctions;
 
 namespace ZalConsole.HelperFunctions.SpecificFunctions
 {
-    class GpuUtilizationGetter
+    internal class GpuUtilizationGetter
     {
         //this function is based on this https://github.com/GameTechDev/PresentMon/issues/189
         //and some modifications to make the data to be parsed easier from c# side.

@@ -3,7 +3,7 @@ using Zal.Constants.Models;
 
 namespace Zal.HelperFunctions.SpecificFunctions
 {
-    class batteryDataGetter
+    internal class batteryDataGetter
     {
         public static batteryData getbatteryData()
         {

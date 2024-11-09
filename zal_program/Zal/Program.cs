@@ -11,11 +11,12 @@ namespace Zal
     {
         private static Mutex mutex;
         private const string PipeName = "ZalAppPipe";
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             bool createdNew;
             mutex = new Mutex(true, "ZalAppMutex", out createdNew); // Unique mutex name

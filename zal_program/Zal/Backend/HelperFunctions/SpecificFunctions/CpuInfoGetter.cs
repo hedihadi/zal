@@ -4,7 +4,7 @@ using Zal.Constants.Models;
 
 namespace Zal.HelperFunctions.SpecificcomputerDataFunctions
 {
-    class cpuInfoGetter
+    internal class cpuInfoGetter
     {
         public static cpuInfo getcpuInfo()
         {

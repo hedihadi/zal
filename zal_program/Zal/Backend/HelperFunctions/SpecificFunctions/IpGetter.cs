@@ -2,7 +2,8 @@ using System.Net;
 using System.Net.Sockets;
 
 namespace Zal.Backend.HelperFunctions.SpecificFunctions;
-class IpGetter
+
+internal class IpGetter
 {
     public static string getIp()
     {

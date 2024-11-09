@@ -8,7 +8,7 @@ namespace Zal.HelperFunctions
 {
     public class ProcessesGetter
     {
-        readonly SocketIOClient.SocketIO client = new SocketIOClient.SocketIO($"http://localhost:6511/");
+        private readonly SocketIOClient.SocketIO client = new SocketIOClient.SocketIO($"http://localhost:6511/");
         private readonly Dictionary<string, TaskCompletionSource<string>> taskCompletionSources = new Dictionary<string, TaskCompletionSource<string>>();
         public Dictionary<string, object> data = new Dictionary<string, object>();
 

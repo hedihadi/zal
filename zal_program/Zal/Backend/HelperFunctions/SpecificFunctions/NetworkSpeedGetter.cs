@@ -9,7 +9,7 @@ using Zal.Constants.Models;
 
 namespace ZalConsole.HelperFunctions.SpecificFunctions
 {
-    class NetworkSpeedGetter
+    internal class NetworkSpeedGetter
     {
         public networkSpeed primaryNetworkSpeed;
         private readonly Timer networkInterfaceTimer;

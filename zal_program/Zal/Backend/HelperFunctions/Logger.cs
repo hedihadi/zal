@@ -5,7 +5,7 @@ namespace Zal
 {
     public static class Logger
     {
-        static readonly object _locker = new object();
+        private static readonly object _locker = new object();
 
         public static void LogError(string message, Exception ex, object dataToPrint = null)
         {
@@ -47,7 +47,7 @@ namespace Zal
             }
         }
 
-        static void WriteToLog(string logMessage, string logFilePath)
+        private static void WriteToLog(string logMessage, string logFilePath)
         {
             lock (_locker)
             {

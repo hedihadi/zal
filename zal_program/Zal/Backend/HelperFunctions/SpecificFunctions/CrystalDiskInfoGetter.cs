@@ -9,9 +9,9 @@ using ZalConsole.HelperFunctions;
 
 namespace Zal.HelperFunctions.SpecificFunctions
 {
-    class CrystaldiskInfoGetter
+    internal class CrystaldiskInfoGetter
     {
-        static public List<crystalDiskData>? getcrystalDiskData()
+        public static List<crystalDiskData>? getcrystalDiskData()
         {
             if (IsAdminstratorChecker.IsAdministrator() == false)
             {
@@ -57,7 +57,7 @@ namespace Zal.HelperFunctions.SpecificFunctions
             return null;
         }
 
-        static private List<crystalDiskData> parseCrystaldiskInfoOutput(string filePath)
+        private static List<crystalDiskData> parseCrystaldiskInfoOutput(string filePath)
         {
             List<crystalDiskData> hardwareList = new List<crystalDiskData>();
             crystalDiskData currentHardware = null;
@@ -244,7 +244,7 @@ namespace Zal.HelperFunctions.SpecificFunctions
             return hardwareList;
         }
 
-        static List<string> ParseDriveLettersFromString(string input)
+        private static List<string> ParseDriveLettersFromString(string input)
         {
             List<string> driveLetters = new List<string>();
 

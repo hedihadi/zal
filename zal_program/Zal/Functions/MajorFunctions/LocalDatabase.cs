@@ -8,7 +8,7 @@ namespace Zal
 {
     public class LocalDatabase
     {
-        readonly Dictionary<string, object> data = new Dictionary<string, object>();
+        private readonly Dictionary<string, object> data = new Dictionary<string, object>();
         private static LocalDatabase instance;
         private readonly SemaphoreSlim _writeSemaphore = new SemaphoreSlim(1);
 
@@ -17,7 +17,7 @@ namespace Zal
             data = initData;
         }
 
-        public async static Task Initialize()
+        public static async Task Initialize()
         {
             var text = await GlobalClass.Instance.readTextFromDocumentFolder("database.json");
             if (text != null && text != "")
@@ -79,7 +79,7 @@ namespace Zal
             }
         }
 
-        static private void WriteAsync(string text)
+        private static void WriteAsync(string text)
         {
             GlobalClass.Instance.saveTextToDocumentFolder("database.json", text);
 

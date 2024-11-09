@@ -4,7 +4,7 @@ using Zal.Constants.Models;
 
 namespace Zal.HelperFunctions.SpecificFunctions
 {
-     class monitorDataGetter
+    internal class monitorDataGetter
     {
         public static List<monitorData>? getmonitorData()
         {
