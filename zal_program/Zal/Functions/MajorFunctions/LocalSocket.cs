@@ -3,7 +3,6 @@ using SocketIOClient;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 using Zal.Functions.Models;
 using Zal.HelperFunctions.SpecificFunctions;
@@ -15,15 +14,18 @@ namespace Zal.Functions.MajorFunctions
     public class LocalSocket
     {
         public event EventHandler<SocketConnectionState> connectionStateChanged;
+        public event EventHandler<List<Dictionary<string, dynamic>>> roomClientsReceived;
+
         public SocketIOClient.SocketIO socketio;
         public bool isConnected;
         public bool isMobileConnected;
         private Process? serverProcess;
         public LocalSocket(
             EventHandler<SocketConnectionState> stateChanged
-            )
+, EventHandler<List<Dictionary<string, dynamic>>> roomClientsReceived)
         {
             connectionStateChanged = stateChanged;
+            this.roomClientsReceived = roomClientsReceived;
             setupSocketio();
         }
         public async void restartSocketio()
@@ -42,21 +44,10 @@ namespace Zal.Functions.MajorFunctions
             await killSocketProcess();
             //run the server
             var port = LocalDatabase.Instance.readKey("port")?.ToString() ?? "4920";
-            var pcName = (string?)LocalDatabase.Instance.readKey("pcName");
-            if (pcName == null)
-            {
-                try
-                {
-                    pcName = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
-                }
-                catch
-                {
-                    pcName = "Default Computer";
-                }
-            }
 
-            pcName = string.Concat(pcName.Where(char.IsLetterOrDigit));
+
             var filePath = GlobalClass.Instance.getFilepathFromResources("server.exe");
+            var pcName = Utils.getPcName();
             var startInfo = new ProcessStartInfo
             {
                 FileName = filePath,
@@ -90,20 +81,29 @@ namespace Zal.Functions.MajorFunctions
                 {
                     Query = new List<KeyValuePair<string, string>>
                     {
-                        //new KeyValuePair<string, string>("uid", uid),
+                        new KeyValuePair<string, string>("name", pcName),
+                        new KeyValuePair<string, string>("type", "computer"),
 
                     }
                 });
 
             socketio.On("room_clients", response =>
             {
+                var parsedData = response.GetValue<List<Dictionary<string, dynamic>>>();
+                this.roomClientsReceived.Invoke(this, parsedData);
 
-                var parsedData = response.GetValue<int>();
-                Logger.Log($"local socketio room_clients {parsedData}");
-                // if the data is 1, that means w'ere the only one connected to this server. if it's more than 1, it means a mobile is connected to the server.
-                isMobileConnected = parsedData > 1;
+                Logger.Log($"received room_clients");
+                // check if the clients contain a mobile. if so, change state to connected.
+                foreach (var client in parsedData)
+                {
+                    Logger.Log($"client: {client["name"]},type:{client["type"]}");
+                    if (client["type"].ToString() == "mobile")
+                    {
+                        isMobileConnected = true;
+                    }
+                }
                 FrontendGlobalClass.Instance.dataManager.setMobileConnectionState(isMobileConnected);
-                connectionStateChanged.Invoke(null, isMobileConnected ? SocketConnectionState.Connected : SocketConnectionState.Disconnected);
+                connectionStateChanged.Invoke(this, isMobileConnected ? SocketConnectionState.Connected : SocketConnectionState.Disconnected);
             });
             socketio.On("get_directory", response =>
             {

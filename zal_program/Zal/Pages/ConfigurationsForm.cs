@@ -19,7 +19,7 @@ namespace Zal.Pages
         {
             runOnStartupCheckbox.Checked = (LocalDatabase.Instance.readKey("runOnStartup")?.ToString() ?? "1") == "1";
             startMinimizedCheckbox.Checked = (LocalDatabase.Instance.readKey("startMinimized")?.ToString() ?? "1") == "1";
-            FrontendGlobalClass.Instance.shouldLogFpsData = logFpsDataCheckbox.Checked;
+            logFpsDataCheckbox.Checked = FrontendGlobalClass.Instance.shouldLogFpsData;
 
             if (gpusListbox.Items.Count == 0)
             {

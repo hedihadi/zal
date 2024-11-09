@@ -8,7 +8,9 @@ using System.IO.Pipes;
 using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Zal.Backend.HelperFunctions.SpecificFunctions;
 using Zal.Constants.Models;
+using Zal.Functions;
 using Zal.MajorFunctions;
 using Zal.Pages;
 
@@ -106,8 +108,8 @@ namespace Zal
              {
                  Invoke(new Action(() =>
                  {
-                     mobileConnectionText.Text = state == Functions.Models.SocketConnectionState.Connected ? "Mobile connected" : "Mobile not connected";
-                     mobileConnectionText.ForeColor = !(state == Functions.Models.SocketConnectionState.Connected) ? Color.FromKnownColor(KnownColor.IndianRed) : Color.FromKnownColor(KnownColor.ForestGreen);
+                     //     mobileConnectionText.Text = state == Functions.Models.SocketConnectionState.Connected ? "Mobile connected" : "Mobile not connected";
+                     //      mobileConnectionText.ForeColor = !(state == Functions.Models.SocketConnectionState.Connected) ? Color.FromKnownColor(KnownColor.IndianRed) : Color.FromKnownColor(KnownColor.ForestGreen);
                  }));
              }, computerDataReceived: (sender, data) =>
              {
@@ -116,7 +118,27 @@ namespace Zal
                      gpuDatas = data.gpuData;
 
                  }));
-             });
+             },
+             roomClientsReceived: (sender, data) =>
+             {
+                 Invoke(new Action(() =>
+                 {
+                     connectedClientsList.Items.Clear();
+                     var connectedClients = 0;
+                     var currentPcName = Utils.getPcName();
+                     foreach (var client in data)
+                     {
+                         if (client["name"].ToString() == currentPcName) continue;
+                         connectedClients++;
+                         var name = client["name"];
+                         connectedClientsList.Items.Add($"{name}");
+                     }
+                     connectedClientsLabel.Text = $"Connected Clients: {connectedClients}";
+                 }));
+             }
+             );
+            var port = LocalDatabase.Instance.readKey("port")?.ToString() ?? "4920";
+            ipAddressText.Text = $"Address: {IpGetter.getIp()}:{port}";
             setupTrayMenu();
             setupRunOnStartup();
             checkForUpdates();
@@ -151,7 +173,8 @@ namespace Zal
                             Console.WriteLine("File downloaded successfully.");
 
                             var p = new Process();
-                            var pi = new ProcessStartInfo {
+                            var pi = new ProcessStartInfo
+                            {
                                 UseShellExecute = true,
                                 FileName = fileName,
                             };
@@ -246,6 +269,8 @@ namespace Zal
         {
             FrontendGlobalClass.Instance.localSocket.restartSocketio();
         }
+
+
     }
 
 }

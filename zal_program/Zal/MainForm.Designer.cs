@@ -42,13 +42,13 @@
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.copyProcessedBackendDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyRawBackendDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.mobileConnectionText = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.serverConnectionText = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.connectedClientsLabel = new System.Windows.Forms.Label();
+            this.connectedClientsList = new System.Windows.Forms.ListBox();
+            this.ipAddressText = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
-            this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -75,7 +75,7 @@
             // restartServerToolStripMenuItem
             // 
             this.restartServerToolStripMenuItem.Name = "restartServerToolStripMenuItem";
-            this.restartServerToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.restartServerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.restartServerToolStripMenuItem.Text = "Restart Server";
             this.restartServerToolStripMenuItem.Click += new System.EventHandler(this.restartServerToolStripMenuItem_Click);
             // 
@@ -147,32 +147,11 @@
             this.copyRawBackendDataToolStripMenuItem.Text = "Copy raw Backend Data";
             this.copyRawBackendDataToolStripMenuItem.Click += new System.EventHandler(this.copyRawBackendDataToolStripMenuItem_Click);
             // 
-            // mobileConnectionText
-            // 
-            this.mobileConnectionText.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mobileConnectionText.Font = new System.Drawing.Font("Nirmala UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.mobileConnectionText.ForeColor = System.Drawing.Color.IndianRed;
-            this.mobileConnectionText.Location = new System.Drawing.Point(0, 0);
-            this.mobileConnectionText.Name = "mobileConnectionText";
-            this.mobileConnectionText.Size = new System.Drawing.Size(174, 51);
-            this.mobileConnectionText.TabIndex = 2;
-            this.mobileConnectionText.Text = "Mobile not connected";
-            this.mobileConnectionText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.panel1.Controls.Add(this.mobileConnectionText);
-            this.panel1.Location = new System.Drawing.Point(12, 36);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(174, 51);
-            this.panel1.TabIndex = 5;
-            // 
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.Gainsboro;
             this.panel2.Controls.Add(this.serverConnectionText);
-            this.panel2.Location = new System.Drawing.Point(204, 36);
+            this.panel2.Location = new System.Drawing.Point(209, 52);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(174, 51);
             this.panel2.TabIndex = 6;
@@ -195,13 +174,42 @@
             this.timer1.Enabled = true;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // connectedClientsLabel
+            // 
+            this.connectedClientsLabel.AutoSize = true;
+            this.connectedClientsLabel.Location = new System.Drawing.Point(12, 36);
+            this.connectedClientsLabel.Name = "connectedClientsLabel";
+            this.connectedClientsLabel.Size = new System.Drawing.Size(105, 13);
+            this.connectedClientsLabel.TabIndex = 7;
+            this.connectedClientsLabel.Text = "Connected Clients: 0";
+            // 
+            // connectedClientsList
+            // 
+            this.connectedClientsList.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.connectedClientsList.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.connectedClientsList.FormattingEnabled = true;
+            this.connectedClientsList.Location = new System.Drawing.Point(12, 52);
+            this.connectedClientsList.Name = "connectedClientsList";
+            this.connectedClientsList.Size = new System.Drawing.Size(170, 52);
+            this.connectedClientsList.TabIndex = 0;
+            // 
+            // ipAddressText
+            // 
+            this.ipAddressText.AutoSize = true;
+            this.ipAddressText.Location = new System.Drawing.Point(9, 146);
+            this.ipAddressText.Name = "ipAddressText";
+            this.ipAddressText.Size = new System.Drawing.Size(0, 13);
+            this.ipAddressText.TabIndex = 8;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(395, 168);
+            this.Controls.Add(this.ipAddressText);
+            this.Controls.Add(this.connectedClientsList);
+            this.Controls.Add(this.connectedClientsLabel);
             this.Controls.Add(this.panel2);
-            this.Controls.Add(this.panel1);
             this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -213,7 +221,6 @@
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            this.panel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -231,13 +238,14 @@
         private System.Windows.Forms.ToolStripMenuItem copyProcessedBackendDataToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem copyRawBackendDataToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.Label mobileConnectionText;
-        private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label serverConnectionText;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.ToolStripMenuItem actionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem restartServerToolStripMenuItem;
+        private System.Windows.Forms.Label connectedClientsLabel;
+        private System.Windows.Forms.ListBox connectedClientsList;
+        private System.Windows.Forms.Label ipAddressText;
     }
 }
 

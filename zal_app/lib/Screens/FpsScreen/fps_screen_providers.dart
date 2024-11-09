@@ -135,7 +135,7 @@ final fpsTimeElapsedProvider = AsyncNotifierProvider.autoDispose<FpsTimeElapsedN
   return FpsTimeElapsedNotifier();
 });
 
-final gpuProcessesProvider = FutureProvider<List<GpuProcess>>((ref) {
+final gpuProcessesProvider = FutureProvider<List<GpuProcess>>((ref) async {
   final sub = ref.listen(socketStreamProvider, (prev, cur) {
     if (cur.valueOrNull?.type == SocketDataType.gpuProcesses) {
       final parsedData = Map<String, dynamic>.from(jsonDecode(cur.valueOrNull!.data));
@@ -148,7 +148,7 @@ final gpuProcessesProvider = FutureProvider<List<GpuProcess>>((ref) {
     }
   });
   ref.onDispose(() => sub.close());
-  return ref.future;
+  return ref.future.timeout(const Duration(seconds: 2), onTimeout: () => []);
 });
 
 final selectedGpuProcessProvider = StateProvider.autoDispose<GpuProcess?>((ref) => null);

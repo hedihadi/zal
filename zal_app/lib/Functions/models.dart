@@ -546,17 +546,14 @@ class ProgramTime {
 class SocketObject {
   late Socket socket;
   Timer? timer;
-  SocketObject(String? localSocketAddress, String? uid, String? idToken) {
+  SocketObject(String localSocketAddress, {Map<String, dynamic> extraQueries = const {}}) {
     socket = io(
-      localSocketAddress ?? (dotenv.env['SERVER'] == 'production' ? 'https://api.zalapp.com' : 'http://192.168.0.120:5000'),
+      localSocketAddress,
       <String, dynamic>{
         'transports': ['websocket'],
         'query': {
-          'EIO': '3',
-          'uid': uid,
-          'idToken': idToken,
-          'type': 1,
-          'version': 1,
+          ...extraQueries,
+          'EIO': '4',
         },
       },
     );

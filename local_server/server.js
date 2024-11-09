@@ -17,14 +17,15 @@ const server = http.createServer((req, res) => {
 const io = socketIo(server);
 
 // Track the number of connected clients
-let clientCount = 0;
+let clients = [];
 
-io.on('connection', (socket) => {
-  console.log("user connected");
-  // Increment the client count
-  clientCount++;
+io.on('connect', (socket) => {
+  console.log(`user connected, ${clients.length}`);
+  // add client to the list of clients
+  let client = { 'name': socket.handshake.query.name, 'type': socket.handshake.query.type, 'id': socket.id }
+  clients.push(client)
   // Broadcast the updated client count
-  io.emit('room_clients', clientCount);
+  io.emit('room_clients', clients);
 
   // Relay any event received to all clients except the sender
   socket.onAny((event, ...args) => {
@@ -32,10 +33,11 @@ io.on('connection', (socket) => {
   });
 
   socket.on('disconnect', () => {
-    // Decrement the client count
-    clientCount--;
+    console.log(`user disconnected, ${clients.length}`);
+    // remove the disconnected client
+    clients = clients.filter(client => client.id !== socket.id);
     // Broadcast the updated client count
-    io.emit('room_clients', clientCount);
+    io.emit('room_clients', clients);
   });
 });
 

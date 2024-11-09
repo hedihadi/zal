@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Zal.Constants.Models;
 using Zal.Functions.MajorFunctions;
@@ -15,13 +16,14 @@ namespace Zal.MajorFunctions
         public bool shouldLogFpsData = false;
         private FrontendGlobalClass(
             EventHandler<SocketConnectionState> socketConnectionStateChanged,
-            EventHandler<computerData> computerDataReceived
+            EventHandler<computerData> computerDataReceived,
+            EventHandler<List<Dictionary<String, dynamic>>> roomClientsReceived
 
             )
         {
             // Initialization code here
             backend = new BackendManager();
-            localSocket = new LocalSocket(stateChanged: socketConnectionStateChanged);
+            localSocket = new LocalSocket(stateChanged: socketConnectionStateChanged, roomClientsReceived: roomClientsReceived);
             dataManager = new DataManager(computerDataReceived);
 
 
@@ -29,11 +31,13 @@ namespace Zal.MajorFunctions
         public static async Task Initialize(
             EventHandler<SocketConnectionState> socketConnectionStateChanged,
             //invoked when we retrieve computerData
-            EventHandler<computerData> computerDataReceived
+            EventHandler<computerData> computerDataReceived,
+                        EventHandler<List<Dictionary<String, dynamic>>> roomClientsReceived
+
             )
         {
             await LocalDatabase.Initialize();
-            instance = new FrontendGlobalClass(socketConnectionStateChanged, computerDataReceived);
+            instance = new FrontendGlobalClass(socketConnectionStateChanged, computerDataReceived, roomClientsReceived);
 
 
         }

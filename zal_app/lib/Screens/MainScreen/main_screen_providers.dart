@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -54,17 +55,38 @@ final contextProvider = StateProvider<BuildContext?>((ref) => null);
 
 class SocketObjectNotifier extends AsyncNotifier<SocketObject?> {
   ComputerAddress? currentAddress;
+  String mobileName = 'Default Mobile Name';
+
+  Future<void> setMobileName() async {
+    if (Platform.isAndroid) {
+      final info = (await DeviceInfoPlugin().androidInfo);
+      mobileName = info.model;
+    }
+    if (Platform.isIOS) {
+      final info = (await DeviceInfoPlugin().iosInfo);
+      mobileName = info.model;
+    }
+  }
+
   @override
   Future<SocketObject?> build() async {
+    await setMobileName();
     return null;
   }
 
-  connect(ComputerAddress address) {
-    if (currentAddress == address) return;
+  connect(ComputerAddress? address, {String? manualAddress, bool forceConnect = false}) {
+    if (!forceConnect) {
+      if (currentAddress == address) return;
+    }
+    if (state.valueOrNull != null) {
+      state.valueOrNull!.socket.disconnect();
+      state.valueOrNull!.socket.dispose();
+    }
     currentAddress = address;
-    ref.read(settingsProvider.notifier).updateSettings('address', address.toJson());
-
-    state = AsyncData(SocketObject(address.ip, null, null));
+    if (address != null) {
+      ref.read(settingsProvider.notifier).updateSettings('address', address.toJson());
+    }
+    state = AsyncData(SocketObject(address?.ip ?? "http://$manualAddress/", extraQueries: {'name': mobileName, 'type': 'mobile'}));
   }
 
   sendMessage(String key, dynamic value) {
@@ -73,6 +95,7 @@ class SocketObjectNotifier extends AsyncNotifier<SocketObject?> {
 
   disconnect() {
     currentAddress = null;
+    state.valueOrNull?.socket.disconnect();
     state.valueOrNull?.socket.dispose();
     ref.invalidateSelf();
   }
@@ -93,8 +116,10 @@ final socketStreamProvider = StreamProvider<SocketData>((ref) async* {
   if (socket != null) {
     socket.socket.onConnect((data) {
       ref.read(isConnectedToServerProvider.notifier).state = true;
-
-      //showSnackbarLocal("Server Connected");
+      showSnackbarLocal("Server Connected");
+    });
+    socket.socket.onConnectError((a) {
+      showSnackbarLocal("Connection error:${a.toString()}");
     });
     socket.socket.onDisconnect((data) {
       ref.read(isConnectedToServerProvider.notifier).state = false;
@@ -105,7 +130,15 @@ final socketStreamProvider = StreamProvider<SocketData>((ref) async* {
       // ref.read(webrtcProvider.notifier).messageReceived(RTCDataChannelMessage(data));
     });
     socket.socket.on("room_clients", (data) {
-      ref.read(isConnectedToServerProvider.notifier).state = (data as int) > 1;
+      for (Map<String, dynamic> client in data) {
+        if (client['type'] == 'computer') {
+          showSnackbarLocal("Connected to ${client['name']}!");
+
+          ref.read(isConnectedToServerProvider.notifier).state = true;
+          return;
+        }
+      }
+      showSnackbarLocal("Connected to Server, but no PC is online!");
 // stream.add(SocketData(type: SocketDataType.roomClients, data: data != 0 ? [0, 1] : [1]));
     });
     socket.socket.on('pc_data', (data) {

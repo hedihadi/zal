@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 import 'package:zal/Functions/models.dart';
+import 'package:zal/Functions/theme.dart';
 import 'package:zal/Screens/ConnectedScreen/connected_screen.dart';
 import 'package:zal/Screens/InitialConnectionScreen/Widgets/choose_computer_widget.dart';
+import 'package:zal/Screens/InitialConnectionScreen/Widgets/connect_manually_widget.dart';
 import 'package:zal/Screens/InitialConnectionScreen/Widgets/initial_connection_settings_screen.dart';
 import 'package:zal/Screens/InitialConnectionScreen/initial_connection_screen_providers.dart';
 import 'package:zal/Screens/MainScreen/SettingsScreen/settings_providers.dart';
@@ -85,7 +88,7 @@ class InitialConnectionScreen extends ConsumerWidget {
                             alignment: Alignment.centerRight,
                             child: TextButton(
                               onPressed: () {
-                                ref.read(socketProvider.notifier).connect(computers[index]);
+                                ref.read(socketProvider.notifier).connect(computers[index], forceConnect: true);
                               },
                               child: const Text("Connect"),
                             ),
@@ -97,6 +100,22 @@ class InitialConnectionScreen extends ConsumerWidget {
                 );
               },
             ),
+            ElevatedButton(
+                onPressed: () {
+                  AlertDialog alert = AlertDialog(
+                    title: Text("Connect manually", style: GoogleFonts.bebasNeueTextTheme(AppTheme.darkTheme.textTheme).displayLarge),
+                    content: ConnectManuallyWidget(),
+                  );
+
+                  // show the dialog
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return alert;
+                    },
+                  );
+                },
+                child: const Text("Connect Manually")),
             const Spacer(),
             const Divider(),
             Wrap(

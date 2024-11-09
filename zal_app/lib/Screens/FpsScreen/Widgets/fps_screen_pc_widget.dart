@@ -219,12 +219,12 @@ class FpsScreenPcWidget extends ConsumerWidget {
                         text: "core speed",
                         value: "${gpu.coreSpeed.round()}Mhz",
                         icon: FontAwesomeIcons.gauge,
-                        maxValue: "${data.highestValues['gpu.coreSpeed']?.round()}Mhz"),
+                        maxValue: "${data.highestValues['gpu.coreSpeed']?.round() ?? 0}Mhz"),
                     FpsPcStatWidget(
                         text: "mem speed",
                         value: "${gpu.memorySpeed.round()}Mhz",
                         icon: Icons.memory,
-                        maxValue: "${data.highestValues['gpu.memorySpeed']?.round()}Mhz"),
+                        maxValue: "${data.highestValues['gpu.memorySpeed']?.round() ?? 0}Mhz"),
                     FpsPcStatWidget(
                         text: "mem usage",
                         value: (gpu.dedicatedMemoryUsed * 1000 * 1000).toSize(),
@@ -234,18 +234,18 @@ class FpsScreenPcWidget extends ConsumerWidget {
                       text: "power",
                       value: "${gpu.power.round()}W",
                       icon: Icons.memory,
-                      maxValue: "${data.highestValues['gpu.power']?.round()}W",
+                      maxValue: "${data.highestValues['gpu.power']?.round() ?? 0}W",
                     ),
                     FpsPcStatWidget(
                         text: "voltage",
                         value: "${gpu.voltage.round()}V",
                         icon: Icons.memory,
-                        maxValue: "${data.highestValues['gpu.voltage']?.round()}V"),
+                        maxValue: "${data.highestValues['gpu.voltage']?.round() ?? 0}V"),
                     FpsPcStatWidget(
                         text: "fan Speed",
                         value: "${gpu.fanSpeedPercentage.round()}%",
                         icon: Icons.memory,
-                        maxValue: "${data.highestValues['gpu.fanSpeedPercentage']?.round()}%"),
+                        maxValue: "${data.highestValues['gpu.fanSpeedPercentage']?.round() ?? 0}%"),
                     FpsPcStatWidget(
                         text: "temperature",
                         value: getTemperatureText(gpu.temperature, ref),
@@ -255,7 +255,7 @@ class FpsScreenPcWidget extends ConsumerWidget {
                         text: "load",
                         value: "${gpu.corePercentage.round()}%",
                         icon: Icons.memory,
-                        maxValue: "${data.highestValues['gpu.corePercentage']?.round()}%"),
+                        maxValue: "${data.highestValues['gpu.corePercentage']?.round() ?? 0}%"),
                   ],
                 ),
               ],
@@ -316,13 +316,13 @@ class FpsScreenPcWidget extends ConsumerWidget {
                                       ),
                                       Expanded(
                                         child: Text(
-                                          '${coreInfo.clock?.round()}MHZ',
+                                          '${coreInfo.clock?.round() ?? 0}MHZ',
                                           style: Theme.of(context).textTheme.labelMedium,
                                           textAlign: TextAlign.center,
                                         ),
                                       ),
                                       Text(
-                                        '${coreInfo.load?.round()}%',
+                                        '${coreInfo.load?.round() ?? 0}%',
                                         style: Theme.of(context).textTheme.labelMedium,
                                         textAlign: TextAlign.end,
                                       ),

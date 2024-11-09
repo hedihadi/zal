@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Forms;
+using Zal.Functions;
 using Zal.MajorFunctions;
 
 namespace Zal.Pages
@@ -14,18 +15,7 @@ namespace Zal.Pages
 
         private void ConnectionSettingsForm_Load(object sender, EventArgs e)
         {
-            var pcName = (string?)LocalDatabase.Instance.readKey("pcName");
-            if (pcName == null)
-            {
-                try
-                {
-                    pcName = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
-                }
-                catch
-                {
-                    pcName = "Default Computer";
-                }
-            }
+            var pcName = Utils.getPcName();
             pcName = string.Concat(pcName.Where(char.IsLetterOrDigit));
             portTextBox.Text = LocalDatabase.Instance.readKey("port")?.ToString() ?? "4920";
             pcNameTextBox.Text = pcName;

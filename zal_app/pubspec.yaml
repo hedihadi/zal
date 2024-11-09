@@ -74,6 +74,7 @@ dependencies:
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   flutter_gemini: ^2.0.3
+  device_info_plus: ^11.1.1
 
 dev_dependencies:
   flutter_lints: ^4.0.0

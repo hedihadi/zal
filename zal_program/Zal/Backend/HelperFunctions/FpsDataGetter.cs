@@ -52,18 +52,30 @@ namespace Zal.HelperFunctions
         public void stopPresentmon()
         {
             Logger.Log("stopping presentmon");
-            foreach (var process in Process.GetProcessesByName("presentmon"))
+            try
             {
-                process.Kill();
-                Logger.Log("presentmon killed");
+                foreach (var process in Process.GetProcessesByName("presentmon"))
+                {
+                    process.Kill();
+                    Logger.Log("presentmon killed");
+                }
+                foreach (var process in Process.GetProcessesByName("PresentMon-x64"))
+                {
+                    process.Kill();
+                    Logger.Log("presentmon killed");
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError("error killing presentmon", ex);
             }
         }
 
         public async void startPresentmon(int processId, bool logFps)
         {
             shouldLog = logFps;
-            //startFpsTimer();
             //kill any presentmon process that might be running
+            stopPresentmon();
             var filePath = GlobalClass.Instance.getFilepathFromResources("presentmon.exe");
             var startInfo = new ProcessStartInfo
             {
