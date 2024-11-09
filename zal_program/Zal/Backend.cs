@@ -11,7 +11,7 @@ namespace Zal
     {
         private readonly computerDataGetter computerDataGetter;
         public event EventHandler<string> fpsDataReceived;
-        private readonly FpsDataGetter fpsDataGetter = new FpsDataGetter();
+        private readonly FpsDataGetter fpsDataGetter = new();
 
         public BackendManager()
         {

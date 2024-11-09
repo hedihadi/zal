@@ -20,7 +20,7 @@ namespace Zal.Functions.MajorFunctions
         //if this is true, the loop will run every 1 second. if false, the loop will run every 5 seconds.
         private bool isMobileConnected;
         private readonly EventHandler<computerData> computerDataReceived;
-        private readonly ChartsDataManager chartsDataManager = new ChartsDataManager();
+        private readonly ChartsDataManager chartsDataManager = new();
         public DataManager(EventHandler<computerData> computerDataReceived)
         {
             this.computerDataReceived = computerDataReceived;
@@ -112,7 +112,7 @@ namespace Zal.Functions.MajorFunctions
 
 internal class ChartsDataManager
 {
-    private readonly Dictionary<string, List<object>> data = new Dictionary<string, List<object>>();
+    private readonly Dictionary<string, List<object>> data = new();
 
     public async Task<Dictionary<string, List<object>>> updateAsync(computerData computerData)
     {

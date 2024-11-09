@@ -13,7 +13,7 @@ namespace Zal.HelperFunctions.SpecificFunctions
     {
         public static List<crystalDiskData>? getcrystalDiskData()
         {
-            if (IsAdminstratorChecker.IsAdministrator() == false)
+            if (!IsAdminstratorChecker.IsAdministrator())
             {
                 //dont run if it's not running as adminstrator, because crystaldiskInfo don't work without it
                 Logger.Log("didn't run crystaldiskInfo, program isn't running as adminstrator");
@@ -84,7 +84,7 @@ namespace Zal.HelperFunctions.SpecificFunctions
                         currentHardware.info.Add("model", line.Split(':')[1].Trim());
                     }
 
-                    if (line.Contains("Buffer Size :") && line.Contains("Unknown") == false)
+                    if (line.Contains("Buffer Size :") && !line.Contains("Unknown"))
                     {
                         var hoursString = Regex.Match(line.Split(':')[1].Trim(), @"\d+").Value;
                         if (!string.IsNullOrEmpty(hoursString))
@@ -161,12 +161,12 @@ namespace Zal.HelperFunctions.SpecificFunctions
                     ///////////////////
                     else if ((line.Contains("ID Cur Wor Thr RawValues(6) Attribute Name")))
                     {
-                        currentHardware.smartAttributes = new List<smartAttribute>();
+                        currentHardware.smartAttributes = [];
                         continue; // Skip header line
                     }
                     else if (line.Contains("ID RawValues(6) Attribute Name"))
                     {
-                        currentHardware.smartAttributes = new List<smartAttribute>();
+                        currentHardware.smartAttributes = [];
                         currentHardware.isNvme = true;
                         continue; // Skip header line
                     }
@@ -174,9 +174,9 @@ namespace Zal.HelperFunctions.SpecificFunctions
                     {
                         continue;
                     }
-                    else if (currentHardware.smartAttributes != null && currentHardware.isNvme == false)
+                    else if (currentHardware.smartAttributes != null && !currentHardware.isNvme)
                     {
-                        var parts = line.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                        var parts = line.Split([' '], StringSplitOptions.RemoveEmptyEntries);
                         var attributeName = string.Join(" ", parts, 5, parts.Length - 5);
                         if (attributeName.Contains("Temperature"))
                         {
@@ -204,9 +204,9 @@ namespace Zal.HelperFunctions.SpecificFunctions
                         };
                         currentHardware.smartAttributes.Add(smartAttribute);
                     }
-                    else if (currentHardware.smartAttributes != null && currentHardware.isNvme == true)
+                    else if (currentHardware.smartAttributes != null && currentHardware.isNvme)
                     {
-                        var parts = line.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                        var parts = line.Split([' '], StringSplitOptions.RemoveEmptyEntries);
                         var attributeName = string.Join(" ", parts, 2, parts.Length - 2);
                         if (attributeName.Contains("Temperature"))
                         {

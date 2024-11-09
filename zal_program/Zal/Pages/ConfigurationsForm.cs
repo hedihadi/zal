@@ -57,7 +57,7 @@ namespace Zal.Pages
                             }
                         }
 
-                        if (doesPrimaryGpuExist == false)
+                        if (!doesPrimaryGpuExist)
                         {
                             Logger.Log($"primary gpu not found, setting this gpu as default:{gpuData[0].name}");
                             //reset primary gpu

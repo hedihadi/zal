@@ -16,14 +16,14 @@ namespace Zal.HelperFunctions
         private readonly List<crystalDiskData>? crystalDiskDatas;
         private readonly List<ramPieceData>? ramPiecesData;
         //this variable holds the network speed that the user has chosen as primary.
-        private readonly networkSpeed primarynetworkSpeed = new networkSpeed(download: 0, upload: 0);
+        private readonly networkSpeed primarynetworkSpeed = new(download: 0, upload: 0);
 
-        private readonly NetworkSpeedGetter networkSpeedGetter = new NetworkSpeedGetter();
+        private readonly NetworkSpeedGetter networkSpeedGetter = new();
         //disabled fps feature because it's buggy
         //public fpsDataGetter fpsDataGetter;
         //this variable holds the processes and how much % gpu they use. we use this data to determine which process is a game. and get the fps data from it.
-        private readonly Dictionary<int, double> processesGpuUsage = new Dictionary<int, double>();
-        private readonly Computer computer = new Computer
+        private readonly Dictionary<int, double> processesGpuUsage = new();
+        private readonly Computer computer = new()
         {
             IsCpuEnabled = true,
             IsGpuEnabled = true,

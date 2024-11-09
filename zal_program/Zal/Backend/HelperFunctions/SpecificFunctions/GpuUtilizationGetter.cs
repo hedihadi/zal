@@ -64,7 +64,7 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
                 {
                     if (skipBlackListedProcesses)
                     {
-                        if (foundProcessInfo.isBlacklisted == true) continue;
+                        if (foundProcessInfo.isBlacklisted) continue;
                     }
 
                     if (foundProcessInfo.displayName != null)

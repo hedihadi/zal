@@ -15,7 +15,7 @@ namespace ZalConsole.HelperFunctions
         private ManagementObjectCollection? win32DiskDrives;
         private ManagementObjectCollection? win32DiskPartitions;
         private ManagementObjectCollection? win32DiskPartitionsForFreeDiskSpace;
-        public ProcessesGetter processesGetter = new ProcessesGetter();
+        public ProcessesGetter processesGetter = new();
         private static GlobalClass instance;
         private List<ProcessInfo>? processInfos;
 

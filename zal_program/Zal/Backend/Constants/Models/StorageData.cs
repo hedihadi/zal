@@ -16,9 +16,9 @@ namespace Zal.Constants.Models
         public ulong? writeRate { get; set; }
         //whether it's hdd, ssd, or external storage
         public string type { get; set; }
-        public List<partitionInfo> partitions { get; } = new List<partitionInfo>();
-        public Dictionary<string, dynamic> info = new Dictionary<string, dynamic>();
-        public List<smartAttribute> smartAttributes = new List<smartAttribute>();
+        public List<partitionInfo> partitions { get; } = [];
+        public Dictionary<string, dynamic> info = new();
+        public List<smartAttribute> smartAttributes = [];
         public storageData(IHardware hardware, List<crystalDiskData>? crystalDiskDatas)
         {
             type = "External";
@@ -129,5 +129,5 @@ public class diskInfo
     public int diskNumber { get; set; }
     public long totalSize { get; set; }
     public ulong freeSpace { get; set; }
-    public List<partitionInfo> partitions { get; } = new List<partitionInfo>();
+    public List<partitionInfo> partitions { get; } = [];
 }

@@ -8,9 +8,9 @@ namespace Zal
 {
     public class LocalDatabase
     {
-        private readonly Dictionary<string, object> data = new Dictionary<string, object>();
+        private readonly Dictionary<string, object> data = new();
         private static LocalDatabase instance;
-        private readonly SemaphoreSlim _writeSemaphore = new SemaphoreSlim(1);
+        private readonly SemaphoreSlim _writeSemaphore = new(1);
 
         private LocalDatabase(Dictionary<string, object> initData)
         {

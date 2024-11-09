@@ -5,7 +5,7 @@ namespace Zal
 {
     public static class Logger
     {
-        private static readonly object _locker = new object();
+        private static readonly object _locker = new();
 
         public static void LogError(string message, Exception ex, object dataToPrint = null)
         {

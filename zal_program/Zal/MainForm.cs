@@ -20,7 +20,7 @@ namespace Zal
         private const int WM_SYSCOMMAND = 0x0112;
         private const int SC_MINIMIZE = 0xf020;
         private Task pipeTask;
-        private List<gpuData> gpuDatas = new List<gpuData>();
+        private List<gpuData> gpuDatas = [];
         private NotifyIcon ni;
         private const string PipeName = "ZalAppPipe";
         private bool launchedByStartup;

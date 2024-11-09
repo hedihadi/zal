@@ -15,7 +15,7 @@ namespace Zal.HelperFunctions
         public event EventHandler<dynamic> sendFpsData;
         private readonly List<double> fpsDatas = [];
         private readonly int processId;
-        private readonly Stopwatch stopwatch = new Stopwatch();
+        private readonly Stopwatch stopwatch = new();
         private bool shouldLog;
 
         public FpsDataGetter()

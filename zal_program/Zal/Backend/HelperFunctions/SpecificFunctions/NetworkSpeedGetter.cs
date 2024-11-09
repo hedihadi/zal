@@ -103,7 +103,7 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
         {
             var primaryNetwork = (string?)LocalDatabase.Instance.readKey("primaryNetwork");
             if (!NetworkInterface.GetIsNetworkAvailable())
-                return new List<networkInterfaceData>();
+                return [];
 
             var interfaces
                 = NetworkInterface.GetAllNetworkInterfaces();
