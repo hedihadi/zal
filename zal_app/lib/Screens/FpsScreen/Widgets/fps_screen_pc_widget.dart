@@ -45,7 +45,7 @@ class FpsScreenPcWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final data = ref.watch(fpsComputerDataProvider);
-    final settings = ref.watch(settingsProvider).value!;
+    final settings = ref.watch(settingsProvider).value;
     final gpu = ref.watch(computerDataProvider).value?.gpu;
 
     if (gpu == null) return Container();
@@ -56,7 +56,7 @@ class FpsScreenPcWidget extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          if ((settings['showGauges'] ?? true) == true)
+          if ((settings?['showGauges'] ?? true) == true)
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -219,17 +219,17 @@ class FpsScreenPcWidget extends ConsumerWidget {
                         text: "core speed",
                         value: "${gpu.coreSpeed.round()}Mhz",
                         icon: FontAwesomeIcons.gauge,
-                        maxValue: "${data.highestValues['gpu.coreSpeed']!.round()}Mhz"),
+                        maxValue: "${data.highestValues['gpu.coreSpeed']?.round()}Mhz"),
                     FpsPcStatWidget(
                         text: "mem speed",
                         value: "${gpu.memorySpeed.round()}Mhz",
                         icon: Icons.memory,
-                        maxValue: "${data.highestValues['gpu.memorySpeed']!.round()}Mhz"),
+                        maxValue: "${data.highestValues['gpu.memorySpeed']?.round()}Mhz"),
                     FpsPcStatWidget(
                         text: "mem usage",
                         value: (gpu.dedicatedMemoryUsed * 1000 * 1000).toSize(),
                         icon: Icons.memory,
-                        maxValue: (data.highestValues['gpu.dedicatedMemoryUsed']! * 1000 * 1000).toSize()),
+                        maxValue: ((data.highestValues['gpu.dedicatedMemoryUsed'] ?? 0) * 1000 * 1000).toSize()),
                     FpsPcStatWidget(
                       text: "power",
                       value: "${gpu.power.round()}W",
@@ -290,7 +290,7 @@ class FpsScreenPcWidget extends ConsumerWidget {
                 ),
                 InlineAd(adUnit: Platform.isAndroid ? "ca-app-pub-5545344389727160/5701849781" : "ca-app-pub-5545344389727160/3665863326"),
                 Visibility(
-                  visible: ((settings['showCpuCores'] ?? true) == true),
+                  visible: ((settings?['showCpuCores'] ?? true) == true),
                   child: StaggeredGridview(
                     children: List.generate(
                       data.computerData.cpu.clocks.length,
