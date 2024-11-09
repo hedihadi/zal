@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.NetworkInformation;
@@ -100,7 +100,9 @@ namespace ZalConsole.HelperFunctions.SpecificFunctions
         {
             var primaryNetwork = (string?)LocalDatabase.Instance.readKey("primaryNetwork");
             if (!NetworkInterface.GetIsNetworkAvailable())
+            {
                 return [];
+            }
 
             var interfaces
                 = NetworkInterface.GetAllNetworkInterfaces();

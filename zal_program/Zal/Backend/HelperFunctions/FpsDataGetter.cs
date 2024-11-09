@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -39,7 +39,10 @@ namespace Zal.HelperFunctions
             var index = (int)realIndex;
             var frac = realIndex - index;
             if (index + 1 < elements.Length)
+            {
                 return elements[index] * (1 - frac) + elements[index + 1] * frac;
+            }
+
             return elements[index];
         }
 
@@ -109,7 +112,11 @@ namespace Zal.HelperFunctions
 
                     //Thread.Sleep(30);
                     var line = reader.ReadLine();
-                    if (shouldLog) Logger.Log($"fpsData:{line}");
+                    if (shouldLog)
+                    {
+                        Logger.Log($"fpsData:{line}");
+                    }
+
                     var msBetweenPresents = "";
                     try
                     {

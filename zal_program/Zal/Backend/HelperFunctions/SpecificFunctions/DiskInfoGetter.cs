@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Management;
 using System.Text.RegularExpressions;
@@ -15,7 +15,10 @@ namespace Zal.HelperFunctions.SpecificFunctions
             {
                 //iterate until we get the disk number we want
                 var diskIndex = Convert.ToInt32(disk["Index"]);
-                if (diskIndex != diskNumber) continue;
+                if (diskIndex != diskNumber)
+                {
+                    continue;
+                }
 
                 var diskInfo = new diskInfo {
                     diskNumber = Convert.ToInt32(disk["Index"]),

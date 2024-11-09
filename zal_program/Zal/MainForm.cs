@@ -36,36 +36,36 @@ namespace Zal
         private Task StartPipeServer()
         {
             return Task.Run(() =>
-             {
-                 while (true)
-                 {
-                     using (var pipeServer = new NamedPipeServerStream(PipeName, PipeDirection.In))
-                     {
-                         try
-                         {
-                             pipeServer.WaitForConnection(); // Wait for a client to connect
-                             using (var reader = new StreamReader(pipeServer))
-                             {
-                                 var command = reader.ReadLine();
-                                 if (command == "SHOW")
-                                 {
-                                     Invoke(new Action(() =>
-                                     {
-                                         Show();
-                                         WindowState = FormWindowState.Normal;
-                                         Activate();
-                                     }));
-                                 }
-                             }
-                         }
-                         catch (IOException)
-                         {
-                             // Handle pipe disconnection or errors
-                         }
-                     }
-                     // PipeServer disposed and loop continues to create a new NamedPipeServerStream instance
-                 }
-             });
+            {
+                while (true)
+                {
+                    using (var pipeServer = new NamedPipeServerStream(PipeName, PipeDirection.In))
+                    {
+                        try
+                        {
+                            pipeServer.WaitForConnection(); // Wait for a client to connect
+                            using (var reader = new StreamReader(pipeServer))
+                            {
+                                var command = reader.ReadLine();
+                                if (command == "SHOW")
+                                {
+                                    Invoke(new Action(() =>
+                                    {
+                                        Show();
+                                        WindowState = FormWindowState.Normal;
+                                        Activate();
+                                    }));
+                                }
+                            }
+                        }
+                        catch (IOException)
+                        {
+                            // Handle pipe disconnection or errors
+                        }
+                    }
+                    // PipeServer disposed and loop continues to create a new NamedPipeServerStream instance
+                }
+            });
         }
 
         private void setupTrayMenu()
@@ -170,7 +170,7 @@ namespace Zal
             }
         }
 
-        private async Task setupRunOnStartup()
+        private static async Task setupRunOnStartup()
         {
             var runOnStartup = (string?)LocalDatabase.Instance.readKey("runOnStartup") == "1";
             //replace false with saved settings
@@ -178,9 +178,13 @@ namespace Zal
                 ("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
             var executablePath = $"\"{Process.GetCurrentProcess().MainModule.FileName}\" --startup";
             if (runOnStartup)
+            {
                 rk.SetValue("Zal", executablePath);
+            }
             else
+            {
                 rk.DeleteValue("Zal", false);
+            }
         }
 
         private void viewLogToolStripMenuItem_Click(object sender, EventArgs e)
@@ -223,7 +227,6 @@ namespace Zal
 
             if (m.Msg == WM_SYSCOMMAND)
             {
-
                 if (m.WParam.ToInt32() == SC_MINIMIZE)
                 {
                     Hide();

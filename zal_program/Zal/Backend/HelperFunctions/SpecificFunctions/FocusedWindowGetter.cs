@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -21,7 +21,10 @@ namespace Zal.HelperFunctions.SpecificFunctions
             // The foreground window can be NULL in certain circumstances,
             // such as when a window is losing activation.
             if (hwnd == IntPtr.Zero)
+            {
                 return null;
+            }
+
             GetWindowThreadProcessId(hwnd, out var pid);
             var proc = Process.GetProcessById(((int)pid));
 
