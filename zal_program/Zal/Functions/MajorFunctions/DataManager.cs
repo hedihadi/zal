@@ -147,7 +147,6 @@ internal class ChartsDataManager
     public static async Task<gpuData?> getPrimaryGpu(computerData computerData)
     {
         var primaryGpuName = (string?)LocalDatabase.Instance.readKey("primaryGpu");
-        gpuData? primaryGpu = null;
         //Logger.Log($"fetching primary gpu object from name {primaryGpuName}");
         foreach (var gpu in computerData.gpuData)
         {

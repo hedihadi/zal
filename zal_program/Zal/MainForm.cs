@@ -1,4 +1,4 @@
-﻿using Microsoft.Win32;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -23,10 +23,10 @@ namespace Zal
         private List<gpuData> gpuDatas = [];
         private NotifyIcon ni;
         private const string PipeName = "ZalAppPipe";
-        private bool launchedByStartup;
+        private readonly bool launchedByStartup;
+
         public MainForm(bool launchedByStartup)
         {
-
             this.launchedByStartup = launchedByStartup;
             InitializeComponent();
             Logger.ResetLog();
@@ -67,6 +67,7 @@ namespace Zal
                  }
              });
         }
+
         private void setupTrayMenu()
         {
             ni = new NotifyIcon
@@ -76,7 +77,7 @@ namespace Zal
             };
             var trayMenu = new ContextMenuStrip();
             trayMenu.Click +=
-                delegate (object sender, EventArgs args)
+                delegate(object sender, EventArgs args)
                 {
                     Show();
                     WindowState = FormWindowState.Normal;
@@ -86,7 +87,7 @@ namespace Zal
             trayMenu.Items.Add("Exit", null, (sender, e) => Application.Exit());
             ni.ContextMenuStrip = trayMenu;
             ni.DoubleClick +=
-                delegate (object sender, EventArgs args)
+                delegate(object sender, EventArgs args)
                 {
                     Show();
                     WindowState = FormWindowState.Normal;
@@ -95,28 +96,28 @@ namespace Zal
             if ((string?)LocalDatabase.Instance.readKey("startMinimized") == "1")
             {
                 if (launchedByStartup)
-                { Hide(); }
+                {
+                    Hide();
+                }
             }
         }
+
         private async void MainForm_Load(object sender, EventArgs e)
         {
-
-
             await FrontendGlobalClass.Initialize(socketConnectionStateChanged: (sender, state) =>
-             {
-                 Invoke(new Action(() =>
-                 {
-                     mobileConnectionText.Text = state == Functions.Models.SocketConnectionState.Connected ? "Mobile connected" : "Mobile not connected";
-                     mobileConnectionText.ForeColor = !(state == Functions.Models.SocketConnectionState.Connected) ? Color.FromKnownColor(KnownColor.IndianRed) : Color.FromKnownColor(KnownColor.ForestGreen);
-                 }));
-             }, computerDataReceived: (sender, data) =>
-             {
-                 Invoke(new Action(() =>
-                 {
-                     gpuDatas = data.gpuData;
-
-                 }));
-             });
+            {
+                Invoke(new Action(() =>
+                {
+                    mobileConnectionText.Text = state == Functions.Models.SocketConnectionState.Connected ? "Mobile connected" : "Mobile not connected";
+                    mobileConnectionText.ForeColor = state != Functions.Models.SocketConnectionState.Connected ? Color.FromKnownColor(KnownColor.IndianRed) : Color.FromKnownColor(KnownColor.ForestGreen);
+                }));
+            }, computerDataReceived: (sender, data) =>
+            {
+                Invoke(new Action(() =>
+                {
+                    gpuDatas = data.gpuData;
+                }));
+            });
             setupTrayMenu();
             setupRunOnStartup();
             checkForUpdates();
@@ -133,7 +134,8 @@ namespace Zal
             var form2 = new ConfigurationsForm(setupRunOnStartup, gpuDatas);
             form2.Show();
         }
-        private async Task checkForUpdates()
+
+        private static async Task checkForUpdates()
         {
             var latestVersion = new WebClient().DownloadString("https://zalapp.com/program-version");
             var currentVersion = Application.ProductVersion;
@@ -151,7 +153,8 @@ namespace Zal
                             Console.WriteLine("File downloaded successfully.");
 
                             var p = new Process();
-                            var pi = new ProcessStartInfo {
+                            var pi = new ProcessStartInfo
+                            {
                                 UseShellExecute = true,
                                 FileName = fileName,
                             };
@@ -166,6 +169,7 @@ namespace Zal
                 }
             }
         }
+
         private async Task setupRunOnStartup()
         {
             var runOnStartup = (string?)LocalDatabase.Instance.readKey("runOnStartup") == "1";
@@ -182,7 +186,6 @@ namespace Zal
         private void viewLogToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Process.Start("notepad.exe", Logger.GetLogFilePath());
-
         }
 
         private async void copyProcessedBackendDataToolStripMenuItem_ClickAsync(object sender, EventArgs e)
@@ -195,19 +198,14 @@ namespace Zal
         {
             var data = FrontendGlobalClass.Instance.backend.getEntireComputerData();
             Clipboard.SetText(Newtonsoft.Json.JsonConvert.SerializeObject(data));
-
         }
-
-
 
         private void label2_Click(object sender, EventArgs e)
         {
-
         }
 
         private void backgroundWorker1_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
-
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -217,13 +215,11 @@ namespace Zal
             serverConnectionText.ForeColor = (pname.Length == 0) ? Color.FromKnownColor(KnownColor.IndianRed) : Color.FromKnownColor(KnownColor.ForestGreen);
 
             timer1.Interval = pname.Length != 0 ? 100 : 1000;
-
-
         }
+
         protected override void WndProc(ref Message m)
         {
             base.WndProc(ref m);
-
 
             if (m.Msg == WM_SYSCOMMAND)
             {
@@ -232,7 +228,6 @@ namespace Zal
                 {
                     Hide();
                     m.Result = IntPtr.Zero;
-                    return;
                 }
             }
         }
@@ -247,5 +242,4 @@ namespace Zal
             FrontendGlobalClass.Instance.localSocket.restartSocketio();
         }
     }
-
 }
