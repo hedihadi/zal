@@ -20,7 +20,7 @@ namespace Zal
         public static async Task Initialize()
         {
             var text = await GlobalClass.Instance.readTextFromDocumentFolder("database.json");
-            if (text != null && text != "")
+            if (!string.IsNullOrEmpty(text))
             {
                 try
                 {
@@ -30,7 +30,6 @@ namespace Zal
                         instance = new LocalDatabase(parsedData);
                         return;
                     }
-
                 }
                 catch (Exception ex)
                 {
