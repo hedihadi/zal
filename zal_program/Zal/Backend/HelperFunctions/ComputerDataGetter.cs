@@ -83,28 +83,40 @@ namespace Zal.HelperFunctions
         }
         public string getEntireComputerData()
         {
+
             var computerData = new computerData();
             computer.Accept(new UpdateVisitor());
             var result = new Dictionary<string, object>();
             foreach (var hardware in computer.Hardware)
             {
-                var data = new Dictionary<string, object>
-                {
-                    ["type"] = hardware.HardwareType.ToString()
-                };
-                foreach (var sensor in hardware.Sensors)
-                {
-                    var sensorData = new Dictionary<string, object> {
-                        ["type"] = sensor.SensorType.ToString(),
-                        ["value"] = sensor.Value.ToString(),
-                    };
-                    data[sensor.Name] = sensorData;
-                }
 
+                var data = parseHardwareData(hardware);
                 result.Add(hardware.Name, data);
             }
             var stringifiedData = Newtonsoft.Json.JsonConvert.SerializeObject(result);
             return stringifiedData;
+        }
+        private Dictionary<string, object> parseHardwareData(IHardware hardware)
+        {
+            var data = new Dictionary<string, object>
+            {
+                ["hardware_type"] = hardware.HardwareType.ToString()
+            };
+            foreach (var sensor in hardware.Sensors)
+            {
+                var sensorData = new Dictionary<string, object>
+                {
+                    ["sensor_type"] = Enum.GetName((sensor.SensorType).GetType(), sensor.SensorType),
+                    ["value"] = sensor.Value.ToString(),
+                };
+                data[$"{sensor.Name},{sensor.Identifier},{sensor.SensorType.ToString()}"] = sensorData;
+            }
+            foreach (var subhardware in hardware.SubHardware)
+            {
+
+                data[$"hardware: {subhardware.Name}"] = parseHardwareData(subhardware);
+            }
+            return data;
         }
         public async Task<computerData> getcomputerDataAsync()
         {
