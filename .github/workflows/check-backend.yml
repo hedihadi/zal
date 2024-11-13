@@ -1,0 +1,39 @@
+name: Check Backend
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ master ]
+    paths-ignore:
+      - 'local_server/**'
+      - '.github/workflows/**'
+      - '!.github/workflows/check-backend.yml'
+  pull_request:
+    paths-ignore:
+      - 'local_server/**'
+      - '.github/workflows/**'
+      - '!.github/workflows/check-backend.yml'
+
+env:
+  SDK_VERSION: 8.0.x
+  BUILD_CONFIG: Release
+
+jobs:
+  check-backend:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 50
+
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v2
+    - name: Setup .NET Core SDK ${{ env.SDK_VERSION }}
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.SDK_VERSION }}
+    - name: Install dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --configuration ${{ env.BUILD_CONFIG }} --no-restore

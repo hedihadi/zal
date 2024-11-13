@@ -1,0 +1,28 @@
+name: Check Local Server (NPM)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ master ]
+    paths:
+      - 'local_server/**'
+      - '.github/workflows/check-local-server.yml'
+  pull_request:
+    paths:
+      - 'local_server/**'
+      - '.github/workflows/check-local-server.yml'
+
+env:
+  NODE_PROJECT_DIR: local_server
+
+jobs:
+  check-local-server:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 22
+    - run: npm ci
+      working-directory: ${{ env.NODE_PROJECT_DIR }}
